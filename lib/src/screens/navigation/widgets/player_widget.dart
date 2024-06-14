@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
+import 'package:windows_taskbar/windows_taskbar.dart';
 
 import '../../../core/routes/routes.dart';
 import '../../home/providers/home_providers.dart';
@@ -35,7 +38,13 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
   void initState() {
     super.initState();
     player.setUrl(ref.read(playerSurahProvider).url, preload: true);
+
     player.playerStateStream.listen((event) {
+      if (event.processingState == ProcessingState.ready) {
+        if (Platform.isWindows) {
+          windowThumbnailBar();
+        }
+      }
       if (event.processingState == ProcessingState.completed) {
         if (mounted) {
           setState(() {
@@ -61,11 +70,50 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
     });
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   player.stop();
-  // }
+  windowThumbnailBar() {
+    WindowsTaskbar.setThumbnailTooltip('Awesome Flutter window.');
+    WindowsTaskbar.setFlashTaskbarAppIcon();
+
+    WindowsTaskbar.setThumbnailToolbar([
+      ThumbnailToolbarButton(
+        ThumbnailToolbarAssetIcon('assets/img/skip_previous.ico'),
+        "بعد",
+        () async {
+          final surahID = ref.read(surahIDProvider) + 1;
+          await ref.read(seekIDProvider(surahID: surahID).future);
+        },
+      ),
+      isPlaying
+          ? ThumbnailToolbarButton(
+              ThumbnailToolbarAssetIcon('assets/img/pause.ico'),
+              "ايقاف ",
+              () {
+                player.pause();
+                setState(() {
+                  isPlaying = false;
+                });
+              },
+            )
+          : ThumbnailToolbarButton(
+              ThumbnailToolbarAssetIcon('assets/img/play.ico'),
+              "تشغيل",
+              () {
+                player.play();
+                setState(() {
+                  isPlaying = true;
+                });
+              },
+            ),
+      ThumbnailToolbarButton(
+        ThumbnailToolbarAssetIcon('assets/img/skip_next.ico'),
+        "قبل",
+        () async {
+          final surahID = ref.read(surahIDProvider) - 1;
+          await ref.read(seekIDProvider(surahID: surahID).future);
+        },
+      ),
+    ]);
+  }
 
   Future<void> handlePlayPause() async {
     if (mounted) {
@@ -280,7 +328,6 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                     player: player,
                     handleVolume: handleVolume,
                   ),
-                 
                 ]),
           )),
     );

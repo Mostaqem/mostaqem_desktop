@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
   just_audio_windows
+  windows_taskbar
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

@@ -15,3 +15,4 @@
 - [ ] Categorize home page with filter option
 - [ ] Share your playlist with friends
 - [ ] Listen together
+- [ ] Fullscreen mode
