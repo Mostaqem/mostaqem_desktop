@@ -5,7 +5,6 @@ import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 
 import '../../shared/widgets/back_button.dart';
 import '../../shared/widgets/window_bar.dart';
-import '../navigation/widgets/player_widget.dart';
 import 'data/reciters_data.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 

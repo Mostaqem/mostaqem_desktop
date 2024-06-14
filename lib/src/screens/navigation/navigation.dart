@@ -1,12 +1,9 @@
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
 
 import '../../shared/widgets/tooltip_icon.dart';
 import '../../shared/widgets/window_bar.dart';
-import '../../shared/widgets/window_buttons.dart';
-import 'widgets/player_widget.dart';
 
 final isExtendedProvider = StateProvider<bool>((ref) => false);
 

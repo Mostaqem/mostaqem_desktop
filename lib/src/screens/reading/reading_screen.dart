@@ -7,7 +7,6 @@ import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 
 import '../../shared/widgets/window_bar.dart';
-import '../navigation/widgets/player_widget.dart';
 import 'providers/reading_providers.dart';
 
 class ReadingScreen extends ConsumerWidget {

@@ -51,11 +51,9 @@ Future<void> seekID(SeekIDRef ref,
     return;
   }
   final surah = await ref.read(fetchChapterByIdProvider(id: surahID).future);
-  print(reciterName);
   final audioURL = await ref.read(
       fetchAudioForChapterProvider(chapterNumber: surahID, reciterID: reciterID)
           .future);
-  print(audioURL);
   ref.read(playerSurahProvider.notifier).state =
       (name: surah.arabicName, reciter: reciterName, url: audioURL);
   ref.read(surahIDProvider.notifier).state = surah.id;
