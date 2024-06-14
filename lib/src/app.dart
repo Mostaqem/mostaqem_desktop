@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/core/theme/theme.dart';
+
+import 'screens/navigation/widgets/player_widget.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -23,6 +26,30 @@ class MyApp extends ConsumerWidget {
           Locale("ar", "AE"),
         ],
         locale: const Locale("ar", "SA"),
+        builder: (context, child) {
+          return Material(
+            child: SizedBox(
+              height: 100,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  child!,
+                  SizedBox(
+                    height: 100,
+                    child: Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                        child: Overlay(
+                          initialEntries: [
+                            OverlayEntry(builder: (context) => const PlayerWidget())
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
         title: 'Mostaqeem',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme);

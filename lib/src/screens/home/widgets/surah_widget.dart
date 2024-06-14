@@ -11,6 +11,8 @@ final surahIDProvider = StateProvider<int>((ref) {
   return 1;
 });
 
+final reciterProvider = StateProvider((ref) => (id: 1, name: "عبدالباسط"));
+
 class SurahWidget extends ConsumerWidget {
   const SurahWidget({super.key});
 
@@ -31,11 +33,15 @@ class SurahWidget extends ConsumerWidget {
                     child: Material(
                       child: InkWell(
                         onTap: () async {
-                          context.pushNamed('Reading',
-                              extra: data[index].id,
-                              pathParameters: {"name": data[index].arabicName});
+                          context.goNamed(
+                            'Reading',
+                            extra: data[index].id,
+                          );
+                          final reciter = ref.read(reciterProvider);
                           await ref.read(seekIDProvider(
                                   surahID: data[index].id,
+                                  reciterID: reciter.id,
+                                  reciterName: reciter.name,
                                   surahName: data[index].arabicName)
                               .future);
                         },
@@ -98,8 +104,13 @@ class SurahWidget extends ConsumerWidget {
                                           preferBelow: false,
                                           child: IconButton(
                                               onPressed: () async {
+                                                final reciter =
+                                                    ref.read(reciterProvider);
                                                 await ref.read(seekIDProvider(
                                                         surahID: data[index].id,
+                                                        reciterName:
+                                                            reciter.name,
+                                                        reciterID: reciter.id,
                                                         surahName: data[index]
                                                             .arabicName)
                                                     .future);

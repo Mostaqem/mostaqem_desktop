@@ -38,22 +38,26 @@ Future<String> fetchAudioForChapter(FetchAudioForChapterRef ref,
 
 @riverpod
 Future<void> seekID(SeekIDRef ref,
-    {required int surahID, String? surahName}) async {
+    {required int surahID,
+    String? surahName,
+    String reciterName = "عبدالباسط",
+    int reciterID = 1}) async {
   if (surahName != null) {
     final audioURL = await ref
-        .read(fetchAudioForChapterProvider(chapterNumber: surahID).future);
-    ref.read(playerURLProvider.notifier).state = audioURL;
+        .read(fetchAudioForChapterProvider(chapterNumber: surahID,reciterID: reciterID).future);
     ref.read(playerSurahProvider.notifier).state =
-        (name: surahName, reciter: "عبدالباسط");
+        (name: surahName, reciter: reciterName, url: audioURL);
     ref.read(surahIDProvider.notifier).state = surahID;
     return;
   }
   final surah = await ref.read(fetchChapterByIdProvider(id: surahID).future);
-  final audioURL = await ref
-      .read(fetchAudioForChapterProvider(chapterNumber: surahID).future);
-  ref.read(playerURLProvider.notifier).state = audioURL;
+  print(reciterName);
+  final audioURL = await ref.read(
+      fetchAudioForChapterProvider(chapterNumber: surahID, reciterID: reciterID)
+          .future);
+  print(audioURL);
   ref.read(playerSurahProvider.notifier).state =
-      (name: surah.arabicName, reciter: "عبدالباسط");
+      (name: surah.arabicName, reciter: reciterName, url: audioURL);
   ref.read(surahIDProvider.notifier).state = surah.id;
 }
 

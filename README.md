@@ -4,6 +4,7 @@
 ### Features:
 * Listening and read quran
 * Search for chapters (Surah)
+* Change Reciters
 
 
 ### TODOs:

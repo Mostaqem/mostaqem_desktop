@@ -319,7 +319,7 @@ class _FetchAudioForChapterProviderElement
       (origin as FetchAudioForChapterProvider).chapterNumber;
 }
 
-String _$seekIDHash() => r'cf73f0a0b9dc7179b75bb887a81d65c67d85ba24';
+String _$seekIDHash() => r'cc87c9e6dd220c70c61de78d08119a40b75d01c3';
 
 /// See also [seekID].
 @ProviderFor(seekID)
@@ -334,10 +334,14 @@ class SeekIDFamily extends Family<AsyncValue<void>> {
   SeekIDProvider call({
     required int surahID,
     String? surahName,
+    String reciterName = "عبدالباسط",
+    int reciterID = 1,
   }) {
     return SeekIDProvider(
       surahID: surahID,
       surahName: surahName,
+      reciterName: reciterName,
+      reciterID: reciterID,
     );
   }
 
@@ -348,6 +352,8 @@ class SeekIDFamily extends Family<AsyncValue<void>> {
     return call(
       surahID: provider.surahID,
       surahName: provider.surahName,
+      reciterName: provider.reciterName,
+      reciterID: provider.reciterID,
     );
   }
 
@@ -372,11 +378,15 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
   SeekIDProvider({
     required int surahID,
     String? surahName,
+    String reciterName = "عبدالباسط",
+    int reciterID = 1,
   }) : this._internal(
           (ref) => seekID(
             ref as SeekIDRef,
             surahID: surahID,
             surahName: surahName,
+            reciterName: reciterName,
+            reciterID: reciterID,
           ),
           from: seekIDProvider,
           name: r'seekIDProvider',
@@ -388,6 +398,8 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
           allTransitiveDependencies: SeekIDFamily._allTransitiveDependencies,
           surahID: surahID,
           surahName: surahName,
+          reciterName: reciterName,
+          reciterID: reciterID,
         );
 
   SeekIDProvider._internal(
@@ -399,10 +411,14 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
     required super.from,
     required this.surahID,
     required this.surahName,
+    required this.reciterName,
+    required this.reciterID,
   }) : super.internal();
 
   final int surahID;
   final String? surahName;
+  final String reciterName;
+  final int reciterID;
 
   @override
   Override overrideWith(
@@ -419,6 +435,8 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
         debugGetCreateSourceHash: null,
         surahID: surahID,
         surahName: surahName,
+        reciterName: reciterName,
+        reciterID: reciterID,
       ),
     );
   }
@@ -432,7 +450,9 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
   bool operator ==(Object other) {
     return other is SeekIDProvider &&
         other.surahID == surahID &&
-        other.surahName == surahName;
+        other.surahName == surahName &&
+        other.reciterName == reciterName &&
+        other.reciterID == reciterID;
   }
 
   @override
@@ -440,6 +460,8 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, surahID.hashCode);
     hash = _SystemHash.combine(hash, surahName.hashCode);
+    hash = _SystemHash.combine(hash, reciterName.hashCode);
+    hash = _SystemHash.combine(hash, reciterID.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -451,6 +473,12 @@ mixin SeekIDRef on AutoDisposeFutureProviderRef<void> {
 
   /// The parameter `surahName` of this provider.
   String? get surahName;
+
+  /// The parameter `reciterName` of this provider.
+  String get reciterName;
+
+  /// The parameter `reciterID` of this provider.
+  int get reciterID;
 }
 
 class _SeekIDProviderElement extends AutoDisposeFutureProviderElement<void>
@@ -461,6 +489,10 @@ class _SeekIDProviderElement extends AutoDisposeFutureProviderElement<void>
   int get surahID => (origin as SeekIDProvider).surahID;
   @override
   String? get surahName => (origin as SeekIDProvider).surahName;
+  @override
+  String get reciterName => (origin as SeekIDProvider).reciterName;
+  @override
+  int get reciterID => (origin as SeekIDProvider).reciterID;
 }
 
 String _$filterSurahByQueryHash() =>

@@ -49,6 +49,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   just_audio: ^0.9.38
   just_audio_windows: ^0.2.1
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:

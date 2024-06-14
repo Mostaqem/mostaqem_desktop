@@ -36,16 +36,11 @@ class Navigation extends ConsumerWidget {
               }),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-            child: PlayerWidget(),
-          )
         ],
       ),
     );
   }
 }
-
 
 class RightSide extends ConsumerWidget {
   const RightSide({

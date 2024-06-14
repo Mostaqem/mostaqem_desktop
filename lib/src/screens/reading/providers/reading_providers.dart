@@ -4,7 +4,7 @@ import '../../../core/dio/dio_helper.dart';
 
 part 'reading_providers.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<String>> fetchUthmaniScript(FetchUthmaniScriptRef ref,
     {required int surahID}) async {
   final response = await ref

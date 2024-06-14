@@ -12,11 +12,10 @@ final _router = GoRouter(
       path: '/',
       routes: [
         GoRoute(
-          path: 'reading/:name',
+          path: 'reading',
           name: "Reading",
           builder: (context, state) => ReadingScreen(
             id: state.extra as int,
-            surahName: state.pathParameters["name"]!,
           ),
         ),
       ],
@@ -24,7 +23,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/reciters',
-      builder: (context, state) => const RecitersScreen(),
+      builder: (context, state) => RecitersScreen(),
     ),
   ],
 );
