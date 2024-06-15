@@ -319,7 +319,7 @@ class _FetchAudioForChapterProviderElement
       (origin as FetchAudioForChapterProvider).chapterNumber;
 }
 
-String _$seekIDHash() => r'f274f244b4a02049b350e42a7386d90bf5744240';
+String _$seekIDHash() => r'3c15a2e592d349f3a180796b47dc1561a117bf03';
 
 /// See also [seekID].
 @ProviderFor(seekID)
@@ -334,12 +334,14 @@ class SeekIDFamily extends Family<AsyncValue<void>> {
   SeekIDProvider call({
     required int surahID,
     String? surahName,
+    String? surahSimpleName,
     String reciterName = "عبدالباسط",
     int reciterID = 1,
   }) {
     return SeekIDProvider(
       surahID: surahID,
       surahName: surahName,
+      surahSimpleName: surahSimpleName,
       reciterName: reciterName,
       reciterID: reciterID,
     );
@@ -352,6 +354,7 @@ class SeekIDFamily extends Family<AsyncValue<void>> {
     return call(
       surahID: provider.surahID,
       surahName: provider.surahName,
+      surahSimpleName: provider.surahSimpleName,
       reciterName: provider.reciterName,
       reciterID: provider.reciterID,
     );
@@ -378,6 +381,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
   SeekIDProvider({
     required int surahID,
     String? surahName,
+    String? surahSimpleName,
     String reciterName = "عبدالباسط",
     int reciterID = 1,
   }) : this._internal(
@@ -385,6 +389,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
             ref as SeekIDRef,
             surahID: surahID,
             surahName: surahName,
+            surahSimpleName: surahSimpleName,
             reciterName: reciterName,
             reciterID: reciterID,
           ),
@@ -398,6 +403,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
           allTransitiveDependencies: SeekIDFamily._allTransitiveDependencies,
           surahID: surahID,
           surahName: surahName,
+          surahSimpleName: surahSimpleName,
           reciterName: reciterName,
           reciterID: reciterID,
         );
@@ -411,12 +417,14 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
     required super.from,
     required this.surahID,
     required this.surahName,
+    required this.surahSimpleName,
     required this.reciterName,
     required this.reciterID,
   }) : super.internal();
 
   final int surahID;
   final String? surahName;
+  final String? surahSimpleName;
   final String reciterName;
   final int reciterID;
 
@@ -435,6 +443,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
         debugGetCreateSourceHash: null,
         surahID: surahID,
         surahName: surahName,
+        surahSimpleName: surahSimpleName,
         reciterName: reciterName,
         reciterID: reciterID,
       ),
@@ -451,6 +460,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
     return other is SeekIDProvider &&
         other.surahID == surahID &&
         other.surahName == surahName &&
+        other.surahSimpleName == surahSimpleName &&
         other.reciterName == reciterName &&
         other.reciterID == reciterID;
   }
@@ -460,6 +470,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, surahID.hashCode);
     hash = _SystemHash.combine(hash, surahName.hashCode);
+    hash = _SystemHash.combine(hash, surahSimpleName.hashCode);
     hash = _SystemHash.combine(hash, reciterName.hashCode);
     hash = _SystemHash.combine(hash, reciterID.hashCode);
 
@@ -473,6 +484,9 @@ mixin SeekIDRef on AutoDisposeFutureProviderRef<void> {
 
   /// The parameter `surahName` of this provider.
   String? get surahName;
+
+  /// The parameter `surahSimpleName` of this provider.
+  String? get surahSimpleName;
 
   /// The parameter `reciterName` of this provider.
   String get reciterName;
@@ -489,6 +503,8 @@ class _SeekIDProviderElement extends AutoDisposeFutureProviderElement<void>
   int get surahID => (origin as SeekIDProvider).surahID;
   @override
   String? get surahName => (origin as SeekIDProvider).surahName;
+  @override
+  String? get surahSimpleName => (origin as SeekIDProvider).surahSimpleName;
   @override
   String get reciterName => (origin as SeekIDProvider).reciterName;
   @override

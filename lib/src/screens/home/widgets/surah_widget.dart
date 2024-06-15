@@ -111,6 +111,9 @@ class SurahWidget extends ConsumerWidget {
                                                         reciterName:
                                                             reciter.name,
                                                         reciterID: reciter.id,
+                                                        surahSimpleName:
+                                                            data[index]
+                                                                .simpleName,
                                                         surahName: data[index]
                                                             .arabicName)
                                                     .future);

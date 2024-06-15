@@ -9,12 +9,14 @@ import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
 import '../../../core/routes/routes.dart';
+import '../../../shared/discord/discord_provider.dart';
 import '../../home/providers/home_providers.dart';
 import 'volume_control.dart';
 
 final playerSurahProvider = StateProvider((ref) => (
       name: "الفاتحة",
       reciter: "عبدالباسط",
+      english: "Al-Fatiha",
       url: "https://download.quranicaudio.com/qdc/abdul_baset/mujawwad/1.mp3"
     ));
 
@@ -160,9 +162,12 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
   Widget build(BuildContext context) {
     String currentTime = formatDuration(position);
     String durationTime = formatDuration(duration);
-    ref.listen(playerSurahProvider, (p, n) {
-      isPlaying = false;
-      player.setUrl(n.url, preload: true);
+    ref.listen(playerSurahProvider, (p, n) async{
+      player.setUrl(n.url);
+      await handlePlayPause();
+      ref.watch(updateRPCDiscordProvider(
+          surahName: n.english,
+          ));
     });
     return SizedBox.shrink(
       child: Container(

@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
+  discord_rpc
   just_audio_windows
   windows_taskbar
 )

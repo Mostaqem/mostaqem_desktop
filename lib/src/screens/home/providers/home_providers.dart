@@ -40,13 +40,14 @@ Future<String> fetchAudioForChapter(FetchAudioForChapterRef ref,
 Future<void> seekID(SeekIDRef ref,
     {required int surahID,
     String? surahName,
+    String? surahSimpleName,
     String reciterName = "عبدالباسط",
     int reciterID = 1}) async {
-  if (surahName != null) {
+  if (surahName != null && surahSimpleName != null) {
     final audioURL = await ref
         .read(fetchAudioForChapterProvider(chapterNumber: surahID,reciterID: reciterID).future);
     ref.read(playerSurahProvider.notifier).state =
-        (name: surahName, reciter: reciterName, url: audioURL);
+        (name: surahName, reciter: reciterName, url: audioURL,english: surahSimpleName);
     ref.read(surahIDProvider.notifier).state = surahID;
     return;
   }
@@ -55,7 +56,7 @@ Future<void> seekID(SeekIDRef ref,
       fetchAudioForChapterProvider(chapterNumber: surahID, reciterID: reciterID)
           .future);
   ref.read(playerSurahProvider.notifier).state =
-      (name: surah.arabicName, reciter: reciterName, url: audioURL);
+      (name: surah.arabicName, reciter: reciterName, url: audioURL,english: surah.simpleName);
   ref.read(surahIDProvider.notifier).state = surah.id;
 }
 
