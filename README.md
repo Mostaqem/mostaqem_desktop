@@ -19,3 +19,5 @@
 - [ ] Listen together
 - [ ] Fullscreen mode
 - [ ] Add your Reciter
+
+> The app is not ready yet for beta release but soon
