@@ -6,6 +6,7 @@
 * Search for chapters (Surah)
 * Change Reciters
 * Integrated with Discord
+* Shortcuts Help
 
 
 ### TODOs:
@@ -16,3 +17,4 @@
 - [ ] Share your playlist with friends
 - [ ] Listen together
 - [ ] Fullscreen mode
+- [ ] Add your Reciter

@@ -9,6 +9,7 @@
 #include <bitsdojo_window_windows/bitsdojo_window_plugin.h>
 #include <discord_rpc/discord_rpc_plugin.h>
 #include <just_audio_windows/just_audio_windows_plugin.h>
+#include <url_launcher_windows/url_launcher_windows.h>
 #include <windows_taskbar/windows_taskbar_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
@@ -18,6 +19,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("DiscordRpcPlugin"));
   JustAudioWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("JustAudioWindowsPlugin"));
+  UrlLauncherWindowsRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("UrlLauncherWindows"));
   WindowsTaskbarPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("WindowsTaskbarPlugin"));
 }

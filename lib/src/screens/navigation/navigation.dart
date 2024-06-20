@@ -72,9 +72,8 @@ class RightSide extends ConsumerWidget {
                   selectedIcon: child.selectedIcon))
             ],
             selectedIndex: screenIndex,
-            onDestinationSelected: (value) {
-              ref.read(indexScreenProvider.notifier).state = value;
-            },
+            onDestinationSelected: (value) =>
+                ref.read(indexScreenProvider.notifier).state = value,
           ),
         ),
       ),

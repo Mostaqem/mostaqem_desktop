@@ -16,6 +16,7 @@ class DiscordRepository {
     rpc.updatePresence(
       DiscordPresence(
         state: surahName,
+        
         details: 'Listening To',
         largeImageKey: largeImage,
         smallImageKey: smallImage,
@@ -24,7 +25,7 @@ class DiscordRepository {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 void updateRPCDiscord(UpdateRPCDiscordRef ref,
     {required String surahName}) {
   final discord = DiscordRepository();

@@ -84,18 +84,16 @@ class RecitersScreen extends StatelessWidget {
           Expanded(
             child: SizedBox(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: GridView.builder(
                   itemCount: reciters.length,
                   cacheExtent: 50,
-                  gridDelegate:
-                      const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200),
                   itemBuilder: (context, index) {
-                    reciters.sort((a, b) => a.name
-                        .toLowerCase()
-                        .compareTo(b.name.toLowerCase()));
+                    reciters.sort((a, b) =>
+                        a.name.toLowerCase().compareTo(b.name.toLowerCase()));
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Consumer(builder: (context, ref, child) {
@@ -109,8 +107,11 @@ class RecitersScreen extends StatelessWidget {
                             );
                             ref.read(seekIDProvider(
                                 surahID: surahID,
-                                reciterName: reciters[index].name,
-                                reciterID: reciters[index].id));
+                                // reciterID: reciters[index].id
+                                reciter: (
+                                  id: reciters[index].id,
+                                  name: reciters[index].name
+                                )));
                           },
                           borderRadius: BorderRadius.circular(12),
                           child: Column(

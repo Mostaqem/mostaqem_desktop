@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/screens/navigation/navigation.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
+import 'package:mostaqem/src/shared/widgets/custom_license_page.dart';
 
 import '../../screens/reciters/reciters_screen.dart';
 
@@ -24,6 +25,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/reciters',
       builder: (context, state) => RecitersScreen(),
+    ),
+    GoRoute(
+      path: '/licenses',
+      builder: (context, state) => const AppLicensePage(),
     ),
   ],
 );

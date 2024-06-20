@@ -6,10 +6,12 @@ list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
   discord_rpc
   just_audio_windows
+  url_launcher_windows
   windows_taskbar
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
+  smtc_windows
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

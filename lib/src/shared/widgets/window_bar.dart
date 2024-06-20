@@ -2,6 +2,8 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
+import 'app_menu_bar.dart';
+
 class WindowBarBox extends StatelessWidget {
   const WindowBarBox({
     super.key,
@@ -15,7 +17,12 @@ class WindowBarBox extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: MoveWindow(),
+              child: Stack(
+                children: [
+                  MoveWindow(),
+                  const AppMenuBar(),
+                ],
+              ),
             ),
             const WindowButtons(),
           ],

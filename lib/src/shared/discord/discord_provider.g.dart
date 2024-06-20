@@ -6,7 +6,7 @@ part of 'discord_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateRPCDiscordHash() => r'df68cc13d748113570a61478c466cf02a41701f9';
+String _$updateRPCDiscordHash() => r'95e8d95bf8cc1d6367a8704df3f89a9788a2c980';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -72,7 +72,7 @@ class UpdateRPCDiscordFamily extends Family<void> {
 }
 
 /// See also [updateRPCDiscord].
-class UpdateRPCDiscordProvider extends AutoDisposeProvider<void> {
+class UpdateRPCDiscordProvider extends Provider<void> {
   /// See also [updateRPCDiscord].
   UpdateRPCDiscordProvider({
     required String surahName,
@@ -124,7 +124,7 @@ class UpdateRPCDiscordProvider extends AutoDisposeProvider<void> {
   }
 
   @override
-  AutoDisposeProviderElement<void> createElement() {
+  ProviderElement<void> createElement() {
     return _UpdateRPCDiscordProviderElement(this);
   }
 
@@ -142,12 +142,12 @@ class UpdateRPCDiscordProvider extends AutoDisposeProvider<void> {
   }
 }
 
-mixin UpdateRPCDiscordRef on AutoDisposeProviderRef<void> {
+mixin UpdateRPCDiscordRef on ProviderRef<void> {
   /// The parameter `surahName` of this provider.
   String get surahName;
 }
 
-class _UpdateRPCDiscordProviderElement extends AutoDisposeProviderElement<void>
+class _UpdateRPCDiscordProviderElement extends ProviderElement<void>
     with UpdateRPCDiscordRef {
   _UpdateRPCDiscordProviderElement(super.provider);
 

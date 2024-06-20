@@ -32,31 +32,40 @@ Future<String> fetchAudioForChapter(FetchAudioForChapterRef ref,
   final response = await ref
       .read(dioHelperProvider)
       .getHTTP('/chapter_recitations/$reciterID/$chapterNumber');
-
   return response!.data["audio_file"]["audio_url"];
 }
 
 @riverpod
-Future<void> seekID(SeekIDRef ref,
-    {required int surahID,
-    String? surahName,
-    String? surahSimpleName,
-    String reciterName = "عبدالباسط",
-    int reciterID = 1}) async {
+Future<void> seekID(
+  SeekIDRef ref, {
+  required int surahID,
+  String? surahName,
+  String? surahSimpleName,
+  required ({int id, String name}) reciter,
+}) async {
   if (surahName != null && surahSimpleName != null) {
-    final audioURL = await ref
-        .read(fetchAudioForChapterProvider(chapterNumber: surahID,reciterID: reciterID).future);
-    ref.read(playerSurahProvider.notifier).state =
-        (name: surahName, reciter: reciterName, url: audioURL,english: surahSimpleName);
+    final audioURL = await ref.read(fetchAudioForChapterProvider(
+            chapterNumber: surahID, reciterID: reciter.id)
+        .future);
+    ref.read(playerSurahProvider.notifier).state = (
+      name: surahName,
+      reciter: reciter.name,
+      url: audioURL,
+      english: surahSimpleName
+    );
     ref.read(surahIDProvider.notifier).state = surahID;
     return;
   }
   final surah = await ref.read(fetchChapterByIdProvider(id: surahID).future);
-  final audioURL = await ref.read(
-      fetchAudioForChapterProvider(chapterNumber: surahID, reciterID: reciterID)
-          .future);
-  ref.read(playerSurahProvider.notifier).state =
-      (name: surah.arabicName, reciter: reciterName, url: audioURL,english: surah.simpleName);
+  final audioURL = await ref.read(fetchAudioForChapterProvider(
+          chapterNumber: surahID, reciterID: reciter.id)
+      .future);
+  ref.read(playerSurahProvider.notifier).state = (
+    name: surah.arabicName,
+    reciter: reciter.name,
+    url: audioURL,
+    english: surah.simpleName
+  );
   ref.read(surahIDProvider.notifier).state = surah.id;
 }
 

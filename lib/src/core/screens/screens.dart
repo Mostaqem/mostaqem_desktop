@@ -23,10 +23,10 @@ final List<Screen> _childrenScreens = [
       selectedIcon: const Icon(Icons.home),
       widget: HomeScreen()),
   Screen(
-      icon: const Icon(Icons.bookmark_border_outlined),
-      selectedIcon: const Icon(Icons.bookmark),
+      icon: const Icon(Icons.info_outlined),
+      selectedIcon: const Icon(Icons.info),
       label: "المفضلات",
-      widget: const FavoriteScreen()),
+      widget: const InfoScreen()),
 ];
 
 final childrenProvider = StateProvider<List<Screen>>((ref) => _childrenScreens);

@@ -1,38 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 
 import '../../../shared/widgets/hover_builder.dart';
 
-class VolumeControls extends StatefulWidget {
-  const VolumeControls({super.key, required this.player, this.handleVolume});
-  final AudioPlayer player;
-  final Function(double)? handleVolume;
+class VolumeControls extends ConsumerWidget {
+  const VolumeControls({super.key});
 
   @override
-  State<VolumeControls> createState() => _VolumeControlsState();
-}
-
-class _VolumeControlsState extends State<VolumeControls> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final player = ref.watch(playerNotifierProvider);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Tooltip(
-          message: widget.player.volume > 0 ? "صامت" : "تشغيل",
+          message: player.volume > 0 ? "صامت" : "تشغيل",
           preferBelow: false,
           child: RotatedBox(
             quarterTurns: 2,
             child: IconButton(
               onPressed: () {
-                if (widget.player.volume > 0) {
-                  widget.player.setVolume(0);
+                if (player.volume > 0) {
+                  ref.read(playerNotifierProvider.notifier).handleVolume(0);
                 } else {
-                  widget.player.setVolume(1);
+                  ref.read(playerNotifierProvider.notifier).handleVolume(1);
                 }
-                setState(() {});
               },
-              icon: widget.player.volume == 0
+              icon: player.volume == 0
                   ? const Icon(Icons.volume_mute_outlined)
                   : const Icon(Icons.volume_up_outlined),
               color: Theme.of(context).colorScheme.onSecondaryContainer,
@@ -47,8 +41,9 @@ class _VolumeControlsState extends State<VolumeControls> {
               elevation: 0,
             )),
             child: Slider(
-              value: widget.player.volume,
-              onChanged: widget.handleVolume,
+              value: ref.watch(playerNotifierProvider).volume,
+              onChanged: (v) =>
+                  ref.read(playerNotifierProvider.notifier).handleVolume(v),
             ),
           );
         }),

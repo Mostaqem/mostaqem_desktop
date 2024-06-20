@@ -25,7 +25,8 @@ class DioHelper {
       Response response = await dio.get(url);
       return response;
     } on DioException catch (e) {
-      log("getError", error: e);
+      log("[Get Request Error]", error: e);
+      log("[Get Request Error Data]| ${e.response!.data}");
     }
     return null;
   }
