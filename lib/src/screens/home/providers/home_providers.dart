@@ -78,3 +78,13 @@ Future<List<Surah>> filterSurahByQuery(FilterSurahByQueryRef ref) async {
   }
   return surahs.where((surah) => surah.arabicName.contains(query)).toList();
 }
+
+@Riverpod(keepAlive: true)
+Future<Surah> fetchNextSurah(FetchNextSurahRef ref) async {
+  final currentSurahID = ref.watch(surahIDProvider);
+  if (currentSurahID < 113) {
+    return await ref
+        .read(fetchChapterByIdProvider(id: currentSurahID + 1).future);
+  }
+  return await ref.read(fetchChapterByIdProvider(id: 1).future);
+}

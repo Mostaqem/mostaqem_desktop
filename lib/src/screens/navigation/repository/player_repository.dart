@@ -43,9 +43,14 @@ class PlayerNotifier extends StateNotifier<AudioState> {
       }
       if (event.processingState == ProcessingState.completed) {
         final surahID = ref.read(surahIDProvider) + 1;
+
         final reciter = ref.read(reciterProvider);
-        await ref
-            .read(seekIDProvider(surahID: surahID, reciter: reciter).future);
+        if (surahID < 114) {
+          await ref
+              .read(seekIDProvider(surahID: surahID, reciter: reciter).future);
+        } else {
+          await ref.read(seekIDProvider(surahID: 1, reciter: reciter).future);
+        }
       }
     });
     player.positionStream.listen((p) {

@@ -17,9 +17,7 @@ class AppLicensePage extends StatelessWidget {
           ),
           Expanded(
               child: Theme(
-            data: ThemeData(
-                appBarTheme: null,
-                scaffoldBackgroundColor: Theme.of(context).colorScheme.surface),
+            data: ThemeData(),
             child: const LicensePage(
               applicationVersion: "1.0.0",
               applicationName: "مستقيم",

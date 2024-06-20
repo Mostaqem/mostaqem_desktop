@@ -1,6 +1,7 @@
 # Mostaqem
-## An app for quran
-
+ An app for quran
+### Screenshot
+![Example](demo/demo2.jpg)
 ### Features:
 * Listening and read quran
 * Search for chapters (Surah)

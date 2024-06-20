@@ -15,6 +15,8 @@ final playerSurahProvider = StateProvider((ref) => (
       url: "https://download.quranicaudio.com/qdc/abdul_baset/mujawwad/1.mp3"
     ));
 
+final isCollapsedProvider = StateProvider<bool>((ref) => false);
+
 class PlayerWidget extends ConsumerWidget {
   const PlayerWidget({
     super.key,
@@ -31,19 +33,20 @@ class PlayerWidget extends ConsumerWidget {
             color: Theme.of(context).colorScheme.secondaryContainer),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Consumer(builder: (context, ref, child) {
-                      final surah = ref.watch(playerSurahProvider);
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                const SizedBox(
+                  width: 10,
+                ),
+                Consumer(builder: (context, ref, child) {
+                  final surah = ref.watch(playerSurahProvider);
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
                         children: [
                           Text(
                             surah.name,
@@ -52,152 +55,154 @@ class PlayerWidget extends ConsumerWidget {
                                     .colorScheme
                                     .onSecondaryContainer),
                           ),
-                          HoverBuilder(builder: (isHovered) {
-                            return MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: GestureDetector(
-                                onTap: () {
-                                  ref
-                                      .read(goRouterProvider)
-                                      .push('/reciters');
-                                },
-                                child: Text(
-                                  surah.reciter,
-                                  style: TextStyle(
-                                      decoration: isHovered
-                                          ? TextDecoration.underline
-                                          : TextDecoration.none,
-                                      color: isHovered
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .onSecondaryContainer
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .onSecondaryContainer
-                                              .withOpacity(0.5)),
-                                ),
-                              ),
-                            );
-                          }),
+                          IconButton(
+                              onPressed: () => ref
+                                  .read(isCollapsedProvider.notifier)
+                                  .update((state) => !state),
+                              icon: const Icon(Icons.arrow_drop_up_outlined)),
                         ],
-                      );
-                    }),
-                  ],
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Visibility(
-                            visible: ref
-                                .watch(playerNotifierProvider.notifier)
-                                .isFirstChapter(),
-                            child: Tooltip(
-                              message: "قبل",
-                              preferBelow: false,
-                              child: IconButton(
-                                onPressed: () async {
-                                  final surahID =
-                                      ref.read(surahIDProvider) - 1;
-                                  await ref.read(seekIDProvider(
-                                          surahID: surahID,
-                                          reciter: ref.read(reciterProvider))
-                                      .future);
-                                },
-                                icon: const Icon(Icons.skip_next_outlined),
-                                iconSize: 25,
-                              ),
+                      ),
+                      HoverBuilder(builder: (isHovered) {
+                        return MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              ref.read(goRouterProvider).push('/reciters');
+                            },
+                            child: Text(
+                              surah.reciter,
+                              style: TextStyle(
+                                  decoration: isHovered
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                  color: isHovered
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSecondaryContainer
+                                          .withOpacity(0.5)),
                             ),
                           ),
-                          Tooltip(
-                            message: "تشغيل",
+                        );
+                      }),
+                    ],
+                  );
+                }),
+              ],
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Visibility(
+                          visible: ref
+                              .watch(playerNotifierProvider.notifier)
+                              .isFirstChapter(),
+                          child: Tooltip(
+                            message: "قبل",
                             preferBelow: false,
                             child: IconButton(
-                              onPressed: () => ref
-                                  .read(playerNotifierProvider.notifier)
-                                  .handlePlayPause(),
-                              icon: ref.read(playerNotifierProvider).isPlaying
-                                  ? const Icon(
-                                      Icons.pause_circle_filled_outlined)
-                                  : const Icon(
-                                      Icons.play_circle_fill_outlined),
+                              onPressed: () async {
+                                final surahID = ref.read(surahIDProvider) - 1;
+                                await ref.read(seekIDProvider(
+                                        surahID: surahID,
+                                        reciter: ref.read(reciterProvider))
+                                    .future);
+                              },
+                              icon: const Icon(Icons.skip_next_outlined),
                               iconSize: 25,
                             ),
                           ),
-                          Visibility(
-                            visible: ref
-                                .watch(playerNotifierProvider.notifier)
-                                .isLastchapter(),
-                            child: Tooltip(
-                              message: "بعد",
-                              preferBelow: false,
-                              child: IconButton(
-                                onPressed: () async {
-                                  final surahID =
-                                      ref.read(surahIDProvider) + 1;
-                                  await ref.read(seekIDProvider(
-                                          surahID: surahID,
-                                          reciter: ref.read(reciterProvider))
-                                      .future);
-                                },
-                                icon:
-                                    const Icon(Icons.skip_previous_outlined),
-                                iconSize: 25,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(ref
-                              .watch(playerNotifierProvider.notifier)
-                              .playerTime()
-                              .$1),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(
-                                maxWidth: 500, maxHeight: 10),
-                            child: HoverBuilder(builder: (isHovered) {
-                              return SliderTheme(
-                                data: SliderThemeData(
-                                    thumbShape: RoundSliderThumbShape(
-                                  enabledThumbRadius: isHovered ? 7 : 3,
-                                  elevation: 0,
-                                )),
-                                child: Slider(
-                                    value: ref
-                                        .watch(playerNotifierProvider)
-                                        .position
-                                        .inSeconds
-                                        .toDouble(),
-                                    min: 0.0,
-                                    max: ref
-                                        .watch(playerNotifierProvider)
-                                        .duration
-                                        .inSeconds
-                                        .toDouble(),
-                                    onChanged: (v) => ref
-                                        .watch(
-                                            playerNotifierProvider.notifier)
-                                        .handleSeek(v)),
-                              );
-                            }),
+                        ),
+                        Tooltip(
+                          message: "تشغيل",
+                          preferBelow: false,
+                          child: IconButton(
+                            onPressed: () => ref
+                                .read(playerNotifierProvider.notifier)
+                                .handlePlayPause(),
+                            icon: ref.read(playerNotifierProvider).isPlaying
+                                ? const Icon(Icons.pause_circle_filled_outlined)
+                                : const Icon(Icons.play_circle_fill_outlined),
+                            iconSize: 25,
                           ),
-                          Text(ref
+                        ),
+                        Visibility(
+                          visible: ref
                               .watch(playerNotifierProvider.notifier)
-                              .playerTime()
-                              .$2),
-                        ],
+                              .isLastchapter(),
+                          child: Tooltip(
+                            message: "بعد",
+                            preferBelow: false,
+                            child: IconButton(
+                              onPressed: () async {
+                                final surahID = ref.read(surahIDProvider) + 1;
+                                await ref.read(seekIDProvider(
+                                        surahID: surahID,
+                                        reciter: ref.read(reciterProvider))
+                                    .future);
+                              },
+                              icon: const Icon(Icons.skip_previous_outlined),
+                              iconSize: 25,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(ref
+                          .watch(playerNotifierProvider.notifier)
+                          .playerTime()
+                          .$1),
+                      ConstrainedBox(
+                        constraints:
+                            const BoxConstraints(maxWidth: 500, maxHeight: 10),
+                        child: HoverBuilder(builder: (isHovered) {
+                          return SliderTheme(
+                            data: SliderThemeData(
+                                thumbShape: RoundSliderThumbShape(
+                              enabledThumbRadius: isHovered ? 7 : 3,
+                              elevation: 0,
+                            )),
+                            child: Slider(
+                                value: ref
+                                    .watch(playerNotifierProvider)
+                                    .position
+                                    .inSeconds
+                                    .toDouble(),
+                                min: 0.0,
+                                max: ref
+                                    .watch(playerNotifierProvider)
+                                    .duration
+                                    .inSeconds
+                                    .toDouble(),
+                                onChanged: (v) => ref
+                                    .watch(playerNotifierProvider.notifier)
+                                    .handleSeek(v)),
+                          );
+                        }),
                       ),
+                      Text(ref
+                          .watch(playerNotifierProvider.notifier)
+                          .playerTime()
+                          .$2),
                     ],
                   ),
-                ),
-                const VolumeControls(),
-              ]),
+                ],
+              ),
+            ),
+            const VolumeControls(),
+          ]),
         ));
   }
 }

@@ -50,11 +50,12 @@ class RightSide extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
       child: SizedBox(
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(12),
           child: NavigationRail(
+            backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
             extended: ref.watch(isExtendedProvider),
             leading: ToolTipIconButton(
               message: "توسيع",
@@ -95,7 +96,7 @@ class LeftSide extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: children[screenIndex].widget,
     ));
   }
