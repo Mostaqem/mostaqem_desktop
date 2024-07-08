@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 
 import '../../../shared/widgets/hover_builder.dart';
+import '../repository/fullscreen_notifier.dart';
 
 class VolumeControls extends ConsumerWidget {
   const VolumeControls({super.key});
@@ -10,6 +11,8 @@ class VolumeControls extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playerNotifierProvider);
+    bool isFullScreen = ref.watch(isFullScreenProvider);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -35,7 +38,9 @@ class VolumeControls extends ConsumerWidget {
                       Icons.volume_up_outlined,
                       size: 16,
                     ),
-              color: Theme.of(context).colorScheme.onSecondaryContainer,
+              color: isFullScreen
+                  ? Colors.white
+                  : Theme.of(context).colorScheme.onSecondaryContainer,
             ),
           ),
         ),

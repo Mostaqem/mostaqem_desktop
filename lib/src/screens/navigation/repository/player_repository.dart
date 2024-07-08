@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:media_kit/media_kit.dart';
 
 import '../../../shared/discord/discord_provider.dart';
 import '../../home/providers/home_providers.dart';
@@ -19,33 +19,29 @@ class PlayerNotifier extends StateNotifier<AudioState> {
   PlayerNotifier(this.ref) : super(AudioState()) {
     init();
   }
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
+  }
 
-  final player = AudioPlayer();
+  final player = Player();
 
   void init() async {
     final surah = ref.read(playerSurahProvider);
-    // final audioBytes = await ref.read(fetchAudioBytesProvider.future);
-    player.setUrl(surah.url, preload: true);
-    player.playerStateStream.listen((event) async {
-      if (event.processingState == ProcessingState.ready) {
-        if (mounted) {
-          if (state.isPlaying) {
-            player.play();
-          } else {
-            player.pause();
-          }
-        }
+    player.open(Media(surah.url));
+    player.stream.position.listen((position) {
+      if (!mounted) return;
 
-        ref.watch(updateRPCDiscordProvider(
-          surahName: surah.english,
-        ));
-        if (Platform.isWindows) {
-          if (!mounted) return;
+      state = state.copyWith(position: position);
+    });
+    player.stream.duration.listen((duration) {
+      if (!mounted) return;
 
-          windowThumbnailBar();
-        }
-      }
-      if (event.processingState == ProcessingState.completed) {
+      state = state.copyWith(duration: duration);
+    });
+    player.stream.completed.listen((completed) async {
+      if (completed) {
         final surahID = ref.read(surahIDProvider) + 1;
 
         final reciter = ref.read(reciterProvider);
@@ -57,20 +53,28 @@ class PlayerNotifier extends StateNotifier<AudioState> {
         }
       }
     });
-    player.positionStream.listen((p) {
+    player.stream.playing.listen((playing) {
       if (!mounted) return;
 
-      state = state.copyWith(position: p);
-    });
-    player.durationStream.listen((d) {
-      if (!mounted) return;
+      if (playing) {
+        state = state.copyWith(isPlaying: true);
+      } else {
+        state = state.copyWith(isPlaying: false);
+      }
+      if (Platform.isWindows) {
+        if (!mounted) return;
 
-      state = state.copyWith(duration: d ?? Duration.zero);
+        windowThumbnailBar();
+      }
+      ref.watch(updateRPCDiscordProvider(
+        surahName: surah.english,
+      ));
     });
 
     ref.listen(playerSurahProvider, (_, n) {
       if (!mounted) return;
-      player.setUrl(n.url, preload: true);
+      player.playOrPause();
+      player.open(Media(n.url));
     });
   }
 
@@ -106,14 +110,37 @@ class PlayerNotifier extends StateNotifier<AudioState> {
     }
   }
 
+  void loop() {
+    PlaylistMode mode = player.state.playlistMode;
+    if (!mounted) return;
+    if (mode == PlaylistMode.none) {
+      player.setPlaylistMode(PlaylistMode.single);
+      state = state.copyWith(loop: LoopMode.single);
+
+      return;
+    }
+    if (mode == PlaylistMode.single) {
+      player.setPlaylistMode(PlaylistMode.loop);
+      state = state.copyWith(loop: LoopMode.repeat);
+
+      return;
+    }
+    if (mode == PlaylistMode.loop) {
+      player.setPlaylistMode(PlaylistMode.none);
+      state = state.copyWith(loop: LoopMode.none);
+
+      return;
+    }
+  }
+
   Future<void> handleSeek(double value) async {
     await player.seek(
       Duration(seconds: value.toInt()),
     );
   }
 
-  void handleVolume(double value) {
-    player.setVolume(value);
+  Future<void> handleVolume(double value) async {
+    await player.setVolume(value * 100);
     if (!mounted) return;
 
     state = state.copyWith(volume: value);

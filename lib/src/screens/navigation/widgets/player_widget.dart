@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
+import 'package:mostaqem/src/screens/navigation/data/player.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
@@ -54,6 +55,28 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
     });
   }
 
+  Widget loopIcon(LoopMode state, Color color) {
+    if (state == LoopMode.none) {
+      return Icon(
+        Icons.repeat,
+        size: 16,
+        color: color,
+      );
+    }
+    if (state == LoopMode.single) {
+      return Icon(
+        Icons.repeat,
+        size: 16,
+        color: color,
+      );
+    }
+    return Icon(
+      Icons.repeat_one_outlined,
+      size: 16,
+      color: color,
+    );
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -63,7 +86,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
   @override
   Widget build(BuildContext context) {
     bool isFullScreen = ref.watch(isFullScreenProvider);
-
+    final player = ref.watch(playerNotifierProvider);
     return MouseRegion(
       onHover: (event) {
         if (isFullScreen) {
@@ -214,9 +237,11 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                                     ? Icons.close_fullscreen_outlined
                                     : Icons.open_in_full_outlined,
                                 size: 16,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
+                                color: isFullScreen
+                                    ? Colors.white
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                               ),
                               message: isFullScreen
                                   ? "تصغير الشاشة"
@@ -253,9 +278,11 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                               },
                               icon: Icon(
                                 Icons.skip_next_outlined,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
+                                color: isFullScreen
+                                    ? Colors.white
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                               ),
                               iconSize: 25,
                             ),
@@ -268,18 +295,22 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                             onPressed: () => ref
                                 .read(playerNotifierProvider.notifier)
                                 .handlePlayPause(),
-                            icon: ref.read(playerNotifierProvider).isPlaying
+                            icon: player.isPlaying
                                 ? Icon(
                                     Icons.pause_circle_filled_outlined,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
+                                    color: isFullScreen
+                                        ? Colors.white
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
                                   )
                                 : Icon(
                                     Icons.play_circle_fill_outlined,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
+                                    color: isFullScreen
+                                        ? Colors.white
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
                                   ),
                             iconSize: 25,
                           ),
@@ -301,12 +332,33 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                               },
                               icon: Icon(
                                 Icons.skip_previous_outlined,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
+                                color: isFullScreen
+                                    ? Colors.white
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                               ),
                               iconSize: 25,
                             ),
+                          ),
+                        ),
+                        Tooltip(
+                          message: "اعادة",
+                          preferBelow: false,
+                          child: IconButton(
+                            onPressed: () async {
+                              ref.read(playerNotifierProvider.notifier).loop();
+                            },
+                            icon: loopIcon(
+                                player.loop,
+                                player.loop == LoopMode.none
+                                    ? isFullScreen
+                                        ? Colors.white
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer
+                                    : Theme.of(context).colorScheme.tertiary),
+                            iconSize: 16,
                           ),
                         )
                       ],
@@ -315,10 +367,14 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(ref
-                          .watch(playerNotifierProvider.notifier)
-                          .playerTime()
-                          .$1),
+                      Text(
+                        ref
+                            .watch(playerNotifierProvider.notifier)
+                            .playerTime()
+                            .$1,
+                        style: TextStyle(
+                            color: isFullScreen ? Colors.white : null),
+                      ),
                       ConstrainedBox(
                         constraints:
                             const BoxConstraints(maxWidth: 500, maxHeight: 10),
@@ -347,10 +403,13 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                           );
                         }),
                       ),
-                      Text(ref
-                          .watch(playerNotifierProvider.notifier)
-                          .playerTime()
-                          .$2),
+                      Text(
+                          ref
+                              .watch(playerNotifierProvider.notifier)
+                              .playerTime()
+                              .$2,
+                          style: TextStyle(
+                              color: isFullScreen ? Colors.white : null)),
                     ],
                   ),
                 ],

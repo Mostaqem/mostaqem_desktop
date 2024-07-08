@@ -113,14 +113,12 @@ class FullScreenWidget extends StatelessWidget {
                   children: [
                     Text(
                       player.name,
-                      style: TextStyle(
-                          fontSize: 30,
-                          color: Theme.of(context).colorScheme.primary),
+                      style: const TextStyle(fontSize: 30, color: Colors.white),
                     ),
                     Text(player.reciter,
                         style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.secondary)),
+                            color: Colors.white.withOpacity(0.5))),
                   ],
                 )
               ],
