@@ -7,7 +7,7 @@ part of 'reading_providers.dart';
 // **************************************************************************
 
 String _$fetchUthmaniScriptHash() =>
-    r'574a7bd3458da9706c5035e6fb46dd5428f15407';
+    r'9ad8df3106532bddfa61c3287dc903f2e6dc5640';
 
 /// Copied from Dart SDK
 class _SystemHash {

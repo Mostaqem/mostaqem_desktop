@@ -9,6 +9,6 @@ Future<List<String>> fetchUthmaniScript(FetchUthmaniScriptRef ref,
     {required int surahID}) async {
   final response = await ref
       .read(dioHelperProvider)
-      .getHTTP('/quran/verses/uthmani/?chapter_number=$surahID');
-  return response!.data["verses"].map<String>((e) => e["text_uthmani"].toString()).toList();
+      .getHTTP('/verse/surah?surah_id=$surahID');
+  return response!.data["data"]["verses"].map<String>((e) => e["vers"].toString()).toList();
 }

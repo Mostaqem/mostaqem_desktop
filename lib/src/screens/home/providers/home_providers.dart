@@ -8,22 +8,19 @@ import '../widgets/surah_widget.dart';
 
 part 'home_providers.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Surah>> fetchAllChapters(FetchAllChaptersRef ref) async {
-  final response =
-      await ref.read(dioHelperProvider).getHTTP('/chapters/?language=ar');
+  final response = await ref.read(dioHelperProvider).getHTTP('/surah');
 
-  return response!.data["chapters"]
-      .map<Surah>((e) => Surah.fromJson(e))
-      .toList();
+  return response!.data["data"].map<Surah>((e) => Surah.fromJson(e)).toList();
 }
 
 @riverpod
 Future<Surah> fetchChapterById(FetchChapterByIdRef ref,
     {required int id}) async {
-  final response = await ref.read(dioHelperProvider).getHTTP('/chapters/$id');
+  final response = await ref.read(dioHelperProvider).getHTTP('/surah/$id');
 
-  return Surah.fromJson(response!.data["chapter"]);
+  return Surah.fromJson(response!.data["data"]);
 }
 
 @riverpod
@@ -31,8 +28,9 @@ Future<String> fetchAudioForChapter(FetchAudioForChapterRef ref,
     {int reciterID = 1, required int chapterNumber}) async {
   final response = await ref
       .read(dioHelperProvider)
-      .getHTTP('/chapter_recitations/$reciterID/$chapterNumber');
-  return response!.data["audio_file"]["audio_url"];
+      .getHTTP('/audio/?reciter_id=$reciterID/&surah_id=$chapterNumber');
+
+  return response!.data["data"]["url"];
 }
 
 @riverpod
@@ -40,6 +38,7 @@ Future<void> seekID(
   SeekIDRef ref, {
   required int surahID,
   String? surahName,
+  String? image,
   String? surahSimpleName,
   required ({int id, String name}) reciter,
 }) async {
@@ -50,6 +49,8 @@ Future<void> seekID(
     ref.read(playerSurahProvider.notifier).state = (
       name: surahName,
       reciter: reciter.name,
+      image:
+          image ?? "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
       url: audioURL,
       english: surahSimpleName
     );
@@ -62,6 +63,8 @@ Future<void> seekID(
       .future);
   ref.read(playerSurahProvider.notifier).state = (
     name: surah.arabicName,
+    image: surah.image ??
+        "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
     reciter: reciter.name,
     url: audioURL,
     english: surah.simpleName

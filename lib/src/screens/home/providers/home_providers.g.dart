@@ -6,12 +6,11 @@ part of 'home_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchAllChaptersHash() => r'd23f82971453e77317960df525c8c0a0b3602cf8';
+String _$fetchAllChaptersHash() => r'8fac0d8997a0335a0aad39583dac17af26f94226';
 
 /// See also [fetchAllChapters].
 @ProviderFor(fetchAllChapters)
-final fetchAllChaptersProvider =
-    AutoDisposeFutureProvider<List<Surah>>.internal(
+final fetchAllChaptersProvider = FutureProvider<List<Surah>>.internal(
   fetchAllChapters,
   name: r'fetchAllChaptersProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,8 +20,8 @@ final fetchAllChaptersProvider =
   allTransitiveDependencies: null,
 );
 
-typedef FetchAllChaptersRef = AutoDisposeFutureProviderRef<List<Surah>>;
-String _$fetchChapterByIdHash() => r'de2fde5ba0ac1c08ba8ecf3ff7fc9b6034075327';
+typedef FetchAllChaptersRef = FutureProviderRef<List<Surah>>;
+String _$fetchChapterByIdHash() => r'46efa6a009c0cd9b7bacbc0f8c043377fc517ca9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -172,7 +171,7 @@ class _FetchChapterByIdProviderElement
 }
 
 String _$fetchAudioForChapterHash() =>
-    r'a22c6f1d138e70485cb826632c173a0a7b582c7b';
+    r'db191f31aecc077aa2ca8b92046d858210ba97da';
 
 /// See also [fetchAudioForChapter].
 @ProviderFor(fetchAudioForChapter)
@@ -319,7 +318,7 @@ class _FetchAudioForChapterProviderElement
       (origin as FetchAudioForChapterProvider).chapterNumber;
 }
 
-String _$seekIDHash() => r'f17856438369f9622636dde73187b13228db18bc';
+String _$seekIDHash() => r'c5c0880d9b4b11125e520496b19add2616f07044';
 
 /// See also [seekID].
 @ProviderFor(seekID)
@@ -334,12 +333,14 @@ class SeekIDFamily extends Family<AsyncValue<void>> {
   SeekIDProvider call({
     required int surahID,
     String? surahName,
+    String? image,
     String? surahSimpleName,
     required ({int id, String name}) reciter,
   }) {
     return SeekIDProvider(
       surahID: surahID,
       surahName: surahName,
+      image: image,
       surahSimpleName: surahSimpleName,
       reciter: reciter,
     );
@@ -352,6 +353,7 @@ class SeekIDFamily extends Family<AsyncValue<void>> {
     return call(
       surahID: provider.surahID,
       surahName: provider.surahName,
+      image: provider.image,
       surahSimpleName: provider.surahSimpleName,
       reciter: provider.reciter,
     );
@@ -378,6 +380,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
   SeekIDProvider({
     required int surahID,
     String? surahName,
+    String? image,
     String? surahSimpleName,
     required ({int id, String name}) reciter,
   }) : this._internal(
@@ -385,6 +388,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
             ref as SeekIDRef,
             surahID: surahID,
             surahName: surahName,
+            image: image,
             surahSimpleName: surahSimpleName,
             reciter: reciter,
           ),
@@ -398,6 +402,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
           allTransitiveDependencies: SeekIDFamily._allTransitiveDependencies,
           surahID: surahID,
           surahName: surahName,
+          image: image,
           surahSimpleName: surahSimpleName,
           reciter: reciter,
         );
@@ -411,12 +416,14 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
     required super.from,
     required this.surahID,
     required this.surahName,
+    required this.image,
     required this.surahSimpleName,
     required this.reciter,
   }) : super.internal();
 
   final int surahID;
   final String? surahName;
+  final String? image;
   final String? surahSimpleName;
   final ({int id, String name}) reciter;
 
@@ -435,6 +442,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
         debugGetCreateSourceHash: null,
         surahID: surahID,
         surahName: surahName,
+        image: image,
         surahSimpleName: surahSimpleName,
         reciter: reciter,
       ),
@@ -451,6 +459,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
     return other is SeekIDProvider &&
         other.surahID == surahID &&
         other.surahName == surahName &&
+        other.image == image &&
         other.surahSimpleName == surahSimpleName &&
         other.reciter == reciter;
   }
@@ -460,6 +469,7 @@ class SeekIDProvider extends AutoDisposeFutureProvider<void> {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, surahID.hashCode);
     hash = _SystemHash.combine(hash, surahName.hashCode);
+    hash = _SystemHash.combine(hash, image.hashCode);
     hash = _SystemHash.combine(hash, surahSimpleName.hashCode);
     hash = _SystemHash.combine(hash, reciter.hashCode);
 
@@ -473,6 +483,9 @@ mixin SeekIDRef on AutoDisposeFutureProviderRef<void> {
 
   /// The parameter `surahName` of this provider.
   String? get surahName;
+
+  /// The parameter `image` of this provider.
+  String? get image;
 
   /// The parameter `surahSimpleName` of this provider.
   String? get surahSimpleName;
@@ -489,6 +502,8 @@ class _SeekIDProviderElement extends AutoDisposeFutureProviderElement<void>
   int get surahID => (origin as SeekIDProvider).surahID;
   @override
   String? get surahName => (origin as SeekIDProvider).surahName;
+  @override
+  String? get image => (origin as SeekIDProvider).image;
   @override
   String? get surahSimpleName => (origin as SeekIDProvider).surahSimpleName;
   @override

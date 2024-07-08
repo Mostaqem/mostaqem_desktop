@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'window_bar.dart';
-
 class AppLicensePage extends StatelessWidget {
   const AppLicensePage({super.key});
 
@@ -11,7 +9,7 @@ class AppLicensePage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const WindowBarBox(),
+          // const WindowBarBox(),
           const SizedBox(
             height: 10,
           ),

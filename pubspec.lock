@@ -57,46 +57,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.19"
-  bitsdojo_window:
-    dependency: "direct main"
-    description:
-      name: bitsdojo_window
-      sha256: "88ef7765dafe52d97d7a3684960fb5d003e3151e662c18645c1641c22b873195"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.6"
-  bitsdojo_window_linux:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_linux
-      sha256: "9519c0614f98be733e0b1b7cb15b827007886f6fe36a4fb62cf3d35b9dd578ab"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.4"
-  bitsdojo_window_macos:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_macos
-      sha256: f7c5be82e74568c68c5b8449e2c5d8fd12ec195ecd70745a7b9c0f802bb0268f
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.4"
-  bitsdojo_window_platform_interface:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_platform_interface
-      sha256: "65daa015a0c6dba749bdd35a0f092e7a8ba8b0766aa0480eb3ef808086f6e27c"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.2"
-  bitsdojo_window_windows:
-    dependency: transitive
-    description:
-      name: bitsdojo_window_windows
-      sha256: fa982cf61ede53f483e50b257344a1c250af231a3cdc93a7064dd6dc0d720b68
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.6"
   boolean_selector:
     dependency: transitive
     description:
@@ -273,14 +233,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.3"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.8"
   custom_lint:
     dependency: "direct dev"
     description:
@@ -309,10 +261,18 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: "11e40df547d418cc0c4900a9318b26304e665da6fa4755399a9ff9efd09034b5"
+      sha256: "77befdddf51050e1635a04d2bcfff230089ce7294e642d00da58cd079c0de0c8"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "5.4.3+1"
+    version: "5.5.0"
+  dio_web_adapter:
+    dependency: transitive
+    description:
+      name: dio_web_adapter
+      sha256: "36c5b2d79eb17cdae41e974b7a8284fec631651d2a6f39a8a2ff22327e90aeac"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   discord_rpc:
     dependency: "direct main"
     description:
@@ -321,14 +281,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.0.2"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -457,10 +409,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: abec47eb8c8c36ebf41d0a4c64dbbe7f956e39a012b3aafc530e951bdc12fe3f
+      sha256: cdae1b9c8bd7efadcef6112e81c903662ef2ce105cbd220a04bbb7c3425b5554
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "14.1.4"
+    version: "14.2.0"
   google_fonts:
     dependency: "direct main"
     description:
@@ -845,6 +797,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.27.7"
+  screen_retriever:
+    dependency: transitive
+    description:
+      name: screen_retriever
+      sha256: "6ee02c8a1158e6dae7ca430da79436e3b1c9563c8cf02f524af997c201ac2b90"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.9"
   shelf:
     dependency: transitive
     description:
@@ -1170,14 +1130,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.5.1"
-  windows_system_info:
+  window_manager:
     dependency: "direct main"
     description:
-      name: windows_system_info
-      sha256: a4577ee4ca784362940a51267155bacbf27109b282c6157127dcc715177f1b13
+      name: window_manager
+      sha256: "8699323b30da4cdbe2aa2e7c9de567a6abd8a97d9a5c850a3c86dcd0b34bbfbf"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.0.4"
+    version: "0.3.9"
   windows_taskbar:
     dependency: "direct main"
     description:

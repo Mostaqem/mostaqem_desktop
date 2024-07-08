@@ -6,12 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final dioHelperProvider = Provider((ref) => DioHelper());
 
 class DioHelper {
-  static const String url = 'https://api.quran.com/api/v4';
+  static const String url = 'https://mostaqem-api.onrender.com/api/v1';
   static BaseOptions opts = BaseOptions(
-    baseUrl: url,
-    responseType: ResponseType.json,
-    connectTimeout: const Duration(milliseconds: 30000),
-    receiveTimeout: const Duration(milliseconds: 30000),
+    baseUrl: url,  
   );
 
   static Dio createDio() {
@@ -20,9 +17,9 @@ class DioHelper {
 
   static final dio = createDio();
 
-  Future<Response?> getHTTP(String url) async {
+  Future<Response?> getHTTP(String url, {Options? options}) async {
     try {
-      Response response = await dio.get(url);
+      Response response = await dio.get(url, options: options);
       return response;
     } on DioException catch (e) {
       log("[Get Request Error]", error: e);

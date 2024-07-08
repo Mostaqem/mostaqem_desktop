@@ -1,26 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'surah.dart';
+part of 'reciters_data.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SurahImpl _$$SurahImplFromJson(Map<String, dynamic> json) => _$SurahImpl(
+_$ReciterImpl _$$ReciterImplFromJson(Map<String, dynamic> json) =>
+    _$ReciterImpl(
       id: (json['id'] as num).toInt(),
-      simpleName: json['name_complex'] as String,
+      englishName: json['name_english'] as String,
       arabicName: json['name_arabic'] as String,
-      versesCount: (json['verses_count'] as num?)?.toInt(),
-      revelationPlace: json['revelation_place'] as String,
       image: json['image'] as String?,
     );
 
-Map<String, dynamic> _$$SurahImplToJson(_$SurahImpl instance) =>
+Map<String, dynamic> _$$ReciterImplToJson(_$ReciterImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name_complex': instance.simpleName,
+      'name_english': instance.englishName,
       'name_arabic': instance.arabicName,
-      'verses_count': instance.versesCount,
-      'revelation_place': instance.revelationPlace,
       'image': instance.image,
     };

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 
-import '../../shared/widgets/window_bar.dart';
+import '../../shared/widgets/window_buttons.dart';
 import 'providers/reading_providers.dart';
 
 class ReadingScreen extends ConsumerWidget {
@@ -20,7 +20,10 @@ class ReadingScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          const WindowBarBox(),
+          const WindowButtons(),
+          const SizedBox(
+            height: 10,
+          ),
           const AppBackButton(),
           const SizedBox(
             height: 10,
