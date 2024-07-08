@@ -24,7 +24,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/reciters',
-      builder: (context, state) => RecitersScreen(),
+      builder: (context, state) => const RecitersScreen(),
     ),
     GoRoute(
       path: '/licenses',

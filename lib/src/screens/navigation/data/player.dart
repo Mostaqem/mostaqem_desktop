@@ -10,7 +10,10 @@ class AudioState {
       this.duration = Duration.zero});
 
   AudioState copyWith(
-      {bool? isPlaying, Duration? position, Duration? duration,double? volume}) {
+      {bool? isPlaying,
+      Duration? position,
+      Duration? duration,
+      double? volume}) {
     return AudioState(
         position: position ?? this.position,
         duration: duration ?? this.duration,

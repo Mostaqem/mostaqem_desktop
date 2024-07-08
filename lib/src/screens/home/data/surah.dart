@@ -6,12 +6,13 @@ part 'surah.g.dart';
 
 @freezed
 class Surah with _$Surah {
-  const factory Surah({
-    required int id,
-    @JsonKey(name: 'name_simple') required String simpleName,
-    @JsonKey(name: 'name_arabic') required String arabicName,
-    @JsonKey(name: 'verses_count') int? versesCount,
-  }) = _Surah;
+  const factory Surah(
+      {required int id,
+      @JsonKey(name: 'name_complex') required String simpleName,
+      @JsonKey(name: 'name_arabic') required String arabicName,
+      @JsonKey(name: 'verses_count') int? versesCount,
+      @JsonKey(name: 'revelation_place') required String revelationPlace,
+      String? image}) = _Surah;
 
   factory Surah.fromJson(Map<String, Object?> json) => _$SurahFromJson(json);
 }

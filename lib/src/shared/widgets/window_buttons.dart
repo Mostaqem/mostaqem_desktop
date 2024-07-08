@@ -1,5 +1,7 @@
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:window_manager/window_manager.dart';
+
+import 'app_menu_bar.dart';
 
 class WindowButtons extends StatelessWidget {
   const WindowButtons({super.key});
@@ -8,13 +10,13 @@ class WindowButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
-      child: Row(
-        children: [
-          MinimizeWindowButton(),
-          MaximizeWindowButton(),
-          CloseWindowButton(),
-        ],
-      ),
+      child: SizedBox(
+          height: 30,
+          child: WindowCaption(
+            backgroundColor: Colors.transparent,
+            brightness: Theme.of(context).brightness,
+            title: const AppMenuBar(),
+          )),
     );
   }
 }

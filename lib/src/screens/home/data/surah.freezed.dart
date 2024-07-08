@@ -21,12 +21,15 @@ Surah _$SurahFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Surah {
   int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'name_simple')
+  @JsonKey(name: 'name_complex')
   String get simpleName => throw _privateConstructorUsedError;
   @JsonKey(name: 'name_arabic')
   String get arabicName => throw _privateConstructorUsedError;
   @JsonKey(name: 'verses_count')
   int? get versesCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'revelation_place')
+  String get revelationPlace => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,9 +43,11 @@ abstract class $SurahCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'name_simple') String simpleName,
+      @JsonKey(name: 'name_complex') String simpleName,
       @JsonKey(name: 'name_arabic') String arabicName,
-      @JsonKey(name: 'verses_count') int? versesCount});
+      @JsonKey(name: 'verses_count') int? versesCount,
+      @JsonKey(name: 'revelation_place') String revelationPlace,
+      String? image});
 }
 
 /// @nodoc
@@ -62,6 +67,8 @@ class _$SurahCopyWithImpl<$Res, $Val extends Surah>
     Object? simpleName = null,
     Object? arabicName = null,
     Object? versesCount = freezed,
+    Object? revelationPlace = null,
+    Object? image = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -80,6 +87,14 @@ class _$SurahCopyWithImpl<$Res, $Val extends Surah>
           ? _value.versesCount
           : versesCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      revelationPlace: null == revelationPlace
+          ? _value.revelationPlace
+          : revelationPlace // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -93,9 +108,11 @@ abstract class _$$SurahImplCopyWith<$Res> implements $SurahCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      @JsonKey(name: 'name_simple') String simpleName,
+      @JsonKey(name: 'name_complex') String simpleName,
       @JsonKey(name: 'name_arabic') String arabicName,
-      @JsonKey(name: 'verses_count') int? versesCount});
+      @JsonKey(name: 'verses_count') int? versesCount,
+      @JsonKey(name: 'revelation_place') String revelationPlace,
+      String? image});
 }
 
 /// @nodoc
@@ -113,6 +130,8 @@ class __$$SurahImplCopyWithImpl<$Res>
     Object? simpleName = null,
     Object? arabicName = null,
     Object? versesCount = freezed,
+    Object? revelationPlace = null,
+    Object? image = freezed,
   }) {
     return _then(_$SurahImpl(
       id: null == id
@@ -131,6 +150,14 @@ class __$$SurahImplCopyWithImpl<$Res>
           ? _value.versesCount
           : versesCount // ignore: cast_nullable_to_non_nullable
               as int?,
+      revelationPlace: null == revelationPlace
+          ? _value.revelationPlace
+          : revelationPlace // ignore: cast_nullable_to_non_nullable
+              as String,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -140,9 +167,11 @@ class __$$SurahImplCopyWithImpl<$Res>
 class _$SurahImpl implements _Surah {
   const _$SurahImpl(
       {required this.id,
-      @JsonKey(name: 'name_simple') required this.simpleName,
+      @JsonKey(name: 'name_complex') required this.simpleName,
       @JsonKey(name: 'name_arabic') required this.arabicName,
-      @JsonKey(name: 'verses_count') this.versesCount});
+      @JsonKey(name: 'verses_count') this.versesCount,
+      @JsonKey(name: 'revelation_place') required this.revelationPlace,
+      this.image});
 
   factory _$SurahImpl.fromJson(Map<String, dynamic> json) =>
       _$$SurahImplFromJson(json);
@@ -150,7 +179,7 @@ class _$SurahImpl implements _Surah {
   @override
   final int id;
   @override
-  @JsonKey(name: 'name_simple')
+  @JsonKey(name: 'name_complex')
   final String simpleName;
   @override
   @JsonKey(name: 'name_arabic')
@@ -158,10 +187,15 @@ class _$SurahImpl implements _Surah {
   @override
   @JsonKey(name: 'verses_count')
   final int? versesCount;
+  @override
+  @JsonKey(name: 'revelation_place')
+  final String revelationPlace;
+  @override
+  final String? image;
 
   @override
   String toString() {
-    return 'Surah(id: $id, simpleName: $simpleName, arabicName: $arabicName, versesCount: $versesCount)';
+    return 'Surah(id: $id, simpleName: $simpleName, arabicName: $arabicName, versesCount: $versesCount, revelationPlace: $revelationPlace, image: $image)';
   }
 
   @override
@@ -175,13 +209,16 @@ class _$SurahImpl implements _Surah {
             (identical(other.arabicName, arabicName) ||
                 other.arabicName == arabicName) &&
             (identical(other.versesCount, versesCount) ||
-                other.versesCount == versesCount));
+                other.versesCount == versesCount) &&
+            (identical(other.revelationPlace, revelationPlace) ||
+                other.revelationPlace == revelationPlace) &&
+            (identical(other.image, image) || other.image == image));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, simpleName, arabicName, versesCount);
+  int get hashCode => Object.hash(runtimeType, id, simpleName, arabicName,
+      versesCount, revelationPlace, image);
 
   @JsonKey(ignore: true)
   @override
@@ -200,16 +237,18 @@ class _$SurahImpl implements _Surah {
 abstract class _Surah implements Surah {
   const factory _Surah(
       {required final int id,
-      @JsonKey(name: 'name_simple') required final String simpleName,
+      @JsonKey(name: 'name_complex') required final String simpleName,
       @JsonKey(name: 'name_arabic') required final String arabicName,
-      @JsonKey(name: 'verses_count') final int? versesCount}) = _$SurahImpl;
+      @JsonKey(name: 'verses_count') final int? versesCount,
+      @JsonKey(name: 'revelation_place') required final String revelationPlace,
+      final String? image}) = _$SurahImpl;
 
   factory _Surah.fromJson(Map<String, dynamic> json) = _$SurahImpl.fromJson;
 
   @override
   int get id;
   @override
-  @JsonKey(name: 'name_simple')
+  @JsonKey(name: 'name_complex')
   String get simpleName;
   @override
   @JsonKey(name: 'name_arabic')
@@ -217,6 +256,11 @@ abstract class _Surah implements Surah {
   @override
   @JsonKey(name: 'verses_count')
   int? get versesCount;
+  @override
+  @JsonKey(name: 'revelation_place')
+  String get revelationPlace;
+  @override
+  String? get image;
   @override
   @JsonKey(ignore: true)
   _$$SurahImplCopyWith<_$SurahImpl> get copyWith =>

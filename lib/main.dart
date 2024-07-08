@@ -1,22 +1,29 @@
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/shared/size.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'src/app.dart';
 import 'package:discord_rpc/discord_rpc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   DiscordRPC.initialize();
-  runApp(const ProviderScope(child: MyApp()));
+  await windowManager.ensureInitialized();
 
-  doWhenWindowReady(() {
-    appWindow.minSize = const Size(1000, 850 / 2);
-
-    appWindow.size = DesktopSize().initSize;
-    appWindow.title = "Mostaqem";
-    appWindow.alignment = Alignment.center;
-
-    appWindow.show();
+  WindowOptions windowOptions = WindowOptions(
+    size: DesktopSize().initSize,
+    center: true,
+    title: "Mostaqem",
+    backgroundColor: Colors.transparent,
+    skipTaskbar: false,
+    titleBarStyle: TitleBarStyle.hidden,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
   });
+
+  runApp(const ProviderScope(child: MyApp()));
+ 
 }

@@ -22,8 +22,9 @@ class PlayerNotifier extends StateNotifier<AudioState> {
 
   final player = AudioPlayer();
 
-  void init() {
+  void init() async {
     final surah = ref.read(playerSurahProvider);
+    // final audioBytes = await ref.read(fetchAudioBytesProvider.future);
     player.setUrl(surah.url, preload: true);
     player.playerStateStream.listen((event) async {
       if (event.processingState == ProcessingState.ready) {
@@ -34,10 +35,13 @@ class PlayerNotifier extends StateNotifier<AudioState> {
             player.pause();
           }
         }
+
         ref.watch(updateRPCDiscordProvider(
           surahName: surah.english,
         ));
         if (Platform.isWindows) {
+          if (!mounted) return;
+
           windowThumbnailBar();
         }
       }
@@ -54,18 +58,19 @@ class PlayerNotifier extends StateNotifier<AudioState> {
       }
     });
     player.positionStream.listen((p) {
-      if (mounted) {
-        state = state.copyWith(position: p);
-      }
+      if (!mounted) return;
+
+      state = state.copyWith(position: p);
     });
     player.durationStream.listen((d) {
-      if (mounted) {
-        state = state.copyWith(duration: d ?? Duration.zero);
-      }
+      if (!mounted) return;
+
+      state = state.copyWith(duration: d ?? Duration.zero);
     });
 
-    ref.listen(playerSurahProvider, (p, n) {
-      player.setUrl(n.url);
+    ref.listen(playerSurahProvider, (_, n) {
+      if (!mounted) return;
+      player.setUrl(n.url, preload: true);
     });
   }
 
@@ -90,14 +95,14 @@ class PlayerNotifier extends StateNotifier<AudioState> {
   void handlePlayPause() {
     if (state.isPlaying) {
       player.pause();
-      if (mounted) {
-        state = state.copyWith(isPlaying: false);
-      }
+      if (!mounted) return;
+
+      state = state.copyWith(isPlaying: false);
     } else {
       player.play();
-      if (mounted) {
-        state = state.copyWith(isPlaying: true);
-      }
+      if (!mounted) return;
+
+      state = state.copyWith(isPlaying: true);
     }
   }
 
@@ -109,12 +114,14 @@ class PlayerNotifier extends StateNotifier<AudioState> {
 
   void handleVolume(double value) {
     player.setVolume(value);
-    if (mounted) {
-      state = state.copyWith(volume: value);
-    }
+    if (!mounted) return;
+
+    state = state.copyWith(volume: value);
   }
 
   windowThumbnailBar() {
+    if (!mounted) return;
+
     WindowsTaskbar.setFlashTaskbarAppIcon();
 
     WindowsTaskbar.setThumbnailToolbar([
@@ -133,6 +140,7 @@ class PlayerNotifier extends StateNotifier<AudioState> {
               ThumbnailToolbarAssetIcon('assets/img/pause.ico'),
               "ايقاف ",
               () {
+                if (!mounted) return;
                 player.pause();
                 state = state.copyWith(isPlaying: false);
               },
@@ -141,6 +149,8 @@ class PlayerNotifier extends StateNotifier<AudioState> {
               ThumbnailToolbarAssetIcon('assets/img/play.ico'),
               "تشغيل",
               () {
+                if (!mounted) return;
+
                 player.play();
                 state = state.copyWith(isPlaying: true);
               },

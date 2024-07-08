@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
 import '../../core/routes/routes.dart';
 import '../../shared/widgets/hover_builder.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     HijriCalendar.setLocal("ar");
     final isTyping = ref.watch(isTypingProvider);
+    final surahImage = ref.watch(playerSurahProvider).image;
     return Scaffold(
         body: Row(
       children: [
@@ -114,10 +116,10 @@ class HomeScreen extends ConsumerWidget {
                         height: 250,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            image: const DecorationImage(
+                            image: DecorationImage(
                                 fit: BoxFit.cover, image: NetworkImage(
                                     //TODO:Handle the image
-                                    "https://img.freepik.com/premium-vector/hand-drawn-flat-design-al-kaaba-illustration_196854-80.jpg"))),
+                                    surahImage))),
                       ),
                       const SizedBox(
                         height: 15,
@@ -212,11 +214,10 @@ class QueueWidget extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    switch (nextSurah) {
-                      AsyncError(:final error) => Text("حدث خطأ ما $error"),
-                      AsyncData(:final value) => Text(value.arabicName),
-                      _ => const Text(""),
-                    },
+                    AsyncWidget(
+                        loading: const SizedBox.shrink(),
+                        value: nextSurah,
+                        data: (data) => Text(data.arabicName)),
                     Text(
                       reciter,
                       style: TextStyle(

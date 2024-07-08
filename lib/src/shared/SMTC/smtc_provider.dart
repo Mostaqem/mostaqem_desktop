@@ -5,6 +5,7 @@ final smtcRepoProvider = Provider(SMTCRepository.new);
 
 class SMTCRepository {
   final Ref ref;
+  SMTCRepository(this.ref);
 
   final SMTCWindows smtc = SMTCWindows(
     metadata: const MusicMetadata(
@@ -35,7 +36,6 @@ class SMTCRepository {
     ),
   );
 
-  SMTCRepository(this.ref);
   void updateSMTC() {
     smtc.updateMetadata(
       const MusicMetadata(
@@ -44,7 +44,7 @@ class SMTCRepository {
         albumArtist: 'Album Artist',
         artist: 'Artist',
         thumbnail:
-            'https://media.glamour.com/photos/5f4c44e20c71c58fc210d35f/master/w_2560%2Cc_limit/mgid_ao_image_mtv.jpg',
+            'https://t4.ftcdn.net/jpg/05/68/75/85/360_F_568758547_IhIOMXI9hKcyoUBRTdEKkSlTz0Yi6CWx.jpg',
       ),
     );
   }

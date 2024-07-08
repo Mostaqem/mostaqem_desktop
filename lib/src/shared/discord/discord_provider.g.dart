@@ -6,7 +6,7 @@ part of 'discord_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateRPCDiscordHash() => r'95e8d95bf8cc1d6367a8704df3f89a9788a2c980';
+String _$updateRPCDiscordHash() => r'de860571a6be6207060fc6037052011b57a09f2f';
 
 /// Copied from Dart SDK
 class _SystemHash {

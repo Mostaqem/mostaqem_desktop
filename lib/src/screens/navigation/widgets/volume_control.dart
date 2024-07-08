@@ -27,8 +27,14 @@ class VolumeControls extends ConsumerWidget {
                 }
               },
               icon: player.volume == 0
-                  ? const Icon(Icons.volume_mute_outlined)
-                  : const Icon(Icons.volume_up_outlined),
+                  ? const Icon(
+                      Icons.volume_mute_outlined,
+                      size: 16,
+                    )
+                  : const Icon(
+                      Icons.volume_up_outlined,
+                      size: 16,
+                    ),
               color: Theme.of(context).colorScheme.onSecondaryContainer,
             ),
           ),
@@ -40,10 +46,13 @@ class VolumeControls extends ConsumerWidget {
               enabledThumbRadius: isHovered ? 7 : 3,
               elevation: 0,
             )),
-            child: Slider(
-              value: ref.watch(playerNotifierProvider).volume,
-              onChanged: (v) =>
-                  ref.read(playerNotifierProvider.notifier).handleVolume(v),
+            child: SizedBox(
+              width: 140,
+              child: Slider(
+                value: ref.watch(playerNotifierProvider).volume,
+                onChanged: (v) =>
+                    ref.read(playerNotifierProvider.notifier).handleVolume(v),
+              ),
             ),
           );
         }),

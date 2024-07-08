@@ -1,7 +1,20 @@
-class Reciter {
-  int id;
-  String name;
-  String imageURL;
 
-  Reciter({required this.id, required this.name, required this.imageURL});
+
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'reciters_data.freezed.dart';
+
+part 'reciters_data.g.dart';
+
+@freezed
+class Reciter with _$Reciter {
+  const factory Reciter({
+    required int id,
+    @JsonKey(name: 'name_english') required String englishName,
+    @JsonKey(name: 'name_arabic') required String arabicName,
+    String? image,
+
+  }) = _Reciter;
+
+  factory Reciter.fromJson(Map<String, Object?> json) => _$ReciterFromJson(json);
 }
