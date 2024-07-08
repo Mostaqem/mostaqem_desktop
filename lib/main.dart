@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/shared/size.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:media_kit/media_kit.dart';                      // Provides [Player], [Media], [Playlist] etc.
 
 import 'src/app.dart';
 import 'package:discord_rpc/discord_rpc.dart';
@@ -10,6 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DiscordRPC.initialize();
   await windowManager.ensureInitialized();
+  MediaKit.ensureInitialized();
 
   WindowOptions windowOptions = WindowOptions(
     size: DesktopSize().initSize,
