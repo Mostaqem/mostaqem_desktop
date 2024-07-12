@@ -21,6 +21,7 @@ class AsyncWidget<T> extends StatelessWidget {
         loading: () =>
             loading ??
             const Center(
+              heightFactor: 10,
               child: CircularProgressIndicator(),
             ));
   }

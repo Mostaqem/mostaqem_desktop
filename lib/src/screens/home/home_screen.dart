@@ -118,7 +118,6 @@ class HomeScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
                                 fit: BoxFit.cover, image: NetworkImage(
-                                    //TODO:Handle the image
                                     surahImage))),
                       ),
                       const SizedBox(
