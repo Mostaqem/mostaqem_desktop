@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mostaqem/src/core/routes/routes.dart';
 
 import '../../../shared/widgets/hover_builder.dart';
 import 'player_widget.dart';
@@ -55,7 +56,7 @@ class PlayingSurah extends StatelessWidget {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () {
-                      context.push('/reciters');
+                      ref.read(goRouterProvider).push('/reciters');
                     },
                     child: Text(
                       surah.reciter,

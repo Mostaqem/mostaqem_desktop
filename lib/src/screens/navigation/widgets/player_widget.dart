@@ -16,7 +16,7 @@ import 'volume_control.dart';
 
 final playerSurahProvider = StateProvider((ref) => (
       name: "الفاتحة",
-      reciter: "عبدالباسط",
+      reciter: " عبدالباسط عبد الصمد",
       english: "Al-Fatiha",
       image:
           "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
@@ -83,7 +83,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                     : Theme.of(context).colorScheme.secondaryContainer),
             child: isFullScreen
                 ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       FullScreenPlayControls(
                         ref: ref,
@@ -144,38 +144,47 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget> {
                                 ),
                               ),
                               const VolumeControls(),
-                              ToolTipIconButton(
-                                onPressed: () async {
-                                  if (await windowManager.isFullScreen()) {
-                                    ref
-                                        .read(isFullScreenProvider.notifier)
-                                        .toggle(false);
-                                  } else {
-                                    ref
-                                        .read(isFullScreenProvider.notifier)
-                                        .toggle(true);
-                                  }
-                                },
-                                icon: Icon(
-                                  isFullScreen
-                                      ? Icons.close_fullscreen_outlined
-                                      : Icons.open_in_full_outlined,
-                                  size: 16,
-                                  color: isFullScreen
-                                      ? Colors.white
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer,
-                                ),
-                                message: isFullScreen
-                                    ? "تصغير الشاشة"
-                                    : "تكبير الشاشة",
-                              )
+                              FullScreenControl(
+                                  ref: ref, isFullScreen: isFullScreen)
                             ],
                           ),
                         ]),
                   )),
       ),
+    );
+  }
+}
+
+class FullScreenControl extends StatelessWidget {
+  const FullScreenControl({
+    super.key,
+    required this.ref,
+    required this.isFullScreen,
+  });
+
+  final WidgetRef ref;
+  final bool isFullScreen;
+
+  @override
+  Widget build(BuildContext context) {
+    return ToolTipIconButton(
+      onPressed: () async {
+        if (await windowManager.isFullScreen()) {
+          ref.read(isFullScreenProvider.notifier).toggle(false);
+        } else {
+          ref.read(isFullScreenProvider.notifier).toggle(true);
+        }
+      },
+      icon: Icon(
+        isFullScreen
+            ? Icons.close_fullscreen_outlined
+            : Icons.open_in_full_outlined,
+        size: 16,
+        color: isFullScreen
+            ? Colors.white
+            : Theme.of(context).colorScheme.onSecondaryContainer,
+      ),
+      message: isFullScreen ? "تصغير الشاشة" : "تكبير الشاشة",
     );
   }
 }
