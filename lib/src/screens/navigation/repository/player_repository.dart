@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 
-import '../../../shared/discord/discord_provider.dart';
+import '../../../core/discord/discord_provider.dart';
+import '../../../core/mpris/mpris_repository.dart';
 import '../../home/providers/home_providers.dart';
 import '../../home/widgets/surah_widget.dart';
 import '../data/player.dart';
@@ -44,7 +45,7 @@ class PlayerNotifier extends Notifier<AudioState> {
         }
       }
     });
-    player.stream.playing.listen((playing) {
+    player.stream.playing.listen((playing) async {
       if (playing) {
         state = state.copyWith(isPlaying: true);
       } else {
@@ -56,6 +57,9 @@ class PlayerNotifier extends Notifier<AudioState> {
       ref.watch(updateRPCDiscordProvider(
         surahName: surah.english,
       ));
+      if (Platform.isLinux) {
+        await MPRISRepository().createMetadata();
+      }
     });
 
     ref.listen(playerSurahProvider, (_, n) {

@@ -6,6 +6,7 @@ import '../../../shared/widgets/hover_builder.dart';
 import '../../home/providers/home_providers.dart';
 import '../../home/widgets/surah_widget.dart';
 import '../repository/player_repository.dart';
+import 'player_widget.dart';
 
 class PlayControls extends StatelessWidget {
   const PlayControls(
@@ -243,7 +244,7 @@ class FullScreenPlayControls extends StatelessWidget {
                     elevation: 0,
                   )),
                   child: Slider(
-                    activeColor: Colors.white,
+                      activeColor: Colors.white,
                       value: ref
                           .watch(playerNotifierProvider)
                           .position
@@ -345,7 +346,8 @@ class FullScreenPlayControls extends StatelessWidget {
                           : Theme.of(context).colorScheme.tertiary),
                   iconSize: 16,
                 ),
-              )
+              ),
+              FullScreenControl(ref: ref, isFullScreen: true)
             ],
           ),
         ),

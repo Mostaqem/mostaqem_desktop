@@ -55,3 +55,14 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
+class Mostaqem extends StatelessWidget {
+  const Mostaqem({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const ProviderScope(child: MaterialApp(home: MyApp()));
+  }
+}

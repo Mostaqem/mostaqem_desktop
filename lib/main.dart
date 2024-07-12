@@ -11,6 +11,7 @@ void main() async {
   DiscordRPC.initialize();
   await windowManager.ensureInitialized();
   MediaKit.ensureInitialized();
+  runApp(const Mostaqem());
 
   WindowOptions windowOptions = const WindowOptions(
     size: Size(1280, 780),
@@ -26,5 +27,4 @@ void main() async {
     await windowManager.focus();
   });
 
-  runApp(const ProviderScope(child: MyApp()));
 }
