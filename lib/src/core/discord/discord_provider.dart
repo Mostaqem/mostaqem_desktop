@@ -4,7 +4,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'discord_provider.g.dart';
 
 abstract class DiscordRepository {
-  void updateDiscordPresence({required String surahName});
+  void updateDiscordPresence({
+    required String surahName,
+    required int position,
+    required int duration,
+    required String reciter,
+  });
 }
 
 class DiscordImp implements DiscordRepository {
@@ -17,12 +22,18 @@ class DiscordImp implements DiscordRepository {
   @override
   void updateDiscordPresence({
     required String surahName,
+    required int position,
+    required int duration,
+    required String reciter,
   }) {
     rpc.start(autoRegister: true);
     rpc.updatePresence(
       DiscordPresence(
+        
         state: surahName,
-        details: 'Listening To',
+        startTimeStamp: position,
+        endTimeStamp: duration,
+        details: reciter,
         largeImageKey: largeImage,
         smallImageKey: smallImage,
       ),
@@ -30,10 +41,18 @@ class DiscordImp implements DiscordRepository {
   }
 }
 
-@Riverpod(keepAlive: true)
-void updateRPCDiscord(UpdateRPCDiscordRef ref, {required String surahName}) {
+@riverpod
+void updateRPCDiscord(
+  UpdateRPCDiscordRef ref, {
+  required String surahName,
+  required int position,
+  required int duration,
+  required String reciter,
+}) {
   final discord = DiscordImp();
   return discord.updateDiscordPresence(
-    surahName: surahName,
-  );
+      surahName: surahName,
+      position: position,
+      duration: duration,
+      reciter: reciter);
 }

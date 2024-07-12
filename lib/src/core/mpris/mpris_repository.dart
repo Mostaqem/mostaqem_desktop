@@ -1,7 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mpris_service/mpris_service.dart';
 
+final mprisRepositoryProvider = Provider(MPRISRepository.new);
+
 class MPRISRepository {
-  
+  final Ref ref;
+  MPRISRepository(this.ref);
   Future<MPRIS> init() async {
     final instance = await MPRIS.create(
       busName: 'org.mpris.MediaPlayer2.mostaqem',
@@ -11,38 +16,40 @@ class MPRISRepository {
     return instance;
   }
 
-  Future<void> createMetadata() async {
+  Future<void> createMetadata(
+      {required String reciterName,
+      required String surah,
+      required String image,
+      required String url,
+      required Duration position}) async {
     final instance = await init();
-    print(instance);
     instance.metadata = MPRISMetadata(
-      Uri.parse('https://music.youtube.com/watch?v=Gr6g3-6VQoE'),
-      length: const Duration(minutes: 3, seconds: 15),
+      Uri.parse(url),
+      length: position,
       artUrl: Uri.parse(
-        'https://lh3.googleusercontent.com/jvgMIjgbvnqnwLwjtqNa0euo9WStdIxrJnpQURgbwuPazT2OpZUdYPZe1gss2fK39oC8ITofFmeGxKY',
+        image,
       ),
-      album: 'Collage',
-      albumArtist: ['The Chainsmokers'],
-      discNumber: 1,
-      title: 'All We Know',
-      trackNumber: 2,
+      artist: [reciterName],
+      title: surah,
     );
 
     instance.setEventHandler(
       MPRISEventHandler(
         playPause: () async {
-          print('Play/Pause');
-          instance.playbackStatus =
-              instance.playbackStatus == MPRISPlaybackStatus.playing
-                  ? MPRISPlaybackStatus.paused
-                  : MPRISPlaybackStatus.playing;
+          if (ref.read(playerNotifierProvider).isPlaying) {
+            instance.playbackStatus = MPRISPlaybackStatus.playing;
+          } else {
+            instance.playbackStatus = MPRISPlaybackStatus.paused;
+          }
         },
         play: () async {
-          print('Play');
           instance.playbackStatus = MPRISPlaybackStatus.playing;
+          ref.read(playerNotifierProvider.notifier).player.play();
         },
         pause: () async {
-          print('Pause');
           instance.playbackStatus = MPRISPlaybackStatus.paused;
+
+          ref.read(playerNotifierProvider.notifier).player.pause();
         },
         next: () async {
           print('Next');
