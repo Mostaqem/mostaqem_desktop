@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mostaqem/src/shared/size.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:media_kit/media_kit.dart';                      // Provides [Player], [Media], [Playlist] etc.
+import 'package:media_kit/media_kit.dart'; // Provides [Player], [Media], [Playlist] etc.
 
 import 'src/app.dart';
 import 'package:discord_rpc/discord_rpc.dart';
@@ -13,8 +12,9 @@ void main() async {
   await windowManager.ensureInitialized();
   MediaKit.ensureInitialized();
 
-  WindowOptions windowOptions = WindowOptions(
-    size: DesktopSize().initSize,
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1280, 780),
+    minimumSize: Size(800, 500),
     center: true,
     title: "Mostaqem",
     backgroundColor: Colors.transparent,
@@ -27,5 +27,4 @@ void main() async {
   });
 
   runApp(const ProviderScope(child: MyApp()));
- 
 }

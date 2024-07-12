@@ -90,7 +90,7 @@ class FullScreenWidget extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 150, right: 50),
+          padding: const EdgeInsets.only(bottom: 220, right: 50),
           child: Align(
             alignment: Alignment.bottomRight,
             child: Row(

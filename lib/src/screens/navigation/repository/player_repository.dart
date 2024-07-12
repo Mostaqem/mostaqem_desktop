@@ -11,18 +11,13 @@ import '../widgets/player_widget.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
 final playerNotifierProvider =
-    StateNotifierProvider.autoDispose<PlayerNotifier, AudioState>(
-        PlayerNotifier.new);
+    NotifierProvider<PlayerNotifier, AudioState>(PlayerNotifier.new);
 
-class PlayerNotifier extends StateNotifier<AudioState> {
-  final Ref ref;
-  PlayerNotifier(this.ref) : super(AudioState()) {
-    init();
-  }
+class PlayerNotifier extends Notifier<AudioState> {
   @override
-  void dispose() {
-    player.dispose();
-    super.dispose();
+  AudioState build() {
+    init();
+    return AudioState();
   }
 
   final player = Player();
@@ -31,13 +26,9 @@ class PlayerNotifier extends StateNotifier<AudioState> {
     final surah = ref.read(playerSurahProvider);
     player.open(Media(surah.url));
     player.stream.position.listen((position) {
-      if (!mounted) return;
-
       state = state.copyWith(position: position);
     });
     player.stream.duration.listen((duration) {
-      if (!mounted) return;
-
       state = state.copyWith(duration: duration);
     });
     player.stream.completed.listen((completed) async {
@@ -54,16 +45,12 @@ class PlayerNotifier extends StateNotifier<AudioState> {
       }
     });
     player.stream.playing.listen((playing) {
-      if (!mounted) return;
-
       if (playing) {
         state = state.copyWith(isPlaying: true);
       } else {
         state = state.copyWith(isPlaying: false);
       }
       if (Platform.isWindows) {
-        if (!mounted) return;
-
         windowThumbnailBar();
       }
       ref.watch(updateRPCDiscordProvider(
@@ -72,7 +59,6 @@ class PlayerNotifier extends StateNotifier<AudioState> {
     });
 
     ref.listen(playerSurahProvider, (_, n) {
-      if (!mounted) return;
       player.playOrPause();
       player.open(Media(n.url));
     });
@@ -99,12 +85,10 @@ class PlayerNotifier extends StateNotifier<AudioState> {
   void handlePlayPause() {
     if (state.isPlaying) {
       player.pause();
-      if (!mounted) return;
 
       state = state.copyWith(isPlaying: false);
     } else {
       player.play();
-      if (!mounted) return;
 
       state = state.copyWith(isPlaying: true);
     }
@@ -112,22 +96,22 @@ class PlayerNotifier extends StateNotifier<AudioState> {
 
   void loop() {
     PlaylistMode mode = player.state.playlistMode;
-    if (!mounted) return;
+
     if (mode == PlaylistMode.none) {
       player.setPlaylistMode(PlaylistMode.single);
-      state = state.copyWith(loop: LoopMode.single);
+      state = state.copyWith(loop: PlaylistMode.single);
 
       return;
     }
     if (mode == PlaylistMode.single) {
       player.setPlaylistMode(PlaylistMode.loop);
-      state = state.copyWith(loop: LoopMode.repeat);
+      state = state.copyWith(loop: PlaylistMode.loop);
 
       return;
     }
     if (mode == PlaylistMode.loop) {
       player.setPlaylistMode(PlaylistMode.none);
-      state = state.copyWith(loop: LoopMode.none);
+      state = state.copyWith(loop: PlaylistMode.none);
 
       return;
     }
@@ -141,14 +125,11 @@ class PlayerNotifier extends StateNotifier<AudioState> {
 
   Future<void> handleVolume(double value) async {
     await player.setVolume(value * 100);
-    if (!mounted) return;
 
     state = state.copyWith(volume: value);
   }
 
   windowThumbnailBar() {
-    if (!mounted) return;
-
     WindowsTaskbar.setFlashTaskbarAppIcon();
 
     WindowsTaskbar.setThumbnailToolbar([
@@ -167,7 +148,6 @@ class PlayerNotifier extends StateNotifier<AudioState> {
               ThumbnailToolbarAssetIcon('assets/img/pause.ico'),
               "ايقاف ",
               () {
-                if (!mounted) return;
                 player.pause();
                 state = state.copyWith(isPlaying: false);
               },
@@ -176,8 +156,6 @@ class PlayerNotifier extends StateNotifier<AudioState> {
               ThumbnailToolbarAssetIcon('assets/img/play.ico'),
               "تشغيل",
               () {
-                if (!mounted) return;
-
                 player.play();
                 state = state.copyWith(isPlaying: true);
               },
@@ -195,7 +173,7 @@ class PlayerNotifier extends StateNotifier<AudioState> {
     ]);
   }
 
-  (String, String) playerTime() {
+  (String currentTime, String durationTime) playerTime() {
     String currentTime = formatDuration(state.position);
     String durationTime = formatDuration(state.duration);
     return (currentTime, durationTime);

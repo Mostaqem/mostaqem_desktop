@@ -15,44 +15,43 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(goRouterProvider);
     return AppShortcuts(
       child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerConfig: router,
-        localizationsDelegates: const [
-          GlobalCupertinoLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale("en", "SA"),
-          Locale("ar", "AE"),
-        ],
-        locale: const Locale("ar", "SA"),
-        builder: (context, child) {
-          return Material(
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                child!,
-                SizedBox(
-                  height: 100,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 0),
-                      child: Overlay(
-                        initialEntries: [
-                          OverlayEntry(
-                              builder: (context) => const PlayerWidget())
-                        ],
-                      )),
-                )
-              ],
-            ),
-          );
-        },
-        title: 'Mostaqem',
-        theme: AppTheme.lightTheme,
-        // darkTheme: AppTheme.darkTheme
-      ),
+          debugShowCheckedModeBanner: false,
+          routerConfig: router,
+          localizationsDelegates: const [
+            GlobalCupertinoLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale("en", "SA"),
+            Locale("ar", "AE"),
+          ],
+          locale: const Locale("ar", "SA"),
+          builder: (context, child) {
+            return Material(
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  child!,
+                  SizedBox(
+                    height: 100,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 0),
+                        child: Overlay(
+                          initialEntries: [
+                            OverlayEntry(
+                                builder: (context) => const PlayerWidget())
+                          ],
+                        )),
+                  )
+                ],
+              ),
+            );
+          },
+          title: 'Mostaqem',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme),
     );
   }
 }

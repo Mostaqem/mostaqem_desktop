@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../../screens/navigation/repository/player_repository.dart';
 
@@ -18,6 +20,14 @@ class AppShortcuts extends ConsumerWidget {
             ref.watch(playerNotifierProvider.notifier).handlePlayPause,
         const SingleActivator(LogicalKeyboardKey.keyQ, control: true): () =>
             exit(0),
+        const SingleActivator(
+          LogicalKeyboardKey.escape,
+        ): () {
+          if (ref.read(isFullScreenProvider)) {
+            ref.read(isFullScreenProvider.notifier).toggle(false);
+            windowManager.setFullScreen(false);
+          }
+        },
         const SingleActivator(LogicalKeyboardKey.f1): () =>
             helpShortcuts(context),
       },
