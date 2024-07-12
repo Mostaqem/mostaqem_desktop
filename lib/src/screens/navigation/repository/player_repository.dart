@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/discord/discord_provider.dart';
 import '../../../core/mpris/mpris_repository.dart';
@@ -11,10 +11,10 @@ import '../data/player.dart';
 import '../widgets/player_widget.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
-final playerNotifierProvider =
-    NotifierProvider<PlayerNotifier, AudioState>(PlayerNotifier.new);
+part 'player_repository.g.dart';
 
-class PlayerNotifier extends Notifier<AudioState> {
+@riverpod
+class PlayerNotifier extends _$PlayerNotifier {
   @override
   AudioState build() {
     init();
@@ -55,10 +55,17 @@ class PlayerNotifier extends Notifier<AudioState> {
         windowThumbnailBar();
       }
       ref.watch(updateRPCDiscordProvider(
-        surahName: surah.english,
-      ));
+          surahName: surah.english,
+          reciter: surah.reciter,
+          position: state.position.inMilliseconds,
+          duration: state.duration.inMilliseconds));
       if (Platform.isLinux) {
-        await MPRISRepository().createMetadata();
+        ref.watch(mprisRepositoryProvider).createMetadata(
+            reciterName: surah.reciter,
+            url: surah.url,
+            surah: surah.name,
+            image: surah.image,
+            position: state.position);
       }
     });
 
