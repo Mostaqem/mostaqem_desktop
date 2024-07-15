@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:media_kit/media_kit.dart'; // Provides [Player], [Media], [Playlist] etc.
 
 import 'src/app.dart';
 import 'package:discord_rpc/discord_rpc.dart';
 
+import 'src/shared/cache/cache_helper.dart';
+import 'src/shared/listeners/window_listener.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DiscordRPC.initialize();
   await windowManager.ensureInitialized();
+
+
   MediaKit.ensureInitialized();
+  await CacheHelper.init();
   runApp(const Mostaqem());
 
   WindowOptions windowOptions = const WindowOptions(
@@ -25,5 +33,4 @@ void main() async {
     await windowManager.show();
     await windowManager.focus();
   });
-
 }

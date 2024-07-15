@@ -6,6 +6,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 
 import '../../shared/widgets/tooltip_icon.dart';
 import '../../shared/widgets/window_buttons.dart';
+import 'data/album.dart';
 import 'repository/fullscreen_notifier.dart';
 
 final isExtendedProvider = StateProvider<bool>((ref) => false);
@@ -56,13 +57,7 @@ class FullScreenWidget extends StatelessWidget {
     super.key,
     required this.player,
   });
-  final ({
-    String english,
-    String name,
-    String reciter,
-    String url,
-    String image
-  }) player;
+  final Album player;
   @override
   Widget build(BuildContext context) {
     return Stack(
