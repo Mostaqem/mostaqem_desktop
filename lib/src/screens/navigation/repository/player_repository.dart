@@ -1,6 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/screens/navigation/data/album.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
+import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/discord/discord_provider.dart';
@@ -15,23 +19,28 @@ part 'player_repository.g.dart';
 
 @riverpod
 class PlayerNotifier extends _$PlayerNotifier {
+  final player = Player();
+
   @override
   AudioState build() {
     init();
     return AudioState();
   }
 
-  final player = Player();
-
   void init() async {
-    final surah = ref.read(playerSurahProvider);
+    final surah = ref.read<Album>(playerSurahProvider);
+
     player.open(Media(surah.url));
     player.stream.position.listen((position) {
       state = state.copyWith(position: position);
     });
+
     player.stream.duration.listen((duration) {
       state = state.copyWith(duration: duration);
+
+      player.seek(Duration(milliseconds: surah.position));
     });
+
     player.stream.completed.listen((completed) async {
       if (completed) {
         final surahID = ref.read(surahIDProvider) + 1;
@@ -51,16 +60,19 @@ class PlayerNotifier extends _$PlayerNotifier {
       } else {
         state = state.copyWith(isPlaying: false);
       }
+
       if (Platform.isWindows) {
         windowThumbnailBar();
       }
-      ref.watch(updateRPCDiscordProvider(
-          surahName: surah.english,
+
+      ref.read(updateRPCDiscordProvider(
+          surahName: surah.nameEnglish,
           reciter: surah.reciter,
           position: state.position.inMilliseconds,
           duration: state.duration.inMilliseconds));
+
       if (Platform.isLinux) {
-        ref.watch(mprisRepositoryProvider).createMetadata(
+        ref.read(mprisRepositoryProvider).createMetadata(
             reciterName: surah.reciter,
             url: surah.url,
             surah: surah.name,
@@ -70,6 +82,7 @@ class PlayerNotifier extends _$PlayerNotifier {
     });
 
     ref.listen(playerSurahProvider, (_, n) {
+      ref.watch(playerCacheProvider.notifier).removeAlbum();
       player.playOrPause();
       player.open(Media(n.url));
     });

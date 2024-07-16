@@ -318,7 +318,7 @@ class _FetchAudioForChapterProviderElement
       (origin as FetchAudioForChapterProvider).chapterNumber;
 }
 
-String _$seekIDHash() => r'c5c0880d9b4b11125e520496b19add2616f07044';
+String _$seekIDHash() => r'f0357af63177f24b1934b4b16e12846eede3a386';
 
 /// See also [seekID].
 @ProviderFor(seekID)

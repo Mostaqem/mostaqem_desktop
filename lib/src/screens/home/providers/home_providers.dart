@@ -1,4 +1,5 @@
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
+import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../navigation/widgets/player_widget.dart';
@@ -46,29 +47,34 @@ Future<void> seekID(
     final audioURL = await ref.read(fetchAudioForChapterProvider(
             chapterNumber: surahID, reciterID: reciter.id)
         .future);
-    ref.read(playerSurahProvider.notifier).state = (
-      name: surahName,
-      reciter: reciter.name,
-      image:
-          image ?? "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
-      url: audioURL,
-      english: surahSimpleName
-    );
+
+    final Album currentAlbum = Album(
+        name: surahName,
+        reciter: reciter.name,
+        position: 0,
+        image: image ??
+            "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
+        url: audioURL,
+        nameEnglish: surahSimpleName);
+    ref.read(playerSurahProvider.notifier).state = currentAlbum;
     ref.read(surahIDProvider.notifier).state = surahID;
+
     return;
   }
   final surah = await ref.read(fetchChapterByIdProvider(id: surahID).future);
   final audioURL = await ref.read(fetchAudioForChapterProvider(
           chapterNumber: surahID, reciterID: reciter.id)
       .future);
-  ref.read(playerSurahProvider.notifier).state = (
-    name: surah.arabicName,
-    image: surah.image ??
-        "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
-    reciter: reciter.name,
-    url: audioURL,
-    english: surah.simpleName
-  );
+
+  final Album currentAlbum = Album(
+      name: surah.arabicName,
+      image: surah.image ??
+          "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
+      reciter: reciter.name,
+      url: audioURL,
+      position: 0,
+      nameEnglish: surah.simpleName);
+  ref.read(playerSurahProvider.notifier).state = currentAlbum;
   ref.read(surahIDProvider.notifier).state = surah.id;
 }
 
