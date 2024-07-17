@@ -18,6 +18,7 @@ class Navigation extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     bool isFullScreen = ref.watch(isFullScreenProvider);
     final player = ref.watch(playerSurahProvider);
+    
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: isFullScreen
