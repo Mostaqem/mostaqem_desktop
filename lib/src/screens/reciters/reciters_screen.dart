@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
@@ -34,7 +35,6 @@ class RecitersScreen extends ConsumerWidget {
           AsyncWidget(
               value: reciters,
               data: (data) {
-                
                 return Expanded(
                   child: SizedBox(
                     child: Padding(
@@ -52,19 +52,17 @@ class RecitersScreen extends ConsumerWidget {
                             child: Consumer(builder: (context, ref, child) {
                               return Card(
                                   child: InkWell(
-                                onTap: () async {
-                                  final surahID = ref.read(surahIDProvider);
-                                  ref.read(reciterProvider.notifier).state = (
-                                    name: data[index].arabicName,
-                                    id: data[index].id
-                                  );
-                                  ref.read(seekIDProvider(
-                                      surahID: surahID,
-                                      // reciterID: data[index].id
-                                      reciter: (
-                                        id: data[index].id,
-                                        name: data[index].arabicName
-                                      )));
+                                onTap: () {
+                                  final player = ref.read(playerSurahProvider);
+
+                                  ref.read(reciterProvider.notifier).state =
+                                      data[index];
+
+                                  ref
+                                      .read(playerNotifierProvider.notifier)
+                                      .play(
+                                        surahID: player.surah.id,
+                                      );
                                 },
                                 borderRadius: BorderRadius.circular(12),
                                 child: Column(

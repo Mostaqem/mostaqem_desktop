@@ -13,22 +13,22 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
-    return AppShortcuts(
-      child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          routerConfig: router,
-          localizationsDelegates: const [
-            GlobalCupertinoLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale("en", "SA"),
-            Locale("ar", "AE"),
-          ],
-          locale: const Locale("ar", "SA"),
-          builder: (context, child) {
-            return Material(
+    return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        routerConfig: router,
+        localizationsDelegates: const [
+          GlobalCupertinoLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale("en", "SA"),
+          Locale("ar", "AE"),
+        ],
+        locale: const Locale("ar", "SA"),
+        builder: (context, child) {
+          return Material(
+            child: AppShortcuts(
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
@@ -47,12 +47,12 @@ class MyApp extends ConsumerWidget {
                   )
                 ],
               ),
-            );
-          },
-          title: 'Mostaqem',
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme),
-    );
+            ),
+          );
+        },
+        title: 'Mostaqem',
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme);
   }
 }
 

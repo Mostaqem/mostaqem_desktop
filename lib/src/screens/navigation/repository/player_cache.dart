@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,17 +14,17 @@ class PlayerCache extends _$PlayerCache {
     final String? album = CacheHelper.getString("surah");
 
     if (album != null) {
-      return Album.fromString(album);
+      return Album.fromJson(jsonDecode(album));
     }
     return null;
   }
 
-  void setAlbum(String album) {
-    CacheHelper.setString("surah", album);
-    state = Album.fromString(album);
+  Future<void> setAlbum(Album album) async {
+    CacheHelper.setString("surah", jsonEncode(album.toJson()));
+    state = album;
   }
 
-  void removeAlbum() {
+  Future<void> removeAlbum() async {
     CacheHelper.remove("surah");
     state = null;
   }

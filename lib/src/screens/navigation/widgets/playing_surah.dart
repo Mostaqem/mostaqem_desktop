@@ -17,7 +17,7 @@ class PlayingSurah extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final surah = ref.watch(playerSurahProvider);
+    final player = ref.watch(playerSurahProvider);
 
     return Visibility(
       visible: !isFullScreen,
@@ -34,7 +34,7 @@ class PlayingSurah extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    surah.name,
+                    player.surah.arabicName,
                     style: TextStyle(
                         color:
                             Theme.of(context).colorScheme.onSecondaryContainer),
@@ -58,7 +58,7 @@ class PlayingSurah extends StatelessWidget {
                       ref.read(goRouterProvider).push('/reciters');
                     },
                     child: Text(
-                      surah.reciter,
+                      player.reciter.arabicName,
                       style: TextStyle(
                           decoration: isHovered
                               ? TextDecoration.underline
