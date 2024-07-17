@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/shared/device/device_repository.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
@@ -22,8 +23,8 @@ class AppMenuBar extends ConsumerWidget {
     return MenuBar(
         style: MenuStyle(
             shape: const WidgetStatePropertyAll(BeveledRectangleBorder()),
-            backgroundColor:
-                WidgetStatePropertyAll(Theme.of(context).colorScheme.surface)),
+            backgroundColor: WidgetStatePropertyAll<Color>(
+                Theme.of(context).colorScheme.surface)),
         children: [
           SubmenuButton(menuChildren: [
             MenuItemButton(
@@ -123,6 +124,38 @@ class AppMenuBar extends ConsumerWidget {
                   context: context,
                   builder: (context) => helpShortcuts(context)),
               child: const Text("الاختصارات"),
+            ),
+            MenuItemButton(
+              shortcut: const SingleActivator(
+                LogicalKeyboardKey.f1,
+              ),
+              onPressed: () async {
+                final UpdateState updateState =
+                    await PackageRepository().checkUpdate();
+                final bool updateAvailable =
+                    updateState == UpdateState.available;
+                if (!context.mounted) return;
+
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          content: updateAvailable
+                              ? const Text("نعم هناك تحديث")
+                              : const Text("لا يوجد تحديث"),
+                          actions: [
+                            TextButton(
+                                onPressed: () => context.pop(),
+                                child: const Text("الغاء")),
+                            Visibility(
+                              visible: updateAvailable,
+                              child: TextButton(
+                                  onPressed: () => context.pop(),
+                                  child: const Text("تحديث")),
+                            )
+                          ],
+                        ));
+              },
+              child: const Text("تحديث؟"),
             ),
             MenuItemButton(
               shortcut:
