@@ -6,7 +6,6 @@ import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 
 import '../../shared/widgets/tooltip_icon.dart';
 import '../../shared/widgets/window_buttons.dart';
-import '../home/providers/home_providers.dart';
 import 'data/album.dart';
 import 'repository/fullscreen_notifier.dart';
 
