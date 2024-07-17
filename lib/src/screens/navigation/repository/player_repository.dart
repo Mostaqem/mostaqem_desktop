@@ -63,6 +63,11 @@ class PlayerNotifier extends _$PlayerNotifier {
 
       if (Platform.isWindows) {
         windowThumbnailBar();
+        ref.read(updateSMTCProvider(
+            image: currentPlayer.surah.image ??
+                "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
+            surah: currentPlayer.surah.arabicName,
+            reciter: currentPlayer.reciter.arabicName));
       }
 
       ref.read(updateRPCDiscordProvider(
@@ -71,25 +76,19 @@ class PlayerNotifier extends _$PlayerNotifier {
           position: state.position.inMilliseconds,
           duration: state.duration.inMilliseconds));
 
-      ref.read(updateSMTCProvider(
-          image: currentPlayer.surah.image ??
-              "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
-          surah: currentPlayer.surah.arabicName,
-          reciter: currentPlayer.reciter.arabicName));
-
       if (Platform.isLinux) {
-        ref.read(mprisRepositoryProvider).createMetadata(
-            reciterName: currentPlayer.reciter.arabicName,
-            url: currentPlayer.url,
-            surah: currentPlayer.surah.arabicName,
-            image: currentPlayer.surah.image!,
-            position: state.position);
+        await ref.watch(createMetadataProvider(
+                reciterName: currentPlayer.reciter.arabicName,
+                url: currentPlayer.url,
+                surah: currentPlayer.surah.arabicName,
+                image: currentPlayer.surah.image!,
+                position: state.position)
+            .future);
       }
     });
 
-    ref.listen(playerSurahProvider, (p, n) async {
+    ref.listen(playerSurahProvider, (_, n) async {
       ref.watch(playerCacheProvider.notifier).removeAlbum();
-
       player.playOrPause();
       player.open(Media(n.url));
     });

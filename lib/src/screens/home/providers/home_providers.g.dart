@@ -21,7 +21,7 @@ final fetchAllChaptersProvider = FutureProvider<List<Surah>>.internal(
 );
 
 typedef FetchAllChaptersRef = FutureProviderRef<List<Surah>>;
-String _$fetchChapterByIdHash() => r'46efa6a009c0cd9b7bacbc0f8c043377fc517ca9';
+String _$fetchChapterByIdHash() => r'9270f2bc7ddba3eb4617015b7416fe24007c868e';
 
 /// Copied from Dart SDK
 class _SystemHash {

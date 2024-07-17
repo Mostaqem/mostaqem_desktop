@@ -18,7 +18,7 @@ Future<List<Surah>> fetchAllChapters(FetchAllChaptersRef ref) async {
 Future<Surah> fetchChapterById(FetchChapterByIdRef ref,
     {required int id}) async {
   final response = await ref.read(dioHelperProvider).getHTTP('/surah/$id');
-
+  print(response);
   return Surah.fromJson(response!.data["data"]);
 }
 
