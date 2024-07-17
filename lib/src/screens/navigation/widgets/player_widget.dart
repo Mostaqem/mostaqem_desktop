@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
+import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../../core/routes/routes.dart';
-import '../../home/providers/home_providers.dart';
 import 'play_controls.dart';
 import 'playing_surah.dart';
 import 'volume_control.dart';
@@ -22,13 +22,17 @@ final playerSurahProvider = StateProvider.autoDispose<Album>((ref) {
   if (cachedSurah != null) {
     return cachedSurah;
   }
-  final defaultAlbum = Album(
-    name: "الفاتحة",
-    reciter: "عبدالباسط عبدالصمد",
-    nameEnglish: "Al-Fatiha",
+  const defaultAlbum = Album(
+    surah: Surah(
+        id: 1,
+        simpleName: "Al-Fatihah",
+        arabicName: "الفاتحة",
+        image:
+            "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
+        revelationPlace: "makkah"),
+    reciter: Reciter(
+        id: 1, englishName: "Abdel-Baset", arabicName: "عبدالباسط عبدالصمد"),
     position: 0,
-    image:
-        "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
     url: "https://download.quranicaudio.com/qdc/abdul_baset/mujawwad/1.mp3",
   );
 
@@ -83,16 +87,13 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   @override
   void onWindowClose() {
-    final surah = ref.watch<Album>(playerSurahProvider);
+    final player = ref.watch<Album>(playerSurahProvider);
     final position = ref.watch(playerNotifierProvider).position;
     ref.read(playerCacheProvider.notifier).setAlbum(Album(
-            name: surah.name,
-            reciter: surah.reciter,
-            nameEnglish: surah.nameEnglish,
-            image: surah.image,
-            url: surah.url,
-            position: position.inMilliseconds)
-        .toString());
+        surah: player.surah,
+        reciter: player.reciter,
+        url: player.url,
+        position: position.inMilliseconds));
     super.onWindowClose();
   }
 
@@ -150,23 +151,13 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
                                 child: ToolTipIconButton(
                                   message: "اقرأ",
                                   onPressed: () async {
-                                    final surahID = ref.read(surahIDProvider);
-                                    final surahName =
-                                        ref.read(playerSurahProvider).name;
+                                    final surahID =
+                                        ref.read(playerSurahProvider).surah.id;
 
                                     ref.watch(goRouterProvider).goNamed(
                                           'Reading',
                                           extra: surahID,
                                         );
-                                    final reciter = ref.read(reciterProvider);
-                                    final currentID = ref.read(surahIDProvider);
-                                    if (currentID != surahID) {
-                                      await ref.read(seekIDProvider(
-                                              surahID: surahID,
-                                              reciter: reciter,
-                                              surahName: surahName)
-                                          .future);
-                                    }
                                   },
                                   icon: SvgPicture.asset(
                                     "assets/img/read.svg",

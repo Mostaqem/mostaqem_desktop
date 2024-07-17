@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
+import '../../reciters/data/reciters_data.dart';
 import '../providers/home_providers.dart';
 
-final surahIDProvider = StateProvider<int>((ref) {
-  return 1;
-});
-
-final reciterProvider = StateProvider((ref) => (id: 1, name: "عبدالباسط"));
+final reciterProvider = StateProvider<Reciter?>((ref) => null);
 
 class SurahWidget extends ConsumerWidget {
   const SurahWidget({super.key});
@@ -17,7 +15,6 @@ class SurahWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final surahs = ref.watch(filterSurahByQueryProvider);
-    final reciter = ref.watch(reciterProvider);
     return AsyncWidget(
       value: surahs,
       data: (data) => Expanded(
@@ -86,15 +83,12 @@ class SurahWidget extends ConsumerWidget {
                                   preferBelow: false,
                                   child: IconButton(
                                       onPressed: () async {
-                                        ref.read(seekIDProvider(
-                                                surahID: data[index].id,
-                                                reciter: reciter,
-                                                image: data[index].image,
-                                                surahSimpleName:
-                                                    data[index].simpleName,
-                                                surahName:
-                                                    data[index].arabicName)
-                                            .future);
+                                        ref
+                                            .read(
+                                                playerNotifierProvider.notifier)
+                                            .play(
+                                              surahID: data[index].id,
+                                            );
                                       },
                                       icon: const Icon(
                                           Icons.play_circle_fill_outlined)),
@@ -113,8 +107,5 @@ class SurahWidget extends ConsumerWidget {
         ),
       ),
     );
-
-    //     loading: () =>
-    //         const Center(heightFactor: 15, child: CircularProgressIndicator()));
   }
 }

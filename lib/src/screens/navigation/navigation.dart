@@ -6,6 +6,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 
 import '../../shared/widgets/tooltip_icon.dart';
 import '../../shared/widgets/window_buttons.dart';
+import '../home/providers/home_providers.dart';
 import 'data/album.dart';
 import 'repository/fullscreen_notifier.dart';
 
@@ -97,7 +98,8 @@ class FullScreenWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(player.image))),
+                          image:
+                              CachedNetworkImageProvider(player.surah.image!))),
                 ),
                 const SizedBox(
                   width: 12,
@@ -107,10 +109,10 @@ class FullScreenWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      player.name,
+                      player.surah.arabicName,
                       style: const TextStyle(fontSize: 30, color: Colors.white),
                     ),
-                    Text(player.reciter,
+                    Text(player.reciter.arabicName,
                         style: TextStyle(
                             fontSize: 18,
                             color: Colors.white.withOpacity(0.5))),

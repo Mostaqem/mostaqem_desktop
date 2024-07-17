@@ -5,21 +5,18 @@ class AppLicensePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // const WindowBarBox(),
-          const SizedBox(
+          SizedBox(
             height: 10,
           ),
           Expanded(
-              child: Theme(
-            data: ThemeData(),
-            child: const LicensePage(
-              applicationVersion: "1.0.0",
-              applicationName: "مستقيم",
-            ),
+              child: LicensePage(
+            applicationVersion: "1.0.0",
+            applicationName: "مستقيم",
           ))
         ],
       ),

@@ -21,7 +21,8 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     HijriCalendar.setLocal("ar");
     final isTyping = ref.watch(isTypingProvider);
-    final surahImage = ref.watch(playerSurahProvider).image;
+    final surahImage = ref.watch(playerSurahProvider).surah.image ??
+        "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg";
     return Scaffold(
         body: Row(
       children: [
@@ -117,15 +118,15 @@ class HomeScreen extends ConsumerWidget {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                                fit: BoxFit.cover, image: NetworkImage(
-                                    surahImage))),
+                                fit: BoxFit.cover,
+                                image: NetworkImage(surahImage))),
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       Text(
-                        ref.watch(
-                            playerSurahProvider.select((value) => value.name)),
+                        ref.watch(playerSurahProvider
+                            .select((value) => value.surah.arabicName)),
                         style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -142,7 +143,7 @@ class HomeScreen extends ConsumerWidget {
                             },
                             child: Text(
                               ref.watch(playerSurahProvider
-                                  .select((value) => value.reciter)),
+                                  .select((value) => value.reciter.arabicName)),
                               style: TextStyle(
                                   fontSize: 17.0,
                                   decoration: isHovered
@@ -183,8 +184,8 @@ class QueueWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reciter =
-        ref.watch(playerSurahProvider.select((value) => value.reciter));
+    final reciter = ref
+        .watch(playerSurahProvider.select((value) => value.reciter.arabicName));
     final nextSurah = ref.watch(fetchNextSurahProvider);
     return Expanded(
       child: Container(

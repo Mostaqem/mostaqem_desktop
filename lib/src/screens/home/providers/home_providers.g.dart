@@ -318,198 +318,6 @@ class _FetchAudioForChapterProviderElement
       (origin as FetchAudioForChapterProvider).chapterNumber;
 }
 
-String _$seekIDHash() => r'f0357af63177f24b1934b4b16e12846eede3a386';
-
-/// See also [seekID].
-@ProviderFor(seekID)
-const seekIDProvider = SeekIDFamily();
-
-/// See also [seekID].
-class SeekIDFamily extends Family<AsyncValue<void>> {
-  /// See also [seekID].
-  const SeekIDFamily();
-
-  /// See also [seekID].
-  SeekIDProvider call({
-    required int surahID,
-    String? surahName,
-    String? image,
-    String? surahSimpleName,
-    required ({int id, String name}) reciter,
-  }) {
-    return SeekIDProvider(
-      surahID: surahID,
-      surahName: surahName,
-      image: image,
-      surahSimpleName: surahSimpleName,
-      reciter: reciter,
-    );
-  }
-
-  @override
-  SeekIDProvider getProviderOverride(
-    covariant SeekIDProvider provider,
-  ) {
-    return call(
-      surahID: provider.surahID,
-      surahName: provider.surahName,
-      image: provider.image,
-      surahSimpleName: provider.surahSimpleName,
-      reciter: provider.reciter,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'seekIDProvider';
-}
-
-/// See also [seekID].
-class SeekIDProvider extends AutoDisposeFutureProvider<void> {
-  /// See also [seekID].
-  SeekIDProvider({
-    required int surahID,
-    String? surahName,
-    String? image,
-    String? surahSimpleName,
-    required ({int id, String name}) reciter,
-  }) : this._internal(
-          (ref) => seekID(
-            ref as SeekIDRef,
-            surahID: surahID,
-            surahName: surahName,
-            image: image,
-            surahSimpleName: surahSimpleName,
-            reciter: reciter,
-          ),
-          from: seekIDProvider,
-          name: r'seekIDProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$seekIDHash,
-          dependencies: SeekIDFamily._dependencies,
-          allTransitiveDependencies: SeekIDFamily._allTransitiveDependencies,
-          surahID: surahID,
-          surahName: surahName,
-          image: image,
-          surahSimpleName: surahSimpleName,
-          reciter: reciter,
-        );
-
-  SeekIDProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.surahID,
-    required this.surahName,
-    required this.image,
-    required this.surahSimpleName,
-    required this.reciter,
-  }) : super.internal();
-
-  final int surahID;
-  final String? surahName;
-  final String? image;
-  final String? surahSimpleName;
-  final ({int id, String name}) reciter;
-
-  @override
-  Override overrideWith(
-    FutureOr<void> Function(SeekIDRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: SeekIDProvider._internal(
-        (ref) => create(ref as SeekIDRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        surahID: surahID,
-        surahName: surahName,
-        image: image,
-        surahSimpleName: surahSimpleName,
-        reciter: reciter,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<void> createElement() {
-    return _SeekIDProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is SeekIDProvider &&
-        other.surahID == surahID &&
-        other.surahName == surahName &&
-        other.image == image &&
-        other.surahSimpleName == surahSimpleName &&
-        other.reciter == reciter;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, surahID.hashCode);
-    hash = _SystemHash.combine(hash, surahName.hashCode);
-    hash = _SystemHash.combine(hash, image.hashCode);
-    hash = _SystemHash.combine(hash, surahSimpleName.hashCode);
-    hash = _SystemHash.combine(hash, reciter.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin SeekIDRef on AutoDisposeFutureProviderRef<void> {
-  /// The parameter `surahID` of this provider.
-  int get surahID;
-
-  /// The parameter `surahName` of this provider.
-  String? get surahName;
-
-  /// The parameter `image` of this provider.
-  String? get image;
-
-  /// The parameter `surahSimpleName` of this provider.
-  String? get surahSimpleName;
-
-  /// The parameter `reciter` of this provider.
-  ({int id, String name}) get reciter;
-}
-
-class _SeekIDProviderElement extends AutoDisposeFutureProviderElement<void>
-    with SeekIDRef {
-  _SeekIDProviderElement(super.provider);
-
-  @override
-  int get surahID => (origin as SeekIDProvider).surahID;
-  @override
-  String? get surahName => (origin as SeekIDProvider).surahName;
-  @override
-  String? get image => (origin as SeekIDProvider).image;
-  @override
-  String? get surahSimpleName => (origin as SeekIDProvider).surahSimpleName;
-  @override
-  ({int id, String name}) get reciter => (origin as SeekIDProvider).reciter;
-}
-
 String _$filterSurahByQueryHash() =>
     r'97ae546588e96be7e12abb98b2bf6b421e1d4921';
 
@@ -527,11 +335,11 @@ final filterSurahByQueryProvider =
 );
 
 typedef FilterSurahByQueryRef = AutoDisposeFutureProviderRef<List<Surah>>;
-String _$fetchNextSurahHash() => r'50b0027df4965c90ba828bd498fd811aa44f886f';
+String _$fetchNextSurahHash() => r'716270d927d0d2f45a4246e8c6215ae0e4b3ec66';
 
 /// See also [fetchNextSurah].
 @ProviderFor(fetchNextSurah)
-final fetchNextSurahProvider = FutureProvider<Surah>.internal(
+final fetchNextSurahProvider = AutoDisposeFutureProvider<Surah>.internal(
   fetchNextSurah,
   name: r'fetchNextSurahProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -541,6 +349,21 @@ final fetchNextSurahProvider = FutureProvider<Surah>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef FetchNextSurahRef = FutureProviderRef<Surah>;
+typedef FetchNextSurahRef = AutoDisposeFutureProviderRef<Surah>;
+String _$fetchRandomImageHash() => r'289365de24523d62d804e1ec07c47e12f35a315f';
+
+/// See also [fetchRandomImage].
+@ProviderFor(fetchRandomImage)
+final fetchRandomImageProvider = AutoDisposeFutureProvider<String>.internal(
+  fetchRandomImage,
+  name: r'fetchRandomImageProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$fetchRandomImageHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FetchRandomImageRef = AutoDisposeFutureProviderRef<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

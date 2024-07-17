@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 
 import '../../../shared/widgets/hover_builder.dart';
-import '../../home/providers/home_providers.dart';
-import '../../home/widgets/surah_widget.dart';
 import '../repository/player_repository.dart';
 import 'player_widget.dart';
 
@@ -39,111 +37,120 @@ class PlayControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final player = ref.watch(playerNotifierProvider);
-
+    //TODO: Refactor PlayControls
     return Transform.scale(
       scale: isFullScreen ? 1.3 : 1,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Visibility(
-                visible:
-                    ref.watch(playerNotifierProvider.notifier).isFirstChapter(),
-                child: Tooltip(
-                  message: "قبل",
-                  preferBelow: false,
-                  child: IconButton(
-                    onPressed: () async {
-                      final surahID = ref.read(surahIDProvider) - 1;
-                      await ref.read(seekIDProvider(
-                              surahID: surahID,
-                              reciter: ref.read(reciterProvider))
-                          .future);
-                    },
-                    icon: Icon(
-                      Icons.skip_next_outlined,
-                      color: isFullScreen
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.onSecondaryContainer,
-                    ),
-                    iconSize: 25,
-                  ),
-                ),
-              ),
-              Tooltip(
-                message: "تشغيل",
-                preferBelow: false,
-                child: IconButton(
-                  onPressed: () => ref
-                      .read(playerNotifierProvider.notifier)
-                      .handlePlayPause(),
-                  icon: player.isPlaying
-                      ? Icon(
-                          Icons.pause_circle_filled_outlined,
-                          color: isFullScreen
-                              ? Colors.white
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer,
-                        )
-                      : Icon(
-                          Icons.play_circle_fill_outlined,
-                          color: isFullScreen
-                              ? Colors.white
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer,
+          player.buffering
+              ? const SizedBox(
+                  width: 10,
+                  height: 10,
+                  child: CircularProgressIndicator(),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Visibility(
+                      visible: ref
+                          .watch(playerNotifierProvider.notifier)
+                          .isFirstChapter(),
+                      child: Tooltip(
+                        message: "قبل",
+                        preferBelow: false,
+                        child: IconButton(
+                          onPressed: () async {
+                            ref
+                                .read(playerNotifierProvider.notifier)
+                                .playPrevious();
+                          },
+                          icon: Icon(
+                            Icons.skip_next_outlined,
+                            color: isFullScreen
+                                ? Colors.white
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                          ),
+                          iconSize: 25,
                         ),
-                  iconSize: 25,
-                ),
-              ),
-              Visibility(
-                visible:
-                    ref.watch(playerNotifierProvider.notifier).isLastchapter(),
-                child: Tooltip(
-                  message: "بعد",
-                  preferBelow: false,
-                  child: IconButton(
-                    onPressed: () async {
-                      final surahID = ref.read(surahIDProvider) + 1;
-                      await ref.read(seekIDProvider(
-                              surahID: surahID,
-                              reciter: ref.read(reciterProvider))
-                          .future);
-                    },
-                    icon: Icon(
-                      Icons.skip_previous_outlined,
-                      color: isFullScreen
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
                     ),
-                    iconSize: 25,
-                  ),
+                    Tooltip(
+                      message: "تشغيل",
+                      preferBelow: false,
+                      child: IconButton(
+                        onPressed: () => ref
+                            .read(playerNotifierProvider.notifier)
+                            .handlePlayPause(),
+                        icon: player.isPlaying
+                            ? Icon(
+                                Icons.pause_circle_filled_outlined,
+                                color: isFullScreen
+                                    ? Colors.white
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                              )
+                            : Icon(
+                                Icons.play_circle_fill_outlined,
+                                color: isFullScreen
+                                    ? Colors.white
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
+                              ),
+                        iconSize: 25,
+                      ),
+                    ),
+                    Visibility(
+                      visible: ref
+                          .watch(playerNotifierProvider.notifier)
+                          .isLastchapter(),
+                      child: Tooltip(
+                        message: "بعد",
+                        preferBelow: false,
+                        child: IconButton(
+                          onPressed: () async {
+                            ref
+                                .read(playerNotifierProvider.notifier)
+                                .playNext();
+                          },
+                          icon: Icon(
+                            Icons.skip_previous_outlined,
+                            color: isFullScreen
+                                ? Colors.white
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                          ),
+                          iconSize: 25,
+                        ),
+                      ),
+                    ),
+                    Tooltip(
+                      message: "اعادة",
+                      preferBelow: false,
+                      child: IconButton(
+                        onPressed: () async {
+                          ref.read(playerNotifierProvider.notifier).loop();
+                        },
+                        icon: loopIcon(
+                            player.loop,
+                            player.loop == PlaylistMode.none
+                                ? isFullScreen
+                                    ? Colors.white
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer
+                                : Theme.of(context).colorScheme.tertiary),
+                        iconSize: 16,
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              Tooltip(
-                message: "اعادة",
-                preferBelow: false,
-                child: IconButton(
-                  onPressed: () async {
-                    ref.read(playerNotifierProvider.notifier).loop();
-                  },
-                  icon: loopIcon(
-                      player.loop,
-                      player.loop == PlaylistMode.none
-                          ? isFullScreen
-                              ? Colors.white
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer
-                          : Theme.of(context).colorScheme.tertiary),
-                  iconSize: 16,
-                ),
-              )
-            ],
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -279,11 +286,7 @@ class FullScreenPlayControls extends StatelessWidget {
                   preferBelow: false,
                   child: IconButton(
                     onPressed: () async {
-                      final surahID = ref.read(surahIDProvider) - 1;
-                      await ref.read(seekIDProvider(
-                              surahID: surahID,
-                              reciter: ref.read(reciterProvider))
-                          .future);
+                      ref.read(playerNotifierProvider.notifier).playPrevious();
                     },
                     icon: const Icon(
                       Icons.skip_next_outlined,
@@ -318,11 +321,7 @@ class FullScreenPlayControls extends StatelessWidget {
                   preferBelow: false,
                   child: IconButton(
                     onPressed: () async {
-                      final surahID = ref.read(surahIDProvider) + 1;
-                      await ref.read(seekIDProvider(
-                              surahID: surahID,
-                              reciter: ref.read(reciterProvider))
-                          .future);
+                      ref.read(playerNotifierProvider.notifier).playNext();
                     },
                     icon: const Icon(
                       Icons.skip_previous_outlined,
