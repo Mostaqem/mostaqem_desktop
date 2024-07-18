@@ -32,12 +32,14 @@ class PlayerNotifier extends _$PlayerNotifier {
     final currentPlayer = ref.watch<Album>(playerSurahProvider);
 
     player.open(Media(currentPlayer.url));
+
     player.stream.position.listen((position) {
       state = state.copyWith(position: position);
     });
 
     player.stream.duration.listen((duration) {
       state = state.copyWith(duration: duration);
+
       player.seek(Duration(milliseconds: currentPlayer.position));
     });
 
@@ -55,41 +57,45 @@ class PlayerNotifier extends _$PlayerNotifier {
       }
     });
     player.stream.playing.listen((playing) async {
-      if (playing) {
-        state = state.copyWith(isPlaying: true);
-      } else {
-        state = state.copyWith(isPlaying: false);
-      }
+      state = state.copyWith(isPlaying: playing);
 
       if (Platform.isWindows) {
         windowThumbnailBar();
-        ref.read(updateSMTCProvider(
+        ref.read(initSMTCProvider(
+            duration: state.duration.inMilliseconds,
+            position: state.position.inMilliseconds,
             image: currentPlayer.surah.image ??
                 "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
             surah: currentPlayer.surah.arabicName,
             reciter: currentPlayer.reciter.arabicName));
       }
 
-      ref.read(updateRPCDiscordProvider(
-          surahName: currentPlayer.surah.arabicName,
-          reciter: currentPlayer.reciter.arabicName,
-          position: state.position.inMilliseconds,
-          duration: state.duration.inMilliseconds));
-
       if (Platform.isLinux) {
-        await ref.watch(createMetadataProvider(
-                reciterName: currentPlayer.reciter.arabicName,
-                url: currentPlayer.url,
-                surah: currentPlayer.surah.arabicName,
-                image: currentPlayer.surah.image!,
-                position: state.position)
-            .future);
+        ref.read(createMetadataProvider(
+            reciterName: currentPlayer.reciter.arabicName,
+            url: currentPlayer.url,
+            surah: currentPlayer.surah.arabicName,
+            image: currentPlayer.surah.image!,
+            position: state.position));
       }
     });
 
     ref.listen(playerSurahProvider, (_, n) async {
       ref.watch(playerCacheProvider.notifier).removeAlbum();
       player.playOrPause();
+
+      ref.read(updateSMTCProvider(
+          image: n.surah.image ??
+              "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
+          surah: n.surah.arabicName,
+          reciter: n.reciter.arabicName));
+
+      ref.read(updateRPCDiscordProvider(
+          surahName: n.surah.simpleName,
+          reciter: n.reciter.englishName,
+          position: state.position.inMilliseconds,
+          duration: state.duration.inMilliseconds));
+
       player.open(Media(n.url));
     });
   }

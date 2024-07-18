@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/shared/device/device_repository.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
@@ -126,34 +125,10 @@ class AppMenuBar extends ConsumerWidget {
               child: const Text("الاختصارات"),
             ),
             MenuItemButton(
-              shortcut: const SingleActivator(
-                LogicalKeyboardKey.f1,
-              ),
+              shortcut:
+                  const SingleActivator(LogicalKeyboardKey.keyU, control: true),
               onPressed: () async {
-                final UpdateState updateState =
-                    await PackageRepository().checkUpdate();
-                final bool updateAvailable =
-                    updateState == UpdateState.available;
-                if (!context.mounted) return;
-
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          content: updateAvailable
-                              ? const Text("نعم هناك تحديث")
-                              : const Text("لا يوجد تحديث"),
-                          actions: [
-                            TextButton(
-                                onPressed: () => context.pop(),
-                                child: const Text("الغاء")),
-                            Visibility(
-                              visible: updateAvailable,
-                              child: TextButton(
-                                  onPressed: () => context.pop(),
-                                  child: const Text("تحديث")),
-                            )
-                          ],
-                        ));
+                checkUpdateDialog(context, ref);
               },
               child: const Text("تحديث؟"),
             ),
@@ -166,4 +141,29 @@ class AppMenuBar extends ConsumerWidget {
           ], child: const Icon(Icons.more_horiz_outlined))
         ]);
   }
+}
+
+Future<void> checkUpdateDialog(BuildContext context, WidgetRef ref) async {
+  final UpdateState updateState = await PackageRepository().checkUpdate();
+  final bool updateAvailable = updateState == UpdateState.available;
+  if (!context.mounted) return;
+
+  return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            content: updateAvailable
+                ? const Text("نعم هناك تحديث")
+                : const Text("لا يوجد تحديث"),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("الغاء")),
+              Visibility(
+                visible: updateAvailable,
+                child: TextButton(
+                    onPressed: () => PackageRepository().downloadUpdate(),
+                    child: const Text("تحديث")),
+              )
+            ],
+          ));
 }

@@ -1,7 +1,0 @@
-icons_launcher:
-  image_path: "/home/mazen/Downloads/app_icon.png"
-  platforms:
-    linux:
-      enable: true
-      image_path: "/home/mazen/Downloads/app_icon.png"
-    

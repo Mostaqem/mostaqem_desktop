@@ -1,0 +1,15 @@
+display_name: Mostaqem
+
+publisher_display_name: Mazen Omar
+
+identity_name: 4882MazenOmar.98224A066B48
+
+publisher: CN=02970061-64BA-42D9-9C4F-DFB9B063C27D
+
+msix_version: 1.0.0.0
+
+logo_path: windows/icon/app_icon.png
+
+capabilities: internetClient
+
+store: "true"
