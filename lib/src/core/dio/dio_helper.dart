@@ -2,13 +2,14 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/env/env.dart';
 
 final dioHelperProvider = Provider((ref) => DioHelper());
 
 class DioHelper {
-  static const String url = 'https://mostaqem-api.onrender.com/api/v1';
+  static final String url = Env.apiURL;
   static BaseOptions opts = BaseOptions(
-    baseUrl: url,  
+    baseUrl: url,
   );
 
   static Dio createDio() {
