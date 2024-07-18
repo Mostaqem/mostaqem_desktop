@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 
-import '../../../shared/widgets/hover_builder.dart';
+import '../../../shared/widgets/text_hover.dart';
 import 'player_widget.dart';
 
 class PlayingSurah extends StatelessWidget {
@@ -50,31 +50,12 @@ class PlayingSurah extends StatelessWidget {
                       )),
                 ],
               ),
-              HoverBuilder(builder: (isHovered) {
-                return MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () {
-                      ref.read(goRouterProvider).push('/reciters');
-                    },
-                    child: Text(
-                      player.reciter.arabicName,
-                      style: TextStyle(
-                          decoration: isHovered
-                              ? TextDecoration.underline
-                              : TextDecoration.none,
-                          color: isHovered
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer
-                                  .withOpacity(0.5)),
-                    ),
-                  ),
-                );
-              }),
+              TextHover(
+                text: player.reciter.arabicName,
+                onTap: () {
+                  ref.read(goRouterProvider).push("/reciters");
+                },
+              ),
             ],
           )
         ],
@@ -82,3 +63,4 @@ class PlayingSurah extends StatelessWidget {
     );
   }
 }
+

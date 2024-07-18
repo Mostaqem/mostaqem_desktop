@@ -4,6 +4,7 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
+import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 
 import '../../core/routes/routes.dart';
 import '../../shared/widgets/hover_builder.dart';
@@ -185,7 +186,7 @@ class QueueWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reciter = ref
-        .watch(playerSurahProvider.select((value) => value.reciter.arabicName));
+        .watch(reciterProvider.select((value) => value?.arabicName ?? "عبدالباسط عبدالصمد"));
     final nextSurah = ref.watch(fetchNextSurahProvider);
     return Expanded(
       child: Container(
@@ -218,13 +219,11 @@ class QueueWidget extends ConsumerWidget {
                         loading: const SizedBox.shrink(),
                         value: nextSurah,
                         data: (data) => Text(data.arabicName)),
-                    Text(
-                      reciter,
-                      style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer),
-                    )
+                    TextHover(
+                        text: reciter,
+                        onTap: () {
+                          ref.read(goRouterProvider).push("/reciters");
+                        }),
                   ],
                 ),
               ),
