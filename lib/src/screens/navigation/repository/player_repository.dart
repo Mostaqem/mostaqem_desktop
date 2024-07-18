@@ -140,18 +140,19 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   Future<void> playNext() async {
     final currentPlayer = ref.read<Album>(playerSurahProvider);
+
+    final chosenReciter =
+        ref.read(reciterProvider) ?? ref.read(playerSurahProvider).reciter;
+
     int nextID = currentPlayer.surah.id + 1;
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
     final audioURL = await ref.read(fetchAudioForChapterProvider(
-            chapterNumber: nextID, reciterID: currentPlayer.reciter.id)
+            chapterNumber: nextID, reciterID: chosenReciter.id)
         .future);
 
     final nextAlbum = Album(
-        surah: nextSurah,
-        reciter: currentPlayer.reciter,
-        url: audioURL,
-        position: 0);
+        surah: nextSurah, reciter: chosenReciter, url: audioURL, position: 0);
 
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
   }
@@ -159,15 +160,18 @@ class PlayerNotifier extends _$PlayerNotifier {
   Future<void> playPrevious() async {
     final currentPlayer = ref.read<Album>(playerSurahProvider);
     int nextID = currentPlayer.surah.id - 1;
+    final chosenReciter =
+        ref.read(reciterProvider) ?? ref.read(playerSurahProvider).reciter;
+
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
     final audioURL = await ref.read(fetchAudioForChapterProvider(
-            chapterNumber: nextID, reciterID: currentPlayer.reciter.id)
+            chapterNumber: nextID, reciterID: chosenReciter.id)
         .future);
 
     final nextAlbum = Album(
         surah: nextSurah,
-        reciter: currentPlayer.reciter,
+        reciter: chosenReciter,
         url: audioURL,
         position: 0);
 
