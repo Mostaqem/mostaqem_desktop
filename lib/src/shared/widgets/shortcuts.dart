@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
+import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../screens/navigation/repository/player_repository.dart';
@@ -31,7 +32,9 @@ class AppShortcuts extends ConsumerWidget {
         const SingleActivator(LogicalKeyboardKey.f1): () => showDialog(
               context: context,
               builder: (context) => helpShortcuts(context),
-            )
+            ),
+        const SingleActivator(LogicalKeyboardKey.keyU, control: true): () =>
+            checkUpdateDialog(context, ref)
       },
       child: child,
     );

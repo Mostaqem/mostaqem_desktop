@@ -8,7 +8,7 @@ class AudioState {
   final PlaylistMode loop;
   final bool buffering;
   AudioState(
-      {this.isPlaying = true,
+      {this.isPlaying = false,
       this.position = Duration.zero,
       this.volume = 1.0,
       this.buffering = false,

@@ -40,17 +40,17 @@ class PlayControls extends StatelessWidget {
     //TODO: Refactor PlayControls
     return Transform.scale(
       scale: isFullScreen ? 1.3 : 1,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          player.buffering
-              ? const SizedBox(
-                  width: 10,
-                  height: 10,
-                  child: CircularProgressIndicator(),
-                )
-              : Row(
+      child: player.buffering
+          ? const SizedBox(
+              width: 10,
+              height: 10,
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Visibility(
@@ -151,50 +151,59 @@ class PlayControls extends StatelessWidget {
                     )
                   ],
                 ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                ref.watch(playerNotifierProvider.notifier).playerTime().$1,
-                style: TextStyle(color: isFullScreen ? Colors.white : null),
-              ),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxWidth: isFullScreen
-                        ? MediaQuery.sizeOf(context).width / 1.5
-                        : MediaQuery.sizeOf(context).width / 2.5,
-                    maxHeight: 10),
-                child: HoverBuilder(builder: (isHovered) {
-                  return SliderTheme(
-                    data: SliderThemeData(
-                        thumbShape: RoundSliderThumbShape(
-                      enabledThumbRadius: isHovered ? 7 : 3,
-                      elevation: 0,
-                    )),
-                    child: Slider(
-                        value: ref
-                            .watch(playerNotifierProvider)
-                            .position
-                            .inSeconds
-                            .toDouble(),
-                        min: 0.0,
-                        max: ref
-                            .watch(playerNotifierProvider)
-                            .duration
-                            .inSeconds
-                            .toDouble(),
-                        onChanged: (v) => ref
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      ref
+                          .watch(playerNotifierProvider.notifier)
+                          .playerTime()
+                          .$1,
+                      style:
+                          TextStyle(color: isFullScreen ? Colors.white : null),
+                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxWidth: isFullScreen
+                              ? MediaQuery.sizeOf(context).width / 1.5
+                              : MediaQuery.sizeOf(context).width / 2.5,
+                          maxHeight: 10),
+                      child: HoverBuilder(builder: (isHovered) {
+                        return SliderTheme(
+                          data: SliderThemeData(
+                              thumbShape: RoundSliderThumbShape(
+                            enabledThumbRadius: isHovered ? 7 : 3,
+                            elevation: 0,
+                          )),
+                          child: Slider(
+                              value: ref
+                                  .watch(playerNotifierProvider)
+                                  .position
+                                  .inSeconds
+                                  .toDouble(),
+                              min: 0.0,
+                              max: ref
+                                  .watch(playerNotifierProvider)
+                                  .duration
+                                  .inSeconds
+                                  .toDouble(),
+                              onChanged: (v) => ref
+                                  .watch(playerNotifierProvider.notifier)
+                                  .handleSeek(v)),
+                        );
+                      }),
+                    ),
+                    Text(
+                        ref
                             .watch(playerNotifierProvider.notifier)
-                            .handleSeek(v)),
-                  );
-                }),
-              ),
-              Text(ref.watch(playerNotifierProvider.notifier).playerTime().$2,
-                  style: TextStyle(color: isFullScreen ? Colors.white : null)),
-            ],
-          ),
-        ],
-      ),
+                            .playerTime()
+                            .$2,
+                        style: TextStyle(
+                            color: isFullScreen ? Colors.white : null)),
+                  ],
+                ),
+              ],
+            ),
     );
   }
 }

@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:github/github.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 enum UpdateState {
@@ -29,9 +27,9 @@ class PackageRepository {
 
   Future<UpdateState> checkUpdate() async {
     final version = await currentVersion();
+   
     final latestRelease =
         await _github.repositories.getLatestRelease(_githubRepoSlug);
-    
     final latestVersion = latestRelease.tagName?.substring(1);
     if (latestVersion == null) return UpdateState.notAvailable;
     final currentV = getExtendedVersionNumber(version);

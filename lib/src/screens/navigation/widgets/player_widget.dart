@@ -57,7 +57,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   void _resetTimer() {
     if (_timer != null) {
-      _timer!.cancel();
+      _timer?.cancel();
     }
 
     _timer = Timer(const Duration(seconds: 5), () {

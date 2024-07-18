@@ -5,9 +5,6 @@ class InfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [Text("النسخة"), Text("1.0.0")],
-    );
+    return const Center(child: Text("قريبا"));
   }
 }

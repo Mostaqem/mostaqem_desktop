@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
+import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
 import '../../shared/widgets/tooltip_icon.dart';
 import '../../shared/widgets/window_buttons.dart';
@@ -18,13 +20,11 @@ class Navigation extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     bool isFullScreen = ref.watch(isFullScreenProvider);
     final player = ref.watch(playerSurahProvider);
-    
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: isFullScreen
-          ? FullScreenWidget(
-              player: player,
-            )
+          ? FullScreenWidget(player: player, ref: ref)
           : Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -54,22 +54,23 @@ class Navigation extends ConsumerWidget {
 }
 
 class FullScreenWidget extends StatelessWidget {
-  const FullScreenWidget({
-    super.key,
-    required this.player,
-  });
+  const FullScreenWidget({super.key, required this.player, required this.ref});
   final Album player;
+  final WidgetRef ref;
   @override
   Widget build(BuildContext context) {
+    final randomImage = ref.watch(fetchRandomImageProvider);
     return Stack(
       children: [
-        Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      "https://images.unsplash.com/photo-1686579809662-829e8374d0a8?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"))),
-        ),
+        AsyncWidget(
+            value: randomImage,
+            data: (data) {
+              return Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        fit: BoxFit.cover, image: NetworkImage(data))),
+              );
+            }),
         Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -98,8 +99,9 @@ class FullScreenWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:
-                              CachedNetworkImageProvider(player.surah.image!))),
+                          image: CachedNetworkImageProvider(player
+                                  .surah.image ??
+                              "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg"))),
                 ),
                 const SizedBox(
                   width: 12,
@@ -122,6 +124,19 @@ class FullScreenWidget extends StatelessWidget {
             ),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: CircleAvatar(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                child: IconButton(
+                    onPressed: () {
+                      ref.invalidate(fetchRandomImageProvider);
+                    },
+                    icon: const Icon(Icons.arrow_forward_outlined)),
+              )),
+        )
       ],
     );
   }

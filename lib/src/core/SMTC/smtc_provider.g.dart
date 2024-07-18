@@ -187,5 +187,197 @@ class _UpdateSMTCProviderElement extends AutoDisposeProviderElement<Object?>
   @override
   String get image => (origin as UpdateSMTCProvider).image;
 }
+
+String _$initSMTCHash() => r'ac8885da11421ae6415f72bf6e830dfbefd508e8';
+
+/// See also [initSMTC].
+@ProviderFor(initSMTC)
+const initSMTCProvider = InitSMTCFamily();
+
+/// See also [initSMTC].
+class InitSMTCFamily extends Family<Object?> {
+  /// See also [initSMTC].
+  const InitSMTCFamily();
+
+  /// See also [initSMTC].
+  InitSMTCProvider call({
+    required String surah,
+    required String reciter,
+    required String image,
+    required int position,
+    required int duration,
+  }) {
+    return InitSMTCProvider(
+      surah: surah,
+      reciter: reciter,
+      image: image,
+      position: position,
+      duration: duration,
+    );
+  }
+
+  @override
+  InitSMTCProvider getProviderOverride(
+    covariant InitSMTCProvider provider,
+  ) {
+    return call(
+      surah: provider.surah,
+      reciter: provider.reciter,
+      image: provider.image,
+      position: provider.position,
+      duration: provider.duration,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'initSMTCProvider';
+}
+
+/// See also [initSMTC].
+class InitSMTCProvider extends AutoDisposeProvider<Object?> {
+  /// See also [initSMTC].
+  InitSMTCProvider({
+    required String surah,
+    required String reciter,
+    required String image,
+    required int position,
+    required int duration,
+  }) : this._internal(
+          (ref) => initSMTC(
+            ref as InitSMTCRef,
+            surah: surah,
+            reciter: reciter,
+            image: image,
+            position: position,
+            duration: duration,
+          ),
+          from: initSMTCProvider,
+          name: r'initSMTCProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$initSMTCHash,
+          dependencies: InitSMTCFamily._dependencies,
+          allTransitiveDependencies: InitSMTCFamily._allTransitiveDependencies,
+          surah: surah,
+          reciter: reciter,
+          image: image,
+          position: position,
+          duration: duration,
+        );
+
+  InitSMTCProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.surah,
+    required this.reciter,
+    required this.image,
+    required this.position,
+    required this.duration,
+  }) : super.internal();
+
+  final String surah;
+  final String reciter;
+  final String image;
+  final int position;
+  final int duration;
+
+  @override
+  Override overrideWith(
+    Object? Function(InitSMTCRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: InitSMTCProvider._internal(
+        (ref) => create(ref as InitSMTCRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        surah: surah,
+        reciter: reciter,
+        image: image,
+        position: position,
+        duration: duration,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeProviderElement<Object?> createElement() {
+    return _InitSMTCProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is InitSMTCProvider &&
+        other.surah == surah &&
+        other.reciter == reciter &&
+        other.image == image &&
+        other.position == position &&
+        other.duration == duration;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, surah.hashCode);
+    hash = _SystemHash.combine(hash, reciter.hashCode);
+    hash = _SystemHash.combine(hash, image.hashCode);
+    hash = _SystemHash.combine(hash, position.hashCode);
+    hash = _SystemHash.combine(hash, duration.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin InitSMTCRef on AutoDisposeProviderRef<Object?> {
+  /// The parameter `surah` of this provider.
+  String get surah;
+
+  /// The parameter `reciter` of this provider.
+  String get reciter;
+
+  /// The parameter `image` of this provider.
+  String get image;
+
+  /// The parameter `position` of this provider.
+  int get position;
+
+  /// The parameter `duration` of this provider.
+  int get duration;
+}
+
+class _InitSMTCProviderElement extends AutoDisposeProviderElement<Object?>
+    with InitSMTCRef {
+  _InitSMTCProviderElement(super.provider);
+
+  @override
+  String get surah => (origin as InitSMTCProvider).surah;
+  @override
+  String get reciter => (origin as InitSMTCProvider).reciter;
+  @override
+  String get image => (origin as InitSMTCProvider).image;
+  @override
+  int get position => (origin as InitSMTCProvider).position;
+  @override
+  int get duration => (origin as InitSMTCProvider).duration;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
