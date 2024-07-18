@@ -7,7 +7,7 @@ maintainer:
 
 priority: optional
 
-installed_size: 20000
+installed_size: 32000
 
 dependencies:
   - mpv

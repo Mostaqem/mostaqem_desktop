@@ -12,7 +12,7 @@ class DeviceRepository {
     }
     if (Platform.isLinux) {
       final linuxInfo = await _deviceInfo.linuxInfo;
-      return "Linux ${linuxInfo.versionCodename}";
+      return linuxInfo.name;
     }
     return "";
   }
