@@ -27,7 +27,7 @@ class PackageRepository {
 
   Future<UpdateState> checkUpdate() async {
     final version = await currentVersion();
-   
+
     final latestRelease =
         await _github.repositories.getLatestRelease(_githubRepoSlug);
     final latestVersion = latestRelease.tagName?.substring(1);
@@ -56,7 +56,7 @@ class PackageRepository {
         await launchUrlString(installUrl);
         break;
       case "linux":
-        //TODO: Download update for Linux
+        await launchUrlString(latestRelease.htmlUrl!);
         break;
     }
   }
