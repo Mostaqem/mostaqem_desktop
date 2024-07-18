@@ -4,7 +4,7 @@ import 'package:media_kit/media_kit.dart';
 
 import '../../../shared/widgets/hover_builder.dart';
 import '../repository/player_repository.dart';
-import 'player_widget.dart';
+import 'full_screen_controls.dart';
 
 class PlayControls extends StatelessWidget {
   const PlayControls(

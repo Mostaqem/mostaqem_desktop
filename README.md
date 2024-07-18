@@ -42,6 +42,7 @@ sudo apt install mpv libmpv-dev
 - [Me](https://github.com/mezopeeta) | Flutter
 - [MP3Quran](https://mp3quran.net/ar/api) | API we used for audio
 - [Quran Foundation](https://api-docs.quran.com/docs/category/quran.com-api) | API we used for reading
+- [Unsplash](https://unsplash.com/developers) | API for generating random image for the fullscreen mode
 
 ## License:
 - This project is licensed under the [GNU-V3](LICENSE) © Mazen Omar - see the LICENSE.md file for details

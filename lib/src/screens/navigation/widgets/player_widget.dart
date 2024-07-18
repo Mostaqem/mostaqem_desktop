@@ -2,19 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
-import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../../../core/routes/routes.dart';
+import 'normal_player.dart';
 import 'play_controls.dart';
-import 'playing_surah.dart';
 import 'volume_control.dart';
 
 final playerSurahProvider = StateProvider.autoDispose<Album>((ref) {
@@ -109,7 +106,6 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
       child: Visibility(
         visible: isFullScreen ? _isVisible : true,
         child: Container(
-            width: double.infinity,
             height: 100,
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
@@ -128,90 +124,15 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
                       const Expanded(child: VolumeControls()),
                     ],
                   )
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          PlayingSurah(
-                            isFullScreen: isFullScreen,
-                            ref: ref,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 150),
-                            child: PlayControls(
-                              isFullScreen: isFullScreen,
-                              ref: ref,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Visibility(
-                                visible: !isFullScreen,
-                                child: ToolTipIconButton(
-                                  message: "اقرأ",
-                                  onPressed: () async {
-                                    final surahID =
-                                        ref.read(playerSurahProvider).surah.id;
-
-                                    ref.watch(goRouterProvider).goNamed(
-                                          'Reading',
-                                          extra: surahID,
-                                        );
-                                  },
-                                  icon: SvgPicture.asset(
-                                    "assets/img/read.svg",
-                                    width: 16,
-                                    colorFilter: ColorFilter.mode(
-                                        Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer,
-                                        BlendMode.srcIn),
-                                  ),
-                                ),
-                              ),
-                              const VolumeControls(),
-                              FullScreenControl(
-                                  ref: ref, isFullScreen: isFullScreen)
-                            ],
-                          ),
-                        ]),
-                  )),
+                : LayoutBuilder(builder: (context, constraints) {
+                    return constraints.minWidth < 955
+                        ? FittedBox(
+                            child: NormalPlayer(
+                                isFullScreen: isFullScreen, ref: ref))
+                        : NormalPlayer(isFullScreen: isFullScreen, ref: ref);
+                  })),
       ),
     );
   }
 }
 
-class FullScreenControl extends StatelessWidget {
-  const FullScreenControl({
-    super.key,
-    required this.ref,
-    required this.isFullScreen,
-  });
-
-  final WidgetRef ref;
-  final bool isFullScreen;
-
-  @override
-  Widget build(BuildContext context) {
-    return ToolTipIconButton(
-      onPressed: () async {
-        if (await windowManager.isFullScreen()) {
-          ref.read(isFullScreenProvider.notifier).toggle(false);
-        } else {
-          ref.read(isFullScreenProvider.notifier).toggle(true);
-        }
-      },
-      icon: Icon(
-        isFullScreen
-            ? Icons.close_fullscreen_outlined
-            : Icons.open_in_full_outlined,
-        size: 16,
-        color: isFullScreen
-            ? Colors.white
-            : Theme.of(context).colorScheme.onSecondaryContainer,
-      ),
-      message: isFullScreen ? "تصغير الشاشة" : "تكبير الشاشة",
-    );
-  }
-}

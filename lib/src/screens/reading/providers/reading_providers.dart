@@ -10,5 +10,8 @@ Future<List<String>> fetchUthmaniScript(FetchUthmaniScriptRef ref,
   final response = await ref
       .read(dioHelperProvider)
       .getHTTP('/verse/surah?surah_id=$surahID');
-  return response!.data["data"]["verses"].map<String>((e) => e["vers"].toString()).toList();
+
+  return response!.data["data"]["verses"]
+      .map<String>((e) => e["vers"].toString())
+      .toList();
 }

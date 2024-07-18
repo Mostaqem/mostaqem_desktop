@@ -8,7 +8,7 @@ part 'smtc_provider.g.dart';
 class SMTCRepository {
   final Ref ref;
   SMTCRepository(this.ref);
-  late final SMTCWindows smtc;
+  SMTCWindows? smtc;
 
   void init(
       {required String surah,
@@ -40,16 +40,16 @@ class SMTCRepository {
         stopEnabled: true,
       ),
     );
-    smtc.buttonPressStream.listen((event) {
+    smtc!.buttonPressStream.listen((event) {
       switch (event) {
         case PressedButton.play:
           ref.read(playerNotifierProvider.notifier).player.play();
-          smtc.setPlaybackStatus(PlaybackStatus.Playing);
+          smtc!.setPlaybackStatus(PlaybackStatus.Playing);
           break;
         case PressedButton.pause:
           ref.read(playerNotifierProvider.notifier).player.pause();
 
-          smtc.setPlaybackStatus(PlaybackStatus.Paused);
+          smtc!.setPlaybackStatus(PlaybackStatus.Paused);
           break;
         case PressedButton.next:
           ref.read(playerNotifierProvider.notifier).playNext();
@@ -59,7 +59,7 @@ class SMTCRepository {
 
           break;
         case PressedButton.stop:
-          smtc.setPlaybackStatus(PlaybackStatus.Stopped);
+          smtc!.setPlaybackStatus(PlaybackStatus.Stopped);
           break;
         default:
           break;
@@ -69,7 +69,7 @@ class SMTCRepository {
 
   void updateSMTC(
       {required String surah, required String reciter, required String image}) {
-    smtc.updateMetadata(
+    smtc!.updateMetadata(
       MusicMetadata(
         title: surah,
         albumArtist: reciter,
