@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hijri/hijri_calendar.dart';
@@ -7,7 +8,6 @@ import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 
 import '../../core/routes/routes.dart';
-import '../../shared/widgets/hover_builder.dart';
 import 'widgets/hijri_date_widget.dart';
 import 'widgets/surah_widget.dart';
 
@@ -22,8 +22,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     HijriCalendar.setLocal("ar");
     final isTyping = ref.watch(isTypingProvider);
-    final surahImage = ref.watch(playerSurahProvider).surah.image ??
-        "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg";
+    final surahImage = ref.watch(playerSurahProvider).surah.image;
     return Scaffold(
         body: Row(
       children: [
@@ -77,9 +76,6 @@ class HomeScreen extends ConsumerWidget {
                   height: 18,
                 ),
                 const SurahWidget(),
-                const SizedBox(
-                  height: 100,
-                ),
               ],
             ),
           ),
@@ -114,13 +110,15 @@ class HomeScreen extends ConsumerWidget {
                         height: 15,
                       ),
                       Container(
-                        width: 300,
-                        height: 250,
+                        width: double.infinity,
+                        height: 300,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(surahImage))),
+                                image: CachedNetworkImageProvider(surahImage!,
+                                    errorListener: (_) => const Icon(
+                                        Icons.broken_image_outlined)))),
                       ),
                       const SizedBox(
                         height: 15,
@@ -135,33 +133,13 @@ class HomeScreen extends ConsumerWidget {
                                 .colorScheme
                                 .onSecondaryContainer),
                       ),
-                      HoverBuilder(builder: (isHovered) {
-                        return MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                            onTap: () {
-                              ref.read(goRouterProvider).push('/reciters');
-                            },
-                            child: Text(
-                              ref.watch(playerSurahProvider
-                                  .select((value) => value.reciter.arabicName)),
-                              style: TextStyle(
-                                  fontSize: 17.0,
-                                  decoration: isHovered
-                                      ? TextDecoration.underline
-                                      : TextDecoration.none,
-                                  color: isHovered
-                                      ? Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onSecondaryContainer
-                                          .withOpacity(0.5)),
-                            ),
-                          ),
-                        );
-                      }),
+                      TextHover(
+                        text: ref.watch(playerSurahProvider
+                            .select((value) => value.reciter.arabicName)),
+                        onTap: () {
+                          ref.read(goRouterProvider).push('/reciters');
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -185,8 +163,8 @@ class QueueWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reciter = ref
-        .watch(reciterProvider.select((value) => value?.arabicName ?? "عبدالباسط عبدالصمد"));
+    final reciter = ref.watch(reciterProvider
+        .select((value) => value?.arabicName ?? "عبدالباسط عبدالصمد"));
     final nextSurah = ref.watch(fetchNextSurahProvider);
     return Expanded(
       child: Container(

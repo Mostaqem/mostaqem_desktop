@@ -17,7 +17,8 @@ class SurahWidget extends ConsumerWidget {
     final surahs = ref.watch(filterSurahByQueryProvider);
     return AsyncWidget(
       value: surahs,
-      data: (data) => Expanded(
+      data: (data) => SizedBox(
+        height: MediaQuery.sizeOf(context).height - 285,
         child: GridView.builder(
           itemCount: data.length,
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -53,47 +54,54 @@ class SurahWidget extends ConsumerWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                data[index].arabicName,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer),
+                            Flexible(
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Text(
+                                  data[index].arabicName,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer),
+                                ),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                data[index].simpleName,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer
-                                        .withOpacity(0.5)),
+                            Flexible(
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  data[index].simpleName,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer
+                                          .withOpacity(0.5)),
+                                ),
                               ),
                             ),
                             const Spacer(),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Consumer(builder: (context, ref, child) {
-                                return Tooltip(
-                                  message: "تشغيل",
-                                  preferBelow: false,
-                                  child: IconButton(
-                                      onPressed: () async {
-                                        ref
-                                            .read(
-                                                playerNotifierProvider.notifier)
-                                            .play(
-                                              surahID: data[index].id,
-                                            );
-                                      },
-                                      icon: const Icon(
-                                          Icons.play_circle_fill_outlined)),
-                                );
-                              }),
+                            Flexible(
+                              flex: 2,
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: Consumer(builder: (context, ref, child) {
+                                  return Tooltip(
+                                    message: "تشغيل",
+                                    preferBelow: false,
+                                    child: IconButton(
+                                        onPressed: () async {
+                                          ref
+                                              .read(playerNotifierProvider
+                                                  .notifier)
+                                              .play(
+                                                surahID: data[index].id,
+                                              );
+                                        },
+                                        icon: const Icon(
+                                            Icons.play_circle_fill_outlined)),
+                                  );
+                                }),
+                              ),
                             )
                           ],
                         ),

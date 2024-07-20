@@ -77,6 +77,7 @@ dev_dependencies:
   json_serializable: ^6.8.0
   flutter_distributor: ^0.4.5
   envied_generator: ^0.5.4+1
+  mockito: ^5.4.4
 
 
 # For information on the generic Dart part of this file, see the
