@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 
 import '../../../shared/widgets/hover_builder.dart';
 import '../repository/player_repository.dart';
@@ -55,8 +56,8 @@ class PlayControls extends StatelessWidget {
                   children: [
                     Visibility(
                       visible: ref
-                          .watch(playerNotifierProvider.notifier)
-                          .isFirstChapter(),
+                              .watch(playerNotifierProvider.notifier)
+                              .isFirstChapter(),
                       child: Tooltip(
                         message: "قبل",
                         preferBelow: false,
@@ -107,8 +108,9 @@ class PlayControls extends StatelessWidget {
                     ),
                     Visibility(
                       visible: ref
-                          .watch(playerNotifierProvider.notifier)
-                          .isLastchapter(),
+                              .watch(playerNotifierProvider.notifier)
+                              .isLastchapter() &&
+                          ref.watch(playerSurahProvider) != null,
                       child: Tooltip(
                         message: "بعد",
                         preferBelow: false,
@@ -289,13 +291,14 @@ class FullScreenPlayControls extends StatelessWidget {
             children: [
               Visibility(
                 visible:
-                    ref.watch(playerNotifierProvider.notifier).isFirstChapter(),
+                    ref.watch(playerNotifierProvider.notifier).isFirstChapter() &&
+                          ref.watch(playerSurahProvider) != null,
                 child: Tooltip(
                   message: "قبل",
                   preferBelow: false,
                   child: IconButton(
                     onPressed: () async {
-                      ref.read(playerNotifierProvider.notifier).playPrevious();
+                      ref.read(playerNotifierProvider.notifier).playPrevious() ;
                     },
                     icon: const Icon(
                       Icons.skip_next_outlined,
@@ -324,7 +327,8 @@ class FullScreenPlayControls extends StatelessWidget {
               ),
               Visibility(
                 visible:
-                    ref.watch(playerNotifierProvider.notifier).isLastchapter(),
+                    ref.watch(playerNotifierProvider.notifier).isLastchapter() &&
+                          ref.watch(playerSurahProvider) != null,
                 child: Tooltip(
                   message: "بعد",
                   preferBelow: false,

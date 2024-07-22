@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 
 import '../../../core/routes/routes.dart';
 import '../../../shared/widgets/tooltip_icon.dart';
+import '../repository/player_repository.dart';
 import 'full_screen_controls.dart';
 import 'play_controls.dart';
 import 'player_widget.dart';
@@ -30,7 +32,7 @@ class NormalPlayer extends StatelessWidget {
           ref: ref,
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 50),
           child: PlayControls(
             isFullScreen: isFullScreen,
             ref: ref,
@@ -39,11 +41,26 @@ class NormalPlayer extends StatelessWidget {
         Row(
           children: [
             Visibility(
-              visible: !isFullScreen,
+              visible:
+                  !ref.read(playerNotifierProvider.notifier).isLocalAudio(),
+              child: ToolTipIconButton(
+                  message: "تحميل",
+                  iconSize: 16,
+                  onPressed: () async {
+                    final album = ref.read(playerSurahProvider);
+                    ref
+                        .read(downloadAudioProvider.notifier)
+                        .download(album: album!);
+                  },
+                  icon: const Icon(Icons.download_for_offline)),
+            ),
+            Visibility(
+              visible: !isFullScreen &&
+                  !ref.read(playerNotifierProvider.notifier).isLocalAudio(),
               child: ToolTipIconButton(
                 message: "اقرأ",
                 onPressed: () async {
-                  final surahID = ref.read(playerSurahProvider).surah.id;
+                  final surahID = ref.read(playerSurahProvider)!.surah.id;
 
                   ref.watch(goRouterProvider).goNamed(
                         'Reading',
@@ -67,4 +84,3 @@ class NormalPlayer extends StatelessWidget {
     );
   }
 }
-

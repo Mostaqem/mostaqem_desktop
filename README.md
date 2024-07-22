@@ -26,6 +26,7 @@ sudo apt install mpv libmpv-dev
 * Shortcuts Help
 * Fullscreen mode
 * Integrated with OS
+* Offline Mode
 
 
 ### TODOs:
@@ -35,7 +36,6 @@ sudo apt install mpv libmpv-dev
 - [ ] Share your playlist with friends
 - [ ] Listen together
 - [ ] Add your Reciter
-- [ ] Download
 
 ## Credits:
 - [Omar Sabra](https://github.com/the-sabra) | Backend Engineer

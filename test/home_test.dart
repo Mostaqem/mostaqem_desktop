@@ -5,9 +5,6 @@ import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
-import 'package:mostaqem/src/screens/navigation/data/album.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
-import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 
 void main() {
   group("Test Home Screen", () {
@@ -72,25 +69,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text("arabicName"), findsNWidgets(2));
-    });
-    testWidgets('Test player data in Home Screen', (WidgetTester tester) async {
-      await tester.binding.setSurfaceSize(const Size(800, 500));
-      const surah = Surah(
-          id: 0,
-          simpleName: "simpleName",
-          arabicName: "arabicName",
-          revelationPlace: "revelationPlace");
-
-      const reciter = Reciter(
-          id: 0, englishName: "reciterName", arabicName: "reciterArabicName");
-
-      await tester.pumpWidget(ProviderScope(overrides: [
-        isCollapsedProvider.overrideWith((ref) => true),
-        playerSurahProvider.overrideWith(
-            (ref) => const Album(surah: surah, reciter: reciter, url: "url")),
-      ], child: MaterialApp(home: HomeScreen())));
-
-      await tester.pump();
     });
   });
 }

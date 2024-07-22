@@ -43,7 +43,7 @@ Future<List<Surah>> filterSurahByQuery(FilterSurahByQueryRef ref) async {
 
 @riverpod
 Future<Surah> fetchNextSurah(FetchNextSurahRef ref) async {
-  final currentSurahID = ref.watch(playerSurahProvider).surah.id;
+  final currentSurahID = ref.watch(playerSurahProvider)!.surah.id;
   if (currentSurahID < 113) {
     return await ref
         .read(fetchChapterByIdProvider(id: currentSurahID + 1).future);

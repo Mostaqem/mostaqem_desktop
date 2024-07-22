@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:metadata_god/metadata_god.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:media_kit/media_kit.dart'; // Provides [Player], [Media], [Playlist] etc.
 
@@ -12,9 +13,10 @@ void main() async {
   DiscordRPC.initialize();
   await windowManager.ensureInitialized();
 
-
   MediaKit.ensureInitialized();
   await CacheHelper.init();
+  MetadataGod.initialize();
+
   runApp(const Mostaqem());
 
   WindowOptions windowOptions = const WindowOptions(

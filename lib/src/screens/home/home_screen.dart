@@ -22,7 +22,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     HijriCalendar.setLocal("ar");
     final isTyping = ref.watch(isTypingProvider);
-    final surahImage = ref.watch(playerSurahProvider).surah.image;
+    final surahImage = ref.watch(playerSurahProvider)?.surah.image ?? "";
     return Scaffold(
         body: Row(
       children: [
@@ -84,7 +84,8 @@ class HomeScreen extends ConsumerWidget {
           width: 10,
         ),
         Visibility(
-          visible: ref.watch(isCollapsedProvider),
+          visible: ref.watch(isCollapsedProvider) &&
+              ref.watch(playerSurahProvider) != null ,
           child: Expanded(
               child: Column(
             children: [
@@ -116,7 +117,7 @@ class HomeScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: CachedNetworkImageProvider(surahImage!,
+                                image: CachedNetworkImageProvider(surahImage,
                                     errorListener: (_) => const Icon(
                                         Icons.broken_image_outlined)))),
                       ),
@@ -125,7 +126,7 @@ class HomeScreen extends ConsumerWidget {
                       ),
                       Text(
                         ref.watch(playerSurahProvider
-                            .select((value) => value.surah.arabicName)),
+                            .select((value) => value?.surah.arabicName ?? "")),
                         style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -134,8 +135,8 @@ class HomeScreen extends ConsumerWidget {
                                 .onSecondaryContainer),
                       ),
                       TextHover(
-                        text: ref.watch(playerSurahProvider
-                            .select((value) => value.reciter.arabicName)),
+                        text: ref.watch(playerSurahProvider.select(
+                            (value) => value?.reciter.arabicName ?? "")),
                         onTap: () {
                           ref.read(goRouterProvider).push('/reciters');
                         },

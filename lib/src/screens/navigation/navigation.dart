@@ -21,7 +21,7 @@ class Navigation extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: isFullScreen
-          ? FullScreenWidget(player: player, ref: ref)
+          ? FullScreenWidget(player: player!, ref: ref)
           : Stack(
               alignment: Alignment.bottomCenter,
               children: [

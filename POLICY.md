@@ -18,7 +18,7 @@ Our App integrates with the following third-party APIs to provide a seamless use
    - Privacy Policy: [Quran Foundation Privacy Policy](https://quran.com/privacy)
    
 3. **Unsplash**:
-   - Purpose: To display random images for aesthetic purposes.
+   - Purpose: To display random nature images for the fullscreen image.
    - Privacy Policy: [Unsplash Privacy Policy](https://unsplash.com/api-terms)
 
 Please review these privacy policies to understand how your data is handled by these third-party services.
