@@ -37,7 +37,7 @@ class RecitersScreen extends ConsumerWidget {
               value: reciters,
               data: (data) {
                 return SizedBox(
-                  height: MediaQuery.sizeOf(context).height - 285,
+                  height: MediaQuery.sizeOf(context).height - 220,
                   child: ListView.separated(
                     itemCount: data.length,
                     separatorBuilder: (context, index) => const Divider(),
@@ -83,7 +83,7 @@ class RecitersScreen extends ConsumerWidget {
                                       ref
                                           .read(playerNotifierProvider.notifier)
                                           .play(
-                                            surahID: player.surah.id,
+                                            surahID: player!.surah.id,
                                           );
                                     },
                                     icon: const Icon(Icons.play_arrow)),

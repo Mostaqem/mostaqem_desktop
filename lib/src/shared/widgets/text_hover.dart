@@ -6,11 +6,11 @@ class TextHover extends StatelessWidget {
   const TextHover({
     super.key,
     required this.text,
-    required this.onTap,
+    this.onTap,
   });
 
   final String text;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
     return HoverBuilder(builder: (isHovered) {

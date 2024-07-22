@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mostaqem/src/screens/favorites/favorites.dart';
+import 'package:mostaqem/src/screens/offline/offline.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 
 class Screen {
@@ -23,9 +23,9 @@ final List<Screen> _childrenScreens = [
       selectedIcon: const Icon(Icons.home),
       widget: HomeScreen()),
   Screen(
-      icon: const Icon(Icons.info_outlined),
-      selectedIcon: const Icon(Icons.info),
-      label: "المفضلات",
+      icon: const Icon(Icons.download_for_offline_outlined),
+      selectedIcon: const Icon(Icons.download_for_offline),
+      label: "التحميلات",
       widget: const InfoScreen()),
 ];
 

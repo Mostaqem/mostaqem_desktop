@@ -29,10 +29,13 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   void init() {
-    final currentPlayer = ref.watch<Album>(playerSurahProvider);
+    final currentPlayer = ref.watch(playerSurahProvider);
 
-    player.open(Media(currentPlayer.url));
+    if (currentPlayer == null) return;
 
+    player.open(Media(
+      currentPlayer.url,
+    ));
     player.stream.position.listen((position) {
       state = state.copyWith(position: position);
     });
@@ -85,7 +88,7 @@ class PlayerNotifier extends _$PlayerNotifier {
       player.playOrPause();
 
       ref.read(updateSMTCProvider(
-          image: n.surah.image ??
+          image: n!.surah.image ??
               "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
           surah: n.surah.arabicName,
           reciter: n.reciter.arabicName));
@@ -115,14 +118,18 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   bool isFirstChapter() {
-    final currentPlayer = ref.read<Album>(playerSurahProvider);
-
+    final currentPlayer = ref.read(playerSurahProvider);
+    if (currentPlayer == null) {
+      return false;
+    }
     return currentPlayer.surah.id > 1;
   }
 
   bool isLastchapter() {
-    final currentPlayer = ref.read<Album>(playerSurahProvider);
-
+    final currentPlayer = ref.read(playerSurahProvider);
+    if (currentPlayer == null) {
+      return false;
+    }
     return currentPlayer.surah.id < 114;
   }
 
@@ -139,12 +146,12 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> playNext() async {
-    final currentPlayer = ref.read<Album>(playerSurahProvider);
+    final currentPlayer = ref.read(playerSurahProvider);
 
     final chosenReciter =
-        ref.read(reciterProvider) ?? ref.read(playerSurahProvider).reciter;
+        ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
 
-    int nextID = currentPlayer.surah.id + 1;
+    int nextID = currentPlayer!.surah.id + 1;
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
     final audioURL = await ref.read(fetchAudioForChapterProvider(
@@ -157,11 +164,19 @@ class PlayerNotifier extends _$PlayerNotifier {
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
   }
 
+  bool isLocalAudio() {
+    final currentPlayer = ref.read(playerSurahProvider);
+    if (currentPlayer != null) {
+      return currentPlayer.url.contains("http") ? false : true;
+    }
+    return false;
+  }
+
   Future<void> playPrevious() async {
-    final currentPlayer = ref.read<Album>(playerSurahProvider);
-    int nextID = currentPlayer.surah.id - 1;
+    final currentPlayer = ref.read(playerSurahProvider);
+    int nextID = currentPlayer!.surah.id - 1;
     final chosenReciter =
-        ref.read(reciterProvider) ?? ref.read(playerSurahProvider).reciter;
+        ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
 
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
@@ -170,10 +185,7 @@ class PlayerNotifier extends _$PlayerNotifier {
         .future);
 
     final nextAlbum = Album(
-        surah: nextSurah,
-        reciter: chosenReciter,
-        url: audioURL,
-        position: 0);
+        surah: nextSurah, reciter: chosenReciter, url: audioURL, position: 0);
 
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
   }
