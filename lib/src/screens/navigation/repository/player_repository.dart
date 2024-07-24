@@ -87,14 +87,16 @@ class PlayerNotifier extends _$PlayerNotifier {
       ref.watch(playerCacheProvider.notifier).removeAlbum();
       player.playOrPause();
 
-      ref.read(updateSMTCProvider(
-          image: n!.surah.image ??
-              "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
-          surah: n.surah.arabicName,
-          reciter: n.reciter.arabicName));
+      if (Platform.isWindows) {
+        ref.read(updateSMTCProvider(
+            image: n!.surah.image ??
+                "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
+            surah: n.surah.arabicName,
+            reciter: n.reciter.arabicName));
+      }
 
       ref.read(updateRPCDiscordProvider(
-          surahName: n.surah.simpleName,
+          surahName: n!.surah.simpleName,
           reciter: n.reciter.englishName,
           position: state.position.inMilliseconds,
           duration: state.duration.inMilliseconds));

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/shared/device/device_repository.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
@@ -123,6 +124,13 @@ class AppMenuBar extends ConsumerWidget {
                   context: context,
                   builder: (context) => helpShortcuts(context)),
               child: const Text("الاختصارات"),
+            ),
+            MenuItemButton(
+              shortcut: const SingleActivator(
+                LogicalKeyboardKey.keyP,control: true
+              ),
+              onPressed: () => context.go("/settings"),
+              child: const Text("الاعدادات"),
             ),
             MenuItemButton(
               shortcut:

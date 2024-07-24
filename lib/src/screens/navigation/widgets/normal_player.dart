@@ -32,7 +32,7 @@ class NormalPlayer extends StatelessWidget {
           ref: ref,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
+          padding: const EdgeInsets.only(right: 170),
           child: PlayControls(
             isFullScreen: isFullScreen,
             ref: ref,

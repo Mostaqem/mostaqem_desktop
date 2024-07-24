@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
 import '../../reciters/data/reciters_data.dart';
@@ -15,6 +17,8 @@ class SurahWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final surahs = ref.watch(filterSurahByQueryProvider);
+    final player = ref.watch(playerSurahProvider)?.surah.id ?? 0;
+    final downlaodState = ref.watch(downloadAudioProvider)?.downloadState;
     return AsyncWidget(
       value: surahs,
       data: (data) => SizedBox(
@@ -28,86 +32,89 @@ class SurahWidget extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Material(
-                child: Ink(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                  ),
-                  child: Stack(
-                    alignment: Alignment.centerLeft,
-                    children: [
-                      Positioned(
-                        left: -70,
-                        child: SvgPicture.asset(
-                          "assets/img/shape.svg",
-                          width: 130,
-                          colorFilter: ColorFilter.mode(
-                              Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer
-                                  .withOpacity(0.1),
-                              BlendMode.srcIn),
-                        ),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn,
+                decoration: BoxDecoration(
+                  color: downlaodState == DownloadState.downloading &&
+                          player - 1 == index
+                      ? Theme.of(context).colorScheme.tertiaryContainer
+                      : Theme.of(context).colorScheme.primaryContainer,
+                      
+                ),
+                child: Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    Positioned(
+                      left: -70,
+                      child: SvgPicture.asset(
+                        "assets/img/shape.svg",
+                        width: 130,
+                        colorFilter: ColorFilter.mode(
+                            Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer
+                                .withOpacity(0.1),
+                            BlendMode.srcIn),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Flexible(
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: Text(
-                                  data[index].arabicName,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer),
-                                ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Flexible(
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                data[index].arabicName,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimaryContainer),
                               ),
                             ),
-                            Flexible(
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  data[index].simpleName,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer
-                                          .withOpacity(0.5)),
-                                ),
+                          ),
+                          Flexible(
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                data[index].simpleName,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimaryContainer
+                                        .withOpacity(0.5)),
                               ),
                             ),
-                            const Spacer(),
-                            Flexible(
-                              flex: 2,
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: Consumer(builder: (context, ref, child) {
-                                  return Tooltip(
-                                    message: "تشغيل",
-                                    preferBelow: false,
-                                    child: IconButton(
-                                        onPressed: () async {
-                                          ref
-                                              .read(playerNotifierProvider
-                                                  .notifier)
-                                              .play(
-                                                surahID: data[index].id,
-                                              );
-                                        },
-                                        icon: const Icon(
-                                            Icons.play_circle_fill_outlined)),
-                                  );
-                                }),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: Consumer(builder: (context, ref, child) {
+                                return Tooltip(
+                                  message: "تشغيل",
+                                  preferBelow: false,
+                                  child: IconButton(
+                                      onPressed: () async {
+                                        ref
+                                            .read(
+                                                playerNotifierProvider.notifier)
+                                            .play(
+                                              surahID: data[index].id,
+                                            );
+                                      },
+                                      icon: const Icon(
+                                          Icons.play_circle_fill_outlined)),
+                                );
+                              }),
+                            ),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

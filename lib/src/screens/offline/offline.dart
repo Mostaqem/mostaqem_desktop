@@ -7,8 +7,8 @@ import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 import 'repository/offline_repository.dart';
 
-class InfoScreen extends ConsumerWidget {
-  const InfoScreen({super.key});
+class DownloadsScreen extends ConsumerWidget {
+  const DownloadsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
