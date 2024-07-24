@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
-import 'package:mostaqem/src/shared/widgets/back_button.dart';
-
-import '../../shared/widgets/window_buttons.dart';
 import 'providers/reading_providers.dart';
 
 class ReadingScreen extends ConsumerWidget {
@@ -14,19 +11,10 @@ class ReadingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scripts = ref.watch(fetchUthmaniScriptProvider(surahID: id));
-    return Scaffold(
-        body: SizedBox.expand(
+    return SizedBox.expand(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          const WindowButtons(),
-          const SizedBox(
-            height: 10,
-          ),
-          const AppBackButton(),
-          const SizedBox(
-            height: 10,
-          ),
           Expanded(
             child: Padding(
                 padding:
@@ -47,7 +35,8 @@ class ReadingScreen extends ConsumerWidget {
                             return Text(
                               data[index],
                               // textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 25),
+                              style:
+                                  const TextStyle(fontSize: 25, fontFamily: ''),
                             );
                           });
                     })),
@@ -57,6 +46,6 @@ class ReadingScreen extends ConsumerWidget {
           ),
         ],
       ),
-    ));
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,32 +6,34 @@ import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
-import 'package:path_provider/path_provider.dart';
+
+import '../../settings/providers/download_cache.dart';
 
 class OfflineRepository {
-  Future<List<FileSystemEntity>> getLocalAudio() async {
-    final directory = await getDownloadsDirectory();
+  final Ref ref;
+  OfflineRepository(this.ref);
+  final controller = StreamController<List<Album>>();
 
-    if (directory != null) {
-      final path = directory.path;
-      final dir = Directory(path);
-      final files = dir.listSync();
-
-      final audioFiles = files.where((file) {
-        final ext = file.path.split(".").last;
-        return ["mp3"].contains(ext);
-      }).toList();
-
-      return audioFiles;
+  Stream<FileSystemEntity> getLocalAudio() async* {
+    final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
+    List<FileSystemEntity> audioFiles = [];
+    final path = downloadPath;
+    final dir = Directory(path);
+    final files = dir.list(recursive: true);
+    await for (final file in files) {
+      final ext = file.path.split('.').last;
+      if (ext.contains("mp3")) {
+        audioFiles.add(file);
+      }
     }
-    return [];
+    yield* Stream.fromIterable(audioFiles);
   }
 
-  Future<List<Album>> loadAudioAsAlbum() async {
-    final files = await getLocalAudio();
+  Stream<List<Album>> loadAudioAsAlbum() async* {
     final List<Album> albums = [];
-    for (var i = 0; i < files.length; i++) {
-      final metadata = await MetadataGod.readMetadata(file: files[i].path);
+    final localAudios = getLocalAudio();
+    await for (final audio in localAudios) {
+      final metadata = await MetadataGod.readMetadata(file: audio.path);
       if (metadata.title != null) {
         final album = Album(
             surah: Surah(
@@ -40,15 +43,20 @@ class OfflineRepository {
                 revelationPlace: ""),
             reciter: Reciter(
                 id: 1, englishName: "", arabicName: metadata.artist ?? ""),
-            url: files[i].path);
+            url: audio.path);
 
         albums.add(album);
       }
     }
-    return albums;
+
+    yield albums;
   }
 }
 
-final getLocalAudioProvider = FutureProvider<List<Album>>((ref) async {
-  return await OfflineRepository().loadAudioAsAlbum();
+final offlineRepo = Provider(OfflineRepository.new);
+
+final getLocalAudioProvider =
+    StreamProvider.autoDispose<List<Album>>((ref) async* {
+  final repo = ref.watch(offlineRepo);
+  yield* repo.loadAudioAsAlbum();
 });

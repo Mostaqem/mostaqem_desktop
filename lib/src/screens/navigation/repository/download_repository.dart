@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:metadata_god/metadata_god.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../settings/providers/download_cache.dart';
 import '../data/album.dart';
 
 part 'download_repository.g.dart';
@@ -36,9 +36,9 @@ class DownloadAudio extends _$DownloadAudio {
   }
 
   Future<void> download({required Album album}) async {
-    final downloadPath = await getDownloadsDirectory();
+    final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
     final mixID = album.surah.id + album.reciter.id;
-    final savePath = "${downloadPath?.path}/$mixID.mp3";
+    final savePath = "$downloadPath/$mixID.mp3";
     state = DownloadProgress(
       count: 0,
       total: 0,
@@ -51,7 +51,9 @@ class DownloadAudio extends _$DownloadAudio {
       }
       if (count < total) {
         state = state!.copyWith(
-            count: count, total: total, downloadState: DownloadState.finished);
+            count: count,
+            total: total,
+            downloadState: DownloadState.downloading);
       }
     }).whenComplete(() async {
       try {

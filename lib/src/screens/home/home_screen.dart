@@ -23,137 +23,132 @@ class HomeScreen extends ConsumerWidget {
     HijriCalendar.setLocal("ar");
     final isTyping = ref.watch(isTypingProvider);
     final surahImage = ref.watch(playerSurahProvider)?.surah.image ?? "";
-    return Scaffold(
-        body: Row(
+    return Row(
       children: [
         Expanded(
           flex: 3,
-          child: Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(12)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("تاريخ اليوم"),
-                const HijriDateWidget(),
-                const SizedBox(
-                  height: 10,
-                ),
-                Align(
-                    alignment: Alignment.center,
-                    child: SearchBar(
-                      controller: queryController,
-                      onChanged: (value) async {
-                        ref.read(isTypingProvider.notifier).state =
-                            value.isNotEmpty;
-                        ref.read(searchQueryProvider.notifier).state = value;
-                        ref.refresh(filterSurahByQueryProvider).value;
-                      },
-                      elevation: const WidgetStatePropertyAll<double>(0),
-                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18))),
-                      trailing: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: isTyping
-                              ? IconButton(
-                                  icon: const Icon(Icons.close),
-                                  onPressed: () {
-                                    ref
-                                        .read(searchQueryProvider.notifier)
-                                        .state = "";
-                                    queryController.clear();
-                                  },
-                                )
-                              : const Icon(Icons.search),
-                        )
-                      ],
-                      hintText: "ماذا تريد ان تسمع؟",
-                    )),
-                const SizedBox(
-                  height: 18,
-                ),
-                const SurahWidget(),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Visibility(
-          visible: ref.watch(isCollapsedProvider) &&
-              ref.watch(playerSurahProvider) != null ,
-          child: Expanded(
-              child: Column(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 450,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Theme.of(context).colorScheme.surfaceContainer,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Align(
-                          alignment: Alignment.topLeft,
-                          child: CloseButton(
-                            onPressed: () => ref
-                                .read(isCollapsedProvider.notifier)
-                                .update((state) => !state),
-                          )),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: CachedNetworkImageProvider(surahImage,
-                                    errorListener: (_) => const Icon(
-                                        Icons.broken_image_outlined)))),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        ref.watch(playerSurahProvider
-                            .select((value) => value?.surah.arabicName ?? "")),
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer),
-                      ),
-                      TextHover(
-                        text: ref.watch(playerSurahProvider.select(
-                            (value) => value?.reciter.arabicName ?? "")),
-                        onTap: () {
-                          ref.read(goRouterProvider).push('/reciters');
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              const Text("تاريخ اليوم"),
+              const HijriDateWidget(),
               const SizedBox(
                 height: 10,
               ),
-              const QueueWidget()
+              Align(
+                  alignment: Alignment.center,
+                  child: SearchBar(
+                    controller: queryController,
+                    onChanged: (value) async {
+                      ref.read(isTypingProvider.notifier).state =
+                          value.isNotEmpty;
+                      ref.read(searchQueryProvider.notifier).state = value;
+                      ref.refresh(filterSurahByQueryProvider).value;
+                    },
+                    elevation: const WidgetStatePropertyAll<double>(0),
+                    shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18))),
+                    trailing: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: isTyping
+                            ? IconButton(
+                                icon: const Icon(Icons.close),
+                                onPressed: () {
+                                  ref.read(searchQueryProvider.notifier).state =
+                                      "";
+                                  queryController.clear();
+                                },
+                              )
+                            : const Icon(Icons.search),
+                      )
+                    ],
+                    hintText: "ماذا تريد ان تسمع؟",
+                  )),
+              const SizedBox(
+                height: 18,
+              ),
+              const SurahWidget(),
             ],
-          )),
+          ),
+        ),
+        Visibility(
+          visible: ref.watch(isCollapsedProvider) &&
+              ref.watch(playerSurahProvider) != null,
+          child: Expanded(
+            child: Row(
+              children: [
+                const VerticalDivider(),
+                Expanded(
+                    child: Column(
+                  children: [
+                    Container(
+                      height: 450,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: CloseButton(
+                                  onPressed: () => ref
+                                      .read(isCollapsedProvider.notifier)
+                                      .update((state) => !state),
+                                )),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 300,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: CachedNetworkImageProvider(
+                                          surahImage,
+                                          errorListener: (_) => const Icon(
+                                              Icons.broken_image_outlined)))),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              ref.watch(playerSurahProvider.select(
+                                  (value) => value?.surah.arabicName ?? "")),
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer),
+                            ),
+                            TextHover(
+                              text: ref.watch(playerSurahProvider.select(
+                                  (value) => value?.reciter.arabicName ?? "")),
+                              onTap: () {
+                                ref.read(goRouterProvider).go('/reciters');
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const Divider(),
+                    const QueueWidget()
+                  ],
+                )),
+              ],
+            ),
+          ),
         )
       ],
-    ));
+    );
   }
 }
 
@@ -201,7 +196,7 @@ class QueueWidget extends ConsumerWidget {
                     TextHover(
                         text: reciter,
                         onTap: () {
-                          ref.read(goRouterProvider).push("/reciters");
+                          ref.read(goRouterProvider).go("/reciters");
                         }),
                   ],
                 ),

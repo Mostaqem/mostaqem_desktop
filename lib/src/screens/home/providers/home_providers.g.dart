@@ -335,7 +335,7 @@ final filterSurahByQueryProvider =
 );
 
 typedef FilterSurahByQueryRef = AutoDisposeFutureProviderRef<List<Surah>>;
-String _$fetchNextSurahHash() => r'716270d927d0d2f45a4246e8c6215ae0e4b3ec66';
+String _$fetchNextSurahHash() => r'f24fcaf360e38fd870e10300fd86a4d6beb66d07';
 
 /// See also [fetchNextSurah].
 @ProviderFor(fetchNextSurah)
