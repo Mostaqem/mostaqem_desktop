@@ -6,12 +6,12 @@ class AudioState {
   final Duration duration;
   final double volume;
   final PlaylistMode loop;
-  final bool buffering;
+  final Duration buffering;
   AudioState(
       {this.isPlaying = false,
       this.position = Duration.zero,
       this.volume = 1.0,
-      this.buffering = false,
+      this.buffering = Duration.zero,
       this.loop = PlaylistMode.none,
       this.duration = Duration.zero});
 
@@ -19,7 +19,7 @@ class AudioState {
       {bool? isPlaying,
       Duration? position,
       PlaylistMode? loop,
-      bool? buffering,
+      Duration? buffering,
       Duration? duration,
       double? volume}) {
     return AudioState(

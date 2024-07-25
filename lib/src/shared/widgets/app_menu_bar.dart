@@ -129,7 +129,7 @@ class AppMenuBar extends ConsumerWidget {
               shortcut: const SingleActivator(
                 LogicalKeyboardKey.keyP,control: true
               ),
-              onPressed: () => context.go("/settings"),
+              onPressed: () => context.push("/settings"),
               child: const Text("الاعدادات"),
             ),
             MenuItemButton(

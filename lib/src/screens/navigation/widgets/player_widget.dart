@@ -12,7 +12,7 @@ import 'normal_player.dart';
 import 'play_controls.dart';
 import 'volume_control.dart';
 
-final playerSurahProvider = StateProvider.autoDispose<Album?>((ref) {
+final playerSurahProvider = StateProvider<Album?>((ref) {
   final cachedSurah = ref.read(playerCacheProvider);
   if (cachedSurah != null) {
     return cachedSurah;

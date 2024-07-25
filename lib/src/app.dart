@@ -5,6 +5,7 @@ import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/core/theme/theme.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts.dart';
 
+import 'screens/navigation/widgets/download_manager.dart';
 import 'screens/navigation/widgets/player_widget.dart';
 
 class MyApp extends ConsumerWidget {
@@ -44,7 +45,8 @@ class MyApp extends ConsumerWidget {
                                 builder: (context) => const PlayerWidget())
                           ],
                         )),
-                  )
+                  ),
+                  const DownloadManagerWidget()
                 ],
               ),
             ),
@@ -55,6 +57,7 @@ class MyApp extends ConsumerWidget {
         darkTheme: AppTheme.darkTheme);
   }
 }
+
 
 class Mostaqem extends StatelessWidget {
   const Mostaqem({
