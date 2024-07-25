@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/download_manager.dart';
+import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 
 import '../../../core/routes/routes.dart';
 import '../../../shared/widgets/tooltip_icon.dart';
@@ -42,15 +44,29 @@ class NormalPlayer extends StatelessWidget {
           children: [
             Visibility(
               visible:
-                  !ref.read(playerNotifierProvider.notifier).isLocalAudio(),
+                  !ref.watch(playerNotifierProvider.notifier).isLocalAudio() &&
+                      ref.watch(isAudioDownloaded).value == false,
               child: ToolTipIconButton(
                   message: "تحميل",
                   iconSize: 16,
                   onPressed: () async {
                     final album = ref.read(playerSurahProvider);
-                    ref
-                        .read(downloadAudioProvider.notifier)
-                        .download(album: album!);
+
+                    final height = ref.read(downloadHeightProvider);
+                    if (height == 100) {
+                      ref.read(downloadHeightProvider.notifier).state = 0;
+                    } else {
+                      ref.read(downloadHeightProvider.notifier).state = 100;
+                    }
+                    ref.read(downloadSurahProvider.notifier).state =
+                        album!.surah;
+                    final downloadState =
+                        ref.read(downloadAudioProvider)?.downloadState;
+                    if (downloadState != DownloadState.downloading) {
+                      ref
+                          .read(downloadAudioProvider.notifier)
+                          .download(album: album);
+                    }
                   },
                   icon: const Icon(Icons.download_for_offline)),
             ),
@@ -77,7 +93,7 @@ class NormalPlayer extends StatelessWidget {
               ),
             ),
             const VolumeControls(),
-            FullScreenControl(ref: ref, isFullScreen: isFullScreen)
+            FullScreenControl(ref: ref, isFullScreen: isFullScreen),
           ],
         ),
       ]),

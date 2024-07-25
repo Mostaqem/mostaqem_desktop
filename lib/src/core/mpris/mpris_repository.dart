@@ -38,9 +38,7 @@ class MPRISRepository {
     instance.setEventHandler(
       MPRISEventHandler(
         seek: (offset) async {
-          ref
-              .read(playerNotifierProvider.notifier)
-              .handleSeek(offset.inMilliseconds.toDouble());
+          ref.read(playerNotifierProvider.notifier).handleSeek(offset);
         },
         volume: (value) async {
           ref.read(playerNotifierProvider.notifier).handleVolume(value);
@@ -75,8 +73,7 @@ class MPRISRepository {
 final mprisRepositoryProvider = Provider(MPRISRepository.new);
 
 @riverpod
-Future<void> createMetadata(
-  CreateMetadataRef ref,
+Future<void> createMetadata(CreateMetadataRef ref,
     {required String reciterName,
     required String surah,
     required String image,
@@ -95,11 +92,8 @@ Future<void> createMetadata(
 
   instance.setEventHandler(
     MPRISEventHandler(
-      
       seek: (offset) async {
-        ref
-            .read(playerNotifierProvider.notifier)
-            .handleSeek(offset.inMilliseconds.toDouble());
+        ref.read(playerNotifierProvider.notifier).handleSeek(offset);
       },
       volume: (value) async {
         ref.read(playerNotifierProvider.notifier).handleVolume(value);

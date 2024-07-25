@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 
@@ -12,13 +11,12 @@ import 'repository/fullscreen_notifier.dart';
 final isExtendedProvider = StateProvider<bool>((ref) => false);
 
 class Navigation extends ConsumerWidget {
-  const Navigation({super.key, required this.child});
-  final Widget child;
+  const Navigation({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isFullScreen = ref.watch(isFullScreenProvider);
     final player = ref.watch(playerSurahProvider);
-    final children = ref.watch(childrenProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -31,14 +29,19 @@ class Navigation extends ConsumerWidget {
                   children: [
                     const WindowButtons(),
                     Expanded(
-                        child: Row(
-                      children: [
-                        RightSide(
-                          children: children,
-                        ),
-                        LeftSide(child: child),
-                      ],
-                    )),
+                      child: Consumer(builder: (context, ref, child) {
+                        final children = ref.watch(childrenProvider);
+                        final screenIndex = ref.watch(indexScreenProvider);
+                        return Row(
+                          children: [
+                            RightSide(
+                                children: children, screenIndex: screenIndex),
+                            LeftSide(
+                                children: children, screenIndex: screenIndex),
+                          ],
+                        );
+                      }),
+                    ),
                   ],
                 ),
               ],
@@ -47,24 +50,23 @@ class Navigation extends ConsumerWidget {
   }
 }
 
+
 class RightSide extends ConsumerWidget {
   const RightSide({
     super.key,
     required this.children,
+    required this.screenIndex,
   });
   final List<Screen> children;
+  final int screenIndex;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final screenIndex = ref.watch(indexScreenProvider);
-    final currentRoute = getCurrentRoutePath(context);
-    bool isFocus = currentRoute == "/" || currentRoute == "/downloads";
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: SizedBox(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: NavigationRail(
-            useIndicator: isFocus,
             backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
             extended: ref.watch(isExtendedProvider),
             leading: ToolTipIconButton(
@@ -80,23 +82,11 @@ class RightSide extends ConsumerWidget {
               ...children.map((child) => NavigationRailDestination(
                   icon: child.icon,
                   label: Text(child.label),
-                  selectedIcon: isFocus ? child.selectedIcon : null))
+                  selectedIcon: child.selectedIcon))
             ],
             selectedIndex: screenIndex,
-            onDestinationSelected: (value) {
-              ref.read(indexScreenProvider.notifier).state = value;
-              switch (value) {
-                case 0:
-                  context.go("/");
-                  break;
-                case 1:
-                  context.go("/downloads");
-                  break;
-                default:
-                  context.go("/");
-                  break;
-              }
-            },
+            onDestinationSelected: (value) =>
+                ref.read(indexScreenProvider.notifier).state = value,
           ),
         ),
       ),
@@ -107,26 +97,19 @@ class RightSide extends ConsumerWidget {
 class LeftSide extends StatelessWidget {
   const LeftSide({
     super.key,
-    // required this.children,
-    required this.child,
+    required this.children,
+    required this.screenIndex,
   });
 
-  // final List<Screen> children;
-  final Widget child;
+  final List<Screen> children;
+  final int screenIndex;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
         child: Padding(
-      padding: const EdgeInsets.only(right: 5, top: 5, left: 10),
-      child: Container(
-          padding: const EdgeInsets.all(18),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Theme.of(context).colorScheme.surfaceContainer,
-          ),
-          child: child),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      child: children[screenIndex].widget,
     ));
   }
 }

@@ -1,4 +1,6 @@
 # Mostaqem
+[![style: very good analysis][badge]][badge_link]
+
  An app for Islamic media like quran and podcasts without ads and subscriptions
 
  * Beta releases will be released on our github releases
@@ -26,7 +28,15 @@ sudo apt install mpv libmpv-dev
 * Shortcuts Help
 * Fullscreen mode
 * Integrated with OS
+    * Windows
+        * Taskbar buttons
+        * [System Media Transport Controls][SMTC]
+    * Linux
+        * Mpris
 * Offline Mode
+    * Download manager
+    * Custom download path
+    * 
 
 
 ### TODOs:
@@ -49,3 +59,8 @@ sudo apt install mpv libmpv-dev
 
 ## Acknowledgments
 - Inspired by [Spotify](https://open.spotify.com/)
+
+<!-- end:excluded_rules_table -->
+[badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
+[badge_link]: https://pub.dev/packages/very_good_analysis
+[SMTC]: https://learn.microsoft.com/en-us/windows/uwp/audio-video-camera/system-media-transport-controls

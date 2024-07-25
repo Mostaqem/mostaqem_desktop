@@ -23,7 +23,11 @@ class AppBackButton extends StatelessWidget {
             icon: const Icon(Icons.arrow_forward),
             onPressed: () {
               if (context.mounted) {
-                context.pop();
+                if (context.canPop()) {
+                  context.pop();
+                  return;
+                }
+                context.go("/");
               }
             },
             color: Theme.of(context).colorScheme.onPrimary,

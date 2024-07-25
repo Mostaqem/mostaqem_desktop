@@ -7,12 +7,12 @@ import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 
+import '../../navigation/widgets/player_widget.dart';
 import '../../settings/providers/download_cache.dart';
 
 class OfflineRepository {
   final Ref ref;
   OfflineRepository(this.ref);
-  final controller = StreamController<List<Album>>();
 
   Stream<FileSystemEntity> getLocalAudio() async* {
     final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
@@ -51,6 +51,27 @@ class OfflineRepository {
 
     yield albums;
   }
+
+  Stream<bool> isAudioDownloaded() async* {
+    final Surah? surah = ref.watch(playerSurahProvider)?.surah;
+    if (surah == null) {
+      yield false;
+      return;
+    }
+
+    final Stream<List<Album>> localAudios = loadAudioAsAlbum();
+
+    await for (final audios in localAudios) {
+      final Set<String> surahNames =
+          audios.map((audio) => audio.surah.arabicName).toSet();
+      if (surahNames.contains(surah.arabicName)) {
+        yield true;
+        return;
+      }
+    }
+
+    yield false;
+  }
 }
 
 final offlineRepo = Provider(OfflineRepository.new);
@@ -59,4 +80,9 @@ final getLocalAudioProvider =
     StreamProvider.autoDispose<List<Album>>((ref) async* {
   final repo = ref.watch(offlineRepo);
   yield* repo.loadAudioAsAlbum();
+});
+
+final isAudioDownloaded = StreamProvider.autoDispose<bool>((ref) async* {
+  final repo = ref.watch(offlineRepo);
+  yield* repo.isAudioDownloaded();
 });

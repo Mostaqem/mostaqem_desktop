@@ -335,11 +335,11 @@ final filterSurahByQueryProvider =
 );
 
 typedef FilterSurahByQueryRef = AutoDisposeFutureProviderRef<List<Surah>>;
-String _$fetchNextSurahHash() => r'f24fcaf360e38fd870e10300fd86a4d6beb66d07';
+String _$fetchNextSurahHash() => r'b9203b30d852d040efc39784ca8d78ae510765b2';
 
 /// See also [fetchNextSurah].
 @ProviderFor(fetchNextSurah)
-final fetchNextSurahProvider = AutoDisposeFutureProvider<Surah>.internal(
+final fetchNextSurahProvider = AutoDisposeFutureProvider<Surah?>.internal(
   fetchNextSurah,
   name: r'fetchNextSurahProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -349,7 +349,7 @@ final fetchNextSurahProvider = AutoDisposeFutureProvider<Surah>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef FetchNextSurahRef = AutoDisposeFutureProviderRef<Surah>;
+typedef FetchNextSurahRef = AutoDisposeFutureProviderRef<Surah?>;
 String _$fetchRandomImageHash() => r'289365de24523d62d804e1ec07c47e12f35a315f';
 
 /// See also [fetchRandomImage].

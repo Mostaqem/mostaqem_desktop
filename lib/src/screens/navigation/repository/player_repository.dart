@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
+import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/SMTC/smtc_provider.dart';
@@ -36,6 +37,17 @@ class PlayerNotifier extends _$PlayerNotifier {
     player.open(Media(
       currentPlayer.url,
     ));
+
+    if (isLocalAudio()) {
+      final audios = ref.watch(getLocalAudioProvider).value;
+      final firstAudio = audios!.first;
+
+      final nextAudios = audios.where((e) => e != firstAudio);
+      for (final e in nextAudios) {
+        player.add(Media(e.url));
+      }
+    }
+
     player.stream.position.listen((position) {
       state = state.copyWith(position: position);
     });
@@ -46,7 +58,7 @@ class PlayerNotifier extends _$PlayerNotifier {
       player.seek(Duration(milliseconds: currentPlayer.position));
     });
 
-    player.stream.buffering.listen((buffering) {
+    player.stream.buffer.listen((buffering) {
       state = state.copyWith(buffering: buffering);
     });
 
@@ -120,7 +132,13 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   bool isFirstChapter() {
-    final currentPlayer = ref.read(playerSurahProvider);
+    final currentPlayer = ref.watch(playerSurahProvider);
+    if (isLocalAudio()) {
+      final audios = ref.watch(getLocalAudioProvider).value!;
+      final currentIndex = audios.indexWhere((e) => e == currentPlayer);
+
+      return currentIndex > 0;
+    }
     if (currentPlayer == null) {
       return false;
     }
@@ -128,7 +146,13 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   bool isLastchapter() {
-    final currentPlayer = ref.read(playerSurahProvider);
+    final currentPlayer = ref.watch(playerSurahProvider);
+    if (isLocalAudio()) {
+      final audios = ref.watch(getLocalAudioProvider).value!;
+      final currentIndex = audios.indexWhere((e) => e == currentPlayer);
+      final lastIndex = audios.length - 1;
+      return currentIndex < lastIndex;
+    }
     if (currentPlayer == null) {
       return false;
     }
@@ -148,7 +172,14 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> playNext() async {
-    final currentPlayer = ref.read(playerSurahProvider);
+    final currentPlayer = ref.watch(playerSurahProvider);
+    if (isLocalAudio()) {
+      player.next();
+      final audios = ref.watch(getLocalAudioProvider).value!;
+      final currentIndex = audios.indexWhere((e) => e == currentPlayer);
+      ref.watch(playerSurahProvider.notifier).state = audios[currentIndex + 1];
+      return;
+    }
 
     final chosenReciter =
         ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
@@ -176,6 +207,13 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   Future<void> playPrevious() async {
     final currentPlayer = ref.read(playerSurahProvider);
+    if (isLocalAudio()) {
+      player.previous();
+      final audios = ref.watch(getLocalAudioProvider).value!;
+      final currentIndex = audios.indexWhere((e) => e == currentPlayer);
+      ref.watch(playerSurahProvider.notifier).state = audios[currentIndex - 1];
+      return;
+    }
     int nextID = currentPlayer!.surah.id - 1;
     final chosenReciter =
         ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
@@ -233,10 +271,8 @@ class PlayerNotifier extends _$PlayerNotifier {
     }
   }
 
-  Future<void> handleSeek(double value) async {
-    await player.seek(
-      Duration(seconds: value.toInt()),
-    );
+  Future<void> handleSeek(Duration value) async {
+    player.seek(value);
   }
 
   Future<void> handleVolume(double value) async {

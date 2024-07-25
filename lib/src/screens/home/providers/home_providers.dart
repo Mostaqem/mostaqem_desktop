@@ -1,7 +1,10 @@
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../navigation/data/album.dart';
+import '../../offline/repository/offline_repository.dart';
 import '../data/surah.dart';
 import '../home_screen.dart';
 
@@ -42,7 +45,18 @@ Future<List<Surah>> filterSurahByQuery(FilterSurahByQueryRef ref) async {
 }
 
 @riverpod
-Future<Surah> fetchNextSurah(FetchNextSurahRef ref) async {
+Future<Surah?> fetchNextSurah(FetchNextSurahRef ref) async {
+  final isLocalAudio =
+      ref.watch(playerNotifierProvider.notifier).isLocalAudio();
+  if (isLocalAudio) {
+    final currentPlayer = ref.watch(playerSurahProvider);
+    final List<Album> audios = ref.read(getLocalAudioProvider).value!;
+    final int currentIndex = audios.indexWhere((e) => e == currentPlayer);
+    if (currentIndex == audios.length - 1) {
+      return null;
+    }
+    return audios[currentIndex + 1].surah;
+  }
   final currentSurahID = ref.watch(playerSurahProvider)!.surah.id;
   if (currentSurahID < 113) {
     return await ref

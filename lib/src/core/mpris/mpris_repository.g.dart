@@ -6,7 +6,7 @@ part of 'mpris_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createMetadataHash() => r'e8aa3cf627a0748a81b4a2fac96a4c692b54a17f';
+String _$createMetadataHash() => r'7f570ea3a58d2ebb70a35f146f4fb5fa7ea9332a';
 
 /// Copied from Dart SDK
 class _SystemHash {

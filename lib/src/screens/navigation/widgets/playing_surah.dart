@@ -47,9 +47,7 @@ class PlayingSurah extends StatelessWidget {
                     ),
                   ),
                   Visibility(
-                    visible: !ref
-                            .read(playerNotifierProvider.notifier)
-                            .isLocalAudio() &&
+                    visible:
                         ref.watch(playerSurahProvider) != null,
                     child: IconButton(
                         onPressed: () => ref

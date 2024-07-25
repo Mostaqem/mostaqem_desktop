@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:window_manager/window_manager.dart';
@@ -34,7 +35,9 @@ class AppShortcuts extends ConsumerWidget {
               builder: (context) => helpShortcuts(context),
             ),
         const SingleActivator(LogicalKeyboardKey.keyU, control: true): () =>
-            checkUpdateDialog(context, ref)
+            checkUpdateDialog(context, ref),
+        const SingleActivator(LogicalKeyboardKey.keyP, control: true): () =>
+            ref.read(goRouterProvider).push("/settings")
       },
       child: child,
     );

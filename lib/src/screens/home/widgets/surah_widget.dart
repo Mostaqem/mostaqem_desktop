@@ -6,10 +6,21 @@ import 'package:mostaqem/src/screens/navigation/repository/player_repository.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
+import '../../navigation/data/album.dart';
+import '../../offline/repository/offline_repository.dart';
 import '../../reciters/data/reciters_data.dart';
 import '../providers/home_providers.dart';
 
-final reciterProvider = StateProvider<Reciter?>((ref) => null);
+final reciterProvider = StateProvider<Reciter?>((ref) {
+  final isLocalAudio = ref.read(playerNotifierProvider.notifier).isLocalAudio();
+  if (isLocalAudio) {
+    final currentPlayer = ref.watch(playerSurahProvider);
+    final List<Album> audios = ref.read(getLocalAudioProvider).value!;
+    final int currentIndex = audios.indexWhere((e) => e == currentPlayer);
+    return audios[currentIndex].reciter;
+  }
+  return null;
+});
 
 class SurahWidget extends ConsumerWidget {
   const SurahWidget({super.key});
@@ -26,7 +37,7 @@ class SurahWidget extends ConsumerWidget {
         child: GridView.builder(
           itemCount: data.length,
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 150,
+            maxCrossAxisExtent: 160,
           ),
           itemBuilder: (context, index) => Padding(
             padding: const EdgeInsets.all(8.0),
@@ -40,7 +51,6 @@ class SurahWidget extends ConsumerWidget {
                           player - 1 == index
                       ? Theme.of(context).colorScheme.tertiaryContainer
                       : Theme.of(context).colorScheme.primaryContainer,
-                      
                 ),
                 child: Stack(
                   alignment: Alignment.centerLeft,
