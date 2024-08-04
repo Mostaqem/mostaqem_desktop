@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
@@ -12,7 +13,7 @@ void main() {
   setUp(() {
     handler(MethodCall methodCall) async {
       if (methodCall.method == 'ensureInitialized') {
-        return 42;
+        return true;
       }
       return null;
     }
@@ -21,9 +22,11 @@ void main() {
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, handler);
+    MediaKit.ensureInitialized();
   });
   testWidgets("Test Player Widget", (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(800, 500));
+
     const surah = Surah(
         id: 0,
         simpleName: "simpleName",
