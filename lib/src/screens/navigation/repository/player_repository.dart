@@ -6,7 +6,7 @@ import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
+import 'package:mockito/mockito.dart';
 import '../../../core/SMTC/smtc_provider.dart';
 import '../../../core/discord/discord_provider.dart';
 import '../../../core/mpris/mpris_repository.dart';
@@ -323,5 +323,44 @@ class PlayerNotifier extends _$PlayerNotifier {
     String currentTime = formatDuration(state.position);
     String durationTime = formatDuration(state.duration);
     return (currentTime, durationTime);
+  }
+}
+
+class PlayerNotifierMock extends _$PlayerNotifier
+    with Mock
+    implements PlayerNotifier {
+  @override
+  AudioState build() {
+    return AudioState(volume: 1);
+  }
+
+  @override
+  void handlePlayPause() {
+    state = state.copyWith(isPlaying: true);
+  }
+
+  @override
+  bool isLocalAudio() {
+    return false;
+  }
+
+  @override
+  bool isLastchapter() {
+    return true;
+  }
+
+  @override
+  bool isFirstChapter() {
+    return true;
+  }
+
+  @override
+  (String, String) playerTime() {
+    return ("", "");
+  }
+
+  @override
+  Future<void> handleVolume(double value) async {
+    state = state.copyWith(volume: value);
   }
 }
