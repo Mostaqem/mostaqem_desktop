@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
+import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:window_manager/window_manager.dart';
-
-import '../../../shared/widgets/tooltip_icon.dart';
-import '../repository/fullscreen_notifier.dart';
 
 class FullScreenControl extends StatelessWidget {
   const FullScreenControl({
-    super.key,
-    required this.ref,
-    required this.isFullScreen,
+    required this.ref, required this.isFullScreen, super.key,
   });
 
   final WidgetRef ref;
@@ -20,9 +17,9 @@ class FullScreenControl extends StatelessWidget {
     return ToolTipIconButton(
       onPressed: () async {
         if (await windowManager.isFullScreen()) {
-          ref.read(isFullScreenProvider.notifier).toggle(false);
+          ref.read(isFullScreenProvider.notifier).toggle(value: false);
         } else {
-          ref.read(isFullScreenProvider.notifier).toggle(true);
+          ref.read(isFullScreenProvider.notifier).toggle(value: true);
         }
       },
       icon: Icon(
@@ -34,7 +31,7 @@ class FullScreenControl extends StatelessWidget {
             ? Colors.white
             : Theme.of(context).colorScheme.onSecondaryContainer,
       ),
-      message: isFullScreen ? "تصغير الشاشة" : "تكبير الشاشة",
+      message: isFullScreen ? 'تصغير الشاشة' : 'تكبير الشاشة',
     );
   }
 }

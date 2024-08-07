@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
@@ -5,12 +6,9 @@ import 'package:mostaqem/src/screens/navigation/repository/player_repository.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
+import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
-
-import '../../shared/widgets/back_button.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
-import '../../shared/widgets/window_buttons.dart';
+import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
 class RecitersScreen extends ConsumerWidget {
   const RecitersScreen({super.key});
@@ -29,7 +27,7 @@ class RecitersScreen extends ConsumerWidget {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              "اختيار الشيخ",
+              'اختيار الشيخ',
               style: TextStyle(fontSize: 22),
             ),
           ),
@@ -45,7 +43,7 @@ class RecitersScreen extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       return Consumer(builder: (context, ref, child) {
                         return Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(10),
                           child: ListTile(
                             leading: Container(
                               width: 50,
@@ -54,8 +52,8 @@ class RecitersScreen extends ConsumerWidget {
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
                                       image: CachedNetworkImageProvider(
-                                          data[index].image!)),
-                                  borderRadius: BorderRadius.circular(12)),
+                                          data[index].image!,),),
+                                  borderRadius: BorderRadius.circular(12),),
                             ),
                             title: Text(data[index].arabicName),
                             trailing: Row(
@@ -63,16 +61,16 @@ class RecitersScreen extends ConsumerWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 ToolTipIconButton(
-                                    message: "اختيار الشيخ للتالي",
+                                    message: 'اختيار الشيخ للتالي',
                                     onPressed: () {
                                       ref.read(reciterProvider.notifier).state =
                                           data[index];
                                     },
                                     icon: const Icon(
-                                        Icons.queue_play_next_outlined)),
+                                        Icons.queue_play_next_outlined,),),
                                 const VerticalDivider(),
                                 ToolTipIconButton(
-                                    message: "اختيار الشيخ",
+                                    message: 'اختيار الشيخ',
                                     onPressed: () {
                                       final player =
                                           ref.read(playerSurahProvider);
@@ -86,16 +84,16 @@ class RecitersScreen extends ConsumerWidget {
                                             surahID: player!.surah.id,
                                           );
                                     },
-                                    icon: const Icon(Icons.play_arrow)),
+                                    icon: const Icon(Icons.play_arrow),),
                               ],
                             ),
                           ),
                         );
-                      });
+                      },);
                     },
                   ),
                 );
-              }),
+              },),
           const SizedBox(
             height: 100,
           ),

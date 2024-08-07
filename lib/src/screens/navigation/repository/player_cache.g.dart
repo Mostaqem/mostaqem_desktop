@@ -6,7 +6,7 @@ part of 'player_cache.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerCacheHash() => r'b3256781f66a6249f7f3fb43f746c43bfc42e106';
+String _$playerCacheHash() => r'8560825346e254673713f300f6b8637f44f52307';
 
 /// See also [PlayerCache].
 @ProviderFor(PlayerCache)

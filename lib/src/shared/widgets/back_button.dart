@@ -15,9 +15,9 @@ class AppBackButton extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(18)),
+            borderRadius: BorderRadius.circular(18),),
         child: Tooltip(
-          message: "رجوع",
+          message: 'رجوع',
           preferBelow: false,
           child: IconButton(
             icon: const Icon(Icons.arrow_forward),
@@ -27,7 +27,7 @@ class AppBackButton extends StatelessWidget {
                   context.pop();
                   return;
                 }
-                context.go("/");
+                context.go('/');
               }
             },
             color: Theme.of(context).colorScheme.onPrimary,

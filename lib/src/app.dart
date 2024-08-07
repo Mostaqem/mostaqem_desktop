@@ -3,10 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/core/theme/theme.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/download_manager.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts.dart';
-
-import 'screens/navigation/widgets/download_manager.dart';
-import 'screens/navigation/widgets/player_widget.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -23,10 +22,10 @@ class MyApp extends ConsumerWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: const [
-          Locale("en", "SA"),
-          Locale("ar", "AE"),
+          Locale('en', 'SA'),
+          Locale('ar', 'AE'),
         ],
-        locale: const Locale("ar", "SA"),
+        locale: const Locale('ar', 'SA'),
         builder: (context, child) {
           return Material(
             child: AppShortcuts(
@@ -38,15 +37,15 @@ class MyApp extends ConsumerWidget {
                     height: 100,
                     child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 5, vertical: 0),
+                            horizontal: 5,),
                         child: Overlay(
                           initialEntries: [
                             OverlayEntry(
-                                builder: (context) => const PlayerWidget())
+                                builder: (context) => const PlayerWidget(),),
                           ],
-                        )),
+                        ),),
                   ),
-                  const DownloadManagerWidget()
+                  const DownloadManagerWidget(),
                 ],
               ),
             ),
@@ -54,10 +53,9 @@ class MyApp extends ConsumerWidget {
         },
         title: 'Mostaqem',
         theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme);
+        darkTheme: AppTheme.darkTheme,);
   }
 }
-
 
 class Mostaqem extends StatelessWidget {
   const Mostaqem({

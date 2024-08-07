@@ -2,19 +2,18 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/core/SMTC/smtc_provider.dart';
+import 'package:mostaqem/src/core/discord/discord_provider.dart';
+import 'package:mostaqem/src/core/mpris/mpris_repository.dart';
+import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
+import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
+import 'package:mostaqem/src/screens/navigation/data/player.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
+import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:mockito/mockito.dart';
-import '../../../core/SMTC/smtc_provider.dart';
-import '../../../core/discord/discord_provider.dart';
-import '../../../core/mpris/mpris_repository.dart';
-import '../../home/providers/home_providers.dart';
-import '../../home/widgets/surah_widget.dart';
-import '../../reciters/providers/reciters_repository.dart';
-import '../data/player.dart';
-import '../widgets/player_widget.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
 part 'player_repository.g.dart';
@@ -36,7 +35,7 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     player.open(Media(
       currentPlayer.url,
-    ));
+    ),);
 
     if (isLocalAudio()) {
       final audios = ref.watch(getLocalAudioProvider).value;
@@ -80,9 +79,9 @@ class PlayerNotifier extends _$PlayerNotifier {
             duration: state.duration.inMilliseconds,
             position: state.position.inMilliseconds,
             image: currentPlayer.surah.image ??
-                "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
+                'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
             surah: currentPlayer.surah.arabicName,
-            reciter: currentPlayer.reciter.arabicName));
+            reciter: currentPlayer.reciter.arabicName,),);
       }
 
       if (Platform.isLinux) {
@@ -91,42 +90,42 @@ class PlayerNotifier extends _$PlayerNotifier {
             url: currentPlayer.url,
             surah: currentPlayer.surah.arabicName,
             image: currentPlayer.surah.image!,
-            position: state.position));
+            position: state.position,),);
       }
     });
 
     ref.listen(playerSurahProvider, (_, n) async {
-      ref.watch(playerCacheProvider.notifier).removeAlbum();
-      player.playOrPause();
+      await ref.watch(playerCacheProvider.notifier).removeAlbum();
+      await player.playOrPause();
 
       if (Platform.isWindows) {
         ref.read(updateSMTCProvider(
             image: n!.surah.image ??
-                "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
+                'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
             surah: n.surah.arabicName,
-            reciter: n.reciter.arabicName));
+            reciter: n.reciter.arabicName,),);
       }
 
       ref.read(updateRPCDiscordProvider(
           surahName: n!.surah.simpleName,
           reciter: n.reciter.englishName,
           position: state.position.inMilliseconds,
-          duration: state.duration.inMilliseconds));
+          duration: state.duration.inMilliseconds,),);
 
-      player.open(Media(n.url));
+      await player.open(Media(n.url));
     });
   }
 
   String formatDuration(Duration duration) {
-    int hours = duration.inHours;
-    int minutes = duration.inMinutes.remainder(60);
-    int seconds = duration.inSeconds.remainder(60);
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
 
     String twoDigits(int n) => n.toString().padLeft(2, '0');
 
-    String hoursStr = hours > 0 ? '$hours:' : '';
-    String minutesStr = twoDigits(minutes);
-    String secondsStr = twoDigits(seconds);
+    final hoursStr = hours > 0 ? '$hours:' : '';
+    final minutesStr = twoDigits(minutes);
+    final secondsStr = twoDigits(seconds);
 
     return '$hoursStr$minutesStr:$secondsStr';
   }
@@ -174,7 +173,7 @@ class PlayerNotifier extends _$PlayerNotifier {
   Future<void> playNext() async {
     final currentPlayer = ref.watch(playerSurahProvider);
     if (isLocalAudio()) {
-      player.next();
+      await player.next();
       final audios = ref.watch(getLocalAudioProvider).value!;
       final currentIndex = audios.indexWhere((e) => e == currentPlayer);
       ref.watch(playerSurahProvider.notifier).state = audios[currentIndex + 1];
@@ -184,15 +183,15 @@ class PlayerNotifier extends _$PlayerNotifier {
     final chosenReciter =
         ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
 
-    int nextID = currentPlayer!.surah.id + 1;
+    final nextID = currentPlayer!.surah.id + 1;
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
     final audioURL = await ref.read(fetchAudioForChapterProvider(
-            chapterNumber: nextID, reciterID: chosenReciter.id)
-        .future);
+            chapterNumber: nextID, reciterID: chosenReciter.id,)
+        .future,);
 
     final nextAlbum = Album(
-        surah: nextSurah, reciter: chosenReciter, url: audioURL, position: 0);
+        surah: nextSurah, reciter: chosenReciter, url: audioURL,);
 
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
   }
@@ -200,7 +199,7 @@ class PlayerNotifier extends _$PlayerNotifier {
   bool isLocalAudio() {
     final currentPlayer = ref.read(playerSurahProvider);
     if (currentPlayer != null) {
-      return currentPlayer.url.contains("http") ? false : true;
+      return !currentPlayer.url.contains('http');
     }
     return false;
   }
@@ -208,24 +207,24 @@ class PlayerNotifier extends _$PlayerNotifier {
   Future<void> playPrevious() async {
     final currentPlayer = ref.read(playerSurahProvider);
     if (isLocalAudio()) {
-      player.previous();
+      await player.previous();
       final audios = ref.watch(getLocalAudioProvider).value!;
       final currentIndex = audios.indexWhere((e) => e == currentPlayer);
       ref.watch(playerSurahProvider.notifier).state = audios[currentIndex - 1];
       return;
     }
-    int nextID = currentPlayer!.surah.id - 1;
+    final  nextID = currentPlayer!.surah.id - 1;
     final chosenReciter =
         ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
 
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
     final audioURL = await ref.read(fetchAudioForChapterProvider(
-            chapterNumber: nextID, reciterID: chosenReciter.id)
-        .future);
+            chapterNumber: nextID, reciterID: chosenReciter.id,)
+        .future,);
 
     final nextAlbum = Album(
-        surah: nextSurah, reciter: chosenReciter, url: audioURL, position: 0);
+        surah: nextSurah, reciter: chosenReciter, url: audioURL,);
 
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
   }
@@ -239,17 +238,17 @@ class PlayerNotifier extends _$PlayerNotifier {
         await ref.read(fetchReciterProvider(id: chosenReciterID).future);
 
     final audioURL = await ref.read(fetchAudioForChapterProvider(
-            chapterNumber: surahID, reciterID: chosenReciterID)
-        .future);
+            chapterNumber: surahID, reciterID: chosenReciterID,)
+        .future,);
 
     final album =
-        Album(surah: surah, reciter: reciter, url: audioURL, position: 0);
+        Album(surah: surah, reciter: reciter, url: audioURL);
 
     ref.read(playerSurahProvider.notifier).state = album;
   }
 
   void loop() {
-    PlaylistMode mode = player.state.playlistMode;
+    final mode = player.state.playlistMode;
 
     if (mode == PlaylistMode.none) {
       player.setPlaylistMode(PlaylistMode.single);
@@ -272,7 +271,7 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> handleSeek(Duration value) async {
-    player.seek(value);
+    await player.seek(value);
   }
 
   Future<void> handleVolume(double value) async {
@@ -281,29 +280,27 @@ class PlayerNotifier extends _$PlayerNotifier {
     state = state.copyWith(volume: value);
   }
 
-  windowThumbnailBar() {
+  void windowThumbnailBar() {
     WindowsTaskbar.setFlashTaskbarAppIcon();
 
     WindowsTaskbar.setThumbnailToolbar([
       ThumbnailToolbarButton(
         ThumbnailToolbarAssetIcon('assets/img/skip_previous.ico'),
-        "بعد",
+        'بعد',
         () async {
           await playNext();
         },
       ),
-      state.isPlaying
-          ? ThumbnailToolbarButton(
+      if (state.isPlaying) ThumbnailToolbarButton(
               ThumbnailToolbarAssetIcon('assets/img/pause.ico'),
-              "ايقاف ",
+              'ايقاف ',
               () {
                 player.pause();
                 state = state.copyWith(isPlaying: false);
               },
-            )
-          : ThumbnailToolbarButton(
+            ) else ThumbnailToolbarButton(
               ThumbnailToolbarAssetIcon('assets/img/play.ico'),
-              "تشغيل",
+              'تشغيل',
               () {
                 player.play();
                 state = state.copyWith(isPlaying: true);
@@ -311,7 +308,7 @@ class PlayerNotifier extends _$PlayerNotifier {
             ),
       ThumbnailToolbarButton(
         ThumbnailToolbarAssetIcon('assets/img/skip_next.ico'),
-        "قبل",
+        'قبل',
         () async {
           await playPrevious();
         },
@@ -320,18 +317,16 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   (String currentTime, String durationTime) playerTime() {
-    String currentTime = formatDuration(state.position);
-    String durationTime = formatDuration(state.duration);
+    final currentTime = formatDuration(state.position);
+    final durationTime = formatDuration(state.duration);
     return (currentTime, durationTime);
   }
 }
 
-class PlayerNotifierMock extends _$PlayerNotifier
-    with Mock
-    implements PlayerNotifier {
+class PlayerNotifierMock extends _$PlayerNotifier implements PlayerNotifier {
   @override
   AudioState build() {
-    return AudioState(volume: 1);
+    return AudioState();
   }
 
   @override
@@ -356,11 +351,50 @@ class PlayerNotifierMock extends _$PlayerNotifier
 
   @override
   (String, String) playerTime() {
-    return ("", "");
+    return ('', '');
   }
 
   @override
   Future<void> handleVolume(double value) async {
     state = state.copyWith(volume: value);
+  }
+
+  @override
+  String formatDuration(Duration duration) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> handleSeek(Duration value) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void init() {}
+
+  @override
+  void loop() {}
+
+  @override
+  Future<void> play({required int surahID}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> playNext() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> playPrevious() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Player get player => throw UnimplementedError();
+
+  @override
+  void windowThumbnailBar() {
+    throw UnimplementedError();
   }
 }

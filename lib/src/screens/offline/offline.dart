@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
-
-import 'repository/offline_repository.dart';
 
 class DownloadsScreen extends ConsumerWidget {
   const DownloadsScreen({super.key});
@@ -26,18 +25,18 @@ class DownloadsScreen extends ConsumerWidget {
                           title: Text(data[index].surah.arabicName),
                           subtitle: Text(data[index].reciter.arabicName),
                           trailing: ToolTipIconButton(
-                              message: "تشغيل",
+                              message: 'تشغيل',
                               onPressed: () {
                                 ref.read(playerSurahProvider.notifier).state =
                                     data[index];
                               },
-                              icon: const Icon(Icons.play_arrow)));
-                    });
-              }),
+                              icon: const Icon(Icons.play_arrow),),);
+                    },);
+              },),
         ),
         const SizedBox(
           height: 100,
-        )
+        ),
       ],
     );
   }

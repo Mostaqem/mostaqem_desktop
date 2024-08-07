@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
-
-import '../../shared/widgets/window_buttons.dart';
-import 'providers/reading_providers.dart';
+import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
 class ReadingScreen extends ConsumerWidget {
-  const ReadingScreen({super.key, required this.id});
+  const ReadingScreen({required this.id, super.key});
 
   final int id;
 
@@ -38,7 +37,7 @@ class ReadingScreen extends ConsumerWidget {
                           itemCount: data.length,
                           separatorBuilder: (c, i) => const Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 50, vertical: 10),
+                                    horizontal: 50, vertical: 10,),
                                 child: Divider(
                                   height: 50,
                                 ),
@@ -48,16 +47,16 @@ class ReadingScreen extends ConsumerWidget {
                               data[index],
                               // textAlign: TextAlign.center,
                               style:
-                                  const TextStyle(fontSize: 25, fontFamily: ""),
+                                  const TextStyle(fontSize: 25, fontFamily: ''),
                             );
-                          });
-                    })),
+                          },);
+                    },),),
           ),
           const SizedBox(
             height: 100,
           ),
         ],
       ),
-    ));
+    ),);
   }
 }

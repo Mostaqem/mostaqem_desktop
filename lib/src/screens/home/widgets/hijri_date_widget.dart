@@ -8,7 +8,7 @@ class HijriDateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var today = HijriCalendar.now();
+    final today = HijriCalendar.now();
 
     return Row(
       children: [

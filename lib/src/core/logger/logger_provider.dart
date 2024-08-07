@@ -19,4 +19,3 @@ class LoggerRepository {
     talker.handle(e, st);
   }
 }
-

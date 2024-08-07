@@ -8,24 +8,24 @@ class DeviceRepository {
   Future<String> deviceInfo() async {
     if (Platform.isWindows) {
       final winInfo = await _deviceInfo.windowsInfo;
-      return "Windows ${winInfo.majorVersion}";
+      return 'Windows ${winInfo.majorVersion}';
     }
     if (Platform.isLinux) {
       final linuxInfo = await _deviceInfo.linuxInfo;
       return linuxInfo.name;
     }
-    return "";
+    return '';
   }
 
   Future<String> deviceID() async {
     if (Platform.isWindows) {
       final winInfo = await _deviceInfo.windowsInfo;
-      return winInfo.buildLab.toString();
+      return winInfo.buildLab;
     }
     if (Platform.isLinux) {
       final linuxInfo = await _deviceInfo.linuxInfo;
       return linuxInfo.versionId!;
     }
-    return "";
+    return '';
   }
 }

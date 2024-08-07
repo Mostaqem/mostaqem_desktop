@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'hover_builder.dart';
+import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 
 class TextHover extends StatelessWidget {
   const TextHover({
-    super.key,
-    required this.text,
+    required this.text, super.key,
     this.onTap,
   });
 
@@ -28,10 +27,10 @@ class TextHover extends StatelessWidget {
                     : Theme.of(context)
                         .colorScheme
                         .onSecondaryContainer
-                        .withOpacity(0.5)),
+                        .withOpacity(0.5),),
           ),
         ),
       );
-    });
+    },);
   }
 }

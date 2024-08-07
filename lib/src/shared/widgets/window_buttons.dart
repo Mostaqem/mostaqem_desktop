@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'app_menu_bar.dart';
 
 class WindowButtons extends StatelessWidget {
   const WindowButtons({super.key});
@@ -16,7 +15,7 @@ class WindowButtons extends StatelessWidget {
             backgroundColor: Colors.transparent,
             brightness: Theme.of(context).brightness,
             title: const AppMenuBar(),
-          )),
+          ),),
     );
   }
 }

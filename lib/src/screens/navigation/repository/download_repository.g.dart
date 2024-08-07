@@ -6,7 +6,7 @@ part of 'download_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$downloadAudioHash() => r'418d6dcbce7d697be47f266268acc59bf7047f6c';
+String _$downloadAudioHash() => r'0a471b46f4fe2cca980d0d494bf5f96a3b166fca';
 
 /// See also [DownloadAudio].
 @ProviderFor(DownloadAudio)

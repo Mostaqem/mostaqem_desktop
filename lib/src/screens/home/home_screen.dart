@@ -2,14 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
+import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
+import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
-
-import '../../core/routes/routes.dart';
-import 'widgets/hijri_date_widget.dart';
-import 'widgets/surah_widget.dart';
 
 final isTypingProvider = StateProvider<bool>((ref) => false);
 
@@ -20,9 +19,9 @@ class HomeScreen extends ConsumerWidget {
   final queryController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    HijriCalendar.setLocal("ar");
+    HijriCalendar.setLocal('ar');
     final isTyping = ref.watch(isTypingProvider);
-    final surahImage = ref.watch(playerSurahProvider)?.surah.image ?? "";
+    final surahImage = ref.watch(playerSurahProvider)?.surah.image ?? '';
     return Row(
       children: [
         Expanded(
@@ -31,17 +30,16 @@ class HomeScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("تاريخ اليوم"),
+                const Text('تاريخ اليوم'),
                 const HijriDateWidget(),
                 const SizedBox(
                   height: 10,
                 ),
                 Align(
-                    alignment: Alignment.center,
                     child: SearchBar(
                       controller: queryController,
                       onChanged: (value) async {
@@ -52,7 +50,7 @@ class HomeScreen extends ConsumerWidget {
                       },
                       elevation: const WidgetStatePropertyAll<double>(0),
                       shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18))),
+                          borderRadius: BorderRadius.circular(18),),),
                       trailing: [
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
@@ -62,15 +60,15 @@ class HomeScreen extends ConsumerWidget {
                                   onPressed: () {
                                     ref
                                         .read(searchQueryProvider.notifier)
-                                        .state = "";
+                                        .state = '';
                                     queryController.clear();
                                   },
                                 )
                               : const Icon(Icons.search),
-                        )
+                        ),
                       ],
-                      hintText: "ماذا تريد ان تسمع؟",
-                    )),
+                      hintText: 'ماذا تريد ان تسمع؟',
+                    ),),
                 const SizedBox(
                   height: 18,
                 ),
@@ -105,7 +103,7 @@ class HomeScreen extends ConsumerWidget {
                             onPressed: () => ref
                                 .read(isCollapsedProvider.notifier)
                                 .update((state) => !state),
-                          )),
+                          ),),
                       const SizedBox(
                         height: 15,
                       ),
@@ -118,24 +116,24 @@ class HomeScreen extends ConsumerWidget {
                                 fit: BoxFit.cover,
                                 image: CachedNetworkImageProvider(surahImage,
                                     errorListener: (_) => const Icon(
-                                        Icons.broken_image_outlined)))),
+                                        Icons.broken_image_outlined,),),),),
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       Text(
                         ref.watch(playerSurahProvider
-                            .select((value) => value?.surah.arabicName ?? "")),
+                            .select((value) => value?.surah.arabicName ?? ''),),
                         style: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context)
                                 .colorScheme
-                                .onSecondaryContainer),
+                                .onSecondaryContainer,),
                       ),
                       TextHover(
                         text: ref.watch(playerSurahProvider.select(
-                            (value) => value?.reciter.arabicName ?? "")),
+                            (value) => value?.reciter.arabicName ?? '',),),
                         onTap: () {
                           ref.read(goRouterProvider).go('/reciters');
                         },
@@ -147,10 +145,10 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(
                 height: 10,
               ),
-              const QueueWidget()
+              const QueueWidget(),
             ],
-          )),
-        )
+          ),),
+        ),
       ],
     );
   }
@@ -164,7 +162,7 @@ class QueueWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reciter = ref.watch(reciterProvider
-        .select((value) => value?.arabicName ?? "عبدالباسط عبدالصمد"));
+        .select((value) => value?.arabicName ?? 'عبدالباسط عبدالصمد'),);
     final nextSurah = ref.watch(fetchNextSurahProvider);
     return Visibility(
       visible: nextSurah.hasValue,
@@ -176,35 +174,35 @@ class QueueWidget extends ConsumerWidget {
             color: Theme.of(context).colorScheme.surfaceContainer,
           ),
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "تسمع التالي",
+                  'تسمع التالي',
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color:
-                          Theme.of(context).colorScheme.onSecondaryContainer),
+                          Theme.of(context).colorScheme.onSecondaryContainer,),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AsyncWidget(
                           loading: const SizedBox.shrink(),
                           value: nextSurah,
-                          data: (data) => Text(data?.arabicName ?? "")),
+                          data: (data) => Text(data?.arabicName ?? ''),),
                       TextHover(
                           text: reciter,
                           onTap: () {
-                            ref.read(goRouterProvider).go("/reciters");
-                          }),
+                            ref.read(goRouterProvider).go('/reciters');
+                          },),
                     ],
                   ),
                 ),

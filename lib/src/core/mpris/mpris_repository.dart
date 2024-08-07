@@ -6,8 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'mpris_repository.g.dart';
 
 class MPRISRepository {
-  final Ref ref;
   MPRISRepository(this.ref);
+  final Ref ref;
 
   Future<MPRIS> init() async {
     final instance = await MPRIS.create(
@@ -18,14 +18,73 @@ class MPRISRepository {
     return instance;
   }
 
-  Future<void> createMetadata(
-      {required String reciterName,
-      required String surah,
-      required String image,
-      required String url,
-      required Duration position}) async {
+  Future<void> createMetadata({
+    required String reciterName,
+    required String surah,
+    required String image,
+    required String url,
+    required Duration position,
+  }) async {
     final instance = await init();
-    instance.metadata = MPRISMetadata(
+    instance
+      ..metadata = MPRISMetadata(
+        Uri.parse(url),
+        length: position,
+        artUrl: Uri.parse(
+          image,
+        ),
+        artist: [reciterName],
+        title: surah,
+      )
+      ..setEventHandler(
+        MPRISEventHandler(
+          seek: (offset) async {
+            await ref.read(playerNotifierProvider.notifier).handleSeek(offset);
+          },
+          volume: (value) async {
+            await ref.read(playerNotifierProvider.notifier).handleVolume(value);
+          },
+          playPause: () async {
+            if (ref.read(playerNotifierProvider).isPlaying) {
+              instance.playbackStatus = MPRISPlaybackStatus.playing;
+            } else {
+              instance.playbackStatus = MPRISPlaybackStatus.paused;
+            }
+          },
+          play: () async {
+            instance.playbackStatus = MPRISPlaybackStatus.playing;
+            await ref.read(playerNotifierProvider.notifier).player.play();
+          },
+          pause: () async {
+            instance.playbackStatus = MPRISPlaybackStatus.paused;
+
+            await ref.read(playerNotifierProvider.notifier).player.pause();
+          },
+          next: () async {
+            await ref.read(playerNotifierProvider.notifier).playNext();
+          },
+          previous: () async {
+            await ref.read(playerNotifierProvider.notifier).playPrevious();
+          },
+        ),
+      );
+  }
+}
+
+final mprisRepositoryProvider = Provider(MPRISRepository.new);
+
+@riverpod
+Future<void> createMetadata(
+  CreateMetadataRef ref, {
+  required String reciterName,
+  required String surah,
+  required String image,
+  required String url,
+  required Duration position,
+}) async {
+  final instance = await ref.watch(mprisRepositoryProvider).init();
+  instance
+    ..metadata = MPRISMetadata(
       Uri.parse(url),
       length: position,
       artUrl: Uri.parse(
@@ -33,15 +92,14 @@ class MPRISRepository {
       ),
       artist: [reciterName],
       title: surah,
-    );
-
-    instance.setEventHandler(
+    )
+    ..setEventHandler(
       MPRISEventHandler(
         seek: (offset) async {
-          ref.read(playerNotifierProvider.notifier).handleSeek(offset);
+          await ref.read(playerNotifierProvider.notifier).handleSeek(offset);
         },
         volume: (value) async {
-          ref.read(playerNotifierProvider.notifier).handleVolume(value);
+          await ref.read(playerNotifierProvider.notifier).handleVolume(value);
         },
         playPause: () async {
           if (ref.read(playerNotifierProvider).isPlaying) {
@@ -52,74 +110,19 @@ class MPRISRepository {
         },
         play: () async {
           instance.playbackStatus = MPRISPlaybackStatus.playing;
-          ref.read(playerNotifierProvider.notifier).player.play();
+          await ref.read(playerNotifierProvider.notifier).player.play();
         },
         pause: () async {
           instance.playbackStatus = MPRISPlaybackStatus.paused;
 
-          ref.read(playerNotifierProvider.notifier).player.pause();
+          await ref.read(playerNotifierProvider.notifier).player.pause();
         },
         next: () async {
-          ref.read(playerNotifierProvider.notifier).playNext();
+          await ref.read(playerNotifierProvider.notifier).playNext();
         },
         previous: () async {
-          ref.read(playerNotifierProvider.notifier).playPrevious();
+          await ref.read(playerNotifierProvider.notifier).playPrevious();
         },
       ),
     );
-  }
-}
-
-final mprisRepositoryProvider = Provider(MPRISRepository.new);
-
-@riverpod
-Future<void> createMetadata(CreateMetadataRef ref,
-    {required String reciterName,
-    required String surah,
-    required String image,
-    required String url,
-    required Duration position}) async {
-  final MPRIS instance = await ref.watch(mprisRepositoryProvider).init();
-  instance.metadata = MPRISMetadata(
-    Uri.parse(url),
-    length: position,
-    artUrl: Uri.parse(
-      image,
-    ),
-    artist: [reciterName],
-    title: surah,
-  );
-
-  instance.setEventHandler(
-    MPRISEventHandler(
-      seek: (offset) async {
-        ref.read(playerNotifierProvider.notifier).handleSeek(offset);
-      },
-      volume: (value) async {
-        ref.read(playerNotifierProvider.notifier).handleVolume(value);
-      },
-      playPause: () async {
-        if (ref.read(playerNotifierProvider).isPlaying) {
-          instance.playbackStatus = MPRISPlaybackStatus.playing;
-        } else {
-          instance.playbackStatus = MPRISPlaybackStatus.paused;
-        }
-      },
-      play: () async {
-        instance.playbackStatus = MPRISPlaybackStatus.playing;
-        ref.read(playerNotifierProvider.notifier).player.play();
-      },
-      pause: () async {
-        instance.playbackStatus = MPRISPlaybackStatus.paused;
-
-        ref.read(playerNotifierProvider.notifier).player.pause();
-      },
-      next: () async {
-        ref.read(playerNotifierProvider.notifier).playNext();
-      },
-      previous: () async {
-        ref.read(playerNotifierProvider.notifier).playPrevious();
-      },
-    ),
-  );
 }

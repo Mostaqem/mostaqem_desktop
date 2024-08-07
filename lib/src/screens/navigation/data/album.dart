@@ -1,10 +1,8 @@
-import '../../home/data/surah.dart';
-import '../../reciters/data/reciters_data.dart';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mostaqem/src/screens/home/data/surah.dart';
+import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 
 part 'album.freezed.dart';
-
 part 'album.g.dart';
 
 @Freezed(copyWith: true)
@@ -12,8 +10,7 @@ class Album with _$Album {
   const factory Album({
     required Surah surah,
     required Reciter reciter,
-    @Default(0) int position,
-    required String url,
+    required String url, @Default(0) int position,
   }) = _Album;
 
   factory Album.fromJson(Map<String, Object?> json) => _$AlbumFromJson(json);

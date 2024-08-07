@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
@@ -11,18 +13,18 @@ abstract class RecitersRepository {
 }
 
 class RecitersImpl implements RecitersRepository {
-  final Ref ref;
   RecitersImpl(this.ref);
+  final Ref ref;
   @override
   Future<Reciter> fetchReciter({required int id}) async {
-    final request = await ref.watch(dioHelperProvider).getHTTP("/reciter/$id");
-    return Reciter.fromJson(request!.data["data"]);
+    final request = await ref.watch(dioHelperProvider).getHTTP('/reciter/$id');
+    return Reciter.fromJson(request.data['data'] as Map<String, dynamic>);
   }
 
   @override
   Future<List<Reciter>> fetchReciters() async {
-    final request = await ref.watch(dioHelperProvider).getHTTP("/reciter");
-    return request!.data["data"].map<Reciter>((e) => Reciter.fromJson(e)).toList();
+    final request = await ref.watch(dioHelperProvider).getHTTP('/reciter');
+    return request.data['data'].map<Reciter>(Reciter.fromJson).toList();
   }
 }
 

@@ -25,14 +25,18 @@ mixin _$Surah {
   String get simpleName => throw _privateConstructorUsedError;
   @JsonKey(name: 'name_arabic')
   String get arabicName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'verses_count')
-  int? get versesCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'revelation_place')
   String get revelationPlace => throw _privateConstructorUsedError;
+  @JsonKey(name: 'verses_count')
+  int? get versesCount => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
 
+  /// Serializes this Surah to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Surah
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SurahCopyWith<Surah> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -45,8 +49,8 @@ abstract class $SurahCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'name_complex') String simpleName,
       @JsonKey(name: 'name_arabic') String arabicName,
-      @JsonKey(name: 'verses_count') int? versesCount,
       @JsonKey(name: 'revelation_place') String revelationPlace,
+      @JsonKey(name: 'verses_count') int? versesCount,
       String? image});
 }
 
@@ -60,14 +64,16 @@ class _$SurahCopyWithImpl<$Res, $Val extends Surah>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Surah
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? simpleName = null,
     Object? arabicName = null,
-    Object? versesCount = freezed,
     Object? revelationPlace = null,
+    Object? versesCount = freezed,
     Object? image = freezed,
   }) {
     return _then(_value.copyWith(
@@ -83,14 +89,14 @@ class _$SurahCopyWithImpl<$Res, $Val extends Surah>
           ? _value.arabicName
           : arabicName // ignore: cast_nullable_to_non_nullable
               as String,
-      versesCount: freezed == versesCount
-          ? _value.versesCount
-          : versesCount // ignore: cast_nullable_to_non_nullable
-              as int?,
       revelationPlace: null == revelationPlace
           ? _value.revelationPlace
           : revelationPlace // ignore: cast_nullable_to_non_nullable
               as String,
+      versesCount: freezed == versesCount
+          ? _value.versesCount
+          : versesCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -110,8 +116,8 @@ abstract class _$$SurahImplCopyWith<$Res> implements $SurahCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'name_complex') String simpleName,
       @JsonKey(name: 'name_arabic') String arabicName,
-      @JsonKey(name: 'verses_count') int? versesCount,
       @JsonKey(name: 'revelation_place') String revelationPlace,
+      @JsonKey(name: 'verses_count') int? versesCount,
       String? image});
 }
 
@@ -123,14 +129,16 @@ class __$$SurahImplCopyWithImpl<$Res>
       _$SurahImpl _value, $Res Function(_$SurahImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Surah
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? simpleName = null,
     Object? arabicName = null,
-    Object? versesCount = freezed,
     Object? revelationPlace = null,
+    Object? versesCount = freezed,
     Object? image = freezed,
   }) {
     return _then(_$SurahImpl(
@@ -146,14 +154,14 @@ class __$$SurahImplCopyWithImpl<$Res>
           ? _value.arabicName
           : arabicName // ignore: cast_nullable_to_non_nullable
               as String,
-      versesCount: freezed == versesCount
-          ? _value.versesCount
-          : versesCount // ignore: cast_nullable_to_non_nullable
-              as int?,
       revelationPlace: null == revelationPlace
           ? _value.revelationPlace
           : revelationPlace // ignore: cast_nullable_to_non_nullable
               as String,
+      versesCount: freezed == versesCount
+          ? _value.versesCount
+          : versesCount // ignore: cast_nullable_to_non_nullable
+              as int?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -169,8 +177,8 @@ class _$SurahImpl implements _Surah {
       {required this.id,
       @JsonKey(name: 'name_complex') required this.simpleName,
       @JsonKey(name: 'name_arabic') required this.arabicName,
-      @JsonKey(name: 'verses_count') this.versesCount,
       @JsonKey(name: 'revelation_place') required this.revelationPlace,
+      @JsonKey(name: 'verses_count') this.versesCount,
       this.image});
 
   factory _$SurahImpl.fromJson(Map<String, dynamic> json) =>
@@ -185,17 +193,17 @@ class _$SurahImpl implements _Surah {
   @JsonKey(name: 'name_arabic')
   final String arabicName;
   @override
-  @JsonKey(name: 'verses_count')
-  final int? versesCount;
-  @override
   @JsonKey(name: 'revelation_place')
   final String revelationPlace;
+  @override
+  @JsonKey(name: 'verses_count')
+  final int? versesCount;
   @override
   final String? image;
 
   @override
   String toString() {
-    return 'Surah(id: $id, simpleName: $simpleName, arabicName: $arabicName, versesCount: $versesCount, revelationPlace: $revelationPlace, image: $image)';
+    return 'Surah(id: $id, simpleName: $simpleName, arabicName: $arabicName, revelationPlace: $revelationPlace, versesCount: $versesCount, image: $image)';
   }
 
   @override
@@ -208,19 +216,21 @@ class _$SurahImpl implements _Surah {
                 other.simpleName == simpleName) &&
             (identical(other.arabicName, arabicName) ||
                 other.arabicName == arabicName) &&
-            (identical(other.versesCount, versesCount) ||
-                other.versesCount == versesCount) &&
             (identical(other.revelationPlace, revelationPlace) ||
                 other.revelationPlace == revelationPlace) &&
+            (identical(other.versesCount, versesCount) ||
+                other.versesCount == versesCount) &&
             (identical(other.image, image) || other.image == image));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, simpleName, arabicName,
-      versesCount, revelationPlace, image);
+      revelationPlace, versesCount, image);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Surah
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SurahImplCopyWith<_$SurahImpl> get copyWith =>
@@ -239,8 +249,8 @@ abstract class _Surah implements Surah {
       {required final int id,
       @JsonKey(name: 'name_complex') required final String simpleName,
       @JsonKey(name: 'name_arabic') required final String arabicName,
-      @JsonKey(name: 'verses_count') final int? versesCount,
       @JsonKey(name: 'revelation_place') required final String revelationPlace,
+      @JsonKey(name: 'verses_count') final int? versesCount,
       final String? image}) = _$SurahImpl;
 
   factory _Surah.fromJson(Map<String, dynamic> json) = _$SurahImpl.fromJson;
@@ -254,15 +264,18 @@ abstract class _Surah implements Surah {
   @JsonKey(name: 'name_arabic')
   String get arabicName;
   @override
-  @JsonKey(name: 'verses_count')
-  int? get versesCount;
-  @override
   @JsonKey(name: 'revelation_place')
   String get revelationPlace;
   @override
-  String? get image;
+  @JsonKey(name: 'verses_count')
+  int? get versesCount;
   @override
-  @JsonKey(ignore: true)
+  String? get image;
+
+  /// Create a copy of Surah
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SurahImplCopyWith<_$SurahImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

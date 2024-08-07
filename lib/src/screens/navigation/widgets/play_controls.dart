@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/full_screen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
-import '../../../shared/widgets/hover_builder.dart';
-import '../repository/player_repository.dart';
-import 'full_screen_controls.dart';
-
 class PlayControls extends StatelessWidget {
-  const PlayControls(
-      {super.key, required this.isFullScreen, required this.ref});
+  const PlayControls({
+    required this.isFullScreen,
+    required this.ref,
+    super.key,
+  });
   final bool isFullScreen;
   final WidgetRef ref;
 
@@ -39,12 +41,11 @@ class PlayControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final player = ref.watch(playerNotifierProvider);
-    //TODO: Refactor PlayControls
+    // TODO(mezoPeeta): Refactor PlayControls
     return Transform.scale(
       scale: isFullScreen ? 1.3 : 1,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -53,11 +54,13 @@ class PlayControls extends StatelessWidget {
                 visible:
                     ref.watch(playerNotifierProvider.notifier).isFirstChapter(),
                 child: Tooltip(
-                  message: "قبل",
+                  message: 'قبل',
                   preferBelow: false,
                   child: IconButton(
                     onPressed: () async {
-                      ref.read(playerNotifierProvider.notifier).playPrevious();
+                      await ref
+                          .read(playerNotifierProvider.notifier)
+                          .playPrevious();
                     },
                     icon: Icon(
                       Icons.skip_next_outlined,
@@ -70,7 +73,7 @@ class PlayControls extends StatelessWidget {
                 ),
               ),
               ToolTipIconButton(
-                message: "تشغيل",
+                message: 'تشغيل',
                 onPressed: () =>
                     ref.read(playerNotifierProvider.notifier).handlePlayPause(),
                 icon: player.isPlaying
@@ -98,9 +101,9 @@ class PlayControls extends StatelessWidget {
                         .isLastchapter() &&
                     ref.watch(playerSurahProvider) != null,
                 child: ToolTipIconButton(
-                  message: "بعد",
+                  message: 'بعد',
                   onPressed: () async {
-                    ref.read(playerNotifierProvider.notifier).playNext();
+                    await ref.read(playerNotifierProvider.notifier).playNext();
                   },
                   icon: Icon(
                     Icons.skip_previous_outlined,
@@ -112,19 +115,20 @@ class PlayControls extends StatelessWidget {
                 ),
               ),
               ToolTipIconButton(
-                message: "اعادة",
+                message: 'اعادة',
                 onPressed: () async {
                   ref.read(playerNotifierProvider.notifier).loop();
                 },
                 icon: loopIcon(
-                    player.loop,
-                    player.loop == PlaylistMode.none
-                        ? isFullScreen
-                            ? Colors.white
-                            : Theme.of(context).colorScheme.onSecondaryContainer
-                        : Theme.of(context).colorScheme.tertiary),
+                  player.loop,
+                  player.loop == PlaylistMode.none
+                      ? isFullScreen
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSecondaryContainer
+                      : Theme.of(context).colorScheme.tertiary,
+                ),
                 iconSize: 16,
-              )
+              ),
             ],
           ),
           Row(
@@ -136,24 +140,26 @@ class PlayControls extends StatelessWidget {
               ),
               ConstrainedBox(
                 constraints: BoxConstraints(
-                    maxWidth: isFullScreen
-                        ? MediaQuery.sizeOf(context).width / 1.5
-                        : MediaQuery.sizeOf(context).width / 2.5,
-                    maxHeight: 10),
-                child: HoverBuilder(builder: (isHovered) {
-                  return SliderTheme(
-                    data: SliderThemeData(
+                  maxWidth: isFullScreen
+                      ? MediaQuery.sizeOf(context).width / 1.5
+                      : MediaQuery.sizeOf(context).width / 2.5,
+                  maxHeight: 10,
+                ),
+                child: HoverBuilder(
+                  builder: (isHovered) {
+                    return SliderTheme(
+                      data: SliderThemeData(
                         thumbShape: RoundSliderThumbShape(
-                      enabledThumbRadius: isHovered ? 7 : 3,
-                      elevation: 0,
-                    )),
-                    child: Slider(
+                          enabledThumbRadius: isHovered ? 7 : 3,
+                          elevation: 0,
+                        ),
+                      ),
+                      child: Slider(
                         value: ref
                             .watch(playerNotifierProvider)
                             .position
                             .inSeconds
                             .toDouble(),
-                        min: 0.0,
                         max: ref
                             .watch(playerNotifierProvider)
                             .duration
@@ -161,12 +167,16 @@ class PlayControls extends StatelessWidget {
                             .toDouble(),
                         onChanged: (v) => ref
                             .watch(playerNotifierProvider.notifier)
-                            .handleSeek(Duration(seconds: v.toInt()))),
-                  );
-                }),
+                            .handleSeek(Duration(seconds: v.toInt())),
+                      ),
+                    );
+                  },
+                ),
               ),
-              Text(ref.watch(playerNotifierProvider.notifier).playerTime().$2,
-                  style: TextStyle(color: isFullScreen ? Colors.white : null)),
+              Text(
+                ref.watch(playerNotifierProvider.notifier).playerTime().$2,
+                style: TextStyle(color: isFullScreen ? Colors.white : null),
+              ),
             ],
           ),
         ],
@@ -176,7 +186,7 @@ class PlayControls extends StatelessWidget {
 }
 
 class FullScreenPlayControls extends StatelessWidget {
-  const FullScreenPlayControls({super.key, required this.ref});
+  const FullScreenPlayControls({required this.ref, super.key});
   final WidgetRef ref;
 
   Icon loopIcon(PlaylistMode state, Color color) {
@@ -217,23 +227,25 @@ class FullScreenPlayControls extends StatelessWidget {
             ),
             ConstrainedBox(
               constraints: BoxConstraints(
-                  maxWidth: MediaQuery.sizeOf(context).width / 1.5,
-                  maxHeight: 10),
-              child: HoverBuilder(builder: (isHovered) {
-                return SliderTheme(
-                  data: SliderThemeData(
+                maxWidth: MediaQuery.sizeOf(context).width / 1.5,
+                maxHeight: 10,
+              ),
+              child: HoverBuilder(
+                builder: (isHovered) {
+                  return SliderTheme(
+                    data: SliderThemeData(
                       thumbShape: RoundSliderThumbShape(
-                    enabledThumbRadius: isHovered ? 7 : 3,
-                    elevation: 0,
-                  )),
-                  child: Slider(
+                        enabledThumbRadius: isHovered ? 7 : 3,
+                        elevation: 0,
+                      ),
+                    ),
+                    child: Slider(
                       activeColor: Colors.white,
                       value: ref
                           .watch(playerNotifierProvider)
                           .position
                           .inSeconds
                           .toDouble(),
-                      min: 0.0,
                       max: ref
                           .watch(playerNotifierProvider)
                           .duration
@@ -241,12 +253,16 @@ class FullScreenPlayControls extends StatelessWidget {
                           .toDouble(),
                       onChanged: (v) => ref
                           .watch(playerNotifierProvider.notifier)
-                          .handleSeek(Duration(seconds: v.toInt()))),
-                );
-              }),
+                          .handleSeek(Duration(seconds: v.toInt())),
+                    ),
+                  );
+                },
+              ),
             ),
-            Text(ref.watch(playerNotifierProvider.notifier).playerTime().$2,
-                style: const TextStyle(color: Colors.white)),
+            Text(
+              ref.watch(playerNotifierProvider.notifier).playerTime().$2,
+              style: const TextStyle(color: Colors.white),
+            ),
           ],
         ),
         Transform.scale(
@@ -260,11 +276,13 @@ class FullScreenPlayControls extends StatelessWidget {
                         .isFirstChapter() &&
                     ref.watch(playerSurahProvider) != null,
                 child: Tooltip(
-                  message: "قبل",
+                  message: 'قبل',
                   preferBelow: false,
                   child: IconButton(
                     onPressed: () async {
-                      ref.read(playerNotifierProvider.notifier).playPrevious();
+                      await ref
+                          .read(playerNotifierProvider.notifier)
+                          .playPrevious();
                     },
                     icon: const Icon(
                       Icons.skip_next_outlined,
@@ -275,15 +293,17 @@ class FullScreenPlayControls extends StatelessWidget {
                 ),
               ),
               Tooltip(
-                message: "تشغيل",
+                message: 'تشغيل',
                 preferBelow: false,
                 child: IconButton(
                   onPressed: () => ref
                       .read(playerNotifierProvider.notifier)
                       .handlePlayPause(),
                   icon: player.isPlaying
-                      ? const Icon(Icons.pause_circle_filled_outlined,
-                          color: Colors.white)
+                      ? const Icon(
+                          Icons.pause_circle_filled_outlined,
+                          color: Colors.white,
+                        )
                       : const Icon(
                           Icons.play_circle_fill_outlined,
                           color: Colors.white,
@@ -297,11 +317,13 @@ class FullScreenPlayControls extends StatelessWidget {
                         .isLastchapter() &&
                     ref.watch(playerSurahProvider) != null,
                 child: Tooltip(
-                  message: "بعد",
+                  message: 'بعد',
                   preferBelow: false,
                   child: IconButton(
                     onPressed: () async {
-                      ref.read(playerNotifierProvider.notifier).playNext();
+                      await ref
+                          .read(playerNotifierProvider.notifier)
+                          .playNext();
                     },
                     icon: const Icon(
                       Icons.skip_previous_outlined,
@@ -312,21 +334,22 @@ class FullScreenPlayControls extends StatelessWidget {
                 ),
               ),
               Tooltip(
-                message: "اعادة",
+                message: 'اعادة',
                 preferBelow: false,
                 child: IconButton(
                   onPressed: () async {
                     ref.read(playerNotifierProvider.notifier).loop();
                   },
                   icon: loopIcon(
-                      player.loop,
-                      player.loop == PlaylistMode.none
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.tertiary),
+                    player.loop,
+                    player.loop == PlaylistMode.none
+                        ? Colors.white
+                        : Theme.of(context).colorScheme.tertiary,
+                  ),
                   iconSize: 16,
                 ),
               ),
-              FullScreenControl(ref: ref, isFullScreen: true)
+              FullScreenControl(ref: ref, isFullScreen: true),
             ],
           ),
         ),

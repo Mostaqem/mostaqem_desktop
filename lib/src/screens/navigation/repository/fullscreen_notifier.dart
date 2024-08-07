@@ -6,11 +6,11 @@ final isFullScreenProvider =
 
 class FullScreenNotifier extends Notifier<bool> {
   @override
-  build() {
+  bool build() {
     return false;
   }
 
-  void toggle(bool value) {
+  void toggle({required bool value}) {
     state = value;
     windowManager.setFullScreen(value);
   }
