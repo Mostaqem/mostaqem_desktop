@@ -54,6 +54,7 @@ class VolumeControls extends ConsumerWidget {
             child: SizedBox(
               width: 140,
               child: Slider(
+                key: const Key("volume"),
                 activeColor: isFullScreen ? Colors.white : null,
                 value: ref.watch(playerNotifierProvider).volume,
                 onChanged: (v) =>
