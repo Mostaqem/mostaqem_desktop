@@ -38,8 +38,6 @@ void main() {
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, handler);
-
-    MediaKit.ensureInitialized();
   });
 
   testWidgets('Test Text appears on player', (WidgetTester tester) async {
