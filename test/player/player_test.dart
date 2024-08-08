@@ -13,7 +13,7 @@ import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 // to whatever your notifier uses
 
 void main() {
-  const channel = MethodChannel('media_kit/media_kit');
+  const channel = MethodChannel('com.alexmercerind/media_kit_video');
   const surah = Surah(
       id: 0,
       simpleName: 'simpleName',
