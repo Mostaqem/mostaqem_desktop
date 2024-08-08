@@ -10,8 +10,6 @@ import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 
-class MockMediaKit extends MediaKit {}
-
 void main() {
   const surah = Surah(
     id: 0,
@@ -25,26 +23,27 @@ void main() {
     englishName: 'reciterName',
     arabicName: 'reciterArabicName',
   );
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
     const channel = MethodChannel('com.alexmercerind/media_kit_video');
 
     Future<bool?>? handler(MethodCall methodCall) async {
-      if (methodCall.method == 'MediaKit.ensureInitialized') {
+      if (methodCall.method == 'nativeEnsureInitialized' ||
+          methodCall.method == 'webEnsureInitialized') {
         return true;
       }
       return null;
     }
 
-    TestWidgetsFlutterBinding.ensureInitialized();
-
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, handler);
+
+    MediaKit.ensureInitialized();
   });
 
   testWidgets('Test Text appears on player', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(800, 500));
-    MediaKit.ensureInitialized();
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
