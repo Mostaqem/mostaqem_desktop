@@ -134,7 +134,8 @@ class HomeScreen extends ConsumerWidget {
                         Text(
                           ref.watch(
                             playerSurahProvider.select(
-                                (value) => value?.surah.arabicName ?? ''),
+                              (value) => value?.surah.arabicName ?? '',
+                            ),
                           ),
                           style: TextStyle(
                             fontSize: 20,
