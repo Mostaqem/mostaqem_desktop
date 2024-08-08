@@ -13,17 +13,22 @@ import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 // to whatever your notifier uses
 
 void main() {
-  const channel = MethodChannel('com.alexmercerind/media_kit_video');
   const surah = Surah(
-      id: 0,
-      simpleName: 'simpleName',
-      arabicName: 'arabicName',
-      revelationPlace: 'revelationPlace',);
+    id: 0,
+    simpleName: 'simpleName',
+    arabicName: 'arabicName',
+    revelationPlace: 'revelationPlace',
+  );
 
   const reciter = Reciter(
-      id: 0, englishName: 'reciterName', arabicName: 'reciterArabicName',);
+    id: 0,
+    englishName: 'reciterName',
+    arabicName: 'reciterArabicName',
+  );
 
   setUp(() {
+    const channel = MethodChannel('com.alexmercerind/media_kit_video');
+
     Future<bool?>? handler(MethodCall methodCall) async {
       if (methodCall.method == 'ensureInitialized') {
         return true;
@@ -35,19 +40,26 @@ void main() {
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, handler);
-    MediaKit.ensureInitialized();
   });
 
   testWidgets('Test Text appears on player', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(800, 500));
+    MediaKit.ensureInitialized();
 
-    await tester.pumpWidget(ProviderScope(overrides: [
-      isAudioDownloaded.overrideWith((ref) async* {
-        yield false;
-      }),
-      playerSurahProvider.overrideWith((ref) =>
-          const Album(surah: surah, reciter: reciter, url: 'http://test'),),
-    ], child: const MaterialApp(home: Material(child: PlayerWidget())),),);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          isAudioDownloaded.overrideWith((ref) async* {
+            yield false;
+          }),
+          playerSurahProvider.overrideWith(
+            (ref) =>
+                const Album(surah: surah, reciter: reciter, url: 'http://test'),
+          ),
+        ],
+        child: const MaterialApp(home: Material(child: PlayerWidget())),
+      ),
+    );
 
     await tester.pumpAndSettle();
 
@@ -58,14 +70,21 @@ void main() {
   testWidgets('Test Player buttons', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(800, 500));
 
-    await tester.pumpWidget(ProviderScope(overrides: [
-      playerNotifierProvider.overrideWith(PlayerNotifierMock.new),
-      isAudioDownloaded.overrideWith((ref) async* {
-        yield false;
-      }),
-      playerSurahProvider.overrideWith((ref) =>
-          const Album(surah: surah, reciter: reciter, url: 'http://test'),),
-    ], child: const MaterialApp(home: Material(child: PlayerWidget())),),);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          playerNotifierProvider.overrideWith(PlayerNotifierMock.new),
+          isAudioDownloaded.overrideWith((ref) async* {
+            yield false;
+          }),
+          playerSurahProvider.overrideWith(
+            (ref) =>
+                const Album(surah: surah, reciter: reciter, url: 'http://test'),
+          ),
+        ],
+        child: const MaterialApp(home: Material(child: PlayerWidget())),
+      ),
+    );
 
     final pauseBtn = find.byTooltip('تشغيل');
 
