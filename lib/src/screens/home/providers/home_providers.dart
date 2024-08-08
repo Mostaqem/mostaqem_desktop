@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_dynamic_calls
+// ignore_for_file: avoid_dynamic_calls, inference_failure_on_untyped_parameter
 
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
@@ -14,7 +14,10 @@ part 'home_providers.g.dart';
 @Riverpod(keepAlive: true)
 Future<List<Surah>> fetchAllChapters(FetchAllChaptersRef ref) async {
   final response = await ref.read(dioHelperProvider).getHTTP('/surah');
-  return response.data['data'].map<Surah>(Surah.fromJson).toList();
+
+  return response.data['data']
+      .map<Surah>((e) => Surah.fromJson(e as Map<String, Object?>))
+      .toList();
 }
 
 /// Fetches chapter by [id]

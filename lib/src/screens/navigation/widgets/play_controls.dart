@@ -5,7 +5,6 @@ import 'package:mostaqem/src/screens/navigation/repository/player_repository.dar
 import 'package:mostaqem/src/screens/navigation/widgets/full_screen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
-import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 class PlayControls extends StatelessWidget {
   const PlayControls({
@@ -41,7 +40,7 @@ class PlayControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final player = ref.watch(playerNotifierProvider);
-    // TODO(mezoPeeta): Refactor PlayControls
+    // TODO(mezoPeeta): Refactor playcontrols
     return Transform.scale(
       scale: isFullScreen ? 1.3 : 1,
       child: Column(
@@ -72,62 +71,76 @@ class PlayControls extends StatelessWidget {
                   ),
                 ),
               ),
-              ToolTipIconButton(
+              Tooltip(
                 message: 'تشغيل',
-                onPressed: () =>
-                    ref.read(playerNotifierProvider.notifier).handlePlayPause(),
-                icon: player.isPlaying
-                    ? Icon(
-                        Icons.pause_circle_filled_outlined,
-                        color: isFullScreen
-                            ? Colors.white
-                            : Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
-                      )
-                    : Icon(
-                        Icons.play_circle_fill_outlined,
-                        color: isFullScreen
-                            ? Colors.white
-                            : Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
-                      ),
-                iconSize: 25,
+                preferBelow: false,
+                child: IconButton(
+                  onPressed: () async {
+                    await ref
+                        .read(playerNotifierProvider.notifier)
+                        .handlePlayPause();
+                  },
+                  icon: player.isPlaying
+                      ? Icon(
+                          Icons.pause_circle_filled_outlined,
+                          color: isFullScreen
+                              ? Colors.white
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                        )
+                      : Icon(
+                          Icons.play_circle_fill_outlined,
+                          color: isFullScreen
+                              ? Colors.white
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
+                        ),
+                  iconSize: 25,
+                ),
               ),
               Visibility(
                 visible: ref
                         .watch(playerNotifierProvider.notifier)
                         .isLastchapter() &&
                     ref.watch(playerSurahProvider) != null,
-                child: ToolTipIconButton(
+                child: Tooltip(
                   message: 'بعد',
-                  onPressed: () async {
-                    await ref.read(playerNotifierProvider.notifier).playNext();
-                  },
-                  icon: Icon(
-                    Icons.skip_previous_outlined,
-                    color: isFullScreen
-                        ? Colors.white
-                        : Theme.of(context).colorScheme.onSecondaryContainer,
+                  preferBelow: false,
+                  child: IconButton(
+                    onPressed: () async {
+                      await ref
+                          .read(playerNotifierProvider.notifier)
+                          .playNext();
+                    },
+                    icon: Icon(
+                      Icons.skip_previous_outlined,
+                      color: isFullScreen
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSecondaryContainer,
+                    ),
+                    iconSize: 25,
                   ),
-                  iconSize: 25,
                 ),
               ),
-              ToolTipIconButton(
+              Tooltip(
                 message: 'اعادة',
-                onPressed: () async {
-                  ref.read(playerNotifierProvider.notifier).loop();
-                },
-                icon: loopIcon(
-                  player.loop,
-                  player.loop == PlaylistMode.none
-                      ? isFullScreen
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.onSecondaryContainer
-                      : Theme.of(context).colorScheme.tertiary,
+                preferBelow: false,
+                child: IconButton(
+                  onPressed: () async {
+                    ref.read(playerNotifierProvider.notifier).loop();
+                  },
+                  icon: loopIcon(
+                    player.loop,
+                    player.loop == PlaylistMode.none
+                        ? isFullScreen
+                            ? Colors.white
+                            : Theme.of(context).colorScheme.onSecondaryContainer
+                        : Theme.of(context).colorScheme.tertiary,
+                  ),
+                  iconSize: 16,
                 ),
-                iconSize: 16,
               ),
             ],
           ),
@@ -296,9 +309,11 @@ class FullScreenPlayControls extends StatelessWidget {
                 message: 'تشغيل',
                 preferBelow: false,
                 child: IconButton(
-                  onPressed: () => ref
-                      .read(playerNotifierProvider.notifier)
-                      .handlePlayPause(),
+                  onPressed: () async {
+                    await ref
+                        .read(playerNotifierProvider.notifier)
+                        .handlePlayPause();
+                  },
                   icon: player.isPlaying
                       ? const Icon(
                           Icons.pause_circle_filled_outlined,

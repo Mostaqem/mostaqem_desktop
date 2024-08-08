@@ -44,7 +44,7 @@ class ReadingScreen extends ConsumerWidget {
                               ),
                           itemBuilder: (context, index) {
                             return Text(
-                              data[index],
+                              data[index].verse,
                               // textAlign: TextAlign.center,
                               style:
                                   const TextStyle(fontSize: 25, fontFamily: ''),

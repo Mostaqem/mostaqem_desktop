@@ -33,10 +33,6 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     if (currentPlayer == null) return;
 
-    player.open(Media(
-      currentPlayer.url,
-    ),);
-
     if (isLocalAudio()) {
       final audios = ref.watch(getLocalAudioProvider).value;
       final firstAudio = audios!.first;
@@ -47,6 +43,11 @@ class PlayerNotifier extends _$PlayerNotifier {
       }
     }
 
+    player.open(
+      Media(
+        currentPlayer.url,
+      ),
+    );
     player.stream.position.listen((position) {
       state = state.copyWith(position: position);
     });
@@ -54,7 +55,7 @@ class PlayerNotifier extends _$PlayerNotifier {
     player.stream.duration.listen((duration) {
       state = state.copyWith(duration: duration);
 
-      player.seek(Duration(milliseconds: currentPlayer.position));
+      // player.seek(Duration(milliseconds: currentPlayer.position)); // TODO: FIX THIS
     });
 
     player.stream.buffer.listen((buffering) {
@@ -75,22 +76,28 @@ class PlayerNotifier extends _$PlayerNotifier {
 
       if (Platform.isWindows) {
         windowThumbnailBar();
-        ref.read(initSMTCProvider(
+        ref.read(
+          initSMTCProvider(
             duration: state.duration.inMilliseconds,
             position: state.position.inMilliseconds,
             image: currentPlayer.surah.image ??
                 'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
             surah: currentPlayer.surah.arabicName,
-            reciter: currentPlayer.reciter.arabicName,),);
+            reciter: currentPlayer.reciter.arabicName,
+          ),
+        );
       }
 
       if (Platform.isLinux) {
-        ref.read(createMetadataProvider(
+        ref.read(
+          createMetadataProvider(
             reciterName: currentPlayer.reciter.arabicName,
             url: currentPlayer.url,
             surah: currentPlayer.surah.arabicName,
             image: currentPlayer.surah.image!,
-            position: state.position,),);
+            position: state.position,
+          ),
+        );
       }
     });
 
@@ -99,20 +106,24 @@ class PlayerNotifier extends _$PlayerNotifier {
       await player.playOrPause();
 
       if (Platform.isWindows) {
-        ref.read(updateSMTCProvider(
+        ref.read(
+          updateSMTCProvider(
             image: n!.surah.image ??
                 'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
             surah: n.surah.arabicName,
-            reciter: n.reciter.arabicName,),);
+            reciter: n.reciter.arabicName,
+          ),
+        );
       }
 
-      ref.read(updateRPCDiscordProvider(
+      ref.read(
+        updateRPCDiscordProvider(
           surahName: n!.surah.simpleName,
           reciter: n.reciter.englishName,
           position: state.position.inMilliseconds,
-          duration: state.duration.inMilliseconds,),);
-
-      await player.open(Media(n.url));
+          duration: state.duration.inMilliseconds,
+        ),
+      );
     });
   }
 
@@ -158,13 +169,13 @@ class PlayerNotifier extends _$PlayerNotifier {
     return currentPlayer.surah.id < 114;
   }
 
-  void handlePlayPause() {
+  Future<void> handlePlayPause() async {
     if (state.isPlaying) {
-      player.pause();
+      await player.pause();
 
       state = state.copyWith(isPlaying: false);
     } else {
-      player.play();
+      await player.play();
 
       state = state.copyWith(isPlaying: true);
     }
@@ -186,12 +197,18 @@ class PlayerNotifier extends _$PlayerNotifier {
     final nextID = currentPlayer!.surah.id + 1;
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
-    final audioURL = await ref.read(fetchAudioForChapterProvider(
-            chapterNumber: nextID, reciterID: chosenReciter.id,)
-        .future,);
+    final audioURL = await ref.read(
+      fetchAudioForChapterProvider(
+        chapterNumber: nextID,
+        reciterID: chosenReciter.id,
+      ).future,
+    );
 
     final nextAlbum = Album(
-        surah: nextSurah, reciter: chosenReciter, url: audioURL,);
+      surah: nextSurah,
+      reciter: chosenReciter,
+      url: audioURL,
+    );
 
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
   }
@@ -213,18 +230,24 @@ class PlayerNotifier extends _$PlayerNotifier {
       ref.watch(playerSurahProvider.notifier).state = audios[currentIndex - 1];
       return;
     }
-    final  nextID = currentPlayer!.surah.id - 1;
+    final nextID = currentPlayer!.surah.id - 1;
     final chosenReciter =
         ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
 
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
-    final audioURL = await ref.read(fetchAudioForChapterProvider(
-            chapterNumber: nextID, reciterID: chosenReciter.id,)
-        .future,);
+    final audioURL = await ref.read(
+      fetchAudioForChapterProvider(
+        chapterNumber: nextID,
+        reciterID: chosenReciter.id,
+      ).future,
+    );
 
     final nextAlbum = Album(
-        surah: nextSurah, reciter: chosenReciter, url: audioURL,);
+      surah: nextSurah,
+      reciter: chosenReciter,
+      url: audioURL,
+    );
 
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
   }
@@ -237,12 +260,14 @@ class PlayerNotifier extends _$PlayerNotifier {
     final reciter =
         await ref.read(fetchReciterProvider(id: chosenReciterID).future);
 
-    final audioURL = await ref.read(fetchAudioForChapterProvider(
-            chapterNumber: surahID, reciterID: chosenReciterID,)
-        .future,);
+    final audioURL = await ref.read(
+      fetchAudioForChapterProvider(
+        chapterNumber: surahID,
+        reciterID: chosenReciterID,
+      ).future,
+    );
 
-    final album =
-        Album(surah: surah, reciter: reciter, url: audioURL);
+    final album = Album(surah: surah, reciter: reciter, url: audioURL);
 
     ref.read(playerSurahProvider.notifier).state = album;
   }
@@ -291,21 +316,24 @@ class PlayerNotifier extends _$PlayerNotifier {
           await playNext();
         },
       ),
-      if (state.isPlaying) ThumbnailToolbarButton(
-              ThumbnailToolbarAssetIcon('assets/img/pause.ico'),
-              'ايقاف ',
-              () {
-                player.pause();
-                state = state.copyWith(isPlaying: false);
-              },
-            ) else ThumbnailToolbarButton(
-              ThumbnailToolbarAssetIcon('assets/img/play.ico'),
-              'تشغيل',
-              () {
-                player.play();
-                state = state.copyWith(isPlaying: true);
-              },
-            ),
+      if (state.isPlaying)
+        ThumbnailToolbarButton(
+          ThumbnailToolbarAssetIcon('assets/img/pause.ico'),
+          'ايقاف ',
+          () {
+            player.pause();
+            state = state.copyWith(isPlaying: false);
+          },
+        )
+      else
+        ThumbnailToolbarButton(
+          ThumbnailToolbarAssetIcon('assets/img/play.ico'),
+          'تشغيل',
+          () {
+            player.play();
+            state = state.copyWith(isPlaying: true);
+          },
+        ),
       ThumbnailToolbarButton(
         ThumbnailToolbarAssetIcon('assets/img/skip_next.ico'),
         'قبل',
@@ -330,7 +358,7 @@ class PlayerNotifierMock extends _$PlayerNotifier implements PlayerNotifier {
   }
 
   @override
-  void handlePlayPause() {
+  Future<void> handlePlayPause() async {
     state = state.copyWith(isPlaying: true);
   }
 

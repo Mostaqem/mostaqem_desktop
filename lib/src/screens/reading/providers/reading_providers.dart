@@ -15,5 +15,7 @@ Future<List<Script>> fetchUthmaniScript(
       .read(dioHelperProvider)
       .getHTTP('/verse/surah?surah_id=$surahID');
 
-  return response.data['data']['verses'].map<Script>(Script.fromJson).toList();
+  return response.data['data']['verses']
+      .map<Script>((e) => Script.fromJson(e as Map<String, Object?>))
+      .toList();
 }

@@ -7,7 +7,7 @@ part of 'reading_providers.dart';
 // **************************************************************************
 
 String _$fetchUthmaniScriptHash() =>
-    r'0983ca7613bc1006f666d1e0456fa59094518ee7';
+    r'bc7fdd01b629b821a5bde0bfb06826b1191c38f1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,7 +35,7 @@ class _SystemHash {
 const fetchUthmaniScriptProvider = FetchUthmaniScriptFamily();
 
 /// See also [fetchUthmaniScript].
-class FetchUthmaniScriptFamily extends Family<AsyncValue<List<String>>> {
+class FetchUthmaniScriptFamily extends Family<AsyncValue<List<Script>>> {
   /// See also [fetchUthmaniScript].
   const FetchUthmaniScriptFamily();
 
@@ -73,7 +73,7 @@ class FetchUthmaniScriptFamily extends Family<AsyncValue<List<String>>> {
 }
 
 /// See also [fetchUthmaniScript].
-class FetchUthmaniScriptProvider extends FutureProvider<List<String>> {
+class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
   /// See also [fetchUthmaniScript].
   FetchUthmaniScriptProvider({
     required int surahID,
@@ -108,7 +108,7 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<String>> {
 
   @override
   Override overrideWith(
-    FutureOr<List<String>> Function(FetchUthmaniScriptRef provider) create,
+    FutureOr<List<Script>> Function(FetchUthmaniScriptRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -125,7 +125,7 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<String>> {
   }
 
   @override
-  FutureProviderElement<List<String>> createElement() {
+  FutureProviderElement<List<Script>> createElement() {
     return _FetchUthmaniScriptProviderElement(this);
   }
 
@@ -143,13 +143,13 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<String>> {
   }
 }
 
-mixin FetchUthmaniScriptRef on FutureProviderRef<List<String>> {
+mixin FetchUthmaniScriptRef on FutureProviderRef<List<Script>> {
   /// The parameter `surahID` of this provider.
   int get surahID;
 }
 
 class _FetchUthmaniScriptProviderElement
-    extends FutureProviderElement<List<String>> with FetchUthmaniScriptRef {
+    extends FutureProviderElement<List<Script>> with FetchUthmaniScriptRef {
   _FetchUthmaniScriptProviderElement(super.provider);
 
   @override

@@ -6,7 +6,7 @@ part of 'home_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchAllChaptersHash() => r'ac8aea5a9faa23ff4c6fd8e8989760597c3d15a9';
+String _$fetchAllChaptersHash() => r'54721eb219ba69327ee453752546c8a616ec3f94';
 
 /// Fetches all the chapters
 ///
@@ -23,7 +23,7 @@ final fetchAllChaptersProvider = FutureProvider<List<Surah>>.internal(
 );
 
 typedef FetchAllChaptersRef = FutureProviderRef<List<Surah>>;
-String _$fetchChapterByIdHash() => r'faa3088bb7489957ab1a8b416dbcf97759cb2695';
+String _$fetchChapterByIdHash() => r'26a2fde193ae47d75901e800dee5f8afecd81cdf';
 
 /// Copied from Dart SDK
 class _SystemHash {

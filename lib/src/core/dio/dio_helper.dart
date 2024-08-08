@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_function_invocation
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/env/env.dart';
@@ -35,7 +37,9 @@ class DioHelper {
         ),
         TalkerDioLogger(
           talker: talker,
-          settings: const TalkerDioLoggerSettings(printResponseMessage: false),
+          settings: const TalkerDioLoggerSettings(
+            printResponseData: false,
+          ),
         ),
       ]);
   }
@@ -44,8 +48,7 @@ class DioHelper {
     String url, {
     Options? options,
   }) async {
-    final response =
-        await baseAPI.get<Map<String, Object>>(url, options: options);
+    final response = await baseAPI.get(url, options: options);
     return response;
   }
 
@@ -53,7 +56,7 @@ class DioHelper {
     String url,
     dynamic data,
   ) async {
-    final response = await baseAPI.post<Map<String, Object?>>(url, data: data);
+    final response = await baseAPI.post(url, data: data);
     return response;
   }
 }

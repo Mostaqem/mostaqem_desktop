@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Test and Format Dart code
+name: Test Flutter code
 
 on:
   pull_request:

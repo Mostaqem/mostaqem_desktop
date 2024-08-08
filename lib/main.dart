@@ -23,8 +23,7 @@ void main() async {
     center: true,
     title: 'Mostaqem',
     backgroundColor: Colors.transparent,
-    skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden,
+    titleBarStyle: TitleBarStyle.normal,
   );
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
