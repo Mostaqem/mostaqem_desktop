@@ -42,6 +42,7 @@ void main() {
 
   testWidgets('Test Text appears on player', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(800, 500));
+    MediaKit.ensureInitialized(libmpv: 'libmpv.so');
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
