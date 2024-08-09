@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
+import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
-import '../../screens/home/providers/home_providers.dart';
-import '../../screens/navigation/data/album.dart';
-
 class FullScreenWidget extends StatelessWidget {
-  const FullScreenWidget({super.key, required this.player, required this.ref});
+  const FullScreenWidget({required this.player, required this.ref, super.key});
   final Album player;
   final WidgetRef ref;
   @override
@@ -22,9 +21,9 @@ class FullScreenWidget extends StatelessWidget {
               return Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        fit: BoxFit.cover, image: NetworkImage(data))),
+                        fit: BoxFit.cover, image: NetworkImage(data),),),
               );
-            }),
+            },),
         Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -32,7 +31,7 @@ class FullScreenWidget extends StatelessWidget {
                 Colors.transparent,
                 Colors.transparent,
                 Colors.transparent,
-                Colors.black
+                Colors.black,
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -55,7 +54,7 @@ class FullScreenWidget extends StatelessWidget {
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(player
                                   .surah.image ??
-                              "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg"))),
+                              'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',),),),
                 ),
                 const SizedBox(
                   width: 12,
@@ -71,9 +70,9 @@ class FullScreenWidget extends StatelessWidget {
                     Text(player.reciter.arabicName,
                         style: TextStyle(
                             fontSize: 18,
-                            color: Colors.white.withOpacity(0.5))),
+                            color: Colors.white.withOpacity(0.5),),),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -85,13 +84,13 @@ class FullScreenWidget extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 child: ToolTipIconButton(
-                    message: "تغير الصورة",
+                    message: 'تغير الصورة',
                     onPressed: () {
                       ref.invalidate(fetchRandomImageProvider);
                     },
-                    icon: const Icon(Icons.arrow_forward_outlined)),
-              )),
-        )
+                    icon: const Icon(Icons.arrow_forward_outlined),),
+              ),),
+        ),
       ],
     );
   }

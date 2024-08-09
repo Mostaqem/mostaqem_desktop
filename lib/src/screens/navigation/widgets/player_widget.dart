@@ -6,11 +6,10 @@ import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/normal_player.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/play_controls.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/volume_control.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'normal_player.dart';
-import 'play_controls.dart';
-import 'volume_control.dart';
 
 final playerSurahProvider = StateProvider<Album?>((ref) {
   final cachedSurah = ref.read(playerCacheProvider);
@@ -71,17 +70,20 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
   void onWindowClose() {
     final player = ref.watch(playerSurahProvider);
     final position = ref.watch(playerNotifierProvider).position;
-    ref.read(playerCacheProvider.notifier).setAlbum(Album(
-        surah: player!.surah,
-        reciter: player.reciter,
-        url: player.url,
-        position: position.inMilliseconds));
+    ref.read(playerCacheProvider.notifier).setAlbum(
+          Album(
+            surah: player!.surah,
+            reciter: player.reciter,
+            url: player.url,
+            position: position.inMilliseconds,
+          ),
+        );
     super.onWindowClose();
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isFullScreen = ref.watch(isFullScreenProvider);
+    final isFullScreen = ref.watch(isFullScreenProvider);
     return MouseRegion(
       onHover: (event) {
         if (isFullScreen) {
@@ -89,37 +91,47 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
         }
       },
       child: Visibility(
-        visible: isFullScreen ? _isVisible : true,
+        visible: isFullScreen || _isVisible,
         child: Stack(
           children: [
             Container(
-                height: 100,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12)),
-                    color: isFullScreen
-                        ? Colors.transparent
-                        : Theme.of(context).colorScheme.secondaryContainer),
-                child: isFullScreen
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          FullScreenPlayControls(
-                            ref: ref,
-                          ),
-                          const Expanded(child: VolumeControls()),
-                        ],
-                      )
-                    : LayoutBuilder(builder: (context, constraints) {
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                color: isFullScreen
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.secondaryContainer,
+              ),
+              child: isFullScreen
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        FullScreenPlayControls(
+                          ref: ref,
+                        ),
+                        const Expanded(child: VolumeControls()),
+                      ],
+                    )
+                  : LayoutBuilder(
+                      builder: (context, constraints) {
                         return constraints.minWidth < 1285
                             ? FittedBox(
                                 child: NormalPlayer(
-                                    isFullScreen: isFullScreen, ref: ref))
+                                  isFullScreen: isFullScreen,
+                                  ref: ref,
+                                ),
+                              )
                             : NormalPlayer(
-                                isFullScreen: isFullScreen, ref: ref);
-                      })),
+                                isFullScreen: isFullScreen,
+                                ref: ref,
+                              );
+                      },
+                    ),
+            ),
             Visibility(
               visible: ref.watch(playerSurahProvider) == null,
               child: MouseRegion(
@@ -128,16 +140,18 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
                   width: double.infinity,
                   height: 100,
                   decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12)),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondaryContainer
-                          .withOpacity(0.4)),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    ),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondaryContainer
+                        .withOpacity(0.4),
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

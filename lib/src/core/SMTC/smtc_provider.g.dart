@@ -6,7 +6,7 @@ part of 'smtc_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateSMTCHash() => r'f04915b39f0d43e33980628163318a9c75abffc1';
+String _$updateSMTCHash() => r'1f0e0873c49b62a50e7f298b118876b627baa25a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const updateSMTCProvider = UpdateSMTCFamily();
 
 /// See also [updateSMTC].
-class UpdateSMTCFamily extends Family<Object?> {
+class UpdateSMTCFamily extends Family<void> {
   /// See also [updateSMTC].
   const UpdateSMTCFamily();
 
@@ -78,7 +78,7 @@ class UpdateSMTCFamily extends Family<Object?> {
 }
 
 /// See also [updateSMTC].
-class UpdateSMTCProvider extends AutoDisposeProvider<Object?> {
+class UpdateSMTCProvider extends AutoDisposeProvider<void> {
   /// See also [updateSMTC].
   UpdateSMTCProvider({
     required String surah,
@@ -123,7 +123,7 @@ class UpdateSMTCProvider extends AutoDisposeProvider<Object?> {
 
   @override
   Override overrideWith(
-    Object? Function(UpdateSMTCRef provider) create,
+    void Function(UpdateSMTCRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -142,7 +142,7 @@ class UpdateSMTCProvider extends AutoDisposeProvider<Object?> {
   }
 
   @override
-  AutoDisposeProviderElement<Object?> createElement() {
+  AutoDisposeProviderElement<void> createElement() {
     return _UpdateSMTCProviderElement(this);
   }
 
@@ -165,7 +165,7 @@ class UpdateSMTCProvider extends AutoDisposeProvider<Object?> {
   }
 }
 
-mixin UpdateSMTCRef on AutoDisposeProviderRef<Object?> {
+mixin UpdateSMTCRef on AutoDisposeProviderRef<void> {
   /// The parameter `surah` of this provider.
   String get surah;
 
@@ -176,7 +176,7 @@ mixin UpdateSMTCRef on AutoDisposeProviderRef<Object?> {
   String get image;
 }
 
-class _UpdateSMTCProviderElement extends AutoDisposeProviderElement<Object?>
+class _UpdateSMTCProviderElement extends AutoDisposeProviderElement<void>
     with UpdateSMTCRef {
   _UpdateSMTCProviderElement(super.provider);
 
@@ -188,14 +188,14 @@ class _UpdateSMTCProviderElement extends AutoDisposeProviderElement<Object?>
   String get image => (origin as UpdateSMTCProvider).image;
 }
 
-String _$initSMTCHash() => r'ac8885da11421ae6415f72bf6e830dfbefd508e8';
+String _$initSMTCHash() => r'aa909fdf3245af1e86bf018ada5a02d98d556884';
 
 /// See also [initSMTC].
 @ProviderFor(initSMTC)
 const initSMTCProvider = InitSMTCFamily();
 
 /// See also [initSMTC].
-class InitSMTCFamily extends Family<Object?> {
+class InitSMTCFamily extends Family<void> {
   /// See also [initSMTC].
   const InitSMTCFamily();
 
@@ -245,7 +245,7 @@ class InitSMTCFamily extends Family<Object?> {
 }
 
 /// See also [initSMTC].
-class InitSMTCProvider extends AutoDisposeProvider<Object?> {
+class InitSMTCProvider extends AutoDisposeProvider<void> {
   /// See also [initSMTC].
   InitSMTCProvider({
     required String surah,
@@ -299,7 +299,7 @@ class InitSMTCProvider extends AutoDisposeProvider<Object?> {
 
   @override
   Override overrideWith(
-    Object? Function(InitSMTCRef provider) create,
+    void Function(InitSMTCRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -320,7 +320,7 @@ class InitSMTCProvider extends AutoDisposeProvider<Object?> {
   }
 
   @override
-  AutoDisposeProviderElement<Object?> createElement() {
+  AutoDisposeProviderElement<void> createElement() {
     return _InitSMTCProviderElement(this);
   }
 
@@ -347,7 +347,7 @@ class InitSMTCProvider extends AutoDisposeProvider<Object?> {
   }
 }
 
-mixin InitSMTCRef on AutoDisposeProviderRef<Object?> {
+mixin InitSMTCRef on AutoDisposeProviderRef<void> {
   /// The parameter `surah` of this provider.
   String get surah;
 
@@ -364,7 +364,7 @@ mixin InitSMTCRef on AutoDisposeProviderRef<Object?> {
   int get duration;
 }
 
-class _InitSMTCProviderElement extends AutoDisposeProviderElement<Object?>
+class _InitSMTCProviderElement extends AutoDisposeProviderElement<void>
     with InitSMTCRef {
   _InitSMTCProviderElement(super.provider);
 

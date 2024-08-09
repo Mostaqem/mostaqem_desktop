@@ -27,8 +27,12 @@ mixin _$Reciter {
   String get arabicName => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
 
+  /// Serializes this Reciter to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Reciter
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ReciterCopyWith<Reciter> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -54,6 +58,8 @@ class _$ReciterCopyWithImpl<$Res, $Val extends Reciter>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Reciter
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -105,6 +111,8 @@ class __$$ReciterImplCopyWithImpl<$Res>
       _$ReciterImpl _value, $Res Function(_$ReciterImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Reciter
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -175,12 +183,14 @@ class _$ReciterImpl implements _Reciter {
             (identical(other.image, image) || other.image == image));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, englishName, arabicName, image);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Reciter
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ReciterImplCopyWith<_$ReciterImpl> get copyWith =>
@@ -213,8 +223,11 @@ abstract class _Reciter implements Reciter {
   String get arabicName;
   @override
   String? get image;
+
+  /// Create a copy of Reciter
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReciterImplCopyWith<_$ReciterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

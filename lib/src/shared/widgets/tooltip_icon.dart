@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class ToolTipIconButton extends StatelessWidget {
   const ToolTipIconButton({
-    super.key,
     required this.message,
     required this.onPressed,
     required this.icon,
+    super.key,
     this.iconSize,
   });
   final String message;

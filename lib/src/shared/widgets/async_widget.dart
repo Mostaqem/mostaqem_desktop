@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AsyncWidget<T> extends StatelessWidget {
   const AsyncWidget(
-      {super.key, required this.value, required this.data, this.loading});
+      {required this.value, required this.data, super.key, this.loading,});
 
   final AsyncValue<T> value;
   final Widget Function(T) data;
@@ -15,14 +15,14 @@ class AsyncWidget<T> extends StatelessWidget {
     return value.when(
         data: data,
         error: (e, st) {
-          log("[ERROR]", error: e, stackTrace: st);
-          return const Center(child: Text("حدث خطأ ما!"));
+          log('[ERROR]', error: e, stackTrace: st);
+          return const Center(child: Text('حدث خطأ ما!'));
         },
         loading: () =>
             loading ??
             const Center(
               heightFactor: 10,
               child: CircularProgressIndicator(),
-            ));
+            ),);
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:github/github.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 enum UpdateState {
@@ -20,9 +20,11 @@ class PackageRepository {
   }
 
   int getExtendedVersionNumber(String version) {
-    List versionCells = version.split('.');
-    versionCells = versionCells.map((i) => int.parse(i)).toList();
-    return versionCells[0] * 10000 + versionCells[1] * 100 + versionCells[2];
+    final versionCells = version.split('.');
+    final versionNumbers = versionCells.map(int.parse).toList();
+    return versionNumbers[0] * 10000 +
+        versionNumbers[1] * 100 +
+        versionNumbers[2];
   }
 
   Future<UpdateState> checkUpdate() async {
@@ -48,16 +50,14 @@ class PackageRepository {
     String? installUrl;
 
     switch (os) {
-      case "windows":
+      case 'windows':
         installUrl = latestRelease.assets!
             .firstWhere((element) => element.name!.contains('.exe'))
             .browserDownloadUrl;
         if (installUrl == null) return;
         await launchUrlString(installUrl);
-        break;
-      case "linux":
+      case 'linux':
         await launchUrlString(latestRelease.htmlUrl!);
-        break;
     }
   }
 }

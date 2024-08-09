@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
+import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
-
-import '../../shared/widgets/full_screen.dart';
-import '../../shared/widgets/tooltip_icon.dart';
-import '../../shared/widgets/window_buttons.dart';
-import 'repository/fullscreen_notifier.dart';
+import 'package:mostaqem/src/shared/widgets/full_screen.dart';
+import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
 final isExtendedProvider = StateProvider<bool>((ref) => false);
 
@@ -15,7 +14,7 @@ class Navigation extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    bool isFullScreen = ref.watch(isFullScreenProvider);
+    final isFullScreen = ref.watch(isFullScreenProvider);
     final player = ref.watch(playerSurahProvider);
 
     return Scaffold(
@@ -35,12 +34,12 @@ class Navigation extends ConsumerWidget {
                         return Row(
                           children: [
                             RightSide(
-                                children: children, screenIndex: screenIndex),
+                                children: children, screenIndex: screenIndex,),
                             LeftSide(
-                                children: children, screenIndex: screenIndex),
+                                children: children, screenIndex: screenIndex,),
                           ],
                         );
-                      }),
+                      },),
                     ),
                   ],
                 ),
@@ -50,12 +49,9 @@ class Navigation extends ConsumerWidget {
   }
 }
 
-
 class RightSide extends ConsumerWidget {
   const RightSide({
-    super.key,
-    required this.children,
-    required this.screenIndex,
+    required this.children, required this.screenIndex, super.key,
   });
   final List<Screen> children;
   final int screenIndex;
@@ -70,7 +66,7 @@ class RightSide extends ConsumerWidget {
             backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
             extended: ref.watch(isExtendedProvider),
             leading: ToolTipIconButton(
-              message: "توسيع",
+              message: 'توسيع',
               icon: const Icon(Icons.menu),
               onPressed: () => ref
                   .read(isExtendedProvider.notifier)
@@ -82,7 +78,7 @@ class RightSide extends ConsumerWidget {
               ...children.map((child) => NavigationRailDestination(
                   icon: child.icon,
                   label: Text(child.label),
-                  selectedIcon: child.selectedIcon))
+                  selectedIcon: child.selectedIcon,),),
             ],
             selectedIndex: screenIndex,
             onDestinationSelected: (value) =>
@@ -96,9 +92,7 @@ class RightSide extends ConsumerWidget {
 
 class LeftSide extends StatelessWidget {
   const LeftSide({
-    super.key,
-    required this.children,
-    required this.screenIndex,
+    required this.children, required this.screenIndex, super.key,
   });
 
   final List<Screen> children;
@@ -110,6 +104,6 @@ class LeftSide extends StatelessWidget {
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: children[screenIndex].widget,
-    ));
+    ),);
   }
 }

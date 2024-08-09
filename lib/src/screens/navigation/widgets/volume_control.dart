@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-
-import '../../../shared/widgets/hover_builder.dart';
-import '../repository/fullscreen_notifier.dart';
+import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 
 class VolumeControls extends ConsumerWidget {
   const VolumeControls({super.key});
@@ -11,13 +10,12 @@ class VolumeControls extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playerNotifierProvider);
-    bool isFullScreen = ref.watch(isFullScreenProvider);
+    final isFullScreen = ref.watch(isFullScreenProvider);
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Tooltip(
-          message: player.volume > 0 ? "صامت" : "تشغيل",
+          message: player.volume > 0 ? 'صامت' : 'تشغيل',
           preferBelow: false,
           child: RotatedBox(
             quarterTurns: 2,
@@ -50,11 +48,11 @@ class VolumeControls extends ConsumerWidget {
                 thumbShape: RoundSliderThumbShape(
               enabledThumbRadius: isHovered ? 7 : 3,
               elevation: 0,
-            )),
+            ),),
             child: SizedBox(
               width: 140,
               child: Slider(
-                key: const Key("volume"),
+                key: const Key('volume'),
                 activeColor: isFullScreen ? Colors.white : null,
                 value: ref.watch(playerNotifierProvider).volume,
                 onChanged: (v) =>
@@ -62,7 +60,7 @@ class VolumeControls extends ConsumerWidget {
               ),
             ),
           );
-        }),
+        },),
       ],
     );
   }

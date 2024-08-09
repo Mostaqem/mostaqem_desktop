@@ -22,11 +22,15 @@ Album _$AlbumFromJson(Map<String, dynamic> json) {
 mixin _$Album {
   Surah get surah => throw _privateConstructorUsedError;
   Reciter get reciter => throw _privateConstructorUsedError;
-  int get position => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
+  int get position => throw _privateConstructorUsedError;
 
+  /// Serializes this Album to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AlbumCopyWith<Album> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -35,7 +39,7 @@ abstract class $AlbumCopyWith<$Res> {
   factory $AlbumCopyWith(Album value, $Res Function(Album) then) =
       _$AlbumCopyWithImpl<$Res, Album>;
   @useResult
-  $Res call({Surah surah, Reciter reciter, int position, String url});
+  $Res call({Surah surah, Reciter reciter, String url, int position});
 
   $SurahCopyWith<$Res> get surah;
   $ReciterCopyWith<$Res> get reciter;
@@ -51,13 +55,15 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? surah = null,
     Object? reciter = null,
-    Object? position = null,
     Object? url = null,
+    Object? position = null,
   }) {
     return _then(_value.copyWith(
       surah: null == surah
@@ -68,17 +74,19 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
           ? _value.reciter
           : reciter // ignore: cast_nullable_to_non_nullable
               as Reciter,
-      position: null == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as int,
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SurahCopyWith<$Res> get surah {
@@ -87,6 +95,8 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
     });
   }
 
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ReciterCopyWith<$Res> get reciter {
@@ -103,7 +113,7 @@ abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
       __$$AlbumImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Surah surah, Reciter reciter, int position, String url});
+  $Res call({Surah surah, Reciter reciter, String url, int position});
 
   @override
   $SurahCopyWith<$Res> get surah;
@@ -119,13 +129,15 @@ class __$$AlbumImplCopyWithImpl<$Res>
       _$AlbumImpl _value, $Res Function(_$AlbumImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? surah = null,
     Object? reciter = null,
-    Object? position = null,
     Object? url = null,
+    Object? position = null,
   }) {
     return _then(_$AlbumImpl(
       surah: null == surah
@@ -136,14 +148,14 @@ class __$$AlbumImplCopyWithImpl<$Res>
           ? _value.reciter
           : reciter // ignore: cast_nullable_to_non_nullable
               as Reciter,
-      position: null == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as int,
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -154,8 +166,8 @@ class _$AlbumImpl implements _Album {
   const _$AlbumImpl(
       {required this.surah,
       required this.reciter,
-      this.position = 0,
-      required this.url});
+      required this.url,
+      this.position = 0});
 
   factory _$AlbumImpl.fromJson(Map<String, dynamic> json) =>
       _$$AlbumImplFromJson(json);
@@ -165,14 +177,14 @@ class _$AlbumImpl implements _Album {
   @override
   final Reciter reciter;
   @override
+  final String url;
+  @override
   @JsonKey()
   final int position;
-  @override
-  final String url;
 
   @override
   String toString() {
-    return 'Album(surah: $surah, reciter: $reciter, position: $position, url: $url)';
+    return 'Album(surah: $surah, reciter: $reciter, url: $url, position: $position)';
   }
 
   @override
@@ -182,16 +194,18 @@ class _$AlbumImpl implements _Album {
             other is _$AlbumImpl &&
             (identical(other.surah, surah) || other.surah == surah) &&
             (identical(other.reciter, reciter) || other.reciter == reciter) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.position, position) ||
-                other.position == position) &&
-            (identical(other.url, url) || other.url == url));
+                other.position == position));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, surah, reciter, position, url);
+  int get hashCode => Object.hash(runtimeType, surah, reciter, url, position);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AlbumImplCopyWith<_$AlbumImpl> get copyWith =>
@@ -209,8 +223,8 @@ abstract class _Album implements Album {
   const factory _Album(
       {required final Surah surah,
       required final Reciter reciter,
-      final int position,
-      required final String url}) = _$AlbumImpl;
+      required final String url,
+      final int position}) = _$AlbumImpl;
 
   factory _Album.fromJson(Map<String, dynamic> json) = _$AlbumImpl.fromJson;
 
@@ -219,11 +233,14 @@ abstract class _Album implements Album {
   @override
   Reciter get reciter;
   @override
-  int get position;
-  @override
   String get url;
   @override
-  @JsonKey(ignore: true)
+  int get position;
+
+  /// Create a copy of Album
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AlbumImplCopyWith<_$AlbumImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

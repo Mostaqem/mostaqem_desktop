@@ -1,4 +1,4 @@
-import 'dart:developer';
+// ignore_for_file: inference_failure_on_function_invocation
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,36 +27,36 @@ class DioHelper {
   static Dio addInterceptors(Dio dio) {
     return dio
       ..interceptors.addAll([
-        InterceptorsWrapper(onRequest: (options, handler) {
-          return handler.next(options);
-        }, onError: (e, handler) async {
-          return handler.next(e);
-        }),
+        InterceptorsWrapper(
+          onRequest: (options, handler) {
+            return handler.next(options);
+          },
+          onError: (e, handler) async {
+            return handler.next(e);
+          },
+        ),
         TalkerDioLogger(
-            talker: talker, 
-            settings:
-                const TalkerDioLoggerSettings(printResponseMessage: false))
+          talker: talker,
+          settings: const TalkerDioLoggerSettings(
+            printResponseData: false,
+          ),
+        ),
       ]);
   }
 
-  Future<Response?> getHTTP(String url, {Options? options}) async {
-    try {
-      Response response = await baseAPI.get(url, options: options);
-      return response;
-    } on DioException catch (e) {
-      log("[Get Request Error]", error: e);
-      log("[Get Request Error Data]| ${e.response!.data}");
-    }
-    return null;
+  Future<Response<dynamic>> getHTTP(
+    String url, {
+    Options? options,
+  }) async {
+    final response = await baseAPI.get(url, options: options);
+    return response;
   }
 
-  Future<Response?> postHTTP(String url, dynamic data) async {
-    try {
-      Response response = await baseAPI.post(url, data: data);
-      return response;
-    } on DioException catch (e) {
-      log("PostError", error: e);
-    }
-    return null;
+  Future<Response<dynamic>> postHTTP(
+    String url,
+    dynamic data,
+  ) async {
+    final response = await baseAPI.post(url, data: data);
+    return response;
   }
 }

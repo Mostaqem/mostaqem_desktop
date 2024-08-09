@@ -6,9 +6,11 @@ part of 'home_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchAllChaptersHash() => r'8fac0d8997a0335a0aad39583dac17af26f94226';
+String _$fetchAllChaptersHash() => r'54721eb219ba69327ee453752546c8a616ec3f94';
 
-/// See also [fetchAllChapters].
+/// Fetches all the chapters
+///
+/// Copied from [fetchAllChapters].
 @ProviderFor(fetchAllChapters)
 final fetchAllChaptersProvider = FutureProvider<List<Surah>>.internal(
   fetchAllChapters,
@@ -21,7 +23,7 @@ final fetchAllChaptersProvider = FutureProvider<List<Surah>>.internal(
 );
 
 typedef FetchAllChaptersRef = FutureProviderRef<List<Surah>>;
-String _$fetchChapterByIdHash() => r'46efa6a009c0cd9b7bacbc0f8c043377fc517ca9';
+String _$fetchChapterByIdHash() => r'26a2fde193ae47d75901e800dee5f8afecd81cdf';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,16 +46,24 @@ class _SystemHash {
   }
 }
 
-/// See also [fetchChapterById].
+/// Fetches chapter by [id]
+///
+/// Copied from [fetchChapterById].
 @ProviderFor(fetchChapterById)
 const fetchChapterByIdProvider = FetchChapterByIdFamily();
 
-/// See also [fetchChapterById].
+/// Fetches chapter by [id]
+///
+/// Copied from [fetchChapterById].
 class FetchChapterByIdFamily extends Family<AsyncValue<Surah>> {
-  /// See also [fetchChapterById].
+  /// Fetches chapter by [id]
+  ///
+  /// Copied from [fetchChapterById].
   const FetchChapterByIdFamily();
 
-  /// See also [fetchChapterById].
+  /// Fetches chapter by [id]
+  ///
+  /// Copied from [fetchChapterById].
   FetchChapterByIdProvider call({
     required int id,
   }) {
@@ -86,9 +96,13 @@ class FetchChapterByIdFamily extends Family<AsyncValue<Surah>> {
   String? get name => r'fetchChapterByIdProvider';
 }
 
-/// See also [fetchChapterById].
+/// Fetches chapter by [id]
+///
+/// Copied from [fetchChapterById].
 class FetchChapterByIdProvider extends AutoDisposeFutureProvider<Surah> {
-  /// See also [fetchChapterById].
+  /// Fetches chapter by [id]
+  ///
+  /// Copied from [fetchChapterById].
   FetchChapterByIdProvider({
     required int id,
   }) : this._internal(
@@ -171,25 +185,33 @@ class _FetchChapterByIdProviderElement
 }
 
 String _$fetchAudioForChapterHash() =>
-    r'db191f31aecc077aa2ca8b92046d858210ba97da';
+    r'470758227ac498e8bf907d396b8a2aaaeb91f611';
 
-/// See also [fetchAudioForChapter].
+/// Fetches audio for chapter by [chapterNumber] and [reciterID]
+///
+/// Copied from [fetchAudioForChapter].
 @ProviderFor(fetchAudioForChapter)
 const fetchAudioForChapterProvider = FetchAudioForChapterFamily();
 
-/// See also [fetchAudioForChapter].
+/// Fetches audio for chapter by [chapterNumber] and [reciterID]
+///
+/// Copied from [fetchAudioForChapter].
 class FetchAudioForChapterFamily extends Family<AsyncValue<String>> {
-  /// See also [fetchAudioForChapter].
+  /// Fetches audio for chapter by [chapterNumber] and [reciterID]
+  ///
+  /// Copied from [fetchAudioForChapter].
   const FetchAudioForChapterFamily();
 
-  /// See also [fetchAudioForChapter].
+  /// Fetches audio for chapter by [chapterNumber] and [reciterID]
+  ///
+  /// Copied from [fetchAudioForChapter].
   FetchAudioForChapterProvider call({
-    int reciterID = 1,
     required int chapterNumber,
+    int reciterID = 1,
   }) {
     return FetchAudioForChapterProvider(
-      reciterID: reciterID,
       chapterNumber: chapterNumber,
+      reciterID: reciterID,
     );
   }
 
@@ -198,8 +220,8 @@ class FetchAudioForChapterFamily extends Family<AsyncValue<String>> {
     covariant FetchAudioForChapterProvider provider,
   ) {
     return call(
-      reciterID: provider.reciterID,
       chapterNumber: provider.chapterNumber,
+      reciterID: provider.reciterID,
     );
   }
 
@@ -218,17 +240,21 @@ class FetchAudioForChapterFamily extends Family<AsyncValue<String>> {
   String? get name => r'fetchAudioForChapterProvider';
 }
 
-/// See also [fetchAudioForChapter].
+/// Fetches audio for chapter by [chapterNumber] and [reciterID]
+///
+/// Copied from [fetchAudioForChapter].
 class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
-  /// See also [fetchAudioForChapter].
+  /// Fetches audio for chapter by [chapterNumber] and [reciterID]
+  ///
+  /// Copied from [fetchAudioForChapter].
   FetchAudioForChapterProvider({
-    int reciterID = 1,
     required int chapterNumber,
+    int reciterID = 1,
   }) : this._internal(
           (ref) => fetchAudioForChapter(
             ref as FetchAudioForChapterRef,
-            reciterID: reciterID,
             chapterNumber: chapterNumber,
+            reciterID: reciterID,
           ),
           from: fetchAudioForChapterProvider,
           name: r'fetchAudioForChapterProvider',
@@ -239,8 +265,8 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
           dependencies: FetchAudioForChapterFamily._dependencies,
           allTransitiveDependencies:
               FetchAudioForChapterFamily._allTransitiveDependencies,
-          reciterID: reciterID,
           chapterNumber: chapterNumber,
+          reciterID: reciterID,
         );
 
   FetchAudioForChapterProvider._internal(
@@ -250,12 +276,12 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.reciterID,
     required this.chapterNumber,
+    required this.reciterID,
   }) : super.internal();
 
-  final int reciterID;
   final int chapterNumber;
+  final int reciterID;
 
   @override
   Override overrideWith(
@@ -270,8 +296,8 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        reciterID: reciterID,
         chapterNumber: chapterNumber,
+        reciterID: reciterID,
       ),
     );
   }
@@ -284,26 +310,26 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
   @override
   bool operator ==(Object other) {
     return other is FetchAudioForChapterProvider &&
-        other.reciterID == reciterID &&
-        other.chapterNumber == chapterNumber;
+        other.chapterNumber == chapterNumber &&
+        other.reciterID == reciterID;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, reciterID.hashCode);
     hash = _SystemHash.combine(hash, chapterNumber.hashCode);
+    hash = _SystemHash.combine(hash, reciterID.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin FetchAudioForChapterRef on AutoDisposeFutureProviderRef<String> {
-  /// The parameter `reciterID` of this provider.
-  int get reciterID;
-
   /// The parameter `chapterNumber` of this provider.
   int get chapterNumber;
+
+  /// The parameter `reciterID` of this provider.
+  int get reciterID;
 }
 
 class _FetchAudioForChapterProviderElement
@@ -312,16 +338,18 @@ class _FetchAudioForChapterProviderElement
   _FetchAudioForChapterProviderElement(super.provider);
 
   @override
-  int get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
-  @override
   int get chapterNumber =>
       (origin as FetchAudioForChapterProvider).chapterNumber;
+  @override
+  int get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
 }
 
 String _$filterSurahByQueryHash() =>
     r'97ae546588e96be7e12abb98b2bf6b421e1d4921';
 
-/// See also [filterSurahByQuery].
+/// Filters chapters by search query
+///
+/// Copied from [filterSurahByQuery].
 @ProviderFor(filterSurahByQuery)
 final filterSurahByQueryProvider =
     AutoDisposeFutureProvider<List<Surah>>.internal(
@@ -335,9 +363,11 @@ final filterSurahByQueryProvider =
 );
 
 typedef FilterSurahByQueryRef = AutoDisposeFutureProviderRef<List<Surah>>;
-String _$fetchNextSurahHash() => r'b9203b30d852d040efc39784ca8d78ae510765b2';
+String _$fetchNextSurahHash() => r'340dbef4556d3b2018dabffcfea17f29bce5be91';
 
-/// See also [fetchNextSurah].
+/// Fetches the next chapter
+///
+/// Copied from [fetchNextSurah].
 @ProviderFor(fetchNextSurah)
 final fetchNextSurahProvider = AutoDisposeFutureProvider<Surah?>.internal(
   fetchNextSurah,
@@ -350,9 +380,11 @@ final fetchNextSurahProvider = AutoDisposeFutureProvider<Surah?>.internal(
 );
 
 typedef FetchNextSurahRef = AutoDisposeFutureProviderRef<Surah?>;
-String _$fetchRandomImageHash() => r'289365de24523d62d804e1ec07c47e12f35a315f';
+String _$fetchRandomImageHash() => r'654b50af4c87b5f5a1146f7a0e973c0f98ae580e';
 
-/// See also [fetchRandomImage].
+/// Fetches random image from Unsplash API
+///
+/// Copied from [fetchRandomImage].
 @ProviderFor(fetchRandomImage)
 final fetchRandomImageProvider = AutoDisposeFutureProvider<String>.internal(
   fetchRandomImage,

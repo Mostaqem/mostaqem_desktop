@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
-
-import 'player_widget.dart';
 
 final downloadHeightProvider = StateProvider<double>((ref) => 0);
 final downloadSurahProvider = StateProvider<Surah?>((ref) => null);
@@ -33,9 +32,9 @@ class DownloadManagerWidget extends ConsumerWidget {
         height: height,
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondaryContainer,
-            borderRadius: BorderRadius.circular(12)),
+            borderRadius: BorderRadius.circular(12),),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Row(
             children: [
               Container(
@@ -47,9 +46,9 @@ class DownloadManagerWidget extends ConsumerWidget {
                       fit: BoxFit.cover,
                       image: CachedNetworkImageProvider(
                           surah?.image! ??
-                              "https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg",
-                          errorListener: (_) {}),
-                    )),
+                              'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
+                          errorListener: (_) {},),
+                    ),),
               ),
               const SizedBox(
                 width: 5,
@@ -57,12 +56,12 @@ class DownloadManagerWidget extends ConsumerWidget {
               Expanded(
                   child: LinearProgressIndicator(
                 value: isCancelled ? 0 : progress,
-              )),
+              ),),
               Visibility(
                 visible: height != 0,
                 child: isCancelled
                     ? ToolTipIconButton(
-                        message: "تحميل",
+                        message: 'تحميل',
                         onPressed: () {
                           ref.invalidate(cancelTokenProvider);
 
@@ -72,7 +71,7 @@ class DownloadManagerWidget extends ConsumerWidget {
                               .read(downloadAudioProvider.notifier)
                               .download(album: album!);
                         },
-                        icon: const Icon(Icons.download_rounded))
+                        icon: const Icon(Icons.download_rounded),)
                     : CloseButton(
                         onPressed: () {
                           ref.read(cancelTokenProvider).cancel();
@@ -80,7 +79,7 @@ class DownloadManagerWidget extends ConsumerWidget {
                           ref.read(downloadHeightProvider.notifier).state = 0;
                         },
                       ),
-              )
+              ),
             ],
           ),
         ),

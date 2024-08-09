@@ -6,7 +6,7 @@ part of 'download_cache.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$downloadCacheHash() => r'2daecbd5a101118bee8242d8937c1e1d7c1ead21';
+String _$downloadCacheHash() => r'e39be20c87f2397c43700350a057e65d6600a0e7';
 
 /// See also [DownloadCache].
 @ProviderFor(DownloadCache)

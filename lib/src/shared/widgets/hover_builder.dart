@@ -7,6 +7,7 @@ class HoverBuilder extends StatefulWidget {
     super.key,
   });
 
+  // ignore: avoid_positional_boolean_parameters
   final Widget Function(bool isHovered) builder;
 
   @override
