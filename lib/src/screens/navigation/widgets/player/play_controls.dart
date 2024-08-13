@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
@@ -5,6 +7,8 @@ import 'package:mostaqem/src/screens/navigation/repository/player_repository.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player/full_screen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
+
+import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
 
 class PlayControls extends StatelessWidget {
   const PlayControls({
@@ -198,9 +202,17 @@ class PlayControls extends StatelessWidget {
   }
 }
 
-class FullScreenPlayControls extends StatelessWidget {
+class FullScreenPlayControls extends StatefulWidget {
   const FullScreenPlayControls({required this.ref, super.key});
   final WidgetRef ref;
+
+  @override
+  State<FullScreenPlayControls> createState() => _FullScreenPlayControlsState();
+}
+
+class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
+  Timer? _timer;
+  bool _isVisible = true;
 
   Icon loopIcon(PlaylistMode state, Color color) {
     if (state == PlaylistMode.none) {
@@ -224,151 +236,194 @@ class FullScreenPlayControls extends StatelessWidget {
     );
   }
 
+  void _resetTimer() {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+
+    _timer = Timer(const Duration(seconds: 5), () {
+      setState(() {
+        _isVisible = false;
+      });
+    });
+
+    setState(() {
+      _isVisible = true;
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final player = ref.watch(playerNotifierProvider);
+    final player = widget.ref.watch(playerNotifierProvider);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return Visibility(
+      visible: _isVisible,
+      child: MouseRegion(
+        onHover: (event) {
+          _resetTimer();
+        },
+        child: Column(
           children: [
-            Text(
-              ref.watch(playerNotifierProvider.notifier).playerTime().$1,
-              style: const TextStyle(color: Colors.white),
-            ),
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.sizeOf(context).width / 1.5,
-                maxHeight: 10,
-              ),
-              child: HoverBuilder(
-                builder: (isHovered) {
-                  return SliderTheme(
-                    data: SliderThemeData(
-                      thumbShape: RoundSliderThumbShape(
-                        enabledThumbRadius: isHovered ? 7 : 3,
-                        elevation: 0,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.ref
+                          .watch(playerNotifierProvider.notifier)
+                          .playerTime()
+                          .$1,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.sizeOf(context).width / 1.5,
+                        maxHeight: 10,
+                      ),
+                      child: HoverBuilder(
+                        builder: (isHovered) {
+                          return SliderTheme(
+                            data: SliderThemeData(
+                              thumbShape: RoundSliderThumbShape(
+                                enabledThumbRadius: isHovered ? 7 : 3,
+                                elevation: 0,
+                              ),
+                            ),
+                            child: Slider(
+                              activeColor: Colors.white,
+                              value: widget.ref
+                                  .watch(playerNotifierProvider)
+                                  .position
+                                  .inSeconds
+                                  .toDouble(),
+                              max: widget.ref
+                                  .watch(playerNotifierProvider)
+                                  .duration
+                                  .inSeconds
+                                  .toDouble(),
+                              onChanged: (v) => widget.ref
+                                  .watch(playerNotifierProvider.notifier)
+                                  .handleSeek(Duration(seconds: v.toInt())),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                    child: Slider(
-                      activeColor: Colors.white,
-                      value: ref
-                          .watch(playerNotifierProvider)
-                          .position
-                          .inSeconds
-                          .toDouble(),
-                      max: ref
-                          .watch(playerNotifierProvider)
-                          .duration
-                          .inSeconds
-                          .toDouble(),
-                      onChanged: (v) => ref
+                    Text(
+                      widget.ref
                           .watch(playerNotifierProvider.notifier)
-                          .handleSeek(Duration(seconds: v.toInt())),
+                          .playerTime()
+                          .$2,
+                      style: const TextStyle(color: Colors.white),
                     ),
-                  );
-                },
-              ),
+                  ],
+                ),
+                Transform.scale(
+                  scale: 1.3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Visibility(
+                        visible: widget.ref
+                                .watch(playerNotifierProvider.notifier)
+                                .isFirstChapter() &&
+                            widget.ref.watch(playerSurahProvider) != null,
+                        child: Tooltip(
+                          message: 'قبل',
+                          preferBelow: false,
+                          child: IconButton(
+                            onPressed: () async {
+                              await widget.ref
+                                  .read(playerNotifierProvider.notifier)
+                                  .playPrevious();
+                            },
+                            icon: const Icon(
+                              Icons.skip_next_outlined,
+                              color: Colors.white,
+                            ),
+                            iconSize: 25,
+                          ),
+                        ),
+                      ),
+                      Tooltip(
+                        message: 'تشغيل',
+                        preferBelow: false,
+                        child: IconButton(
+                          onPressed: () async {
+                            await widget.ref
+                                .read(playerNotifierProvider.notifier)
+                                .handlePlayPause();
+                          },
+                          icon: player.isPlaying
+                              ? const Icon(
+                                  Icons.pause_circle_filled_outlined,
+                                  color: Colors.white,
+                                )
+                              : const Icon(
+                                  Icons.play_circle_fill_outlined,
+                                  color: Colors.white,
+                                ),
+                          iconSize: 25,
+                        ),
+                      ),
+                      Visibility(
+                        visible: widget.ref
+                                .watch(playerNotifierProvider.notifier)
+                                .isLastchapter() &&
+                            widget.ref.watch(playerSurahProvider) != null,
+                        child: Tooltip(
+                          message: 'بعد',
+                          preferBelow: false,
+                          child: IconButton(
+                            onPressed: () async {
+                              await widget.ref
+                                  .read(playerNotifierProvider.notifier)
+                                  .playNext();
+                            },
+                            icon: const Icon(
+                              Icons.skip_previous_outlined,
+                              color: Colors.white,
+                            ),
+                            iconSize: 25,
+                          ),
+                        ),
+                      ),
+                      Tooltip(
+                        message: 'اعادة',
+                        preferBelow: false,
+                        child: IconButton(
+                          onPressed: () async {
+                            widget.ref
+                                .read(playerNotifierProvider.notifier)
+                                .loop();
+                          },
+                          icon: loopIcon(
+                            player.loop,
+                            player.loop == PlaylistMode.none
+                                ? Colors.white
+                                : Theme.of(context).colorScheme.tertiary,
+                          ),
+                          iconSize: 16,
+                        ),
+                      ),
+                      FullScreenControl(ref: widget.ref, isFullScreen: true),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Text(
-              ref.watch(playerNotifierProvider.notifier).playerTime().$2,
-              style: const TextStyle(color: Colors.white),
-            ),
+            const Expanded(child: VolumeControls()),
           ],
         ),
-        Transform.scale(
-          scale: 1.3,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Visibility(
-                visible: ref
-                        .watch(playerNotifierProvider.notifier)
-                        .isFirstChapter() &&
-                    ref.watch(playerSurahProvider) != null,
-                child: Tooltip(
-                  message: 'قبل',
-                  preferBelow: false,
-                  child: IconButton(
-                    onPressed: () async {
-                      await ref
-                          .read(playerNotifierProvider.notifier)
-                          .playPrevious();
-                    },
-                    icon: const Icon(
-                      Icons.skip_next_outlined,
-                      color: Colors.white,
-                    ),
-                    iconSize: 25,
-                  ),
-                ),
-              ),
-              Tooltip(
-                message: 'تشغيل',
-                preferBelow: false,
-                child: IconButton(
-                  onPressed: () async {
-                    await ref
-                        .read(playerNotifierProvider.notifier)
-                        .handlePlayPause();
-                  },
-                  icon: player.isPlaying
-                      ? const Icon(
-                          Icons.pause_circle_filled_outlined,
-                          color: Colors.white,
-                        )
-                      : const Icon(
-                          Icons.play_circle_fill_outlined,
-                          color: Colors.white,
-                        ),
-                  iconSize: 25,
-                ),
-              ),
-              Visibility(
-                visible: ref
-                        .watch(playerNotifierProvider.notifier)
-                        .isLastchapter() &&
-                    ref.watch(playerSurahProvider) != null,
-                child: Tooltip(
-                  message: 'بعد',
-                  preferBelow: false,
-                  child: IconButton(
-                    onPressed: () async {
-                      await ref
-                          .read(playerNotifierProvider.notifier)
-                          .playNext();
-                    },
-                    icon: const Icon(
-                      Icons.skip_previous_outlined,
-                      color: Colors.white,
-                    ),
-                    iconSize: 25,
-                  ),
-                ),
-              ),
-              Tooltip(
-                message: 'اعادة',
-                preferBelow: false,
-                child: IconButton(
-                  onPressed: () async {
-                    ref.read(playerNotifierProvider.notifier).loop();
-                  },
-                  icon: loopIcon(
-                    player.loop,
-                    player.loop == PlaylistMode.none
-                        ? Colors.white
-                        : Theme.of(context).colorScheme.tertiary,
-                  ),
-                  iconSize: 16,
-                ),
-              ),
-              FullScreenControl(ref: ref, isFullScreen: true),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
