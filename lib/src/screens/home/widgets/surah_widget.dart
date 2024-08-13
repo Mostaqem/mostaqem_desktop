@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';

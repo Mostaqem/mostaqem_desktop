@@ -6,7 +6,7 @@ import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 

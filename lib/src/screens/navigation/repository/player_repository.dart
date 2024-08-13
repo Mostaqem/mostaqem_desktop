@@ -10,7 +10,8 @@ import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/data/player.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -197,20 +198,24 @@ class PlayerNotifier extends _$PlayerNotifier {
     final nextID = currentPlayer!.surah.id + 1;
     final nextSurah =
         await ref.read(fetchChapterByIdProvider(id: nextID).future);
-    final audioURL = await ref.read(
+    final recID = ref.watch(recitationProvider);
+    final surahAudio = await ref.read(
       fetchAudioForChapterProvider(
         chapterNumber: nextID,
         reciterID: chosenReciter.id,
+        recitationID: recID,
       ).future,
     );
 
     final nextAlbum = Album(
       surah: nextSurah,
       reciter: chosenReciter,
-      url: audioURL,
+      recitationID: recID ?? 0,
+      url: surahAudio.item1,
     );
 
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
+    ref.read(recitationProvider.notifier).state = surahAudio.item2;
   }
 
   bool isLocalAudio() {
@@ -240,13 +245,15 @@ class PlayerNotifier extends _$PlayerNotifier {
       fetchAudioForChapterProvider(
         chapterNumber: nextID,
         reciterID: chosenReciter.id,
+        recitationID: ref.watch(recitationProvider),
       ).future,
     );
 
     final nextAlbum = Album(
       surah: nextSurah,
       reciter: chosenReciter,
-      url: audioURL,
+      recitationID: audioURL.item2,
+      url: audioURL.item1,
     );
 
     ref.read(playerSurahProvider.notifier).state = nextAlbum;
@@ -254,20 +261,26 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   Future<void> play({
     required int surahID,
+    int? recitationID,
   }) async {
     final chosenReciterID = ref.read(reciterProvider)?.id ?? 1;
     final surah = await ref.read(fetchChapterByIdProvider(id: surahID).future);
     final reciter =
         await ref.read(fetchReciterProvider(id: chosenReciterID).future);
 
-    final audioURL = await ref.read(
+    final audio = await ref.read(
       fetchAudioForChapterProvider(
         chapterNumber: surahID,
         reciterID: chosenReciterID,
+        recitationID: recitationID,
       ).future,
     );
-
-    final album = Album(surah: surah, reciter: reciter, url: audioURL);
+    final album = Album(
+      surah: surah,
+      reciter: reciter,
+      url: audio.item1,
+      recitationID: recitationID ?? audio.item2,
+    );
 
     ref.read(playerSurahProvider.notifier).state = album;
   }
@@ -404,7 +417,7 @@ class PlayerNotifierMock extends _$PlayerNotifier implements PlayerNotifier {
   void loop() {}
 
   @override
-  Future<void> play({required int surahID}) {
+  Future<void> play({required int surahID, int? recitationID}) {
     throw UnimplementedError();
   }
 

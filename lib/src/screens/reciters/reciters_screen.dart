@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
@@ -32,16 +32,17 @@ class RecitersScreen extends ConsumerWidget {
             ),
           ),
           AsyncWidget(
-              value: reciters,
-              data: (data) {
-                return SizedBox(
-                  height: MediaQuery.sizeOf(context).height - 220,
-                  child: ListView.separated(
-                    itemCount: data.length,
-                    separatorBuilder: (context, index) => const Divider(),
-                    cacheExtent: 50,
-                    itemBuilder: (context, index) {
-                      return Consumer(builder: (context, ref, child) {
+            value: reciters,
+            data: (data) {
+              return SizedBox(
+                height: MediaQuery.sizeOf(context).height - 220,
+                child: ListView.separated(
+                  itemCount: data.length,
+                  separatorBuilder: (context, index) => const Divider(),
+                  cacheExtent: 50,
+                  itemBuilder: (context, index) {
+                    return Consumer(
+                      builder: (context, ref, child) {
                         return Padding(
                           padding: const EdgeInsets.all(10),
                           child: ListTile(
@@ -49,11 +50,14 @@ class RecitersScreen extends ConsumerWidget {
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: CachedNetworkImageProvider(
-                                          data[index].image!,),),
-                                  borderRadius: BorderRadius.circular(12),),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: CachedNetworkImageProvider(
+                                    data[index].image!,
+                                  ),
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                             title: Text(data[index].arabicName),
                             trailing: Row(
@@ -61,39 +65,43 @@ class RecitersScreen extends ConsumerWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 ToolTipIconButton(
-                                    message: 'اختيار الشيخ للتالي',
-                                    onPressed: () {
-                                      ref.read(reciterProvider.notifier).state =
-                                          data[index];
-                                    },
-                                    icon: const Icon(
-                                        Icons.queue_play_next_outlined,),),
+                                  message: 'اختيار الشيخ للتالي',
+                                  onPressed: () {
+                                    ref.read(reciterProvider.notifier).state =
+                                        data[index];
+                                  },
+                                  icon: const Icon(
+                                    Icons.queue_play_next_outlined,
+                                  ),
+                                ),
                                 const VerticalDivider(),
                                 ToolTipIconButton(
-                                    message: 'اختيار الشيخ',
-                                    onPressed: () {
-                                      final player =
-                                          ref.read(playerSurahProvider);
+                                  message: 'اختيار الشيخ',
+                                  onPressed: () {
+                                    final player =
+                                        ref.read(playerSurahProvider);
 
-                                      ref.read(reciterProvider.notifier).state =
-                                          data[index];
-
-                                      ref
-                                          .read(playerNotifierProvider.notifier)
-                                          .play(
-                                            surahID: player!.surah.id,
-                                          );
-                                    },
-                                    icon: const Icon(Icons.play_arrow),),
+                                    ref.read(reciterProvider.notifier).state =
+                                        data[index];
+                                    ref
+                                        .read(playerNotifierProvider.notifier)
+                                        .play(
+                                          surahID: player!.surah.id,
+                                        );
+                                  },
+                                  icon: const Icon(Icons.play_arrow),
+                                ),
                               ],
                             ),
                           ),
                         );
-                      },);
-                    },
-                  ),
-                );
-              },),
+                      },
+                    );
+                  },
+                ),
+              );
+            },
+          ),
           const SizedBox(
             height: 100,
           ),

@@ -36,6 +36,7 @@ sudo apt install mpv libmpv-dev
 * Offline Mode
     * Download manager
     * Custom download path
+* Recitations
 
 
 ### TODOs:
