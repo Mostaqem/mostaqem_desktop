@@ -6,7 +6,7 @@ part of 'home_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchAllChaptersHash() => r'54721eb219ba69327ee453752546c8a616ec3f94';
+String _$fetchAllChaptersHash() => r'3e8fc0ebee69385d9e43b9187ea82cf55040941f';
 
 /// Fetches all the chapters
 ///
@@ -185,7 +185,7 @@ class _FetchChapterByIdProviderElement
 }
 
 String _$fetchAudioForChapterHash() =>
-    r'470758227ac498e8bf907d396b8a2aaaeb91f611';
+    r'd7e03c25adf8e39f42009be6f5e7a12787c48b36';
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 ///
@@ -196,7 +196,8 @@ const fetchAudioForChapterProvider = FetchAudioForChapterFamily();
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 ///
 /// Copied from [fetchAudioForChapter].
-class FetchAudioForChapterFamily extends Family<AsyncValue<String>> {
+class FetchAudioForChapterFamily
+    extends Family<AsyncValue<Tuple2<String, int>>> {
   /// Fetches audio for chapter by [chapterNumber] and [reciterID]
   ///
   /// Copied from [fetchAudioForChapter].
@@ -207,10 +208,12 @@ class FetchAudioForChapterFamily extends Family<AsyncValue<String>> {
   /// Copied from [fetchAudioForChapter].
   FetchAudioForChapterProvider call({
     required int chapterNumber,
+    int? recitationID,
     int reciterID = 1,
   }) {
     return FetchAudioForChapterProvider(
       chapterNumber: chapterNumber,
+      recitationID: recitationID,
       reciterID: reciterID,
     );
   }
@@ -221,6 +224,7 @@ class FetchAudioForChapterFamily extends Family<AsyncValue<String>> {
   ) {
     return call(
       chapterNumber: provider.chapterNumber,
+      recitationID: provider.recitationID,
       reciterID: provider.reciterID,
     );
   }
@@ -243,17 +247,20 @@ class FetchAudioForChapterFamily extends Family<AsyncValue<String>> {
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 ///
 /// Copied from [fetchAudioForChapter].
-class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
+class FetchAudioForChapterProvider
+    extends AutoDisposeFutureProvider<Tuple2<String, int>> {
   /// Fetches audio for chapter by [chapterNumber] and [reciterID]
   ///
   /// Copied from [fetchAudioForChapter].
   FetchAudioForChapterProvider({
     required int chapterNumber,
+    int? recitationID,
     int reciterID = 1,
   }) : this._internal(
           (ref) => fetchAudioForChapter(
             ref as FetchAudioForChapterRef,
             chapterNumber: chapterNumber,
+            recitationID: recitationID,
             reciterID: reciterID,
           ),
           from: fetchAudioForChapterProvider,
@@ -266,6 +273,7 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
           allTransitiveDependencies:
               FetchAudioForChapterFamily._allTransitiveDependencies,
           chapterNumber: chapterNumber,
+          recitationID: recitationID,
           reciterID: reciterID,
         );
 
@@ -277,15 +285,18 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.chapterNumber,
+    required this.recitationID,
     required this.reciterID,
   }) : super.internal();
 
   final int chapterNumber;
+  final int? recitationID;
   final int reciterID;
 
   @override
   Override overrideWith(
-    FutureOr<String> Function(FetchAudioForChapterRef provider) create,
+    FutureOr<Tuple2<String, int>> Function(FetchAudioForChapterRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -297,13 +308,14 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         chapterNumber: chapterNumber,
+        recitationID: recitationID,
         reciterID: reciterID,
       ),
     );
   }
 
   @override
-  AutoDisposeFutureProviderElement<String> createElement() {
+  AutoDisposeFutureProviderElement<Tuple2<String, int>> createElement() {
     return _FetchAudioForChapterProviderElement(this);
   }
 
@@ -311,6 +323,7 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
   bool operator ==(Object other) {
     return other is FetchAudioForChapterProvider &&
         other.chapterNumber == chapterNumber &&
+        other.recitationID == recitationID &&
         other.reciterID == reciterID;
   }
 
@@ -318,28 +331,36 @@ class FetchAudioForChapterProvider extends AutoDisposeFutureProvider<String> {
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, chapterNumber.hashCode);
+    hash = _SystemHash.combine(hash, recitationID.hashCode);
     hash = _SystemHash.combine(hash, reciterID.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin FetchAudioForChapterRef on AutoDisposeFutureProviderRef<String> {
+mixin FetchAudioForChapterRef
+    on AutoDisposeFutureProviderRef<Tuple2<String, int>> {
   /// The parameter `chapterNumber` of this provider.
   int get chapterNumber;
+
+  /// The parameter `recitationID` of this provider.
+  int? get recitationID;
 
   /// The parameter `reciterID` of this provider.
   int get reciterID;
 }
 
 class _FetchAudioForChapterProviderElement
-    extends AutoDisposeFutureProviderElement<String>
+    extends AutoDisposeFutureProviderElement<Tuple2<String, int>>
     with FetchAudioForChapterRef {
   _FetchAudioForChapterProviderElement(super.provider);
 
   @override
   int get chapterNumber =>
       (origin as FetchAudioForChapterProvider).chapterNumber;
+  @override
+  int? get recitationID =>
+      (origin as FetchAudioForChapterProvider).recitationID;
   @override
   int get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
 }

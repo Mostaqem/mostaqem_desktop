@@ -10,7 +10,9 @@ class Album with _$Album {
   const factory Album({
     required Surah surah,
     required Reciter reciter,
-    required String url, @Default(0) int position,
+    required String url,
+    required int recitationID,
+    @Default(0) int position,
   }) = _Album;
 
   factory Album.fromJson(Map<String, Object?> json) => _$AlbumFromJson(json);

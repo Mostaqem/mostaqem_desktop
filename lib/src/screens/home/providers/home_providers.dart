@@ -4,9 +4,10 @@ import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tuple/tuple.dart';
 
 part 'home_providers.g.dart';
 
@@ -32,16 +33,23 @@ Future<Surah> fetchChapterById(
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 @riverpod
-Future<String> fetchAudioForChapter(
+Future<Tuple2<String, int>> fetchAudioForChapter(
   FetchAudioForChapterRef ref, {
   required int chapterNumber,
+  int? recitationID,
   int reciterID = 1,
 }) async {
-  final response = await ref
-      .read(dioHelperProvider)
-      .getHTTP('/audio/?reciter_id=$reciterID/&surah_id=$chapterNumber');
+  final url = recitationID == null
+      ? '/audio/?reciter_id=$reciterID&surah_id=$chapterNumber'
+      : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
 
-  return response.data['data']['url'];
+  final response = await ref.read(dioHelperProvider).getHTTP(
+        url,
+      );
+
+  final audioURL = response.data['data']['url'] as String;
+  final audioRecitationID = response.data['data']['tilawa_id'] as int;
+  return Tuple2(audioURL, audioRecitationID);
 }
 
 /// Filters chapters by search query

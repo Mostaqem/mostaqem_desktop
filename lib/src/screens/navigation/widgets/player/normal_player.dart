@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/download_manager.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/full_screen_controls.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/play_controls.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/playing_surah.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/volume_control.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/full_screen_controls.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/play_controls.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/playing_surah.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
@@ -35,7 +35,7 @@ class NormalPlayer extends StatelessWidget {
             ref: ref,
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 150),
+            padding: const EdgeInsets.only(right: 80),
             child: PlayControls(
               isFullScreen: isFullScreen,
               ref: ref,

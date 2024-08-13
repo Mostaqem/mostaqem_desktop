@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +8,7 @@ import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 
@@ -52,8 +54,12 @@ void main() {
             yield false;
           }),
           playerSurahProvider.overrideWith(
-            (ref) =>
-                const Album(surah: surah, reciter: reciter, url: 'http://test'),
+            (ref) => const Album(
+              surah: surah,
+              reciter: reciter,
+              url: 'http://test',
+              recitationID: 0,
+            ),
           ),
         ],
         child: const MaterialApp(home: Material(child: PlayerWidget())),
@@ -76,8 +82,12 @@ void main() {
             yield false;
           }),
           playerSurahProvider.overrideWith(
-            (ref) =>
-                const Album(surah: surah, reciter: reciter, url: 'http://test'),
+            (ref) => const Album(
+              surah: surah,
+              reciter: reciter,
+              url: 'http://test',
+              recitationID: 0,
+            ),
           ),
         ],
         child: const MaterialApp(home: Material(child: PlayerWidget())),

@@ -6,9 +6,9 @@ import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/normal_player.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/play_controls.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/volume_control.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/normal_player.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/play_controls.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
 import 'package:window_manager/window_manager.dart';
 
 final playerSurahProvider = StateProvider<Album?>((ref) {
@@ -76,6 +76,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
             reciter: player.reciter,
             url: player.url,
             position: position.inMilliseconds,
+            recitationID: player.recitationID,
           ),
         );
     super.onWindowClose();

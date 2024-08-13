@@ -23,6 +23,7 @@ mixin _$Album {
   Surah get surah => throw _privateConstructorUsedError;
   Reciter get reciter => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
+  int get recitationID => throw _privateConstructorUsedError;
   int get position => throw _privateConstructorUsedError;
 
   /// Serializes this Album to a JSON map.
@@ -39,7 +40,12 @@ abstract class $AlbumCopyWith<$Res> {
   factory $AlbumCopyWith(Album value, $Res Function(Album) then) =
       _$AlbumCopyWithImpl<$Res, Album>;
   @useResult
-  $Res call({Surah surah, Reciter reciter, String url, int position});
+  $Res call(
+      {Surah surah,
+      Reciter reciter,
+      String url,
+      int recitationID,
+      int position});
 
   $SurahCopyWith<$Res> get surah;
   $ReciterCopyWith<$Res> get reciter;
@@ -63,6 +69,7 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
     Object? surah = null,
     Object? reciter = null,
     Object? url = null,
+    Object? recitationID = null,
     Object? position = null,
   }) {
     return _then(_value.copyWith(
@@ -78,6 +85,10 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+      recitationID: null == recitationID
+          ? _value.recitationID
+          : recitationID // ignore: cast_nullable_to_non_nullable
+              as int,
       position: null == position
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
@@ -113,7 +124,12 @@ abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
       __$$AlbumImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Surah surah, Reciter reciter, String url, int position});
+  $Res call(
+      {Surah surah,
+      Reciter reciter,
+      String url,
+      int recitationID,
+      int position});
 
   @override
   $SurahCopyWith<$Res> get surah;
@@ -137,6 +153,7 @@ class __$$AlbumImplCopyWithImpl<$Res>
     Object? surah = null,
     Object? reciter = null,
     Object? url = null,
+    Object? recitationID = null,
     Object? position = null,
   }) {
     return _then(_$AlbumImpl(
@@ -152,6 +169,10 @@ class __$$AlbumImplCopyWithImpl<$Res>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
+      recitationID: null == recitationID
+          ? _value.recitationID
+          : recitationID // ignore: cast_nullable_to_non_nullable
+              as int,
       position: null == position
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
@@ -167,6 +188,7 @@ class _$AlbumImpl implements _Album {
       {required this.surah,
       required this.reciter,
       required this.url,
+      required this.recitationID,
       this.position = 0});
 
   factory _$AlbumImpl.fromJson(Map<String, dynamic> json) =>
@@ -179,12 +201,14 @@ class _$AlbumImpl implements _Album {
   @override
   final String url;
   @override
+  final int recitationID;
+  @override
   @JsonKey()
   final int position;
 
   @override
   String toString() {
-    return 'Album(surah: $surah, reciter: $reciter, url: $url, position: $position)';
+    return 'Album(surah: $surah, reciter: $reciter, url: $url, recitationID: $recitationID, position: $position)';
   }
 
   @override
@@ -195,13 +219,16 @@ class _$AlbumImpl implements _Album {
             (identical(other.surah, surah) || other.surah == surah) &&
             (identical(other.reciter, reciter) || other.reciter == reciter) &&
             (identical(other.url, url) || other.url == url) &&
+            (identical(other.recitationID, recitationID) ||
+                other.recitationID == recitationID) &&
             (identical(other.position, position) ||
                 other.position == position));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, surah, reciter, url, position);
+  int get hashCode =>
+      Object.hash(runtimeType, surah, reciter, url, recitationID, position);
 
   /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
@@ -224,6 +251,7 @@ abstract class _Album implements Album {
       {required final Surah surah,
       required final Reciter reciter,
       required final String url,
+      required final int recitationID,
       final int position}) = _$AlbumImpl;
 
   factory _Album.fromJson(Map<String, dynamic> json) = _$AlbumImpl.fromJson;
@@ -234,6 +262,8 @@ abstract class _Album implements Album {
   Reciter get reciter;
   @override
   String get url;
+  @override
+  int get recitationID;
   @override
   int get position;
 
