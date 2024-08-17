@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +7,6 @@ import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/normal_player.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/play_controls.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
 import 'package:window_manager/window_manager.dart';
 
 final playerSurahProvider = StateProvider<Album?>((ref) {

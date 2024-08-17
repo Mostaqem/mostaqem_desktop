@@ -36,9 +36,11 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     if (isLocalAudio()) {
       final audios = ref.watch(getLocalAudioProvider).value;
-      final firstAudio = audios!.first;
+      final firstAudio = audios?.first;
 
-      final nextAudios = audios.where((e) => e != firstAudio);
+      final nextAudios = audios?.where((e) => e != firstAudio);
+      if (nextAudios == null) return;
+
       for (final e in nextAudios) {
         player.add(Media(e.url));
       }
@@ -95,7 +97,7 @@ class PlayerNotifier extends _$PlayerNotifier {
             reciterName: currentPlayer.reciter.arabicName,
             url: currentPlayer.url,
             surah: currentPlayer.surah.arabicName,
-            image: currentPlayer.surah.image!,
+            image: currentPlayer.surah.image ?? '',
             position: state.position,
           ),
         );
@@ -145,7 +147,8 @@ class PlayerNotifier extends _$PlayerNotifier {
   bool isFirstChapter() {
     final currentPlayer = ref.watch(playerSurahProvider);
     if (isLocalAudio()) {
-      final audios = ref.watch(getLocalAudioProvider).value!;
+      final audios = ref.watch(getLocalAudioProvider).value;
+      if (audios == null) return false;
       final currentIndex = audios.indexWhere((e) => e == currentPlayer);
 
       return currentIndex > 0;
@@ -159,7 +162,8 @@ class PlayerNotifier extends _$PlayerNotifier {
   bool isLastchapter() {
     final currentPlayer = ref.watch(playerSurahProvider);
     if (isLocalAudio()) {
-      final audios = ref.watch(getLocalAudioProvider).value!;
+      final audios = ref.watch(getLocalAudioProvider).value;
+      if (audios == null) return false;
       final currentIndex = audios.indexWhere((e) => e == currentPlayer);
       final lastIndex = audios.length - 1;
       return currentIndex < lastIndex;
@@ -310,6 +314,7 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   Future<void> handleSeek(Duration value) async {
     await player.seek(value);
+    state = state.copyWith(position: value);
   }
 
   Future<void> handleVolume(double value) async {

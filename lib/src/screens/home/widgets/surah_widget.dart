@@ -5,18 +5,10 @@ import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
-import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
 final reciterProvider = StateProvider<Reciter?>((ref) {
-  final isLocalAudio = ref.read(playerNotifierProvider.notifier).isLocalAudio();
-  if (isLocalAudio) {
-    final currentPlayer = ref.watch(playerSurahProvider);
-    final audios = ref.read(getLocalAudioProvider).value!;
-    final currentIndex = audios.indexWhere((e) => e == currentPlayer);
-    return audios[currentIndex].reciter;
-  }
   return null;
 });
 

@@ -6,6 +6,7 @@
 
 #include "generated_plugin_registrant.h"
 
+#include <connectivity_plus/connectivity_plus_windows_plugin.h>
 #include <discord_rpc/discord_rpc_plugin.h>
 #include <media_kit_libs_windows_audio/media_kit_libs_windows_audio_plugin_c_api.h>
 #include <screen_retriever/screen_retriever_plugin.h>
@@ -15,6 +16,8 @@
 #include <windows_taskbar/windows_taskbar_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
+  ConnectivityPlusWindowsPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
   DiscordRpcPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DiscordRpcPlugin"));
   MediaKitLibsWindowsAudioPluginCApiRegisterWithRegistrar(

@@ -48,7 +48,10 @@ class PlayingSurah extends StatelessWidget {
                     ),
                   ),
                   Visibility(
-                    visible: ref.watch(playerSurahProvider) != null,
+                    visible: !ref
+                            .read(playerNotifierProvider.notifier)
+                            .isLocalAudio() &&
+                        ref.watch(playerSurahProvider) != null,
                     child: IconButton(
                       onPressed: () => ref
                           .read(isCollapsedProvider.notifier)
@@ -82,17 +85,21 @@ class PlayingSurah extends StatelessWidget {
           const SizedBox(
             width: 70,
           ),
-          ToolTipIconButton(
-            message: 'تلاوات',
-            onPressed: () {
-              final height = ref.read(recitationHeight);
-              if (height != 0) {
-                ref.read(recitationHeight.notifier).state = 0;
-                return;
-              }
-              ref.read(recitationHeight.notifier).state = 170;
-            },
-            icon: const Icon(Icons.import_contacts_outlined),
+          Visibility(
+            visible: !ref.read(playerNotifierProvider.notifier).isLocalAudio(),
+            child: ToolTipIconButton(
+              message: 'تلاوات',
+              iconSize: 16,
+              onPressed: () {
+                final height = ref.read(recitationHeight);
+                if (height != 0) {
+                  ref.read(recitationHeight.notifier).state = 0;
+                  return;
+                }
+                ref.read(recitationHeight.notifier).state = 170;
+              },
+              icon: const Icon(Icons.import_contacts_outlined),
+            ),
           ),
         ],
       ),

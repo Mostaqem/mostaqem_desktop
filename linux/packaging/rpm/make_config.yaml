@@ -1,0 +1,25 @@
+icon: linux/icon/app_icon.png
+summary: An Islamic app
+group: Application/Emulator
+vendor: Mazen Omar
+packager: MazenOmar
+packagerEmail: wildlifemain1@gmail.com
+license: AGPL3
+url: https://github.com/Mostaqem/mostaqem_desktop/blob/main/LICENSE
+
+display_name: Mostaqem
+
+keywords:
+  - Hello
+  - World
+  - Test
+  - Application
+
+generic_name: Mostaqem
+
+categories:
+  - Quran
+  - Islamic
+  
+
+startup_notify: true

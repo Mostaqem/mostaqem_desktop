@@ -10,11 +10,18 @@ part 'player_cache.g.dart';
 class PlayerCache extends _$PlayerCache {
   @override
   Album? build() {
-    final album = CacheHelper.getString('surah');
+    try {
+      final album = CacheHelper.getString('surah');
 
-    if (album != null) {
-      return Album.fromJson(jsonDecode(album) as Map<String, dynamic>);
+      if (album != null) {
+        return Album.fromJson(jsonDecode(album) as Map<String, dynamic>);
+      }
+    } catch (e) {
+      if (e is TypeError) {
+        CacheHelper.clear();
+      }
     }
+
     return null;
   }
 
