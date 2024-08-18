@@ -14,6 +14,13 @@ class DownloadManagerWidget extends ConsumerWidget {
     super.key,
   });
 
+  double adjustProgress(double progress) {
+    if (progress.isNaN || progress.isInfinite) {
+      return 0;
+    }
+    return progress;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final count = ref.watch(downloadAudioProvider)?.count ?? 0;
@@ -31,8 +38,9 @@ class DownloadManagerWidget extends ConsumerWidget {
         duration: const Duration(milliseconds: 150),
         height: height,
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondaryContainer,
-            borderRadius: BorderRadius.circular(12),),
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Row(
@@ -41,22 +49,25 @@ class DownloadManagerWidget extends ConsumerWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(
-                          surah?.image! ??
-                              'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
-                          errorListener: (_) {},),
-                    ),),
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                      surah?.image! ??
+                          'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
+                      errorListener: (_) {},
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 width: 5,
               ),
               Expanded(
-                  child: LinearProgressIndicator(
-                value: isCancelled ? 0 : progress,
-              ),),
+                child: LinearProgressIndicator(
+                  value: isCancelled ? 0 : adjustProgress(progress),
+                ),
+              ),
               Visibility(
                 visible: height != 0,
                 child: isCancelled
@@ -71,7 +82,8 @@ class DownloadManagerWidget extends ConsumerWidget {
                               .read(downloadAudioProvider.notifier)
                               .download(album: album!);
                         },
-                        icon: const Icon(Icons.download_rounded),)
+                        icon: const Icon(Icons.download_rounded),
+                      )
                     : CloseButton(
                         onPressed: () {
                           ref.read(cancelTokenProvider).cancel();

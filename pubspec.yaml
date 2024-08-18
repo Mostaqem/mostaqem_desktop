@@ -42,7 +42,9 @@ dependencies:
   window_manager: '^0.3.9'
   windows_taskbar: '^1.1.2'
   tuple: ^2.0.2
-  
+  rxdart: ^0.27.7
+  internet_connection_checker: ^2.0.0
+
 dev_dependencies: 
   build_runner: '^2.4.11'
   envied_generator: '^0.5.4'

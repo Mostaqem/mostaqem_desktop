@@ -12,7 +12,7 @@ for the linux version u need the following dependencies to be installed:
 * mpv
 * libmpv-dev
 
-for Ubunut/Debian , simple run 
+for Ubunut/Debian , simply run 
 ```
 sudo apt install mpv libmpv-dev
 ```
