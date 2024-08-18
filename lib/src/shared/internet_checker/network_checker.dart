@@ -4,6 +4,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 class NetworkChecker {
   NetworkChecker(this.ref);
   final Ref ref;
+
   final connectionChecker = InternetConnectionChecker();
 
   Stream<InternetConnectionStatus> getConnection() {

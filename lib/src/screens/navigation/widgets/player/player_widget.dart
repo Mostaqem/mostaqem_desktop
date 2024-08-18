@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -47,10 +46,12 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
   @override
   void onWindowClose() {
     final player = ref.watch(playerSurahProvider);
+    if (player == null) return;
+
     final position = ref.watch(playerNotifierProvider).position;
     ref.read(playerCacheProvider.notifier).setAlbum(
           Album(
-            surah: player!.surah,
+            surah: player.surah,
             reciter: player.reciter,
             url: player.url,
             position: position.inMilliseconds,
