@@ -62,6 +62,12 @@ class _PlayControlsState extends State<PlayControls> {
   }
 
   @override
+  void dispose() {
+    periodicSubscription?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final player = widget.ref.watch(playerNotifierProvider);
     // TODO(mezoPeeta): Refactor playcontrols

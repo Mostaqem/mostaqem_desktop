@@ -96,7 +96,7 @@ class PlayingSurah extends StatelessWidget {
                   ref.read(recitationHeight.notifier).state = 0;
                   return;
                 }
-                ref.read(recitationHeight.notifier).state = 170;
+                ref.read(recitationHeight.notifier).state = 53;
               },
               icon: const Icon(Icons.import_contacts_outlined),
             ),
