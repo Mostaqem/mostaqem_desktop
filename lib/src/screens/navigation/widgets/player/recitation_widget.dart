@@ -24,19 +24,19 @@ class RecitationWidget extends ConsumerWidget {
     return Positioned(
       bottom: 105,
       right: 80,
-      child: AnimatedContainer(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondaryContainer,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.all(8),
-        duration: const Duration(milliseconds: 150),
-        width: 400,
-        height: ref.watch(recitationHeight),
-        child: AsyncWidget(
-          value: recitations,
-          data: (data) {
-            return ListView.builder(
+      child: AsyncWidget(
+        value: recitations,
+        data: (data) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.all(8),
+            width: 400,
+            height: data.length * ref.watch(recitationHeight),
+            child: ListView.builder(
               itemCount: data.length,
               itemBuilder: (context, index) {
                 return RadioListTile(
@@ -56,9 +56,9 @@ class RecitationWidget extends ConsumerWidget {
                   },
                 );
               },
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
