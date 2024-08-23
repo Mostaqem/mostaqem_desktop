@@ -33,6 +33,7 @@ class RecitersScreen extends ConsumerWidget {
           ),
           AsyncWidget(
             value: reciters,
+            loading: const SizedBox.shrink(),
             data: (data) {
               return SizedBox(
                 height: MediaQuery.sizeOf(context).height - 220,
