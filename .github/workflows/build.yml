@@ -26,7 +26,7 @@ jobs:
 
       - run: |
           "%programfiles(x86)%\Inno Setup 6\iscc.exe" "windows/installer/Mostaqem-Inno.iss"
-          shell: cmd
+        shell: cmd
 
       - name: Release
         uses: softprops/action-gh-release@v2
