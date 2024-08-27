@@ -21,7 +21,7 @@ jobs:
 
       - run: flutter build windows
 
-      - run: cp -r build/windows/runner/Release mostaqem-windows
+      - run: cp -r build/windows/runner/release mostaqem-windows
       - run: tar.exe -a -c -f mostaqem-windows-exe.zip mostaqem-windows-exe
 
       - run: |
