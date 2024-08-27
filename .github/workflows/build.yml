@@ -1,0 +1,42 @@
+name: Mostaqem
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build_linux:
+    name: Mostaqem Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          submodules: recursive
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - run: sudo apt-get update
+      - run: sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev mpv libmpv-dev dpkg-dev rpm tree
+
+      - run: flutter config --enable-linux-desktop
+
+      - run: flutter pub get
+
+      - run: flutter build linux --verbose
+
+      - name: Build DEB Package
+        run: |
+          dpkg-deb --build --root-owner-group linux/debian
+          cp linux/*.deb mostaqem-linux-x86_64.deb
+
+      - name: Build Tarball
+        run: |
+          mkdir -p AppDir/
+          cp -r linux/debian/usr AppDir/
+          ln -sr AppDir/usr/bin/mostaqem AppDir/mostaqem
+          tar czf mostaqem-linux-x86_64.tar.gz -C AppDir/ .
+

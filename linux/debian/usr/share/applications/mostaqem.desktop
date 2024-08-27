@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.4.0
+Type=Application
+Name=Mostaqem
+Comment=Islamic app
+Icon=mostaqem
+Exec=mostaqem %f
+StartupWMClass=mostaqem
+Terminal=false
+Categories=Audio;Player;Quran;
+GenericName=Mostaqem
+Keywords=quran;audio;lyrics;library;music-library;youtube;

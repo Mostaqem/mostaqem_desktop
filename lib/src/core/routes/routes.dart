@@ -39,7 +39,6 @@ class NavigationRepository {
       ),
     ],
   );
-
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {

@@ -52,7 +52,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 AsyncWidget(
                   value: path,
-                  loading: const SizedBox.shrink(),
+                  loading: () => const SizedBox.shrink(),
                   data: (data) {
                     return ConstrainedBox(
                       constraints:

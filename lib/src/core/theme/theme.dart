@@ -13,7 +13,10 @@ class AppTheme {
   );
 
   static ThemeData darkTheme = ThemeData(
-      fontFamily: _fontFamily,
-      colorScheme: ColorScheme.fromSeed(
-          seedColor: _primaryColor, brightness: Brightness.dark,),);
+    fontFamily: _fontFamily,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: _primaryColor,
+      brightness: Brightness.dark,
+    ),
+  );
 }

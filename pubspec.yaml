@@ -30,6 +30,7 @@ dependencies:
   media_kit: '^1.1.10+1'
   media_kit_libs_audio: '^1.0.4'
   metadata_god: '^0.5.2+1'
+  flutter_intro: ^3.3.1
   mpris_service: 
     git: 'https://github.com/alexmercerind/mpris_service'
 
@@ -49,7 +50,6 @@ dependencies:
 dev_dependencies: 
   build_runner: '^2.4.11'
   envied_generator: '^0.5.4'
-  flutter_distributor: '^0.4.5'
   flutter_lints: '^3.0.0'
   flutter_test: 
     sdk: flutter
