@@ -11,9 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          submodules: recursive
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -39,4 +37,3 @@ jobs:
           cp -r linux/debian/usr AppDir/
           ln -sr AppDir/usr/bin/mostaqem AppDir/mostaqem
           tar czf mostaqem-linux-x86_64.tar.gz -C AppDir/ .
-
