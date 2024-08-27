@@ -21,7 +21,7 @@ jobs:
 
       - run: flutter build windows
 
-      - run: cp -r build/windows/runner/release mostaqem-windows
+      - run: cp -r build/windows/x64/runner/Release mostaqem-windows
       - run: tar.exe -a -c -f mostaqem-windows-exe.zip mostaqem-windows-exe
 
       - run: |
@@ -52,6 +52,7 @@ jobs:
           channel: stable
 
       - run: sudo apt-get update
+
       - run: sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev mpv libmpv-dev dpkg-dev rpm tree
 
       - run: flutter config --enable-linux-desktop
@@ -89,7 +90,7 @@ jobs:
         with:
           draft: true
           prerelease: false
-          body: ""
+          body: ${{ github.sha }}
           files: mostaqem-linux-*
+          tag_name: "vnext"
           token: ${{ secrets.PAT }}
-          if: startsWith(github.ref, 'refs/tags/')
