@@ -26,6 +26,18 @@ jobs:
 
       - run: flutter build linux --verbose
 
+      - name: Build RPM Package
+        run: |
+          cp -fr build/linux/x64/release/bundle linux/debian/usr/share/mostaqem
+          mkdir linux/debian/usr/bin
+          ln -sr linux/debian/usr/share/mostaqem/mostaqem linux/debian/usr/bin/mostaqem
+          sed -i "s:cp -rf :cp -rf $(pwd)/:" linux/rpm/mostaqem.spec
+          cd linux/debian
+          sed -i "s:FILES_HERE:$(find usr \( -type l -o -type f \) -follow -print | awk '{printf "/%s\\n", $0}'):" ../rpm/mostaqem.spec
+          cd ../../
+          rpmbuild -bb linux/rpm/mostaqem.spec -D "_topdir $(pwd)/rpmbuild"
+          cp rpmbuild/RPMS/x86_64/*.rpm mostaqem-linux-x86_64.rpm
+
       - name: Build DEB Package
         run: |
           dpkg-deb --build --root-owner-group linux/debian
