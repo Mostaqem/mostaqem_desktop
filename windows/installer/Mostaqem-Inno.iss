@@ -4,6 +4,7 @@
 #define MyAppName "Mostaqem"
 #define MyAppVersion "1.4.0"
 #define MyAppPublisher "Mazen Omar"
+#define MyAppURL "https://github.com/Mostaqem/mostaqem_desktop"
 #define MyAppExeName "mostaqem.exe"
 
 [Setup]
@@ -26,9 +27,8 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=C:\Users\Mazen\Desktop
 OutputBaseFilename=mostaqem-setup-win
-SetupIconFile=D:\Projects\Mostaqem\mostaqem\windows\runner\resources\app_icon.ico
+SetupIconFile=windows\runner\resources\app_icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -40,22 +40,22 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\connectivity_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\discord_rpc_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\discord-rpc.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\libmpv-2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\media_kit_libs_windows_audio_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\media_kit_native_event_loop.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\metadata_god.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\screen_retriever_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\share_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\smtc_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\url_launcher_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\window_manager_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\windows_taskbar_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\Mostaqem\mostaqem\build\windows\x64\runner\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "build\windows\x64\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\connectivity_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\discord_rpc_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\discord-rpc.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\libmpv-2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\media_kit_libs_windows_audio_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\media_kit_native_event_loop.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\metadata_god.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\screen_retriever_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\share_plus_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\smtc_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\url_launcher_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\window_manager_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\windows_taskbar_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\windows\x64\runner\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
