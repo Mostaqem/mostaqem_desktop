@@ -26,6 +26,7 @@ class RecitationWidget extends ConsumerWidget {
       right: 80,
       child: AsyncWidget(
         value: recitations,
+        loading: SizedBox.shrink,
         data: (data) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 150),

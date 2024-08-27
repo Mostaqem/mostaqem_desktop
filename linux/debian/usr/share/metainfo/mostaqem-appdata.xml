@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>mostaqem</id>
+	<name>Mostaqem</name>
+	<metadata_license>GNU-V3</metadata_license>
+	
+	<recommends>
+		<control>pointing</control>
+		<control>keyboard</control>
+	</recommends>
+	<developer_name>Mazen Omar</developer_name>
+	
+	<launchable type="desktop-id">mostaqem.desktop</launchable>
+	<releases>
+		<release version="1.4.0" date="2024-08-27" />
+	</releases>
+
+	<content_rating type="oars-1.0" />
+
+	<update_contact>wildlifemain1@gmail.com</update_contact>
+    
+</component>

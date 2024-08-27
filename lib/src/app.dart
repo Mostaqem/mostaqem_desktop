@@ -8,6 +8,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts.dart';
 
+
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -30,30 +31,31 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) {
         return Material(
           child: AppShortcuts(
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                child!,
-                SizedBox(
-                  height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                    ),
-                    child: Overlay(
-                      initialEntries: [
-                        OverlayEntry(
-                          builder: (context) => const PlayerWidget(),
-                        ),
-                      ],
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  child!,
+                  SizedBox(
+                    height: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      child: Overlay(
+                        initialEntries: [
+                          OverlayEntry(
+                            builder: (context) => const PlayerWidget(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const DownloadManagerWidget(),
-                const RecitationWidget(),
-              ],
+                  const DownloadManagerWidget(),
+                  const RecitationWidget(),
+                ],
+              ),
             ),
-          ),
+          
         );
       },
       title: 'Mostaqem',

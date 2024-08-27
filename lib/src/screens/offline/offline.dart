@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
@@ -17,6 +18,18 @@ class DownloadsScreen extends ConsumerWidget {
           child: AsyncWidget(
             value: localAudio,
             data: (data) {
+              if (data.isEmpty) {
+                return Center(
+                  child: SvgPicture.asset(
+                    'assets/img/empty_box.svg',
+                    width: 220,
+                    colorFilter: ColorFilter.mode(
+                      const Color.fromARGB(255, 202, 197, 197).withOpacity(0.5),
+                      BlendMode.modulate,
+                    ),
+                  ),
+                );
+              }
               return ListView.separated(
                 itemCount: data.length,
                 separatorBuilder: (context, index) => const Divider(),

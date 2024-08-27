@@ -16,6 +16,7 @@ rpm:
 
 .PHONY: tarball
 tarball:
+	flutter clean
 	flutter build linux
 	cd build/linux/x64/release && tar -czvf mostaqem.tar.gz bundle/
 

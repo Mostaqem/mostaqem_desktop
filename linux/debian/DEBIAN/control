@@ -1,0 +1,9 @@
+Package: mostaqem
+Version: 1.4.0
+Section: base
+Priority: optional
+Homepage: https://github.com/Mostaqem/mostaqem_desktop
+Architecture: amd64
+Depends: mpv, libmpv-dev
+Maintainer: Mazen Omar <wildlifemain1@gmail.com>
+Description: An Islamic app
