@@ -25,7 +25,7 @@ jobs:
       - run: tar.exe -a -c -f mostaqem-windows-exe.zip mostaqem-windows-exe
 
       - run: |
-          "%programfiles(x86)%\Inno Setup 6\iscc.exe" "windows/installer/Mostaqem-Inno.iss"
+          "%programfiles(x86)%\Inno Setup 6\iscc.exe" "Mostaqem-Inno.iss"
         shell: cmd
 
       - name: Release
@@ -36,7 +36,7 @@ jobs:
           body: ""
           files: |
             mostaqem-windows-exe.zip
-            mostaqem.exe
+            Output/mostaqem-windows-setup.exe
           token: ${{ secrets.PAT }}
           if: startsWith(github.ref, 'refs/tags/')
 
