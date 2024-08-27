@@ -33,13 +33,13 @@ jobs:
         with:
           draft: true
           prerelease: false
-          body: ""
+          tag_name: "vnext"
+          body: ${{ github.sha }}
           files: |
             mostaqem-windows-exe.zip
             Output/mostaqem-windows-setup.exe
           token: ${{ secrets.PAT }}
-          if: startsWith(github.ref, 'refs/tags/')
-
+         
 
   build_linux:
     name: Mostaqem Linux
@@ -91,7 +91,7 @@ jobs:
         with:
           draft: true
           prerelease: false
-          body: ${{ github.sha }}
           files: mostaqem-linux-*
           tag_name: "vnext"
+          body: ${{ github.sha }}
           token: ${{ secrets.PAT }}
