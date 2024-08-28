@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player_cache.dart';
+part of 'apperance_providers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerCacheHash() => r'47adb63b14a9e21e53d94cfe64a00f9b9e15ffca';
+String _$apperanceHash() => r'a4cc690443725db280eb52a7d926396b55ab85a7';
 
-/// See also [PlayerCache].
-@ProviderFor(PlayerCache)
-final playerCacheProvider =
-    AutoDisposeNotifierProvider<PlayerCache, Album?>.internal(
-  PlayerCache.new,
-  name: r'playerCacheProvider',
+/// See also [Apperance].
+@ProviderFor(Apperance)
+final apperanceProvider =
+    AutoDisposeNotifierProvider<Apperance, Color>.internal(
+  Apperance.new,
+  name: r'apperanceProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$playerCacheHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$apperanceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PlayerCache = AutoDisposeNotifier<Album?>;
+typedef _$Apperance = AutoDisposeNotifier<Color>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

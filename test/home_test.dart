@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
+import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 
 void main() {
   group('Test Home Screen', () {
@@ -14,6 +16,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            getConnectionProvider.overrideWith(
+              (ref) => Stream.value(InternetConnectionStatus.connected),
+            ),
             filterSurahByQueryProvider.overrideWith(
               (ref) => [
                 const Surah(
@@ -44,6 +49,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            getConnectionProvider.overrideWith(
+              (ref) => Stream.value(InternetConnectionStatus.connected),
+            ),
             fetchAllChaptersProvider.overrideWith((ref) {
               return [
                 const Surah(

@@ -35,7 +35,7 @@ class NavigationRepository {
       ),
       GoRoute(
         path: '/settings',
-        builder: (context, state) => SettingsScreen(),
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
   );

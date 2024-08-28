@@ -1,4 +1,4 @@
-// ignore_for_file: strict_raw_type
+// ignore_for_file: strict_raw_type, inference_failure_on_instance_creation
 
 import 'dart:async';
 import 'dart:math';
