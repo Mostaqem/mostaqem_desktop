@@ -6,8 +6,9 @@ import 'package:mostaqem/src/core/theme/theme.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
+import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
+import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts.dart';
-
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -15,6 +16,8 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
+    final userSeedColor = ref.watch(userSeedColorProvider);
+    final userTheme = ref.watch(themeNotifierProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: router,
@@ -31,36 +34,36 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) {
         return Material(
           child: AppShortcuts(
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  child!,
-                  SizedBox(
-                    height: 100,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                      ),
-                      child: Overlay(
-                        initialEntries: [
-                          OverlayEntry(
-                            builder: (context) => const PlayerWidget(),
-                          ),
-                        ],
-                      ),
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                child!,
+                SizedBox(
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 5,
+                    ),
+                    child: Overlay(
+                      initialEntries: [
+                        OverlayEntry(
+                          builder: (context) => const PlayerWidget(),
+                        ),
+                      ],
                     ),
                   ),
-                  const DownloadManagerWidget(),
-                  const RecitationWidget(),
-                ],
-              ),
+                ),
+                const DownloadManagerWidget(),
+                const RecitationWidget(),
+              ],
             ),
-          
+          ),
         );
       },
       title: 'Mostaqem',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      themeMode: userTheme,
+      theme: AppTheme.userLightTheme(userSeedColor),
+      darkTheme: AppTheme.userDarkTheme(userSeedColor),
     );
   }
 }

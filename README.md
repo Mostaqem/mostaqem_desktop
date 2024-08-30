@@ -8,17 +8,18 @@
 
 # Getting Started
 ## Dependencies
-for the linux version u need the following dependencies to be installed:
-* mpv
-* libmpv-dev
 
-for Ubunut/Debian , simply run 
+Make sure to install `mpv libmpv-dev` for debian/ubuntu
 ```
 sudo apt install mpv libmpv-dev
 ```
+For arch
+
+[Download AUR Package](https://aur.archlinux.org/packages/mostaqem)
 
 ## Screenshot
 ![Example](demo/demo2.jpg)
+
 
 ## Features:
 * Listening and read quran
@@ -37,6 +38,7 @@ sudo apt install mpv libmpv-dev
     * Download manager
     * Custom download path
 * Recitations
+
 
 
 ### TODOs:

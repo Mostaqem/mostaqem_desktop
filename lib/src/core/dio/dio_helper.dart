@@ -13,8 +13,6 @@ class DioHelper {
   static final talker = LoggerRepository().talker;
   static BaseOptions opts = BaseOptions(
     baseUrl: url,
-    connectTimeout: const Duration(seconds: 30),
-    receiveTimeout: const Duration(seconds: 30),
   );
 
   static Dio createDio() {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/core/SMTC/smtc_provider.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
@@ -14,6 +15,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
+import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
@@ -31,7 +33,11 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   void init() {
     final currentPlayer = ref.watch(playerSurahProvider);
-
+    final networkState = ref.watch(getConnectionProvider).value;
+    if (networkState == InternetConnectionStatus.disconnected) {
+      player.pause();
+      state = state.copyWith(isPlaying: false);
+    }
     if (currentPlayer == null) return;
 
     if (isLocalAudio()) {
@@ -76,7 +82,6 @@ class PlayerNotifier extends _$PlayerNotifier {
     });
     player.stream.playing.listen((playing) async {
       state = state.copyWith(isPlaying: playing);
-
       if (Platform.isWindows) {
         windowThumbnailBar();
         ref.read(
