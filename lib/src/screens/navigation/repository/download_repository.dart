@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,20 +16,25 @@ final cancelTokenProvider =
 enum DownloadState { pending, downloading, finished, cancelled }
 
 class DownloadProgress {
-  DownloadProgress(
-      {required this.count,
-      required this.total,
-      this.downloadState = DownloadState.pending,});
+  DownloadProgress({
+    required this.count,
+    required this.total,
+    this.downloadState = DownloadState.pending,
+  });
   final int count;
   final int total;
   DownloadState downloadState;
 
-  DownloadProgress copyWith(
-          {int? count, int? total, DownloadState? downloadState,}) =>
+  DownloadProgress copyWith({
+    int? count,
+    int? total,
+    DownloadState? downloadState,
+  }) =>
       DownloadProgress(
-          count: count ?? this.count,
-          total: total ?? this.total,
-          downloadState: downloadState ?? this.downloadState,);
+        count: count ?? this.count,
+        total: total ?? this.total,
+        downloadState: downloadState ?? this.downloadState,
+      );
 }
 
 @riverpod
@@ -47,19 +53,28 @@ class DownloadAudio extends _$DownloadAudio {
       count: 0,
       total: 0,
     );
-    await Dio().download(album.url, savePath, cancelToken: cancelToken,
-        onReceiveProgress: (count, total) {
-      if (count == total) {
-        state = state!.copyWith(
-            count: count, total: total, downloadState: DownloadState.finished,);
-      }
-      if (count < total) {
-        state = state!.copyWith(
+    await Dio().download(
+      album.url,
+      savePath,
+      cancelToken: cancelToken,
+      onReceiveProgress: (count, total) {
+        if (count == total) {
+          state = state!.copyWith(
             count: count,
             total: total,
-            downloadState: DownloadState.downloading,);
-      }
-    },).whenComplete(() async {
+            downloadState: DownloadState.finished,
+          );
+        }
+        if (count < total) {
+          state = state!.copyWith(
+            count: count,
+            total: total,
+            downloadState: DownloadState.downloading,
+          );
+        }
+      },
+    ).whenComplete(() async {
+      ref.watch(downloadHeightProvider.notifier).state = 0;
       try {
         await writeMetaData(savePath, album);
       } catch (e) {
@@ -71,11 +86,12 @@ class DownloadAudio extends _$DownloadAudio {
 
   Future<void> writeMetaData(String filePath, Album album) async {
     await MetadataGod.writeMetadata(
-        file: filePath,
-        metadata: Metadata(
-          genre: 'Quran',
-          title: album.surah.arabicName,
-          artist: album.reciter.arabicName,
-        ),);
+      file: filePath,
+      metadata: Metadata(
+        genre: 'Quran',
+        title: album.surah.arabicName,
+        artist: album.reciter.arabicName,
+      ),
+    );
   }
 }

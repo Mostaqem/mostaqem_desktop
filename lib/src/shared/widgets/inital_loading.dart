@@ -11,6 +11,7 @@ class InitialLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       home: Scaffold(
         body: Padding(
           padding: const EdgeInsets.only(top: 100),

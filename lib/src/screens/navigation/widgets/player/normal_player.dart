@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
@@ -13,6 +14,8 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.da
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
+final downloadedAudiosProvider = StateProvider<Set<Surah>>((ref) => {});
+
 class NormalPlayer extends StatelessWidget {
   const NormalPlayer({
     required this.isFullScreen,
@@ -22,6 +25,20 @@ class NormalPlayer extends StatelessWidget {
 
   final bool isFullScreen;
   final WidgetRef ref;
+
+  bool isDownloadVisible() {
+    final playingSurah = ref.watch(playerSurahProvider)?.surah;
+    final downloadedSurahs = ref.watch(downloadedAudiosProvider);
+
+    if (downloadedSurahs.contains(playingSurah)) {
+      return false;
+    }
+
+    final isDownloaded = ref.watch(isAudioDownloaded).value ?? false;
+    final isLocalAudio =
+        ref.watch(playerNotifierProvider.notifier).isLocalAudio();
+    return !isLocalAudio && !isDownloaded;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +61,7 @@ class NormalPlayer extends StatelessWidget {
           Row(
             children: [
               Visibility(
-                visible: !ref
-                        .watch(playerNotifierProvider.notifier)
-                        .isLocalAudio() &&
-                    ref.watch(isAudioDownloaded).value == false,
+                visible: isDownloadVisible(),
                 child: ToolTipIconButton(
                   message: 'تحميل',
                   iconSize: 16,
@@ -69,6 +83,10 @@ class NormalPlayer extends StatelessWidget {
                           .read(downloadAudioProvider.notifier)
                           .download(album: album);
                     }
+                    ref
+                        .read(downloadedAudiosProvider.notifier)
+                        .state
+                        .add(album.surah);
                   },
                   icon: const Icon(Icons.download_for_offline),
                 ),
@@ -90,7 +108,7 @@ class NormalPlayer extends StatelessWidget {
                     'assets/img/read.svg',
                     width: 16,
                     colorFilter: ColorFilter.mode(
-                      Theme.of(context).colorScheme.onSecondaryContainer,
+                      Theme.of(context).colorScheme.onPrimaryContainer,
                       BlendMode.srcIn,
                     ),
                   ),

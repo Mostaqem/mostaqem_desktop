@@ -12,6 +12,15 @@ class AppTheme {
     useMaterial3: true,
   );
 
+  static ThemeData userLightTheme(Color? userColor) {
+    if (userColor != null) {
+      return lightTheme.copyWith(
+        colorScheme: ColorScheme.fromSeed(seedColor: userColor),
+      );
+    }
+    return lightTheme;
+  }
+
   static ThemeData darkTheme = ThemeData(
     fontFamily: _fontFamily,
     colorScheme: ColorScheme.fromSeed(
@@ -19,4 +28,13 @@ class AppTheme {
       brightness: Brightness.dark,
     ),
   );
+
+   static ThemeData userDarkTheme(Color? userColor) {
+    if (userColor != null) {
+      return darkTheme.copyWith(
+        colorScheme: ColorScheme.fromSeed(seedColor: userColor),
+      );
+    }
+    return darkTheme;
+  }
 }

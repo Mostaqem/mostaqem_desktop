@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/settings/appearance/apperance.dart';
 import 'package:mostaqem/src/screens/settings/download/download_options.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
@@ -35,18 +36,7 @@ class SettingsScreen extends ConsumerWidget {
               const SizedBox(
                 height: 8,
               ),
-              Wrap(
-                children: [
-                  Container(
-                    height: 80,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ],
-              ),
+              ApperanceSettings(),
             ],
           ),
         ),
