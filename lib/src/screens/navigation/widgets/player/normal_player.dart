@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
-import 'package:mostaqem/src/screens/home/data/surah.dart';
+import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
@@ -14,7 +14,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.da
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
-final downloadedAudiosProvider = StateProvider<Set<Surah>>((ref) => {});
+final downloadedAudiosProvider = StateProvider<Set<Album>>((ref) => {});
 
 class NormalPlayer extends StatelessWidget {
   const NormalPlayer({
@@ -27,7 +27,7 @@ class NormalPlayer extends StatelessWidget {
   final WidgetRef ref;
 
   bool isDownloadVisible() {
-    final playingSurah = ref.watch(playerSurahProvider)?.surah;
+    final playingSurah = ref.watch(playerSurahProvider);
     final downloadedSurahs = ref.watch(downloadedAudiosProvider);
 
     if (downloadedSurahs.contains(playingSurah)) {
@@ -86,7 +86,7 @@ class NormalPlayer extends StatelessWidget {
                     ref
                         .read(downloadedAudiosProvider.notifier)
                         .state
-                        .add(album.surah);
+                        .add(album);
                   },
                   icon: const Icon(Icons.download_for_offline),
                 ),
@@ -108,7 +108,7 @@ class NormalPlayer extends StatelessWidget {
                     'assets/img/read.svg',
                     width: 16,
                     colorFilter: ColorFilter.mode(
-                      Theme.of(context).colorScheme.onPrimaryContainer,
+                      Theme.of(context).colorScheme.onSecondaryContainer,
                       BlendMode.srcIn,
                     ),
                   ),

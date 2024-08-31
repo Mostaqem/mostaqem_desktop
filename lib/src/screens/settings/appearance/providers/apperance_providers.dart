@@ -19,4 +19,9 @@ class UserSeedColor extends _$UserSeedColor {
     state = color;
     CacheHelper.setInt('color', color.value);
   }
+
+  void clear() {
+    state = null;
+    CacheHelper.remove('color');
+  }
 }

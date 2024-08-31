@@ -1,5 +1,5 @@
 name: mostaqem
-version: "1.4.0+1"
+version: "1.6.1+1"
 publish_to: none
 
 environment:
@@ -30,7 +30,6 @@ dependencies:
   media_kit: "^1.1.10+1"
   media_kit_libs_audio: "^1.0.4"
   metadata_god: "^0.5.2+1"
-  flutter_intro: ^3.3.1
   mpris_service:
     git: "https://github.com/alexmercerind/mpris_service"
 

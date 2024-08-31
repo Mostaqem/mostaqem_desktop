@@ -28,13 +28,15 @@ class VolumeControls extends ConsumerWidget {
                 }
               },
               icon: player.volume == 0
-                  ? const Icon(
+                  ? Icon(
                       Icons.volume_mute_outlined,
                       size: 16,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
                     )
-                  : const Icon(
+                  : Icon(
                       Icons.volume_up_outlined,
                       size: 16,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
                     ),
               color: isFullScreen
                   ? Colors.white
@@ -42,25 +44,28 @@ class VolumeControls extends ConsumerWidget {
             ),
           ),
         ),
-        HoverBuilder(builder: (isHovered) {
-          return SliderTheme(
-            data: SliderThemeData(
+        HoverBuilder(
+          builder: (isHovered) {
+            return SliderTheme(
+              data: SliderThemeData(
                 thumbShape: RoundSliderThumbShape(
-              enabledThumbRadius: isHovered ? 7 : 3,
-              elevation: 0,
-            ),),
-            child: SizedBox(
-              width: 140,
-              child: Slider(
-                key: const Key('volume'),
-                activeColor: isFullScreen ? Colors.white : null,
-                value: ref.watch(playerNotifierProvider).volume,
-                onChanged: (v) =>
-                    ref.read(playerNotifierProvider.notifier).handleVolume(v),
+                  enabledThumbRadius: isHovered ? 7 : 3,
+                  elevation: 0,
+                ),
               ),
-            ),
-          );
-        },),
+              child: SizedBox(
+                width: 140,
+                child: Slider(
+                  key: const Key('volume'),
+                  activeColor: isFullScreen ? Colors.white : null,
+                  value: ref.watch(playerNotifierProvider).volume,
+                  onChanged: (v) =>
+                      ref.read(playerNotifierProvider.notifier).handleVolume(v),
+                ),
+              ),
+            );
+          },
+        ),
       ],
     );
   }

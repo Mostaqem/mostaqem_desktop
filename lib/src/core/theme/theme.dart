@@ -29,10 +29,13 @@ class AppTheme {
     ),
   );
 
-   static ThemeData userDarkTheme(Color? userColor) {
+  static ThemeData userDarkTheme(Color? userColor) {
     if (userColor != null) {
       return darkTheme.copyWith(
-        colorScheme: ColorScheme.fromSeed(seedColor: userColor),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: userColor,
+          brightness: Brightness.dark,
+        ),
       );
     }
     return darkTheme;

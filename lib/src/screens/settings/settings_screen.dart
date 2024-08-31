@@ -36,7 +36,7 @@ class SettingsScreen extends ConsumerWidget {
               const SizedBox(
                 height: 8,
               ),
-              ApperanceSettings(),
+              const ApperanceSettings(),
             ],
           ),
         ),

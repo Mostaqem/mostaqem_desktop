@@ -58,8 +58,8 @@ class OfflineRepository {
   }
 
   Stream<bool> isAudioDownloaded() async* {
-    final surah = ref.watch(playerSurahProvider)?.surah;
-    if (surah == null) {
+    final album = ref.watch(playerSurahProvider);
+    if (album == null) {
       yield false;
       return;
     }
@@ -67,8 +67,8 @@ class OfflineRepository {
     final localAudios = loadAudioAsAlbum();
 
     await for (final audios in localAudios) {
-      final surahNames = audios.map((audio) => audio.surah.arabicName).toSet();
-      if (surahNames.contains(surah.arabicName)) {
+      final downloadedAlbums = audios.map((audio) => audio).toSet();
+      if (downloadedAlbums.contains(album)) {
         yield true;
         return;
       }
