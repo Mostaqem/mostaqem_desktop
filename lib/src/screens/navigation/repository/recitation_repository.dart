@@ -15,8 +15,9 @@ Future<List<Recitation>> fetchReciterRecitation(
   required int reciterID,
 }) async {
   try {
-    final request =
-        await ref.watch(dioHelperProvider).getHTTP('reciter/$reciterID/tilawa');
+    final request = await ref
+        .watch(dioHelperProvider)
+        .getHTTP('/reciter/$reciterID/tilawa');
 
     return request.data['data']
         .map<Recitation>((e) => Recitation.fromJson(e as Map<String, Object?>))

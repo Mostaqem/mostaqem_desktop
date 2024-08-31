@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'apperance_providers.dart';
+part of 'squiggly_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userSeedColorHash() => r'599086d0312e987224e9239fc7a602d1812e9520';
+String _$squigglyNotifierHash() => r'b75fcda0160824ae3bac668539ef354006665a98';
 
-/// See also [UserSeedColor].
-@ProviderFor(UserSeedColor)
-final userSeedColorProvider =
-    AutoDisposeNotifierProvider<UserSeedColor, Color?>.internal(
-  UserSeedColor.new,
-  name: r'userSeedColorProvider',
+/// See also [SquigglyNotifier].
+@ProviderFor(SquigglyNotifier)
+final squigglyNotifierProvider =
+    AutoDisposeNotifierProvider<SquigglyNotifier, bool>.internal(
+  SquigglyNotifier.new,
+  name: r'squigglyNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$userSeedColorHash,
+      : _$squigglyNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$UserSeedColor = AutoDisposeNotifier<Color?>;
+typedef _$SquigglyNotifier = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

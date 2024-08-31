@@ -403,14 +403,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  flutter_intro:
-    dependency: "direct main"
-    description:
-      name: flutter_intro
-      sha256: f5411f3ddab945954959261cad38a087366dcd2bfeccfebb40b4e79c9983b7dc
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.1"
   flutter_lints:
     dependency: "direct dev"
     description:

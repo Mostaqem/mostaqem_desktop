@@ -7,7 +7,7 @@ part of 'recitation_repository.dart';
 // **************************************************************************
 
 String _$fetchReciterRecitationHash() =>
-    r'8fe0fbeadf313baa0ba2b22f4b4f1ebbbac172e5';
+    r'197a435a1b360a89ac82fc6abc67901652b0efe2';
 
 /// Copied from Dart SDK
 class _SystemHash {

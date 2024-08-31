@@ -3,8 +3,6 @@
 
  An app for Islamic media like quran and podcasts without ads and subscriptions
 
- * Beta releases will be released on our github releases
- * Stable releases will be released on the store such as Microsoft store for automatic updates
 
 # Getting Started
 ## Dependencies
@@ -38,6 +36,7 @@ For arch
     * Download manager
     * Custom download path
 * Recitations
+* Customization
 
 
 
