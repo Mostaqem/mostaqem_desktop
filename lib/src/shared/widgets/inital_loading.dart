@@ -38,7 +38,7 @@ class InitialLoading extends StatelessWidget {
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  'مستقيم 1.6.1',
+                  'مستقيم 1.6.3',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),

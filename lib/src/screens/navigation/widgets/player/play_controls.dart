@@ -405,6 +405,27 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
     );
   }
 
+  StreamSubscription? periodicSubscription;
+  final BehaviorSubject<double?> _dragPositionSubject =
+      BehaviorSubject.seeded(null);
+  @override
+  void initState() {
+    super.initState();
+
+    periodicSubscription =
+        Stream.periodic(const Duration(seconds: 1)).listen((_) {
+      _dragPositionSubject.add(
+        widget.ref.read(playerNotifierProvider).position.inSeconds.toDouble(),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    periodicSubscription?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final player = widget.ref.watch(playerNotifierProvider);
@@ -430,52 +451,96 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                     maxWidth: MediaQuery.sizeOf(context).width / 1.5,
                     maxHeight: 10,
                   ),
-                  child: HoverBuilder(
-                    builder: (isHovered) {
-                      return SliderTheme(
-                        data: SliderThemeData(
-                          thumbShape: RoundSliderThumbShape(
-                            enabledThumbRadius: isHovered ? 7 : 3,
-                            elevation: 0,
-                          ),
-                        ),
-                        child: isSquiggly
-                            ? SquigglySlider(
-                                squiggleAmplitude: 3,
-                                squiggleWavelength: 5,
-                                squiggleSpeed: 0.2,
-                                useLineThumb: true,
-                                activeColor: Colors.white,
-                                value: widget.ref
-                                    .watch(playerNotifierProvider)
-                                    .position
-                                    .inSeconds
-                                    .toDouble(),
-                                max: widget.ref
-                                    .watch(playerNotifierProvider)
-                                    .duration
-                                    .inSeconds
-                                    .toDouble(),
-                                onChanged: (v) => widget.ref
-                                    .watch(playerNotifierProvider.notifier)
-                                    .handleSeek(Duration(seconds: v.toInt())),
-                              )
-                            : Slider(
-                                activeColor: Colors.white,
-                                value: widget.ref
-                                    .watch(playerNotifierProvider)
-                                    .position
-                                    .inSeconds
-                                    .toDouble(),
-                                max: widget.ref
-                                    .watch(playerNotifierProvider)
-                                    .duration
-                                    .inSeconds
-                                    .toDouble(),
-                                onChanged: (v) => widget.ref
-                                    .watch(playerNotifierProvider.notifier)
-                                    .handleSeek(Duration(seconds: v.toInt())),
+                  child: StreamBuilder(
+                    stream: _dragPositionSubject.stream,
+                    builder: (context, snapshot) {
+                      final position = snapshot.data ??
+                          widget.ref
+                              .watch(playerNotifierProvider)
+                              .position
+                              .inSeconds
+                              .toDouble();
+                      final duration = widget.ref
+                          .watch(playerNotifierProvider)
+                          .duration
+                          .inSeconds
+                          .toDouble();
+                      return HoverBuilder(
+                        builder: (isHovered) {
+                          return SliderTheme(
+                            data: SliderThemeData(
+                              thumbShape: RoundSliderThumbShape(
+                                enabledThumbRadius: isHovered ? 7 : 3,
+                                elevation: 0,
                               ),
+                            ),
+                            child: isSquiggly
+                                ? SquigglySlider(
+                                    squiggleAmplitude: 3,
+                                    squiggleWavelength: 5,
+                                    squiggleSpeed: 0.2,
+                                    useLineThumb: true,
+                                    activeColor: Colors.white,
+                                    value: max(0, min(position, duration)),
+                                    max: duration,
+                                    onChangeStart: (_) async {
+                                      final isPlaying = widget.ref
+                                          .read(playerNotifierProvider)
+                                          .isPlaying;
+                                      if (isPlaying) {
+                                        await widget.ref
+                                            .read(
+                                              playerNotifierProvider.notifier,
+                                            )
+                                            .player
+                                            .pause();
+                                      }
+                                    },
+                                    onChangeEnd: (value) async {
+                                      await widget.ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .handleSeek(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                      await widget.ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .player
+                                          .play();
+                                    },
+                                    onChanged: _dragPositionSubject.add,
+                                  )
+                                : Slider(
+                                    activeColor: Colors.white,
+                                    value: max(0, min(position, duration)),
+                                    max: duration,
+                                    onChangeStart: (_) async {
+                                      final isPlaying = widget.ref
+                                          .read(playerNotifierProvider)
+                                          .isPlaying;
+                                      if (isPlaying) {
+                                        await widget.ref
+                                            .read(
+                                              playerNotifierProvider.notifier,
+                                            )
+                                            .player
+                                            .pause();
+                                      }
+                                    },
+                                    onChangeEnd: (value) async {
+                                      await widget.ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .handleSeek(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                      await widget.ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .player
+                                          .play();
+                                    },
+                                    onChanged: _dragPositionSubject.add,
+                                  ),
+                          );
+                        },
                       );
                     },
                   ),

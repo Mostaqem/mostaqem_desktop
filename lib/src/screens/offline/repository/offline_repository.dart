@@ -34,8 +34,13 @@ class OfflineRepository {
     final files = directory.listSync();
     final filenames = <int>[];
     for (final file in files) {
-      final filename = file.path.split('/').last.split('.').first;
-      filenames.add(int.parse(filename));
+      if (Platform.isWindows) {
+        final filename = file.path.split(r'\').last.split('.').first;
+        if (int.tryParse(filename) != null) filenames.add(int.parse(filename));
+      } else if (Platform.isLinux) {
+        final filename = file.path.split('/').last.split('.').first;
+        if (int.tryParse(filename) != null) filenames.add(int.parse(filename));
+      }
     }
     return filenames;
   }
@@ -71,13 +76,10 @@ class OfflineRepository {
 
   Future<bool> isAudioDownloaded() async {
     final localAudios = await getDownloadsFiles();
-    print(localAudios);
 
     final recitationID = ref.watch(playerSurahProvider)?.recitationID ?? 0;
     final surahID = ref.watch(playerSurahProvider)?.surah.id ?? 0;
     final downloadedSurah = recitationID + surahID;
-    print(localAudios);
-    print(localAudios.contains(downloadedSurah));
     if (localAudios.contains(downloadedSurah)) {
       return true;
     }

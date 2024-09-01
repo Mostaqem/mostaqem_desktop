@@ -8,7 +8,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
-import 'package:mostaqem/src/shared/widgets/shortcuts.dart';
+import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_widgets.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
