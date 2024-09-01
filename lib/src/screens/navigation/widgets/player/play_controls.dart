@@ -15,7 +15,7 @@ import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_noti
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PlayControls extends StatefulWidget {
+class PlayControls extends ConsumerStatefulWidget {
   const PlayControls({
     required this.isFullScreen,
     required this.ref,
@@ -25,10 +25,10 @@ class PlayControls extends StatefulWidget {
   final WidgetRef ref;
 
   @override
-  State<PlayControls> createState() => _PlayControlsState();
+  ConsumerState<PlayControls> createState() => _PlayControlsState();
 }
 
-class _PlayControlsState extends State<PlayControls> {
+class _PlayControlsState extends ConsumerState<PlayControls> {
   Icon loopIcon(PlaylistMode state, Color color) {
     if (state == PlaylistMode.none) {
       return Icon(
@@ -57,6 +57,7 @@ class _PlayControlsState extends State<PlayControls> {
   @override
   void initState() {
     super.initState();
+
     periodicSubscription =
         Stream.periodic(const Duration(seconds: 1)).listen((_) {
       _dragPositionSubject.add(
@@ -443,6 +444,7 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                                 squiggleAmplitude: 3,
                                 squiggleWavelength: 5,
                                 squiggleSpeed: 0.2,
+                                useLineThumb: true,
                                 activeColor: Colors.white,
                                 value: widget.ref
                                     .watch(playerNotifierProvider)

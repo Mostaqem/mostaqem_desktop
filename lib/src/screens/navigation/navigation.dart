@@ -20,13 +20,11 @@ class Navigation extends ConsumerStatefulWidget {
 }
 
 class _NavigationState extends ConsumerState<Navigation> {
-  final repo = PackageRepository();
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final state = await repo.checkUpdate();
+      final state = await ref.read(checkUpdateProvider.future);
       if (!mounted) return;
       if (state == UpdateState.available) {
         await checkUpdateDialog(context, ref);

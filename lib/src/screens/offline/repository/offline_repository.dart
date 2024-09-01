@@ -28,6 +28,18 @@ class OfflineRepository {
     yield* Stream.fromIterable(audioFiles);
   }
 
+  Future<List<int>> getDownloadsFiles() async {
+    final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
+    final directory = Directory(downloadPath);
+    final files = directory.listSync();
+    final filenames = <int>[];
+    for (final file in files) {
+      final filename = file.path.split('/').last.split('.').first;
+      filenames.add(int.parse(filename));
+    }
+    return filenames;
+  }
+
   Stream<List<Album>> loadAudioAsAlbum() async* {
     final albums = <Album>[];
     final localAudios = getLocalAudio();
@@ -57,24 +69,19 @@ class OfflineRepository {
     yield albums;
   }
 
-  Stream<bool> isAudioDownloaded() async* {
-    final album = ref.watch(playerSurahProvider);
-    if (album == null) {
-      yield false;
-      return;
+  Future<bool> isAudioDownloaded() async {
+    final localAudios = await getDownloadsFiles();
+    print(localAudios);
+
+    final recitationID = ref.watch(playerSurahProvider)?.recitationID ?? 0;
+    final surahID = ref.watch(playerSurahProvider)?.surah.id ?? 0;
+    final downloadedSurah = recitationID + surahID;
+    print(localAudios);
+    print(localAudios.contains(downloadedSurah));
+    if (localAudios.contains(downloadedSurah)) {
+      return true;
     }
-
-    final localAudios = loadAudioAsAlbum();
-
-    await for (final audios in localAudios) {
-      final downloadedAlbums = audios.map((audio) => audio).toSet();
-      if (downloadedAlbums.contains(album)) {
-        yield true;
-        return;
-      }
-    }
-
-    yield false;
+    return false;
   }
 }
 
@@ -86,7 +93,7 @@ final getLocalAudioProvider =
   yield* repo.loadAudioAsAlbum();
 });
 
-final isAudioDownloaded = StreamProvider.autoDispose<bool>((ref) async* {
+final isAudioDownloaded = FutureProvider<bool>((ref) async {
   final repo = ref.watch(offlineRepo);
-  yield* repo.isAudioDownloaded();
+  return repo.isAudioDownloaded();
 });
