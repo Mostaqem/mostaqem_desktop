@@ -10,7 +10,7 @@ import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/shared/device/device_repository.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 
-import 'package:mostaqem/src/shared/widgets/shortcuts.dart';
+import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppMenuBar extends ConsumerWidget {

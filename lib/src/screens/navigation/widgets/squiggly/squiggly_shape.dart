@@ -12,7 +12,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider
 /// in the `parentBox`.
 /// The amplitude and wavelength of the curve can be adjusted
 /// by [squiggleAmplitude] and [squiggleWavelength] respectively,
-/// while the current phase shift (as a factor of the wavelength) can be adjusted with [squigglePhaseFactor], this will be animated by the [SquigglySlider].
+/// with [squigglePhaseFactor], this will be animated by the [SquigglySlider].
 /// The thickness is defined by the [SliderThemeData.trackHeight].
 /// The color is determined by the [Slider]'s enabled state
 /// and the track segment's active state which are defined by:
@@ -31,7 +31,8 @@ import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider
 ///    slider of the visual details of the its track.
 ///  * [SliderTrackShape], which can be used to create custom shapes for the
 ///    [Slider]'s track.
-///  * [RoundedRectSliderTrackShape], for a similar track (the default for the normal [Slider]).
+///  * [RoundedRectSliderTrackShape], for a similar track (the default 
+/// for the normal [Slider]).
 class SquigglySliderTrackShape extends SliderTrackShape
     with BaseSliderTrackShape {
   /// Create a slider track that draws two rectangles with rounded outer edges.
