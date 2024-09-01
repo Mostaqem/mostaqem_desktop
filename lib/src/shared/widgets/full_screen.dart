@@ -14,26 +14,43 @@ class FullScreenWidget extends StatelessWidget {
   final WidgetRef ref;
   @override
   Widget build(BuildContext context) {
-    final connection = ref.watch(getConnectionProvider).value ??
-        InternetConnectionStatus.disconnected;
+    final connection = ref.watch(getConnectionProvider).value;
     final randomImage = ref.watch(fetchRandomImageProvider);
     return Stack(
       children: [
-        AsyncWidget(
-          value: randomImage,
-          data: (data) {
-            return Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
+        if (connection == InternetConnectionStatus.connected)
+          AsyncWidget(
+            value: randomImage,
+            data: (data) {
+              return SizedBox.expand(
+                child: Image.network(
+                  data,
                   fit: BoxFit.cover,
-                  image: connection == InternetConnectionStatus.connected
-                      ? NetworkImage(data)
-                      : const AssetImage('assets/img/kaaba.jpg'),
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child; // Image loaded
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    }
+                  },
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          )
+        else
+          SizedBox.expand(
+            child: Image.asset(
+              'assets/img/kaaba.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
         Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(

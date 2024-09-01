@@ -14,9 +14,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.da
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
-final downloadedAudiosProvider = StateProvider<Set<Album>>((ref) => {});
-
-class NormalPlayer extends StatelessWidget {
+class NormalPlayer extends StatefulWidget {
   const NormalPlayer({
     required this.isFullScreen,
     required this.ref,
@@ -26,80 +24,91 @@ class NormalPlayer extends StatelessWidget {
   final bool isFullScreen;
   final WidgetRef ref;
 
-  bool isDownloadVisible() {
-    final playingSurah = ref.watch(playerSurahProvider);
-    final downloadedSurahs = ref.watch(downloadedAudiosProvider);
+  @override
+  State<NormalPlayer> createState() => _NormalPlayerState();
+}
 
-    if (downloadedSurahs.contains(playingSurah)) {
+class _NormalPlayerState extends State<NormalPlayer> {
+  final List<Album> downloadedAlbums = [];
+
+  bool isBtnVisible(Album? album) {
+    final isOffline =
+        widget.ref.watch(playerNotifierProvider.notifier).isLocalAudio();
+    if (isOffline) {
       return false;
     }
 
-    final isDownloaded = ref.watch(isAudioDownloaded).value ?? false;
-    final isLocalAudio =
-        ref.watch(playerNotifierProvider.notifier).isLocalAudio();
-    return !isLocalAudio && !isDownloaded;
+    if (downloadedAlbums.contains(album)) {
+      return false;
+    }
+    final isDownloaded = widget.ref.watch(isAudioDownloaded).value ?? false;
+    return !isDownloaded;
   }
 
   @override
   Widget build(BuildContext context) {
+    final album = widget.ref.watch(playerSurahProvider);
+
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           PlayingSurah(
-            isFullScreen: isFullScreen,
-            ref: ref,
+            isFullScreen: widget.isFullScreen,
+            ref: widget.ref,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 80),
             child: PlayControls(
-              isFullScreen: isFullScreen,
-              ref: ref,
+              isFullScreen: widget.isFullScreen,
+              ref: widget.ref,
             ),
           ),
           Row(
             children: [
               Visibility(
-                visible: isDownloadVisible(),
+                visible: isBtnVisible(album),
                 child: ToolTipIconButton(
                   message: 'تحميل',
                   iconSize: 16,
                   onPressed: () async {
-                    final album = ref.read(playerSurahProvider);
-
-                    final height = ref.read(downloadHeightProvider);
+                    final height = widget.ref.read(downloadHeightProvider);
                     if (height == 100) {
-                      ref.read(downloadHeightProvider.notifier).state = 0;
+                      widget.ref.read(downloadHeightProvider.notifier).state =
+                          0;
                     } else {
-                      ref.read(downloadHeightProvider.notifier).state = 100;
+                      widget.ref.read(downloadHeightProvider.notifier).state =
+                          100;
                     }
-                    ref.read(downloadSurahProvider.notifier).state =
+                    widget.ref.read(downloadSurahProvider.notifier).state =
                         album!.surah;
                     final downloadState =
-                        ref.read(downloadAudioProvider)?.downloadState;
+                        widget.ref.read(downloadAudioProvider)?.downloadState;
                     if (downloadState != DownloadState.downloading) {
-                      await ref
+                      await widget.ref
                           .read(downloadAudioProvider.notifier)
                           .download(album: album);
                     }
-                    ref
-                        .read(downloadedAudiosProvider.notifier)
-                        .state
-                        .add(album);
+                    setState(() {
+                      downloadedAlbums.add(album);
+                    });
                   },
                   icon: const Icon(Icons.download_for_offline),
                 ),
               ),
               Visibility(
-                visible: !isFullScreen &&
-                    !ref.read(playerNotifierProvider.notifier).isLocalAudio(),
+                visible: !widget.isFullScreen &&
+                    !widget.ref
+                        .read(playerNotifierProvider.notifier)
+                        .isLocalAudio(),
                 child: ToolTipIconButton(
                   message: 'اقرأ',
                   onPressed: () async {
-                    final surahID = ref.read(playerSurahProvider)!.surah.id;
+                    final surahID =
+                        widget.ref.read(playerSurahProvider)!.surah.id;
 
-                    ref.watch(goRouterProvider).goNamed(
+                    widget.ref.watch(goRouterProvider).goNamed(
                           'Reading',
                           extra: surahID,
                         );
@@ -115,7 +124,10 @@ class NormalPlayer extends StatelessWidget {
                 ),
               ),
               const VolumeControls(),
-              FullScreenControl(ref: ref, isFullScreen: isFullScreen),
+              FullScreenControl(
+                ref: widget.ref,
+                isFullScreen: widget.isFullScreen,
+              ),
             ],
           ),
         ],

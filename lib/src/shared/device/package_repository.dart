@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:github/github.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -10,7 +13,9 @@ enum UpdateState {
 }
 
 class PackageRepository {
+  PackageRepository(this.ref);
   Future<PackageInfo> getPackageInfo() => PackageInfo.fromPlatform();
+  Ref ref;
   final GitHub _github = GitHub();
   final _githubRepoSlug = RepositorySlug.full('Mostaqem/mostaqem_desktop');
 
@@ -28,6 +33,10 @@ class PackageRepository {
   }
 
   Future<UpdateState> checkUpdate() async {
+    final networkState = ref.watch(getConnectionProvider).value;
+    if (networkState == InternetConnectionStatus.disconnected) {
+      return UpdateState.notAvailable;
+    }
     final version = await currentVersion();
 
     final latestRelease =
@@ -61,3 +70,24 @@ class PackageRepository {
     }
   }
 }
+
+final packageRepoProvider = Provider<PackageRepository>(PackageRepository.new);
+
+final downloadUpdateProvider = FutureProvider<void>((ref) async {
+  final repo = ref.watch(packageRepoProvider);
+  final checkUpdate = await ref.watch(checkUpdateProvider.future);
+  if (checkUpdate == UpdateState.available) {
+    return repo.downloadUpdate();
+  }
+  return;
+});
+
+final checkUpdateProvider = FutureProvider<UpdateState>((ref) async {
+  final repo = ref.watch(packageRepoProvider);
+  return repo.checkUpdate();
+});
+
+final getCurrentVersionProvider = FutureProvider<String>((ref) async {
+  final repo = ref.watch(packageRepoProvider);
+  return repo.currentVersion();
+});

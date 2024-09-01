@@ -27,17 +27,24 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   @override
   AudioState build() {
+    // final networkState = ref.watch(getConnectionProvider).value;
+
+    // if (networkState == InternetConnectionStatus.disconnected) {
+    //   player.pause();
+    //   return AudioState();
+    // }
     init();
     return AudioState();
   }
 
   void init() {
-    final currentPlayer = ref.watch(playerSurahProvider);
     final networkState = ref.watch(getConnectionProvider).value;
+
     if (networkState == InternetConnectionStatus.disconnected) {
       player.pause();
-      state = state.copyWith(isPlaying: false);
+      // state = state.copyWith(isPlaying: false);
     }
+    final currentPlayer = ref.watch(playerSurahProvider);
     if (currentPlayer == null) return;
 
     if (isLocalAudio()) {

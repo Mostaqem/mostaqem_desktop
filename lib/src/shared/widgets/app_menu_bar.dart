@@ -35,7 +35,7 @@ class AppMenuBar extends ConsumerWidget {
                 final deviceInfo = await DeviceRepository().deviceInfo();
                 final deviceID = await DeviceRepository().deviceID();
                 final currentVersion =
-                    await PackageRepository().currentVersion();
+                    await ref.read(getCurrentVersionProvider.future);
                 if (!context.mounted) return;
 
                 return showAdaptiveDialog(
@@ -170,7 +170,7 @@ class AppMenuBar extends ConsumerWidget {
 }
 
 Future<void> checkUpdateDialog(BuildContext context, WidgetRef ref) async {
-  final updateState = await PackageRepository().checkUpdate();
+  final updateState = await ref.watch(checkUpdateProvider.future);
   final updateAvailable = updateState == UpdateState.available;
   if (!context.mounted) return;
 
@@ -188,7 +188,7 @@ Future<void> checkUpdateDialog(BuildContext context, WidgetRef ref) async {
         Visibility(
           visible: updateAvailable,
           child: TextButton(
-            onPressed: () => PackageRepository().downloadUpdate(),
+            onPressed: () => ref.read(downloadUpdateProvider),
             child: const Text('تحديث'),
           ),
         ),

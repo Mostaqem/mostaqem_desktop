@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -46,8 +47,9 @@ class DownloadAudio extends _$DownloadAudio {
 
   Future<void> download({required Album album}) async {
     final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
-    final mixID = album.surah.id + album.reciter.id;
-    final savePath = '$downloadPath/$mixID.mp3';
+    final surahID = ref.watch(playerSurahProvider)?.surah.id ?? 0;
+    final mixIDs = album.recitationID + surahID;
+    final savePath = '$downloadPath/$mixIDs.mp3';
     final cancelToken = ref.watch(cancelTokenProvider);
     state = DownloadProgress(
       count: 0,

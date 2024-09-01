@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:window_manager/window_manager.dart';
 
 class FullScreenControl extends StatelessWidget {
   const FullScreenControl({
-    required this.ref, required this.isFullScreen, super.key,
+    required this.ref,
+    required this.isFullScreen,
+    super.key,
   });
 
   final WidgetRef ref;
@@ -20,6 +26,11 @@ class FullScreenControl extends StatelessWidget {
           ref.read(isFullScreenProvider.notifier).toggle(value: false);
         } else {
           ref.read(isFullScreenProvider.notifier).toggle(value: true);
+          ref.read(recitationHeight.notifier).state = 0;
+          ref.read(downloadHeightProvider.notifier).state = 0;
+          if (!context.mounted) return;
+
+          ref.read(goRouterProvider).go('/');
         }
       },
       icon: Icon(
