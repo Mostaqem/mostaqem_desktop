@@ -4,7 +4,7 @@ import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tuple/tuple.dart';

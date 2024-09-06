@@ -7,12 +7,12 @@ enum ShortcutsEnum {
     name: 'تشغيل/ايقاف',
     key: LogicalKeyboardKey.space,
   ),
-  mute(name: 'صامت/تشغيل', key: LogicalKeyboardKey.keyM),
+  mute(name: 'صامت/تشغيل', key: LogicalKeyboardKey.keyM, control: true),
   playNext(name: 'تشغيل التالي', key: LogicalKeyboardKey.arrowLeft),
   playPrevious(name: 'تشغيل القبل', key: LogicalKeyboardKey.arrowRight),
-  repeat(name: 'إعادة', key: LogicalKeyboardKey.keyR),
+  repeat(name: 'إعادة', key: LogicalKeyboardKey.keyR, control: true),
 
-  settings(name: 'الأعدادات', key: LogicalKeyboardKey.keyP),
+  settings(name: 'الأعدادات', key: LogicalKeyboardKey.keyP, control: true),
 
   checkUpdate(
     name: 'تحديث',
@@ -20,7 +20,11 @@ enum ShortcutsEnum {
     control: true,
   ),
 
-  enterFullscreen(name: 'الشاشة الكبيرة', key: LogicalKeyboardKey.keyF),
+  enterFullscreen(
+    name: 'الشاشة الكبيرة',
+    key: LogicalKeyboardKey.keyF,
+    control: true,
+  ),
   exitFullscreen(name: 'قفل الشاشة الكبيرة', key: LogicalKeyboardKey.escape),
 
   quit(name: 'إغلاق مستقيم', key: LogicalKeyboardKey.keyQ, control: true);

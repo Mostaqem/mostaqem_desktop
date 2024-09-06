@@ -21,7 +21,7 @@ class ToolTipIconButton extends StatelessWidget {
       child: IconButton(
         onPressed: onPressed,
         icon: icon,
-        iconSize: iconSize,
+        iconSize: iconSize ?? 16,
       ),
     );
   }

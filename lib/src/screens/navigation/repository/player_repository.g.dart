@@ -6,7 +6,7 @@ part of 'player_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerNotifierHash() => r'c50e79c4749ea352c2122afca3dca36212265a6b';
+String _$playerNotifierHash() => r'104b57ab1a54880fbe1303b928c7daf25fb64b19';
 
 /// See also [PlayerNotifier].
 @ProviderFor(PlayerNotifier)

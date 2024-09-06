@@ -7,6 +7,7 @@ import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/nework_required_widget.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
@@ -18,11 +19,13 @@ final searchQueryProvider = StateProvider<String>((ref) => '');
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
   final queryController = TextEditingController();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     HijriCalendar.setLocal('ar');
     final isTyping = ref.watch(isTypingProvider);
     final surahImage = ref.watch(playerSurahProvider)?.surah.image ?? '';
+
     return NeworkRequiredWidget(
       child: Row(
         children: [

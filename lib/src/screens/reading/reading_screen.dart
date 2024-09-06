@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
@@ -48,7 +49,9 @@ class ReadingScreen extends ConsumerWidget {
                         return Text(
                           data[index].verse,
                           // textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 25, fontFamily: ''),
+                          style: GoogleFonts.amiriQuran(
+                            fontSize: 25,
+                          ),
                         );
                       },
                     );

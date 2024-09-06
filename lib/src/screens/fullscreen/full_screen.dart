@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
@@ -12,10 +14,12 @@ class FullScreenWidget extends StatelessWidget {
   const FullScreenWidget({required this.player, required this.ref, super.key});
   final Album player;
   final WidgetRef ref;
+
   @override
   Widget build(BuildContext context) {
     final connection = ref.watch(getConnectionProvider).value;
     final randomImage = ref.watch(fetchRandomImageProvider);
+    final currentPlayer = ref.watch(playerNotifierProvider.notifier);
     return Stack(
       children: [
         if (connection == InternetConnectionStatus.connected)
@@ -66,6 +70,20 @@ class FullScreenWidget extends StatelessWidget {
             ),
           ),
         ),
+        // Center(
+        //   child: StreamBuilder(
+        //     stream: currentPlayer.syncLyrics(),
+        //     builder: (context, snapshot) {
+        //       if (snapshot.data == null) {
+        //         return const SizedBox.shrink();
+        //       }
+        //       return Text(
+        //         snapshot.data!,
+        //         style: GoogleFonts.amiriQuran(fontSize: 25),
+        //       );
+        //     },
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.only(bottom: 220, right: 50),
           child: Align(

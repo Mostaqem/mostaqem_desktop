@@ -6,6 +6,20 @@ part of 'smtc_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$smtcRepoHash() => r'6def57bc6f7377b71ae05c9e1fdc2726a17942d0';
+
+/// See also [smtcRepo].
+@ProviderFor(smtcRepo)
+final smtcRepoProvider = AutoDisposeProvider<SMTCRepository>.internal(
+  smtcRepo,
+  name: r'smtcRepoProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$smtcRepoHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef SmtcRepoRef = AutoDisposeProviderRef<SMTCRepository>;
 String _$updateSMTCHash() => r'1f0e0873c49b62a50e7f298b118876b627baa25a';
 
 /// Copied from Dart SDK

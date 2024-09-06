@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/recitation_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
 final recitationProvider = StateProvider<int?>((ref) {
@@ -46,8 +46,7 @@ class RecitationWidget extends ConsumerWidget {
                   groupValue: data[index].id,
                   onChanged: (v) {
                     ref.read(playerSurahProvider.notifier).update(
-                          (state) =>
-                              state?.copyWith(recitationID: data[index].id),
+                          player?.copyWith(recitationID: data[index].id),
                         );
 
                     ref.read(playerNotifierProvider.notifier).play(

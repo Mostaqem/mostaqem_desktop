@@ -1,11 +1,18 @@
 include: package:very_good_analysis/analysis_options.6.0.0.yaml
 
 analyzer:
+  plugins:
+    - custom_lint
   errors:
     invalid_annotation_target: ignore
     prefer_asserts_with_message: ignore
     public_member_api_docs: ignore
     return_of_invalid_type: ignore
   exclude:
-    - '**.freezed.dart'
-    - '**.g.dart'
+    - "**.freezed.dart"
+    - "**.g.dart"
+
+custom_lint:
+  enable_all_lint_rules: true
+  rules:
+    missing_provider_scope: false

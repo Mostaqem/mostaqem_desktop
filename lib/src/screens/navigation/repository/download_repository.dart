@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

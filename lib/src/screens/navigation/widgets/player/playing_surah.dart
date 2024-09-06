@@ -4,6 +4,7 @@ import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 

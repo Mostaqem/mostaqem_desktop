@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
