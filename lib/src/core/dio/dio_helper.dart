@@ -1,12 +1,15 @@
 // ignore_for_file: inference_failure_on_function_invocation
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/core/logger/logger_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
-final dioHelperProvider = Provider((ref) => DioHelper());
+part 'dio_helper.g.dart';
+
+@Riverpod(keepAlive: true)
+DioHelper dioHelper(DioHelperRef ref) => DioHelper();
 
 class DioHelper {
   static final String url = Env.apiURL;

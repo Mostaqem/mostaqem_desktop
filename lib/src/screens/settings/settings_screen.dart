@@ -9,38 +9,40 @@ class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const WindowButtons(),
-        const SizedBox(
-          height: 10,
-        ),
-        const Align(alignment: Alignment.topLeft, child: AppBackButton()),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DownloadOptions(),
-              const SizedBox(
-                height: 24,
-              ),
-              Text(
-                'مظهر',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              const ApperanceSettings(),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const WindowButtons(),
+          const SizedBox(
+            height: 10,
           ),
-        ),
-      ],
+          const Align(alignment: Alignment.topLeft, child: AppBackButton()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DownloadOptions(),
+                const SizedBox(
+                  height: 24,
+                ),
+                Text(
+                  'مظهر',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                const ApperanceSettings(),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

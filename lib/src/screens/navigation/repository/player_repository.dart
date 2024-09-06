@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:lrc/lrc.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/core/SMTC/smtc_provider.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
@@ -10,9 +11,10 @@ import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/data/player.dart';
+import 'package:mostaqem/src/screens/navigation/repository/lyrics.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
@@ -335,6 +337,63 @@ class PlayerNotifier extends _$PlayerNotifier {
     state = state.copyWith(volume: value);
   }
 
+//   final String lyrics = '''
+// [00:00.00] بِسۡمِ
+// [00:01.04] ٱللَّهِ
+// [00:01.66] ٱلرَّحۡمَٰنِ
+// [00:02.61] ٱلرَّحِيمِ
+// [00:04.37] ٱلۡحَمۡدُ
+// [00:06.09] لِلَّهِ
+// [00:06.94] رَبِّ
+// [00:07.40] ٱلۡعَٰلَمِينَ
+// [00:09.68] ٱلرَّحۡمَٰنِ
+// [00:11.65] ٱلرَّحِيمِ
+// [00:13.71] مَٰلِكِ
+// [00:15.77] يَوۡمِ
+// [00:16.27] ٱلدِّينِ
+// [00:18.26] إِيَّاكَ
+// [00:19.96] نَعۡبُدُ
+// [00:20.73] وَإِيَّاكَ
+// [00:21.76] نَسۡتَعِينُ
+// [00:23.88] ٱهۡدِنَا
+// [00:25.49] ٱلصِّرَٰطَ
+// [00:26.30] ٱلۡمُسۡتَقِيمَ
+// [00:28.69] صِرَٰطَ
+// [00:31.05] ٱلَّذِينَ
+// [00:31.91] أَنۡعَمۡتَ
+// [00:32.79] عَلَيۡهِمۡ
+// [00:33.61] غَيۡرِ
+// [00:34.21] ٱلۡمَغۡضُوبِ
+// [00:35.23] عَلَيۡهِمۡ
+// [00:36.27] وَلَا
+// [00:36.49] ٱلضَّآلِّينَ
+// ''';
+
+//   Stream<String> syncLyrics() async* {
+//     final current = <Lyrics>[];
+//     final currentLyricsAveragedMap = {};
+//     final currentLyricsTimeStamps = {};
+
+//     if (Lrc.isValid(lyrics)) {
+//       current.addAll(
+//         Lrc.parse(lyrics).lyrics.map(
+//               (e) => Lyrics(time: e.timestamp.inMilliseconds, words: e.lyrics),
+//             ),
+//       );
+//       for (final lyric in current) {
+//         currentLyricsAveragedMap[lyric.time ~/ 1000] = lyric.words;
+//       }
+//       currentLyricsTimeStamps.addEntries(
+//         currentLyricsAveragedMap.keys
+//             .toList()
+//             .asMap()
+//             .entries
+//             .map((e) => MapEntry(e.value, e.key)),
+//       );
+//       yield lyrics;
+//     }
+//   }
+
   void windowThumbnailBar() {
     WindowsTaskbar.setFlashTaskbarAppIcon();
 
@@ -453,6 +512,14 @@ class PlayerNotifierMock extends _$PlayerNotifier implements PlayerNotifier {
 
   @override
   void windowThumbnailBar() {
+    throw UnimplementedError();
+  }
+
+  @override
+  String get lyrics => throw UnimplementedError();
+
+  @override
+  Stream<String> syncLyrics() {
     throw UnimplementedError();
   }
 }

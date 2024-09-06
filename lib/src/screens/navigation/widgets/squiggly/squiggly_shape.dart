@@ -31,7 +31,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider
 ///    slider of the visual details of the its track.
 ///  * [SliderTrackShape], which can be used to create custom shapes for the
 ///    [Slider]'s track.
-///  * [RoundedRectSliderTrackShape], for a similar track (the default 
+///  * [RoundedRectSliderTrackShape], for a similar track (the default
 /// for the normal [Slider]).
 class SquigglySliderTrackShape extends SliderTrackShape
     with BaseSliderTrackShape {
@@ -149,8 +149,8 @@ class SquigglySliderTrackShape extends SliderTrackShape
             final easeLength = squiggleWavelength * 3;
             final easeFactor = (xOff < easeLength
                 ? xOff / easeLength
-                : xOff > diffLR - ll - easeLength
-                    ? (diffLR - ll - xOff) / easeLength
+                : xOff > diffLR - easeLength
+                    ? (diffLR - xOff) / easeLength
                     : 1);
             return Offset(
               x,

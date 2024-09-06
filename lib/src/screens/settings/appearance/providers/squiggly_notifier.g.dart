@@ -6,7 +6,7 @@ part of 'squiggly_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$squigglyNotifierHash() => r'b75fcda0160824ae3bac668539ef354006665a98';
+String _$squigglyNotifierHash() => r'76e9916e640488f521cd0b65b71d34c280fe691b';
 
 /// See also [SquigglyNotifier].
 @ProviderFor(SquigglyNotifier)

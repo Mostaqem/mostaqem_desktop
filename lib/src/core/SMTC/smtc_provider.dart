@@ -86,7 +86,10 @@ class SMTCRepository {
   }
 }
 
-final smtcRepoProvider = Provider(SMTCRepository.new);
+@riverpod
+SMTCRepository smtcRepo(SmtcRepoRef ref) {
+  return SMTCRepository(ref);
+}
 
 @riverpod
 void updateSMTC(

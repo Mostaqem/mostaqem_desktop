@@ -27,8 +27,8 @@ class MyApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('en', 'US'),
         Locale('ar', 'SA'),
+        Locale('en', 'US'),
       ],
       locale: const Locale('ar', 'SA'),
       builder: (context, child) {

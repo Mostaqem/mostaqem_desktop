@@ -70,8 +70,10 @@ class MPRISRepository {
       );
   }
 }
-
-final mprisRepositoryProvider = Provider(MPRISRepository.new);
+@riverpod
+MPRISRepository mprisRepository(MprisRepositoryRef ref){
+  return MPRISRepository(ref);
+}
 
 @riverpod
 Future<void> createMetadata(

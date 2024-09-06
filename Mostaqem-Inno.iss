@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Mostaqem"
-#define MyAppVersion "1.6.3"
+#define MyAppVersion "1.6.4"
 #define MyAppPublisher "Mazen Omar"
 #define MyAppURL "https://github.com/Mostaqem/mostaqem_desktop"
 #define MyAppExeName "mostaqem.exe"

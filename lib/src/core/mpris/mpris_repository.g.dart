@@ -6,6 +6,21 @@ part of 'mpris_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$mprisRepositoryHash() => r'edb597b5af68d242498d5e906a331ab1f617b283';
+
+/// See also [mprisRepository].
+@ProviderFor(mprisRepository)
+final mprisRepositoryProvider = AutoDisposeProvider<MPRISRepository>.internal(
+  mprisRepository,
+  name: r'mprisRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$mprisRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef MprisRepositoryRef = AutoDisposeProviderRef<MPRISRepository>;
 String _$createMetadataHash() => r'7604ea1abea95c42dcf8405181f5284b9575c2e8';
 
 /// Copied from Dart SDK

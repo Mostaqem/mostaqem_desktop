@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
@@ -40,8 +40,9 @@ class DownloadsScreen extends ConsumerWidget {
                     trailing: ToolTipIconButton(
                       message: 'تشغيل',
                       onPressed: () {
-                        ref.read(playerSurahProvider.notifier).state =
-                            data[index];
+                        ref.read(playerSurahProvider.notifier).update(
+                              data[index],
+                            );
                       },
                       icon: const Icon(Icons.play_arrow),
                     ),

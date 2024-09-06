@@ -1,5 +1,5 @@
 Name:       mostaqem
-Version:    1.6.3
+Version:    1.6.4
 Release:    1
 Summary:    An Islamic app
 License:    GNU-V3
