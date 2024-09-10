@@ -61,6 +61,18 @@ dev_dependencies:
   riverpod_generator: "^2.4.0"
   riverpod_lint: ^2.3.12
   very_good_analysis: "^6.0.0"
+  msix: ^3.16.8
+
+msix_config:
+  display_name: Mostaqem
+  publisher_display_name: Mostaqem, Inc
+  identity_name: MostaqemInc.Mostaqem
+  publisher: CN=5EE089E6-BF1D-4AF3-AD61-23B736E7D130
+  msix_version: 1.6.4.0
+  logo_path: D:\\Projects\\Mostaqem\\mostaqem\\assets\\img\\app_icon.png
+  capabilities: internetClient
+  store: true
+
 
 flutter:
   uses-material-design: true

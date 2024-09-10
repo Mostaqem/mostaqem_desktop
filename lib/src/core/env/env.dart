@@ -6,4 +6,6 @@ part 'env.g.dart';
 abstract class Env {
   @EnviedField(varName: 'APIURL', obfuscate: true)
   static final String apiURL = _Env.apiURL;
+  @EnviedField(varName: 'MSTORE')
+  static const bool mStore = _Env.mStore;
 }

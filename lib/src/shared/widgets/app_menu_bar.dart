@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/shared/device/device_repository.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
-
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -147,13 +147,16 @@ class AppMenuBar extends ConsumerWidget {
               onPressed: () => context.push('/settings'),
               child: const Text('الاعدادات'),
             ),
-            MenuItemButton(
-              shortcut:
-                  const SingleActivator(LogicalKeyboardKey.keyU, control: true),
-              onPressed: () async {
-                await checkUpdateDialog(context, ref);
-              },
-              child: const Text('تحديث؟'),
+            Visibility(
+              visible: Env.mStore == false,
+              child: MenuItemButton(
+                shortcut: const SingleActivator(LogicalKeyboardKey.keyU,
+                    control: true),
+                onPressed: () async {
+                  await checkUpdateDialog(context, ref);
+                },
+                child: const Text('تحديث؟'),
+              ),
             ),
             MenuItemButton(
               shortcut:
