@@ -14,10 +14,11 @@ class AppLicensePage extends StatelessWidget {
             height: 10,
           ),
           Expanded(
-              child: LicensePage(
-            applicationVersion: '1.0.0',
-            applicationName: 'مستقيم',
-          ),),
+            child: LicensePage(
+              applicationVersion: '1.6.4',
+              applicationName: 'مستقيم',
+            ),
+          ),
         ],
       ),
     );

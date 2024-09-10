@@ -282,11 +282,11 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                     ),
                   ),
                   FullScreenControl(ref: widget.ref, isFullScreen: true),
-                  ToolTipIconButton(
-                    message: 'message',
-                    onPressed: () {},
-                    icon: const Icon(Icons.lyrics_outlined),
-                  ),
+                  // ToolTipIconButton(
+                  //   message: 'message',
+                  //   onPressed: () {},
+                  //   icon: const Icon(Icons.lyrics_outlined),
+                  // ),
                 ],
               ),
             ),

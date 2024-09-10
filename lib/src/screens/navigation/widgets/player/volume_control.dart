@@ -31,16 +31,17 @@ class VolumeControls extends ConsumerWidget {
                   ? Icon(
                       Icons.volume_mute_outlined,
                       size: 16,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      color: isFullScreen
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSecondaryContainer,
                     )
                   : Icon(
                       Icons.volume_up_outlined,
                       size: 16,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      color: isFullScreen
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSecondaryContainer,
                     ),
-              color: isFullScreen
-                  ? Colors.white
-                  : Theme.of(context).colorScheme.onSecondaryContainer,
             ),
           ),
         ),

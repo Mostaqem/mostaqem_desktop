@@ -10,6 +10,8 @@ import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
+import '../../core/env/env.dart';
+
 final isExtendedProvider = StateProvider<bool>((ref) => false);
 
 class Navigation extends ConsumerStatefulWidget {
@@ -23,13 +25,15 @@ class _NavigationState extends ConsumerState<Navigation> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final state = await ref.read(checkUpdateProvider.future);
-      if (!mounted) return;
-      if (state == UpdateState.available) {
-        await checkUpdateDialog(context, ref);
-      }
-    });
+    if (Env.mStore == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final state = await ref.read(checkUpdateProvider.future);
+        if (!mounted) return;
+        if (state == UpdateState.available) {
+          await checkUpdateDialog(context, ref);
+        }
+      });
+    }
   }
 
   @override
