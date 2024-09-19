@@ -40,14 +40,6 @@ For arch
 
 
 
-### TODOs:
-- [ ] Add to Favorites
-- [ ] Make your own playlist
-- [ ] Categorize home page with filter option
-- [ ] Share your playlist with friends
-- [ ] Listen together
-- [ ] Add your Reciter
-
 ## Credits:
 - [Omar Sabra](https://github.com/the-sabra) | Backend Engineer
 - [Me](https://github.com/mezopeeta) | Flutter
