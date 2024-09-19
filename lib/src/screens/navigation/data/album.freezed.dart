@@ -25,6 +25,7 @@ mixin _$Album {
   String get url => throw _privateConstructorUsedError;
   int get recitationID => throw _privateConstructorUsedError;
   int get position => throw _privateConstructorUsedError;
+  bool get isLocal => throw _privateConstructorUsedError;
 
   /// Serializes this Album to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,7 +46,8 @@ abstract class $AlbumCopyWith<$Res> {
       Reciter reciter,
       String url,
       int recitationID,
-      int position});
+      int position,
+      bool isLocal});
 
   $SurahCopyWith<$Res> get surah;
   $ReciterCopyWith<$Res> get reciter;
@@ -71,6 +73,7 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
     Object? url = null,
     Object? recitationID = null,
     Object? position = null,
+    Object? isLocal = null,
   }) {
     return _then(_value.copyWith(
       surah: null == surah
@@ -93,6 +96,10 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
               as int,
+      isLocal: null == isLocal
+          ? _value.isLocal
+          : isLocal // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -129,7 +136,8 @@ abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
       Reciter reciter,
       String url,
       int recitationID,
-      int position});
+      int position,
+      bool isLocal});
 
   @override
   $SurahCopyWith<$Res> get surah;
@@ -155,6 +163,7 @@ class __$$AlbumImplCopyWithImpl<$Res>
     Object? url = null,
     Object? recitationID = null,
     Object? position = null,
+    Object? isLocal = null,
   }) {
     return _then(_$AlbumImpl(
       surah: null == surah
@@ -177,6 +186,10 @@ class __$$AlbumImplCopyWithImpl<$Res>
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
               as int,
+      isLocal: null == isLocal
+          ? _value.isLocal
+          : isLocal // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -189,7 +202,8 @@ class _$AlbumImpl implements _Album {
       required this.reciter,
       required this.url,
       required this.recitationID,
-      this.position = 0});
+      this.position = 0,
+      this.isLocal = false});
 
   factory _$AlbumImpl.fromJson(Map<String, dynamic> json) =>
       _$$AlbumImplFromJson(json);
@@ -205,10 +219,13 @@ class _$AlbumImpl implements _Album {
   @override
   @JsonKey()
   final int position;
+  @override
+  @JsonKey()
+  final bool isLocal;
 
   @override
   String toString() {
-    return 'Album(surah: $surah, reciter: $reciter, url: $url, recitationID: $recitationID, position: $position)';
+    return 'Album(surah: $surah, reciter: $reciter, url: $url, recitationID: $recitationID, position: $position, isLocal: $isLocal)';
   }
 
   @override
@@ -222,13 +239,14 @@ class _$AlbumImpl implements _Album {
             (identical(other.recitationID, recitationID) ||
                 other.recitationID == recitationID) &&
             (identical(other.position, position) ||
-                other.position == position));
+                other.position == position) &&
+            (identical(other.isLocal, isLocal) || other.isLocal == isLocal));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, surah, reciter, url, recitationID, position);
+  int get hashCode => Object.hash(
+      runtimeType, surah, reciter, url, recitationID, position, isLocal);
 
   /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
@@ -252,7 +270,8 @@ abstract class _Album implements Album {
       required final Reciter reciter,
       required final String url,
       required final int recitationID,
-      final int position}) = _$AlbumImpl;
+      final int position,
+      final bool isLocal}) = _$AlbumImpl;
 
   factory _Album.fromJson(Map<String, dynamic> json) = _$AlbumImpl.fromJson;
 
@@ -266,6 +285,8 @@ abstract class _Album implements Album {
   int get recitationID;
   @override
   int get position;
+  @override
+  bool get isLocal;
 
   /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.

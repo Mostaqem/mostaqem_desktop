@@ -11,10 +11,10 @@ import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 class FullScreenWidget extends StatelessWidget {
-  const FullScreenWidget({required this.player, required this.ref, super.key});
+  FullScreenWidget({required this.player, required this.ref, super.key});
   final Album player;
   final WidgetRef ref;
-
+  final scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final connection = ref.watch(getConnectionProvider).value;
@@ -70,20 +70,86 @@ class FullScreenWidget extends StatelessWidget {
             ),
           ),
         ),
-        // Center(
-        //   child: StreamBuilder(
-        //     stream: currentPlayer.syncLyrics(),
-        //     builder: (context, snapshot) {
-        //       if (snapshot.data == null) {
-        //         return const SizedBox.shrink();
-        //       }
-        //       return Text(
-        //         snapshot.data!,
-        //         style: GoogleFonts.amiriQuran(fontSize: 25),
-        //       );
-        //     },
-        //   ),
-        // ),
+        Center(
+          child: Container(
+            height: MediaQuery.sizeOf(context).height,
+            width: MediaQuery.sizeOf(context).width,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+            ),
+            child: ScrollConfiguration(
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              child: StreamBuilder(
+                stream: currentPlayer.syncLyrics(),
+                builder: (context, snapshot) {
+                  if (snapshot.data == null) {
+                    return const SizedBox.shrink();
+                  }
+                  final lyricsList = snapshot.data!.item2;
+                  final currentIndex = snapshot.data!.item1;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    scrollController.animateTo(
+                      currentIndex * 30, // Adjust according to your line height
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  });
+
+                  return SizedBox(
+                    width: 400,
+                    child: Wrap(
+                      spacing: 10,
+                      runSpacing: 30,
+                      runAlignment: WrapAlignment.center,
+                      children: lyricsList.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final lyric = entry.value;
+                        final isCurrent = index == currentIndex;
+                        return Text(
+                          lyric.words,
+                          style: GoogleFonts.amiri(
+                            fontWeight: isCurrent ? FontWeight.bold : null,
+                            fontSize: 24,
+                            color: isCurrent
+                                ? Colors.blue
+                                : Colors.white.withOpacity(0.5),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    // ListView.separated(
+                    //   itemCount: lyricsList.length,
+                    //   controller: scrollController,
+                    //   scrollDirection: Axis.horizontal,
+                    //   separatorBuilder: (context, index) => const SizedBox(
+                    //     width: 30,
+                    //   ),
+                    //   itemBuilder: (context, index) {
+                    //     final isCurrent = index == currentIndex;
+                    //     if (isCurrent) {
+                    //       // Scroll to the current lyric
+
+                    //     return Text(
+                    //       snapshot.data?.item2[index].words ?? '',
+                    //       style: GoogleFonts.amiri(
+                    //         fontSize: isCurrent ? 50 : 20,
+                    //         color: isCurrent
+                    //             ? Colors.blue
+                    //             : Colors.white.withOpacity(0.5),
+                    //         fontWeight: isCurrent ? FontWeight.bold : null,
+                    //       ),
+                    //       textAlign: TextAlign.center,
+                    //     );
+                    //   },
+                    // ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(bottom: 220, right: 50),
           child: Align(

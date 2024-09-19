@@ -23,6 +23,13 @@ class SettingsScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Text(
+                  'الاعدادات',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 52,
+                ),
                 DownloadOptions(),
                 const SizedBox(
                   height: 24,

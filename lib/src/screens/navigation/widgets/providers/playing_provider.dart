@@ -8,7 +8,7 @@ part 'playing_provider.g.dart';
 class PlayerSurah extends _$PlayerSurah {
   @override
   Album? build() {
-    final cachedSurah = ref.read(playerCacheProvider);
+    final cachedSurah = ref.read(playerCacheProvider());
     if (cachedSurah != null) {
       return cachedSurah;
     }

@@ -8,13 +8,10 @@ import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
+import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/nework_required_widget.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
-
-final isTypingProvider = StateProvider<bool>((ref) => false);
-
-final searchQueryProvider = StateProvider<String>((ref) => '');
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -23,7 +20,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     HijriCalendar.setLocal('ar');
-    final isTyping = ref.watch(isTypingProvider);
+    final isTyping =
+        ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
     final surahImage = ref.watch(playerSurahProvider)?.surah.image ?? '';
 
     return NeworkRequiredWidget(
@@ -49,9 +47,9 @@ class HomeScreen extends ConsumerWidget {
                     child: SearchBar(
                       controller: queryController,
                       onChanged: (value) async {
-                        ref.read(isTypingProvider.notifier).state =
-                            value.isNotEmpty;
-                        ref.read(searchQueryProvider.notifier).state = value;
+                        ref
+                            .read(searchNotifierProvider('home').notifier)
+                            .setQuery(value);
                         ref.refresh(filterSurahByQueryProvider).value;
                       },
                       elevation: const WidgetStatePropertyAll<double>(0),
@@ -68,8 +66,11 @@ class HomeScreen extends ConsumerWidget {
                                   icon: const Icon(Icons.close),
                                   onPressed: () {
                                     ref
-                                        .read(searchQueryProvider.notifier)
-                                        .state = '';
+                                        .read(
+                                          searchNotifierProvider('home')
+                                              .notifier,
+                                        )
+                                        .clear();
                                     queryController.clear();
                                   },
                                 )
