@@ -41,7 +41,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
     if (player == null) return;
 
     final position = ref.watch(playerNotifierProvider).position;
-    ref.read(playerCacheProvider.notifier).setAlbum(
+    ref.read(playerCacheProvider().notifier).setAlbum(
           Album(
             surah: player.surah,
             reciter: player.reciter,

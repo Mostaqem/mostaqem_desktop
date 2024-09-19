@@ -5,16 +5,22 @@ import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
+import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
+import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
+
 class RecitersScreen extends ConsumerWidget {
-  const RecitersScreen({super.key});
+  RecitersScreen({super.key});
+  final queryController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reciters = ref.watch(fetchRecitersProvider);
+    final isTyping =
+        ref.watch(searchNotifierProvider('reciter'))?.isEmpty ?? false;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,11 +37,49 @@ class RecitersScreen extends ConsumerWidget {
               style: TextStyle(fontSize: 22),
             ),
           ),
+          Align(
+            child: SearchBar(
+              controller: queryController,
+              onChanged: (value) async {
+                ref
+                    .read(searchNotifierProvider('reciter').notifier)
+                    .setQuery(value);
+              },
+              elevation: const WidgetStatePropertyAll<double>(0),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+              trailing: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: isTyping
+                      ? IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () {
+                            ref
+                                .read(
+                                  searchNotifierProvider('reciter').notifier,
+                                )
+                                .clear();
+                            queryController.clear();
+                          },
+                        )
+                      : const Icon(Icons.search),
+                ),
+              ],
+              hintText: 'بحث عن الشيخ...',
+            ),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
           AsyncWidget(
             value: reciters,
             data: (data) {
               return SizedBox(
-                height: MediaQuery.sizeOf(context).height - 220,
+                height: MediaQuery.sizeOf(context).height - 250,
                 child: ListView.separated(
                   itemCount: data.length,
                   separatorBuilder: (context, index) => const Divider(),
@@ -64,6 +108,28 @@ class RecitersScreen extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                Tooltip(
+                                  message: 'اختيار الشيخ افتراضي',
+                                  preferBelow: false,
+                                  child: Radio(
+                                    value: ref.watch(defaultReciterProvider).id,
+                                    onChanged: (value) {
+                                      final player =
+                                          ref.read(playerSurahProvider);
+                                      ref
+                                          .read(defaultReciterProvider.notifier)
+                                          .setDefault(data[index]);
+                                      ref.read(reciterProvider.notifier).state =
+                                          data[index];
+                                      ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .play(
+                                            surahID: player!.surah.id,
+                                          );
+                                     },
+                                    groupValue: data[index].id,
+                                  ),
+                                ),
                                 ToolTipIconButton(
                                   message: 'اختيار الشيخ للتالي',
                                   onPressed: () {

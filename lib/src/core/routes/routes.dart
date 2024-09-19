@@ -27,7 +27,7 @@ class NavigationRepository {
       ),
       GoRoute(
         path: '/reciters',
-        builder: (context, state) => const RecitersScreen(),
+        builder: (context, state) => RecitersScreen(),
       ),
       GoRoute(
         path: '/licenses',

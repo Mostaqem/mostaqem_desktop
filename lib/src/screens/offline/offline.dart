@@ -41,7 +41,7 @@ class DownloadsScreen extends ConsumerWidget {
                       message: 'تشغيل',
                       onPressed: () {
                         ref.read(playerSurahProvider.notifier).update(
-                              data[index],
+                              data[index].copyWith(isLocal: true),
                             );
                       },
                       icon: const Icon(Icons.play_arrow),

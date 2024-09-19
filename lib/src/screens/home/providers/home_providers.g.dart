@@ -185,7 +185,7 @@ class _FetchChapterByIdProviderElement
 }
 
 String _$fetchAudioForChapterHash() =>
-    r'd7e03c25adf8e39f42009be6f5e7a12787c48b36';
+    r'60f23462131885a115a16b8b7e36d6d7a1693c0e';
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 ///
@@ -209,7 +209,7 @@ class FetchAudioForChapterFamily
   FetchAudioForChapterProvider call({
     required int chapterNumber,
     int? recitationID,
-    int reciterID = 1,
+    int? reciterID,
   }) {
     return FetchAudioForChapterProvider(
       chapterNumber: chapterNumber,
@@ -255,7 +255,7 @@ class FetchAudioForChapterProvider
   FetchAudioForChapterProvider({
     required int chapterNumber,
     int? recitationID,
-    int reciterID = 1,
+    int? reciterID,
   }) : this._internal(
           (ref) => fetchAudioForChapter(
             ref as FetchAudioForChapterRef,
@@ -291,7 +291,7 @@ class FetchAudioForChapterProvider
 
   final int chapterNumber;
   final int? recitationID;
-  final int reciterID;
+  final int? reciterID;
 
   @override
   Override overrideWith(
@@ -347,7 +347,7 @@ mixin FetchAudioForChapterRef
   int? get recitationID;
 
   /// The parameter `reciterID` of this provider.
-  int get reciterID;
+  int? get reciterID;
 }
 
 class _FetchAudioForChapterProviderElement
@@ -362,11 +362,11 @@ class _FetchAudioForChapterProviderElement
   int? get recitationID =>
       (origin as FetchAudioForChapterProvider).recitationID;
   @override
-  int get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
+  int? get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
 }
 
 String _$filterSurahByQueryHash() =>
-    r'97ae546588e96be7e12abb98b2bf6b421e1d4921';
+    r'6299df4c9abc8541cc166fc3b5f88261fd518b94';
 
 /// Filters chapters by search query
 ///

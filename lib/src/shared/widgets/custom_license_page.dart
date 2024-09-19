@@ -15,7 +15,7 @@ class AppLicensePage extends StatelessWidget {
           ),
           Expanded(
             child: LicensePage(
-              applicationVersion: '1.6.4',
+              applicationVersion: '1.7.0',
               applicationName: 'مستقيم',
             ),
           ),

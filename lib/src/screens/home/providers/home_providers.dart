@@ -1,11 +1,16 @@
 // ignore_for_file: avoid_dynamic_calls, inference_failure_on_untyped_parameter
 
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
+import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
+import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tuple/tuple.dart';
 
@@ -37,12 +42,14 @@ Future<Tuple2<String, int>> fetchAudioForChapter(
   FetchAudioForChapterRef ref, {
   required int chapterNumber,
   int? recitationID,
-  int reciterID = 1,
+  int? reciterID,
 }) async {
+  final defaultReciterID = ref.watch(defaultReciterProvider).id;
+  final playReciterId = reciterID ?? defaultReciterID;
   final url = recitationID == null
-      ? '/audio/?reciter_id=$reciterID&surah_id=$chapterNumber'
+      ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
       : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
-
+  log(url);
   final response = await ref.read(dioHelperProvider).getHTTP(
         url,
       );
@@ -56,7 +63,7 @@ Future<Tuple2<String, int>> fetchAudioForChapter(
 @riverpod
 Future<List<Surah>> filterSurahByQuery(FilterSurahByQueryRef ref) async {
   final surahs = await ref.watch(fetchAllChaptersProvider.future);
-  final query = ref.watch(searchQueryProvider);
+  final query = ref.watch(searchNotifierProvider('home')) ?? '';
   if (query.isEmpty) {
     return surahs;
   }
