@@ -56,7 +56,7 @@ For arch
 - [Unsplash](https://unsplash.com/developers) | API for generating random image for the fullscreen mode
 
 ## License:
-- This project is licensed under the [GNU-V3](LICENSE) © Mazen Omar - see the LICENSE.md file for details
+- This project is licensed under the [Mostaqem Custom License (MCL)](LICENSE) © Mazen Omar - see the LICENSE.md file for details
 
 ## Acknowledgments
 - Inspired by [Spotify](https://open.spotify.com/)
