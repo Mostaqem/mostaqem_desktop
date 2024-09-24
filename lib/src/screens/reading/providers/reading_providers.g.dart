@@ -7,7 +7,7 @@ part of 'reading_providers.dart';
 // **************************************************************************
 
 String _$fetchUthmaniScriptHash() =>
-    r'cd28a8b4c3c1852849bbe5a29eb2e201faf22c4a';
+    r'c3a45f8daf43e2543c5e34dec0e997481ec05c0d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,9 +42,13 @@ class FetchUthmaniScriptFamily extends Family<AsyncValue<List<Script>>> {
   /// See also [fetchUthmaniScript].
   FetchUthmaniScriptProvider call({
     required int surahID,
+    required int page,
+    String? query,
   }) {
     return FetchUthmaniScriptProvider(
       surahID: surahID,
+      page: page,
+      query: query,
     );
   }
 
@@ -54,6 +58,8 @@ class FetchUthmaniScriptFamily extends Family<AsyncValue<List<Script>>> {
   ) {
     return call(
       surahID: provider.surahID,
+      page: provider.page,
+      query: provider.query,
     );
   }
 
@@ -77,10 +83,14 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
   /// See also [fetchUthmaniScript].
   FetchUthmaniScriptProvider({
     required int surahID,
+    required int page,
+    String? query,
   }) : this._internal(
           (ref) => fetchUthmaniScript(
             ref as FetchUthmaniScriptRef,
             surahID: surahID,
+            page: page,
+            query: query,
           ),
           from: fetchUthmaniScriptProvider,
           name: r'fetchUthmaniScriptProvider',
@@ -92,6 +102,8 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
           allTransitiveDependencies:
               FetchUthmaniScriptFamily._allTransitiveDependencies,
           surahID: surahID,
+          page: page,
+          query: query,
         );
 
   FetchUthmaniScriptProvider._internal(
@@ -102,9 +114,13 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.surahID,
+    required this.page,
+    required this.query,
   }) : super.internal();
 
   final int surahID;
+  final int page;
+  final String? query;
 
   @override
   Override overrideWith(
@@ -120,6 +136,8 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         surahID: surahID,
+        page: page,
+        query: query,
       ),
     );
   }
@@ -131,13 +149,18 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
 
   @override
   bool operator ==(Object other) {
-    return other is FetchUthmaniScriptProvider && other.surahID == surahID;
+    return other is FetchUthmaniScriptProvider &&
+        other.surahID == surahID &&
+        other.page == page &&
+        other.query == query;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, surahID.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -146,6 +169,12 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
 mixin FetchUthmaniScriptRef on FutureProviderRef<List<Script>> {
   /// The parameter `surahID` of this provider.
   int get surahID;
+
+  /// The parameter `page` of this provider.
+  int get page;
+
+  /// The parameter `query` of this provider.
+  String? get query;
 }
 
 class _FetchUthmaniScriptProviderElement
@@ -154,6 +183,10 @@ class _FetchUthmaniScriptProviderElement
 
   @override
   int get surahID => (origin as FetchUthmaniScriptProvider).surahID;
+  @override
+  int get page => (origin as FetchUthmaniScriptProvider).page;
+  @override
+  String? get query => (origin as FetchUthmaniScriptProvider).query;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

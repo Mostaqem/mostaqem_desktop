@@ -2,7 +2,6 @@
 
 import 'package:dio/dio.dart';
 import 'package:mostaqem/src/core/env/env.dart';
-import 'package:mostaqem/src/core/logger/logger_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'dio_helper.g.dart';
@@ -10,8 +9,11 @@ part 'dio_helper.g.dart';
 @Riverpod(keepAlive: true)
 DioHelper dioHelper(DioHelperRef ref) => DioHelper();
 
+bool isProduction = const bool.fromEnvironment('dart.vm.product');
+final baseAPIURL = isProduction ? Env.prodBaseAPI : Env.devBaseAPI;
+
 class DioHelper {
-  static final String url = Env.apiURL;
+  static final String url = baseAPIURL;
   static BaseOptions opts = BaseOptions(
     baseUrl: url,
   );
@@ -42,7 +44,7 @@ class DioHelper {
     String url, {
     Options? options,
   }) async {
-    if (_cancelToken != null && !_cancelToken!.isCancelled) {
+    if (_cancelToken != null && !_cancelToken!.isCancelled && isProduction) {
       _cancelToken!.cancel('Request cancelled: New chapter selected');
     }
     _cancelToken = CancelToken();
@@ -50,13 +52,11 @@ class DioHelper {
     try {
       final response =
           await baseAPI.get(url, options: options, cancelToken: _cancelToken);
-
       return response;
     } on DioException catch (e, _) {
       if (CancelToken.isCancel(e)) {
-        print('Request cancelled: $e');
       } else {
-        throw Exception('Failed to load MP3: $e');
+        throw Exception('Failed to Get Data: ${e.response!.data}');
       }
       rethrow;
     }
@@ -66,7 +66,7 @@ class DioHelper {
     String url,
     dynamic data,
   ) async {
-    if (_cancelToken != null && !_cancelToken!.isCancelled) {
+    if (_cancelToken != null && !_cancelToken!.isCancelled && isProduction) {
       _cancelToken!.cancel('Request cancelled: New chapter selected');
     }
     _cancelToken = CancelToken();
@@ -76,9 +76,8 @@ class DioHelper {
       return response;
     } on DioException catch (e, _) {
       if (CancelToken.isCancel(e)) {
-        print('Request cancelled: $e');
       } else {
-        throw Exception('Failed to load MP3: $e');
+        throw Exception('Failed to Get Data: ${e.response!.data}');
       }
       rethrow;
     }

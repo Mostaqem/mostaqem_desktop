@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/navigation.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
 import 'package:mostaqem/src/screens/reciters/reciters_screen.dart';
@@ -19,7 +20,7 @@ class NavigationRepository {
             path: 'reading',
             name: 'Reading',
             builder: (context, state) => ReadingScreen(
-              id: state.extra! as int,
+              surah: state.extra! as Surah,
             ),
           ),
         ],
@@ -27,7 +28,7 @@ class NavigationRepository {
       ),
       GoRoute(
         path: '/reciters',
-        builder: (context, state) => RecitersScreen(),
+        builder: (context, state) => const RecitersScreen(),
       ),
       GoRoute(
         path: '/licenses',

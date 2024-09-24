@@ -155,20 +155,150 @@ class _FetchReciterProviderElement
   int get id => (origin as FetchReciterProvider).id;
 }
 
-String _$fetchRecitersHash() => r'7e21945623b4f35d11ac79996e161608c2f244b9';
+String _$fetchRecitersHash() => r'493b94a5cef98c24a246bcfd5cd4409a42b0238b';
 
 /// See also [fetchReciters].
 @ProviderFor(fetchReciters)
-final fetchRecitersProvider = AutoDisposeFutureProvider<List<Reciter>>.internal(
-  fetchReciters,
-  name: r'fetchRecitersProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$fetchRecitersHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const fetchRecitersProvider = FetchRecitersFamily();
 
-typedef FetchRecitersRef = AutoDisposeFutureProviderRef<List<Reciter>>;
+/// See also [fetchReciters].
+class FetchRecitersFamily extends Family<AsyncValue<List<Reciter>>> {
+  /// See also [fetchReciters].
+  const FetchRecitersFamily();
+
+  /// See also [fetchReciters].
+  FetchRecitersProvider call({
+    required int page,
+    String? query,
+  }) {
+    return FetchRecitersProvider(
+      page: page,
+      query: query,
+    );
+  }
+
+  @override
+  FetchRecitersProvider getProviderOverride(
+    covariant FetchRecitersProvider provider,
+  ) {
+    return call(
+      page: provider.page,
+      query: provider.query,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'fetchRecitersProvider';
+}
+
+/// See also [fetchReciters].
+class FetchRecitersProvider extends AutoDisposeFutureProvider<List<Reciter>> {
+  /// See also [fetchReciters].
+  FetchRecitersProvider({
+    required int page,
+    String? query,
+  }) : this._internal(
+          (ref) => fetchReciters(
+            ref as FetchRecitersRef,
+            page: page,
+            query: query,
+          ),
+          from: fetchRecitersProvider,
+          name: r'fetchRecitersProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$fetchRecitersHash,
+          dependencies: FetchRecitersFamily._dependencies,
+          allTransitiveDependencies:
+              FetchRecitersFamily._allTransitiveDependencies,
+          page: page,
+          query: query,
+        );
+
+  FetchRecitersProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.page,
+    required this.query,
+  }) : super.internal();
+
+  final int page;
+  final String? query;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Reciter>> Function(FetchRecitersRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: FetchRecitersProvider._internal(
+        (ref) => create(ref as FetchRecitersRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        page: page,
+        query: query,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<Reciter>> createElement() {
+    return _FetchRecitersProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FetchRecitersProvider &&
+        other.page == page &&
+        other.query == query;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin FetchRecitersRef on AutoDisposeFutureProviderRef<List<Reciter>> {
+  /// The parameter `page` of this provider.
+  int get page;
+
+  /// The parameter `query` of this provider.
+  String? get query;
+}
+
+class _FetchRecitersProviderElement
+    extends AutoDisposeFutureProviderElement<List<Reciter>>
+    with FetchRecitersRef {
+  _FetchRecitersProviderElement(super.provider);
+
+  @override
+  int get page => (origin as FetchRecitersProvider).page;
+  @override
+  String? get query => (origin as FetchRecitersProvider).query;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

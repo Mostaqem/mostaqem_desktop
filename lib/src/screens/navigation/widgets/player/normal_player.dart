@@ -14,26 +14,23 @@ import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provid
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
-class NormalPlayer extends StatefulWidget {
+class NormalPlayer extends ConsumerStatefulWidget {
   const NormalPlayer({
     required this.isFullScreen,
-    required this.ref,
     super.key,
   });
 
   final bool isFullScreen;
-  final WidgetRef ref;
 
   @override
-  State<NormalPlayer> createState() => _NormalPlayerState();
+  ConsumerState<NormalPlayer> createState() => _NormalPlayerState();
 }
 
-class _NormalPlayerState extends State<NormalPlayer> {
+class _NormalPlayerState extends ConsumerState<NormalPlayer> {
   final List<Album> downloadedAlbums = [];
 
   bool isBtnVisible(Album? album) {
-    final isOffline =
-        widget.ref.watch(playerNotifierProvider.notifier).isLocalAudio();
+    final isOffline = ref.watch(playerNotifierProvider.notifier).isLocalAudio();
     if (isOffline) {
       return false;
     }
@@ -41,13 +38,13 @@ class _NormalPlayerState extends State<NormalPlayer> {
     if (downloadedAlbums.contains(album)) {
       return false;
     }
-    final isDownloaded = widget.ref.watch(isAudioDownloaded).value ?? false;
+    final isDownloaded = ref.watch(isAudioDownloaded).value ?? false;
     return !isDownloaded;
   }
 
   @override
   Widget build(BuildContext context) {
-    final album = widget.ref.watch(playerSurahProvider);
+    final album = ref.watch(playerSurahProvider);
 
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -56,13 +53,12 @@ class _NormalPlayerState extends State<NormalPlayer> {
         children: [
           PlayingSurah(
             isFullScreen: widget.isFullScreen,
-            ref: widget.ref,
+            ref: ref,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 80),
             child: PlayControls(
               isFullScreen: widget.isFullScreen,
-              ref: widget.ref,
             ),
           ),
           Row(
@@ -73,20 +69,18 @@ class _NormalPlayerState extends State<NormalPlayer> {
                   message: 'تحميل',
                   iconSize: 16,
                   onPressed: () async {
-                    final height = widget.ref.read(downloadHeightProvider);
+                    final height = ref.read(downloadHeightProvider);
                     if (height == 100) {
-                      widget.ref.read(downloadHeightProvider.notifier).state =
-                          0;
+                      ref.read(downloadHeightProvider.notifier).state = 0;
                     } else {
-                      widget.ref.read(downloadHeightProvider.notifier).state =
-                          100;
+                      ref.read(downloadHeightProvider.notifier).state = 100;
                     }
-                    widget.ref.read(downloadSurahProvider.notifier).state =
+                    ref.read(downloadSurahProvider.notifier).state =
                         album!.surah;
                     final downloadState =
-                        widget.ref.read(downloadAudioProvider)?.downloadState;
+                        ref.read(downloadAudioProvider)?.downloadState;
                     if (downloadState != DownloadState.downloading) {
-                      await widget.ref
+                      await ref
                           .read(downloadAudioProvider.notifier)
                           .download(album: album);
                     }
@@ -99,18 +93,15 @@ class _NormalPlayerState extends State<NormalPlayer> {
               ),
               Visibility(
                 visible: !widget.isFullScreen &&
-                    !widget.ref
-                        .read(playerNotifierProvider.notifier)
-                        .isLocalAudio(),
+                    ref.watch(downloadHeightProvider) == 0,
                 child: ToolTipIconButton(
                   message: 'اقرأ',
                   onPressed: () async {
-                    final surahID =
-                        widget.ref.read(playerSurahProvider)!.surah.id;
+                    final surah = ref.read(playerSurahProvider)?.surah;
 
-                    widget.ref.watch(goRouterProvider).goNamed(
+                    ref.read(goRouterProvider).goNamed(
                           'Reading',
-                          extra: surahID,
+                          extra: surah,
                         );
                   },
                   icon: SvgPicture.asset(
@@ -125,7 +116,6 @@ class _NormalPlayerState extends State<NormalPlayer> {
               ),
               const VolumeControls(),
               FullScreenControl(
-                ref: widget.ref,
                 isFullScreen: widget.isFullScreen,
               ),
             ],

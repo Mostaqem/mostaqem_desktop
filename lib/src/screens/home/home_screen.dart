@@ -30,7 +30,7 @@ class HomeScreen extends ConsumerWidget {
           Expanded(
             flex: 3,
             child: Container(
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.only(left: 18, right: 18, top: 18),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(12),
@@ -50,7 +50,6 @@ class HomeScreen extends ConsumerWidget {
                         ref
                             .read(searchNotifierProvider('home').notifier)
                             .setQuery(value);
-                        ref.refresh(filterSurahByQueryProvider).value;
                       },
                       elevation: const WidgetStatePropertyAll<double>(0),
                       shape: WidgetStatePropertyAll(
@@ -97,72 +96,75 @@ class HomeScreen extends ConsumerWidget {
             child: Expanded(
               child: Column(
                 children: [
-                  Container(
-                    height: 450,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(context).colorScheme.surfaceContainer,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: CloseButton(
-                              onPressed: () => ref
-                                  .read(isCollapsedProvider.notifier)
-                                  .update((state) => !state),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      height: 450,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: CloseButton(
+                                onPressed: () => ref
+                                    .read(isCollapsedProvider.notifier)
+                                    .update((state) => !state),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 300,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: CachedNetworkImageProvider(
-                                  surahImage,
-                                  errorListener: (_) => const Icon(
-                                    Icons.broken_image_outlined,
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 350,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: CachedNetworkImageProvider(
+                                    surahImage,
+                                    errorListener: (_) => const Icon(
+                                      Icons.broken_image_outlined,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            ref.watch(
-                              playerSurahProvider.select(
-                                (value) => value?.surah.arabicName ?? '',
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              ref.watch(
+                                playerSurahProvider.select(
+                                  (value) => value?.surah.arabicName ?? '',
+                                ),
+                              ),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
                               ),
                             ),
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer,
-                            ),
-                          ),
-                          TextHover(
-                            text: ref.watch(
-                              playerSurahProvider.select(
-                                (value) => value?.reciter.arabicName ?? '',
+                            TextHover(
+                              text: ref.watch(
+                                playerSurahProvider.select(
+                                  (value) => value?.reciter.arabicName ?? '',
+                                ),
                               ),
+                              onTap: () {
+                                ref.read(goRouterProvider).go('/reciters');
+                              },
                             ),
-                            onTap: () {
-                              ref.read(goRouterProvider).go('/reciters');
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

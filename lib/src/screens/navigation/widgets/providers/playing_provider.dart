@@ -15,8 +15,4 @@ class PlayerSurah extends _$PlayerSurah {
 
     return null;
   }
-
-  void update(Album? album) {
-    state = album;
-  }
 }

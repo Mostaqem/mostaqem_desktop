@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
+import 'package:mostaqem/src/screens/navigation/repository/lyrics_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
@@ -19,7 +20,7 @@ class FullScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final connection = ref.watch(getConnectionProvider).value;
     final randomImage = ref.watch(fetchRandomImageProvider);
-    final currentPlayer = ref.watch(playerNotifierProvider.notifier);
+   
     return Stack(
       children: [
         if (connection == InternetConnectionStatus.connected)
@@ -81,69 +82,48 @@ class FullScreenWidget extends StatelessWidget {
             child: ScrollConfiguration(
               behavior:
                   ScrollConfiguration.of(context).copyWith(scrollbars: false),
-              child: StreamBuilder(
-                stream: currentPlayer.syncLyrics(),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return const SizedBox.shrink();
-                  }
-                  final lyricsList = snapshot.data!.item2;
-                  final currentIndex = snapshot.data!.item1;
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    scrollController.animateTo(
-                      currentIndex * 30, // Adjust according to your line height
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  });
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final lyrics = ref.watch(syncLyricsProvider);
 
-                  return SizedBox(
-                    width: 400,
-                    child: Wrap(
-                      spacing: 10,
-                      runSpacing: 30,
-                      runAlignment: WrapAlignment.center,
-                      children: lyricsList.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final lyric = entry.value;
-                        final isCurrent = index == currentIndex;
-                        return Text(
-                          lyric.words,
-                          style: GoogleFonts.amiri(
-                            fontWeight: isCurrent ? FontWeight.bold : null,
-                            fontSize: 24,
-                            color: isCurrent
-                                ? Colors.blue
-                                : Colors.white.withOpacity(0.5),
-                          ),
+                  return AsyncWidget(
+                    value: lyrics,
+                    data: (data) {
+                      final currentIndex = data.item1;
+                      final lyricsList = data.item2;
+
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        scrollController.animateTo(
+                          currentIndex *
+                              30, // Adjust according to your line height
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
                         );
-                      }).toList(),
-                    ),
-                    // ListView.separated(
-                    //   itemCount: lyricsList.length,
-                    //   controller: scrollController,
-                    //   scrollDirection: Axis.horizontal,
-                    //   separatorBuilder: (context, index) => const SizedBox(
-                    //     width: 30,
-                    //   ),
-                    //   itemBuilder: (context, index) {
-                    //     final isCurrent = index == currentIndex;
-                    //     if (isCurrent) {
-                    //       // Scroll to the current lyric
-
-                    //     return Text(
-                    //       snapshot.data?.item2[index].words ?? '',
-                    //       style: GoogleFonts.amiri(
-                    //         fontSize: isCurrent ? 50 : 20,
-                    //         color: isCurrent
-                    //             ? Colors.blue
-                    //             : Colors.white.withOpacity(0.5),
-                    //         fontWeight: isCurrent ? FontWeight.bold : null,
-                    //       ),
-                    //       textAlign: TextAlign.center,
-                    //     );
-                    //   },
-                    // ),
+                      });
+                      return SizedBox(
+                        width: 400,
+                        child: Wrap(
+                          spacing: 10,
+                          runSpacing: 30,
+                          runAlignment: WrapAlignment.center,
+                          children: lyricsList.asMap().entries.map((entry) {
+                            final index = entry.key;
+                            final lyric = entry.value;
+                            final isCurrent = index == currentIndex;
+                            return Text(
+                              lyric.words,
+                              style: GoogleFonts.amiri(
+                                fontWeight: isCurrent ? FontWeight.bold : null,
+                                fontSize: 24,
+                                color: isCurrent
+                                    ? Colors.blue
+                                    : Colors.white.withOpacity(0.5),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

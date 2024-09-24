@@ -71,21 +71,17 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
                 : Theme.of(context).colorScheme.secondaryContainer,
           ),
           child: isFullScreen
-              ? FullScreenPlayControls(
-                  ref: ref,
-                )
+              ? const FullScreenPlayControls()
               : LayoutBuilder(
                   builder: (context, constraints) {
                     return constraints.minWidth < 1285
                         ? FittedBox(
                             child: NormalPlayer(
                               isFullScreen: isFullScreen,
-                              ref: ref,
                             ),
                           )
                         : NormalPlayer(
                             isFullScreen: isFullScreen,
-                            ref: ref,
                           );
                   },
                 ),

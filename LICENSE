@@ -1,6 +1,6 @@
 # Mostaqem Custom License (MCL)
 
-#### Version 1.1 - September 2024
+#### Version 1.2 - September 2024
 
 ---
 
@@ -16,10 +16,9 @@ You are granted a non-exclusive, non-transferable, non-commercial, royalty-free 
 
 ## 3. Prohibited Actions
 The following actions are **strictly prohibited** without prior written permission from the copyright holder:
-   1. **Forking**: You may not create derivative works, forks, or modified versions of the Software for distribution.
-   2. **Commercial Use**: You may not use, distribute, sell, or otherwise exploit the Software for any commercial purpose.
-   3. **Closed-Source Redistribution**: You may not redistribute or license the Software in a manner that hides or obfuscates its source code. Any redistribution must maintain full source availability.
-   4. **Sub-licensing**: You may not sub-license the Software or any of its derivatives to third parties.
+   1. **Commercial Use**: You may not use, distribute, sell, or otherwise exploit the Software for any commercial purpose.
+   2. **Closed-Source Redistribution**: You may not redistribute or license the Software in a manner that hides or obfuscates its source code. Any redistribution must maintain full source availability.
+   3. **Sub-licensing**: You may not sub-license the Software or any of its derivatives to third parties.
 
 ## 4. Contributions
 We welcome contributions to the Software under the following conditions:

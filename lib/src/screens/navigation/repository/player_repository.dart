@@ -1,5 +1,6 @@
+// ignore_for_file: inference_failure_on_instance_creation
+
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -10,14 +11,13 @@ import 'package:lrc/lrc.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/core/SMTC/smtc_provider.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
-import 'package:mostaqem/src/core/env/env.dart';
-import 'package:mostaqem/src/core/mpris/mpris_repository.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/data/player.dart';
 import 'package:mostaqem/src/screens/navigation/repository/lyrics.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
+import 'package:mostaqem/src/screens/navigation/repository/recitation_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
@@ -28,10 +28,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tuple/tuple.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
-import 'package:mostaqem/src/shared/cache/cache_helper.dart';
-
-import 'package:mostaqem/src/screens/navigation/data/cached_metadata.dart';
-
 part 'player_repository.g.dart';
 
 @riverpod
@@ -40,17 +36,12 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   @override
   AudioState build() {
+    checkInternet();
     init();
     return AudioState();
   }
 
   void init() {
-    final networkState = ref.watch(getConnectionProvider).value;
-
-    if (networkState == InternetConnectionStatus.disconnected) {
-      player.pause();
-    }
-
     final currentPlayer = ref.watch(playerSurahProvider);
     if (currentPlayer == null) return;
 
@@ -108,18 +99,6 @@ class PlayerNotifier extends _$PlayerNotifier {
           ),
         );
       }
-
-      if (Platform.isLinux) {
-        ref.read(
-          createMetadataProvider(
-            reciterName: currentPlayer.reciter.arabicName,
-            url: currentPlayer.url,
-            surah: currentPlayer.surah.arabicName,
-            image: currentPlayer.surah.image ?? '',
-            position: state.position,
-          ),
-        );
-      }
     });
 
     ref.listen(playerSurahProvider, (_, n) async {
@@ -146,6 +125,15 @@ class PlayerNotifier extends _$PlayerNotifier {
         ),
       );
     });
+  }
+
+  void checkInternet() {
+    final networkState = ref.watch(getConnectionProvider).value;
+    if (networkState == InternetConnectionStatus.disconnected) {
+      player.pause();
+      state = state.copyWith(isPlaying: false);
+      return;
+    }
   }
 
   String formatDuration(Duration duration) {
@@ -211,110 +199,72 @@ class PlayerNotifier extends _$PlayerNotifier {
       await player.next();
       final audios = ref.watch(getLocalAudioProvider).value;
       final currentIndex = audios!.indexWhere((e) => e == currentPlayer);
-      ref.watch(playerSurahProvider.notifier).update(audios[currentIndex + 1]);
+      ref.watch(playerSurahProvider.notifier).state = audios[currentIndex + 1];
       return;
     }
     final surahID = currentPlayer!.surah.id;
     final recID = ref.watch(recitationProvider);
 
     final nextID = surahID + 1;
-    final chosenReciter =
-        ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
     final defaultReciter = ref.watch(defaultReciterProvider);
-    final playingReciter =
-        defaultReciter == chosenReciter ? defaultReciter : chosenReciter;
+    final chosenReciter = ref.watch(reciterProvider) ?? defaultReciter;
+    //TODO: Fix Play next Reciter
+    final mixID = 'audio_${recID ?? 0 + surahID}';
 
-    final mixID = 'audio_${recID ?? playingReciter.id + surahID}';
-
-    final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
+    final cachedAlbum = ref.watch(playerCacheProvider(key: mixID));
     Album nextAlbum;
-    if (cachedAlbum == null) {
+    if (cachedAlbum == null || cachedAlbum.reciter != chosenReciter) {
       // If Album is not cached
       final nextSurah =
-          await ref.read(fetchChapterByIdProvider(id: nextID).future);
-      final surahAudio = await ref.read(
+          await ref.watch(fetchChapterByIdProvider(id: nextID).future);
+      final surahAudio = await ref.watch(
         fetchAudioForChapterProvider(
           chapterNumber: nextID,
-          reciterID: playingReciter.id,
+          reciterID: chosenReciter.id,
           recitationID: recID,
         ).future,
       );
 
       nextAlbum = Album(
         surah: nextSurah,
-        reciter: playingReciter,
+        reciter: chosenReciter,
         recitationID: surahAudio.item2,
         url: surahAudio.item1,
       );
-      await ref
-          .read(playerCacheProvider(key: mixID).notifier)
-          .setAlbum(nextAlbum, key: mixID);
-      await DefaultCacheManager().downloadFile(surahAudio.item1);
 
-      ref.read(playerSurahProvider.notifier).update(nextAlbum);
-      ref.read(recitationProvider.notifier).state = surahAudio.item2;
+      ref.watch(playerSurahProvider.notifier).state = nextAlbum;
+      await ref
+          .watch(playerCacheProvider(key: mixID).notifier)
+          .setAlbum(nextAlbum, key: mixID);
+
+      await DefaultCacheManager().downloadFile(surahAudio.item1);
       return;
     }
     final cachedFile =
         await DefaultCacheManager().getFileFromCache(cachedAlbum.url);
-    debugPrint('Cached File: $cachedFile');
     // If Album is not cached
     final nextSurah =
-        await ref.read(fetchChapterByIdProvider(id: nextID).future);
-    final surahAudio = await ref.read(
+        await ref.watch(fetchChapterByIdProvider(id: nextID).future);
+    final surahAudio = await ref.watch(
       fetchAudioForChapterProvider(
         chapterNumber: nextID,
-        reciterID: playingReciter.id,
+        reciterID: chosenReciter.id,
         recitationID: recID,
       ).future,
     );
 
     nextAlbum = Album(
       surah: nextSurah,
-      reciter: playingReciter,
-      recitationID: 180,
-      url: surahAudio.item1,
+      reciter: chosenReciter,
+      recitationID: recID ?? 0,
+      url: cachedFile?.file.path ?? surahAudio.item1,
     );
     await ref
-        .read(playerCacheProvider(key: mixID).notifier)
+        .watch(playerCacheProvider(key: mixID).notifier)
         .setAlbum(nextAlbum, key: mixID);
 
-    ref.read(playerSurahProvider.notifier).update(nextAlbum);
-
-    // log('Cached File $cachedFile');
-    // if (cachedFile != null) {
-    //   log('Load from cached');
-
-    //   nextAlbum = Album(
-    //     surah: cachedAlbum.surah,
-    //     reciter: cachedAlbum.reciter,
-    //     url: cachedFile.file.path,
-    //     recitationID: cachedAlbum.recitationID,
-    //   );
-    //   ref.read(playerSurahProvider.notifier).update(nextAlbum);
-    //   return;
-    // }
-    // log('Not same Reciter');
-    // // checks if the choosen reciter from the list is same as the cached reciter
-    // final nextSurah =
-    //     await ref.read(fetchChapterByIdProvider(id: nextID).future);
-
-    // final surahAudio = await ref.read(
-    //   fetchAudioForChapterProvider(
-    //     chapterNumber: nextID,
-    //     reciterID: chosenReciter.id,
-    //     recitationID: recID,
-    //   ).future,
-    // );
-    // nextAlbum = Album(
-    //   surah: nextSurah,
-    //   reciter: chosenReciter,
-    //   url: surahAudio.item1,
-    //   recitationID: recID ?? 0,
-    // );
-    // log('NextAlbum $nextAlbum');
-    // ref.read(playerSurahProvider.notifier).update(nextAlbum);
-    // await DefaultCacheManager().downloadFile(surahAudio.item1);
+    ref.watch(playerSurahProvider.notifier).state = nextAlbum;
+    await DefaultCacheManager().downloadFile(surahAudio.item1);
   }
 
   bool isLocalAudio() {
@@ -334,26 +284,26 @@ class PlayerNotifier extends _$PlayerNotifier {
       ref.watch(playerSurahProvider.notifier).state = audios[currentIndex - 1];
       return;
     }
-    final surahID = currentPlayer!.surah.id ?? 0;
-    final recitationID = currentPlayer.recitationID;
+    final surahID = currentPlayer!.surah.id;
+    final recitationID = ref.watch(recitationProvider);
     final previousID = surahID - 1;
 
-    final mixID = 'audio_${recitationID + surahID}';
+    final mixID = 'audio_${recitationID ?? 0 + surahID}';
     log('MixID $mixID');
     final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
 
     final chosenReciter =
-        ref.read(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
+        ref.watch(reciterProvider) ?? ref.read(playerSurahProvider)!.reciter;
     Album previousAlbum;
 
-    if (cachedAlbum == null) {
+    if (cachedAlbum == null || cachedAlbum.reciter != chosenReciter) {
       final previousSurah =
           await ref.read(fetchChapterByIdProvider(id: previousID).future);
       final audioURL = await ref.read(
         fetchAudioForChapterProvider(
           chapterNumber: previousID,
           reciterID: chosenReciter.id,
-          recitationID: ref.watch(recitationProvider),
+          recitationID: recitationID,
         ).future,
       );
 
@@ -364,7 +314,7 @@ class PlayerNotifier extends _$PlayerNotifier {
         url: audioURL.item1,
       );
 
-      ref.read(playerSurahProvider.notifier).update(previousAlbum);
+      ref.read(playerSurahProvider.notifier).state = previousAlbum;
       await DefaultCacheManager().downloadFile(audioURL.item1);
       await ref
           .read(playerCacheProvider(key: mixID).notifier)
@@ -374,17 +324,16 @@ class PlayerNotifier extends _$PlayerNotifier {
     final cachedFile =
         await DefaultCacheManager().getFileFromCache(cachedAlbum.url);
     if (cachedFile != null) {
-      print('Loaded from cache');
       previousAlbum = Album(
         surah: cachedAlbum.surah,
         reciter: cachedAlbum.reciter,
         url: cachedFile.file.path,
         recitationID: cachedAlbum.recitationID,
       );
-      ref.read(playerSurahProvider.notifier).update(previousAlbum);
+      ref.read(playerSurahProvider.notifier).state = previousAlbum;
     }
     final previousSurah =
-        await ref.read(fetchChapterByIdProvider(id: previousID).future);
+        await ref.watch(fetchChapterByIdProvider(id: previousID).future);
     final audioURL = await ref.read(
       fetchAudioForChapterProvider(
         chapterNumber: previousID,
@@ -400,26 +349,48 @@ class PlayerNotifier extends _$PlayerNotifier {
       url: audioURL.item1,
     );
 
-    ref.read(playerSurahProvider.notifier).update(previousAlbum);
+    ref.read(playerSurahProvider.notifier).state = previousAlbum;
     await DefaultCacheManager().downloadFile(audioURL.item1);
+  }
+
+  Future<bool> checkRecitation({
+    required int reciterID,
+    int? recitationID,
+  }) async {
+    if (recitationID == null) {
+      return false;
+    }
+    final recitations = await ref
+        .watch(fetchReciterRecitationProvider(reciterID: reciterID).future);
+    for (final e in recitations) {
+      if (e.id == recitationID) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void changePosition(Duration value) {
+    state = state.copyWith(position: value);
   }
 
   Future<void> play({
     required int surahID,
     int? recitationID,
   }) async {
+    final cacheManager = DefaultCacheManager();
     final mixID = 'audio_${recitationID ?? 0 + surahID}';
     final defaultReciterId = ref.read(defaultReciterProvider).id;
     final chosenReciterID = ref.read(reciterProvider)?.id ?? defaultReciterId;
     final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
-    debugPrint('Cached Album: $cachedAlbum');
     final reciter =
         await ref.read(fetchReciterProvider(id: chosenReciterID).future);
-    debugPrint(reciter.toString());
+
     Album album;
-    if (cachedAlbum == null) {
+    if (cachedAlbum == null || cachedAlbum.reciter != reciter) {
       final surah =
           await ref.read(fetchChapterByIdProvider(id: surahID).future);
+      debugPrint('Playing ${surah.arabicName} without cache ');
 
       final audio = await ref.read(
         fetchAudioForChapterProvider(
@@ -428,37 +399,38 @@ class PlayerNotifier extends _$PlayerNotifier {
           recitationID: recitationID,
         ).future,
       );
-
       album = Album(
         surah: surah,
         reciter: reciter,
         url: audio.item1,
-        recitationID: recitationID ?? audio.item2,
+        recitationID: audio.item2,
       );
       await ref
           .read(playerCacheProvider(key: mixID).notifier)
           .setAlbum(album, key: mixID);
 
       ref.read(playerSurahProvider.notifier).state = album;
+      debugPrint('Playing ${surah.arabicName} without cache');
 
-      await DefaultCacheManager().downloadFile(audio.item1);
+      await cacheManager.downloadFile(audio.item1);
+
       return;
     }
 
-    final cachedFile =
-        await DefaultCacheManager().getFileFromCache(cachedAlbum.url);
+    final cachedFile = await cacheManager.getFileFromCache(cachedAlbum.url);
+    debugPrint('Playing ${cachedAlbum.surah.arabicName} with cache');
 
     final userRecitationID = recitationID ?? cachedAlbum.recitationID;
-    if (cachedFile != null) {
-      debugPrint('Playing from cache');
-      album = Album(
-        surah: cachedAlbum.surah,
-        reciter: reciter,
-        url: cachedFile.file.path,
-        recitationID: userRecitationID,
-      );
-      ref.read(playerSurahProvider.notifier).state = album;
-    }
+
+    album = Album(
+      surah: cachedAlbum.surah,
+      reciter: reciter,
+      url: cachedFile != null ? cachedFile.file.path : cachedAlbum.url,
+      recitationID: userRecitationID,
+    );
+    ref.read(playerSurahProvider.notifier).state = album;
+
+    await cacheManager.downloadFile(cachedAlbum.url);
   }
 
   void loop() {
@@ -493,72 +465,6 @@ class PlayerNotifier extends _$PlayerNotifier {
     await player.setVolume(value * 100);
 
     state = state.copyWith(volume: value);
-  }
-
-  final String lyrics = '''
-[00:00.00] بِسۡمِ
-[00:01.04] ٱللَّهِ
-[00:01.66] ٱلرَّحۡمَٰنِ
-[00:02.61] ٱلرَّحِيمِ
-[00:04.37] ٱلۡحَمۡدُ
-[00:06.09] لِلَّهِ
-[00:06.94] رَبِّ
-[00:07.40] ٱلۡعَٰلَمِينَ
-[00:09.68] ٱلرَّحۡمَٰنِ
-[00:11.65] ٱلرَّحِيمِ
-[00:13.71] مَٰلِكِ
-[00:15.77] يَوۡمِ
-[00:16.27] ٱلدِّينِ
-[00:18.26] إِيَّاكَ
-[00:19.96] نَعۡبُدُ
-[00:20.73] وَإِيَّاكَ
-[00:21.76] نَسۡتَعِينُ
-[00:23.88] ٱهۡدِنَا
-[00:25.49] ٱلصِّرَٰطَ
-[00:26.30] ٱلۡمُسۡتَقِيمَ
-[00:28.69] صِرَٰطَ
-[00:31.05] ٱلَّذِينَ
-[00:31.91] أَنۡعَمۡتَ
-[00:32.79] عَلَيۡهِمۡ
-[00:33.61] غَيۡرِ
-[00:34.21] ٱلۡمَغۡضُوبِ
-[00:35.23] عَلَيۡهِمۡ
-[00:36.27] وَلَا
-[00:36.49] ٱلضَّآلِّينَ
-''';
-
-  Stream<Tuple2<int, List<Lyrics>>> syncLyrics() async* {
-    final current = <Lyrics>[];
-    final currentLyricsAveragedMap = <int, String>{};
-    if (Lrc.isValid(lyrics)) {
-      current.addAll(
-        Lrc.parse(lyrics).lyrics.map(
-              (e) => Lyrics(time: e.timestamp.inMilliseconds, words: e.lyrics),
-            ),
-      );
-      for (final lyric in current) {
-        currentLyricsAveragedMap[lyric.time ~/ 1000] = lyric.words;
-      }
-
-      while (true) {
-        var currentIndex = -1;
-        var currentLyric = '';
-        for (var i = 0; i < currentLyricsAveragedMap.entries.length; i++) {
-          final lyric = currentLyricsAveragedMap.entries.elementAt(i);
-          if (lyric.key == state.position.inMilliseconds ~/ 1000) {
-            currentIndex = i;
-            currentLyric = lyric.value;
-          }
-        }
-        if (currentIndex != -1) {
-          print('Current Lyric: $currentLyric, Index: $currentIndex');
-          yield Tuple2(currentIndex, current);
-        }
-        await Future.delayed(
-          const Duration(milliseconds: 500),
-        ); // Adjust delay as needed
-      }
-    }
   }
 
   void windowThumbnailBar() {
@@ -683,30 +589,22 @@ class PlayerNotifierMock extends _$PlayerNotifier implements PlayerNotifier {
   }
 
   @override
-  String get lyrics => throw UnimplementedError();
-
-  @override
   Stream<Tuple2<int, List<Lyrics>>> syncLyrics() {
-    // TODO: implement syncLyrics
     throw UnimplementedError();
   }
 
   @override
-  Future<CachedAudioMetadata?> getCachedAudioMetadata(
-    int recitationID,
-    int surahID,
-  ) {
-    // TODO: implement getCachedAudioMetadata
+  Future<bool> checkRecitation({required int reciterID, int? recitationID}) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> cacheAudioMetadata({
-    required int recitationID,
-    required int surahID,
-    required CachedAudioMetadata metadata,
-  }) {
-    // TODO: implement cacheAudioMetadata
-    throw UnimplementedError();
-  }
+  void changePosition(Duration value) {}
+
+  @override
+  void checkInternet() {}
+
+  @override
+  // TODO: implement lyrics
+  String get lyrics => throw UnimplementedError();
 }

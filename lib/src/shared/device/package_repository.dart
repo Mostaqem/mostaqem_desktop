@@ -14,6 +14,7 @@ enum UpdateState {
 
 class PackageRepository {
   PackageRepository(this.ref);
+
   Future<PackageInfo> getPackageInfo() => PackageInfo.fromPlatform();
   Ref ref;
   final GitHub _github = GitHub();
@@ -33,7 +34,7 @@ class PackageRepository {
   }
 
   Future<UpdateState> checkUpdate() async {
-    final networkState = ref.watch(getConnectionProvider).value;
+    final networkState = await ref.read(getConnectionProvider.future);
     if (networkState == InternetConnectionStatus.disconnected) {
       return UpdateState.notAvailable;
     }
@@ -73,7 +74,7 @@ class PackageRepository {
 
 final packageRepoProvider = Provider<PackageRepository>(PackageRepository.new);
 
-final downloadUpdateProvider = FutureProvider<void>((ref) async {
+final downloadUpdateProvider = FutureProvider.autoDispose<void>((ref) async {
   final repo = ref.watch(packageRepoProvider);
   final checkUpdate = await ref.watch(checkUpdateProvider.future);
   if (checkUpdate == UpdateState.available) {
@@ -82,12 +83,14 @@ final downloadUpdateProvider = FutureProvider<void>((ref) async {
   return;
 });
 
-final checkUpdateProvider = FutureProvider<UpdateState>((ref) async {
+final checkUpdateProvider =
+    FutureProvider.autoDispose<UpdateState>((ref) async {
   final repo = ref.watch(packageRepoProvider);
   return repo.checkUpdate();
 });
 
-final getCurrentVersionProvider = FutureProvider<String>((ref) async {
+final getCurrentVersionProvider =
+    FutureProvider.autoDispose<String>((ref) async {
   final repo = ref.watch(packageRepoProvider);
   return repo.currentVersion();
 });

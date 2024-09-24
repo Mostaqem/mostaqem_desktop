@@ -7,18 +7,16 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:window_manager/window_manager.dart';
 
-class FullScreenControl extends StatelessWidget {
+class FullScreenControl extends ConsumerWidget {
   const FullScreenControl({
-    required this.ref,
     required this.isFullScreen,
     super.key,
   });
 
-  final WidgetRef ref;
   final bool isFullScreen;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ToolTipIconButton(
       onPressed: () async {
         if (await windowManager.isFullScreen()) {

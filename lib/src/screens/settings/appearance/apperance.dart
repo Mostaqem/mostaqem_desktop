@@ -202,6 +202,9 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
           height: 12,
         ),
         CheckboxListTile(
+          subtitle: const Text(
+            'قد يؤدي الي ارتفاع استخدام الرام الخاص بك',
+          ),
           value: ref.watch(squigglyNotifierProvider),
           onChanged: (value) {
             ref

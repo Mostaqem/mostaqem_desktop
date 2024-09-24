@@ -6,24 +6,7 @@ part of 'home_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchAllChaptersHash() => r'3e8fc0ebee69385d9e43b9187ea82cf55040941f';
-
-/// Fetches all the chapters
-///
-/// Copied from [fetchAllChapters].
-@ProviderFor(fetchAllChapters)
-final fetchAllChaptersProvider = FutureProvider<List<Surah>>.internal(
-  fetchAllChapters,
-  name: r'fetchAllChaptersProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$fetchAllChaptersHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef FetchAllChaptersRef = FutureProviderRef<List<Surah>>;
-String _$fetchChapterByIdHash() => r'26a2fde193ae47d75901e800dee5f8afecd81cdf';
+String _$fetchAllChaptersHash() => r'025d414a949c067e57d6453da31800783aaaf4d2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -45,6 +28,163 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// Fetches all the chapters
+///
+/// Copied from [fetchAllChapters].
+@ProviderFor(fetchAllChapters)
+const fetchAllChaptersProvider = FetchAllChaptersFamily();
+
+/// Fetches all the chapters
+///
+/// Copied from [fetchAllChapters].
+class FetchAllChaptersFamily extends Family<AsyncValue<List<Surah>>> {
+  /// Fetches all the chapters
+  ///
+  /// Copied from [fetchAllChapters].
+  const FetchAllChaptersFamily();
+
+  /// Fetches all the chapters
+  ///
+  /// Copied from [fetchAllChapters].
+  FetchAllChaptersProvider call({
+    required int page,
+    String? query,
+  }) {
+    return FetchAllChaptersProvider(
+      page: page,
+      query: query,
+    );
+  }
+
+  @override
+  FetchAllChaptersProvider getProviderOverride(
+    covariant FetchAllChaptersProvider provider,
+  ) {
+    return call(
+      page: provider.page,
+      query: provider.query,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'fetchAllChaptersProvider';
+}
+
+/// Fetches all the chapters
+///
+/// Copied from [fetchAllChapters].
+class FetchAllChaptersProvider extends FutureProvider<List<Surah>> {
+  /// Fetches all the chapters
+  ///
+  /// Copied from [fetchAllChapters].
+  FetchAllChaptersProvider({
+    required int page,
+    String? query,
+  }) : this._internal(
+          (ref) => fetchAllChapters(
+            ref as FetchAllChaptersRef,
+            page: page,
+            query: query,
+          ),
+          from: fetchAllChaptersProvider,
+          name: r'fetchAllChaptersProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$fetchAllChaptersHash,
+          dependencies: FetchAllChaptersFamily._dependencies,
+          allTransitiveDependencies:
+              FetchAllChaptersFamily._allTransitiveDependencies,
+          page: page,
+          query: query,
+        );
+
+  FetchAllChaptersProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.page,
+    required this.query,
+  }) : super.internal();
+
+  final int page;
+  final String? query;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Surah>> Function(FetchAllChaptersRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: FetchAllChaptersProvider._internal(
+        (ref) => create(ref as FetchAllChaptersRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        page: page,
+        query: query,
+      ),
+    );
+  }
+
+  @override
+  FutureProviderElement<List<Surah>> createElement() {
+    return _FetchAllChaptersProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FetchAllChaptersProvider &&
+        other.page == page &&
+        other.query == query;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin FetchAllChaptersRef on FutureProviderRef<List<Surah>> {
+  /// The parameter `page` of this provider.
+  int get page;
+
+  /// The parameter `query` of this provider.
+  String? get query;
+}
+
+class _FetchAllChaptersProviderElement
+    extends FutureProviderElement<List<Surah>> with FetchAllChaptersRef {
+  _FetchAllChaptersProviderElement(super.provider);
+
+  @override
+  int get page => (origin as FetchAllChaptersProvider).page;
+  @override
+  String? get query => (origin as FetchAllChaptersProvider).query;
+}
+
+String _$fetchChapterByIdHash() => r'26a2fde193ae47d75901e800dee5f8afecd81cdf';
 
 /// Fetches chapter by [id]
 ///
@@ -185,7 +325,7 @@ class _FetchChapterByIdProviderElement
 }
 
 String _$fetchAudioForChapterHash() =>
-    r'60f23462131885a115a16b8b7e36d6d7a1693c0e';
+    r'0602741ab5c62a69be279a958a5177ff799bbdf7';
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 ///
@@ -197,7 +337,7 @@ const fetchAudioForChapterProvider = FetchAudioForChapterFamily();
 ///
 /// Copied from [fetchAudioForChapter].
 class FetchAudioForChapterFamily
-    extends Family<AsyncValue<Tuple2<String, int>>> {
+    extends Family<AsyncValue<Tuple3<String, int, String?>>> {
   /// Fetches audio for chapter by [chapterNumber] and [reciterID]
   ///
   /// Copied from [fetchAudioForChapter].
@@ -248,7 +388,7 @@ class FetchAudioForChapterFamily
 ///
 /// Copied from [fetchAudioForChapter].
 class FetchAudioForChapterProvider
-    extends AutoDisposeFutureProvider<Tuple2<String, int>> {
+    extends AutoDisposeFutureProvider<Tuple3<String, int, String?>> {
   /// Fetches audio for chapter by [chapterNumber] and [reciterID]
   ///
   /// Copied from [fetchAudioForChapter].
@@ -295,7 +435,8 @@ class FetchAudioForChapterProvider
 
   @override
   Override overrideWith(
-    FutureOr<Tuple2<String, int>> Function(FetchAudioForChapterRef provider)
+    FutureOr<Tuple3<String, int, String?>> Function(
+            FetchAudioForChapterRef provider)
         create,
   ) {
     return ProviderOverride(
@@ -315,7 +456,8 @@ class FetchAudioForChapterProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<Tuple2<String, int>> createElement() {
+  AutoDisposeFutureProviderElement<Tuple3<String, int, String?>>
+      createElement() {
     return _FetchAudioForChapterProviderElement(this);
   }
 
@@ -339,7 +481,7 @@ class FetchAudioForChapterProvider
 }
 
 mixin FetchAudioForChapterRef
-    on AutoDisposeFutureProviderRef<Tuple2<String, int>> {
+    on AutoDisposeFutureProviderRef<Tuple3<String, int, String?>> {
   /// The parameter `chapterNumber` of this provider.
   int get chapterNumber;
 
@@ -351,7 +493,7 @@ mixin FetchAudioForChapterRef
 }
 
 class _FetchAudioForChapterProviderElement
-    extends AutoDisposeFutureProviderElement<Tuple2<String, int>>
+    extends AutoDisposeFutureProviderElement<Tuple3<String, int, String?>>
     with FetchAudioForChapterRef {
   _FetchAudioForChapterProviderElement(super.provider);
 
@@ -365,26 +507,7 @@ class _FetchAudioForChapterProviderElement
   int? get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
 }
 
-String _$filterSurahByQueryHash() =>
-    r'6299df4c9abc8541cc166fc3b5f88261fd518b94';
-
-/// Filters chapters by search query
-///
-/// Copied from [filterSurahByQuery].
-@ProviderFor(filterSurahByQuery)
-final filterSurahByQueryProvider =
-    AutoDisposeFutureProvider<List<Surah>>.internal(
-  filterSurahByQuery,
-  name: r'filterSurahByQueryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$filterSurahByQueryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef FilterSurahByQueryRef = AutoDisposeFutureProviderRef<List<Surah>>;
-String _$fetchNextSurahHash() => r'340dbef4556d3b2018dabffcfea17f29bce5be91';
+String _$fetchNextSurahHash() => r'aeba07f69691b3487af7456a84b9e4e67b94679c';
 
 /// Fetches the next chapter
 ///
