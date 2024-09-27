@@ -6,7 +6,7 @@ part of 'default_reciter.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$defaultReciterHash() => r'4f31bcd3c1ddec889ad88269e2e15eec157610b4';
+String _$defaultReciterHash() => r'beb29289c043ea837a75820c46ee82f689fa42b9';
 
 /// See also [DefaultReciter].
 @ProviderFor(DefaultReciter)

@@ -18,3 +18,15 @@ class SearchNotifier extends _$SearchNotifier {
     state = null;
   }
 }
+
+final isTypingProvider = Provider.autoDispose((ref) {
+  final surahSearch =
+      ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
+  final reciterSearch =
+      ref.watch(searchNotifierProvider('reciter'))?.isEmpty ?? false;
+  final verseSearch =
+      ref.watch(searchNotifierProvider('reciter'))?.isEmpty ?? false;
+
+  final noTyping = surahSearch || reciterSearch || verseSearch;
+  return noTyping;
+});

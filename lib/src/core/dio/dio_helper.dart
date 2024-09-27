@@ -16,6 +16,7 @@ class DioHelper {
   static final String url = baseAPIURL;
   static BaseOptions opts = BaseOptions(
     baseUrl: url,
+    headers: {'Accept-Language': 'ar'},
   );
   CancelToken? _cancelToken;
 
@@ -50,8 +51,11 @@ class DioHelper {
     _cancelToken = CancelToken();
 
     try {
-      final response =
-          await baseAPI.get(url, options: options, cancelToken: _cancelToken);
+      final response = await baseAPI.get(
+        url,
+        options: options,
+        cancelToken: _cancelToken,
+      );
       return response;
     } on DioException catch (e, _) {
       if (CancelToken.isCancel(e)) {

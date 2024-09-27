@@ -11,6 +11,7 @@ _$ReciterImpl _$$ReciterImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       englishName: json['name_english'] as String,
       arabicName: json['name_arabic'] as String,
+      isDefault: json['isDefault'] as bool? ?? false,
       image: json['image'] as String?,
     );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$$ReciterImplToJson(_$ReciterImpl instance) =>
       'id': instance.id,
       'name_english': instance.englishName,
       'name_arabic': instance.arabicName,
+      'isDefault': instance.isDefault,
       'image': instance.image,
     };

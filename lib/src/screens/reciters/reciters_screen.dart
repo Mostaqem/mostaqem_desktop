@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
@@ -20,6 +21,7 @@ class RecitersScreen extends ConsumerWidget {
     final isTyping =
         ref.watch(searchNotifierProvider('reciter'))?.isEmpty ?? false;
     final isImageHidden = ref.watch(hideReciterImageProvider);
+    final defaultReciter = ref.watch(defaultReciterProvider);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,6 +31,54 @@ class RecitersScreen extends ConsumerWidget {
             height: 10,
           ),
           const Align(alignment: Alignment.topLeft, child: AppBackButton()),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              'الشيخ الافتراضي',
+              style: TextStyle(fontSize: 19),
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Visibility(
+                  visible: !isImageHidden,
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                          defaultReciter.image!,
+                        ),
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                title: Text(
+                  defaultReciter.arabicName,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Text(
@@ -97,11 +147,8 @@ class RecitersScreen extends ConsumerWidget {
           const SizedBox(
             height: 12,
           ),
-          const SizedBox(
-            height: 12,
-          ),
           SizedBox(
-            height: MediaQuery.sizeOf(context).height - 310,
+            height: MediaQuery.sizeOf(context).height - 400,
             child: ListView.builder(
               itemBuilder: (context, index) {
                 final page = index ~/ pageSize + 1;
@@ -162,12 +209,12 @@ class RecitersScreen extends ConsumerWidget {
                                     value: ref.watch(defaultReciterProvider).id,
                                     onChanged: (value) {
                                       ref
-                                          .read(userReciterProvider.notifier)
-                                          .setReciter(data[indexInPage]);
+                                          .read(defaultReciterProvider.notifier)
+                                          .setDefault(
+                                            data[indexInPage],
+                                          );
                                       final surah = ref.read(
-                                        playerNotifierProvider.select(
-                                          (value) => value.album?.surah,
-                                        ),
+                                        currentSurahProvider,
                                       );
                                       ref
                                           .read(playerNotifierProvider.notifier)

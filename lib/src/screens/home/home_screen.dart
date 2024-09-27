@@ -49,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
                   Align(
                     child: SearchBar(
                       controller: queryController,
-                      onChanged: (value) async {
+                      onChanged: (value) {
                         ref
                             .read(searchNotifierProvider('home').notifier)
                             .setQuery(value);

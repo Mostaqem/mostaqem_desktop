@@ -75,13 +75,9 @@ class Mostaqem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return ProviderScope(
-      observers: const [],
-      overrides: [
-        themeProvider.overrideWithValue(theme),
-      ],
-      child: const MaterialApp(home: MyApp()),
+    return const ProviderScope(
+      observers: [],
+      child: MaterialApp(home: MyApp()),
     );
   }
 }

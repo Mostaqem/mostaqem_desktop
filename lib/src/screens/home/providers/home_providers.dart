@@ -66,8 +66,7 @@ Future<({String url, int recitationID})> fetchAudioForChapter(
 /// Fetches the next chapter
 @riverpod
 Future<Surah?> fetchNextSurah(FetchNextSurahRef ref) async {
-  final isLocalAudio =
-      ref.watch(isLocalProvider);
+  final isLocalAudio = ref.watch(isLocalProvider);
   if (isLocalAudio) {
     final currentPlayer = ref.watch(currentAlbumProvider);
     final audios = ref.read(getLocalAudioProvider).value;

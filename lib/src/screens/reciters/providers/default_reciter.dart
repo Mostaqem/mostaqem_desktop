@@ -16,6 +16,7 @@ class DefaultReciter extends _$DefaultReciter {
         id: 1,
         englishName: 'AbdelBaset',
         arabicName: 'عبدالباسط عبدالصمد',
+        isDefault: true
       );
     }
     return Reciter.fromJson(jsonDecode(cachedReciter) as Map<String, dynamic>);
@@ -23,6 +24,9 @@ class DefaultReciter extends _$DefaultReciter {
 
   void setDefault(Reciter reciter) {
     state = reciter;
-    CacheHelper.setString('defaultReciter', jsonEncode(reciter));
+    CacheHelper.setString(
+      'defaultReciter',
+      jsonEncode(reciter),
+    );
   }
 }

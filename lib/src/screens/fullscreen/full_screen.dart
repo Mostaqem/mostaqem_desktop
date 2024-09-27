@@ -26,8 +26,8 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
 
   @override
   void initState() {
-    super.initState();
     scrollController = ScrollController();
+    super.initState();
   }
 
   @override
@@ -42,7 +42,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
     final randomImage = ref.watch(fetchRandomImageProvider);
     final isLyricsVisible = ref.watch(lyricsNotifierProvider);
     final lyrics = ref.watch(currentLyricsNotifierProvider);
-    final theme = ref.watch(themeProvider);
+    final theme = Theme.of(context);
     return Stack(
       children: [
         if (connection == InternetConnectionStatus.connected)
@@ -114,18 +114,18 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         'عفوا, لا يوجد كلمات , سوف نضيفها مع الوقت',
                       );
                     }
-
                     scrollController.animateTo(
-                      (data.currentIndex ~/ 4) * 20,
+                      (data.currentIndex ~/ 4) * 40,
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     );
 
                     return SizedBox(
                       width: 400,
-                      height: MediaQuery.sizeOf(context).height - 180,
+                      height: MediaQuery.sizeOf(context).height - 550,
                       child: GridView.builder(
                         controller: scrollController,
+                        physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 100,
@@ -152,54 +152,6 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                     );
                   },
                 ),
-                // StreamBuilder(
-                //   stream: lyrics,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.data == null) {
-                //       return const Text(
-                //         'عفوا, لا يوجد كلمات , سوف نضيفها مع الوقت',
-                //       );
-                //     }
-
-                //     final lyricsList = snapshot.data!.item2;
-                //     final currentIndex = snapshot.data!.item1;
-                //     scrollController.animateTo(
-                //       (currentIndex ~/ 4) * 20, // Adjusting for rows
-                //       duration: const Duration(milliseconds: 300),
-                //       curve: Curves.easeInOut,
-                //     );
-
-                //     return SizedBox(
-                //       width: 400,
-                //       height: MediaQuery.sizeOf(context).height - 180,
-                //       child: GridView.builder(
-                //         controller: scrollController,
-                //         gridDelegate:
-                //             const SliverGridDelegateWithMaxCrossAxisExtent(
-                //           maxCrossAxisExtent: 100,
-                //         ),
-                //         itemCount: lyricsList.length,
-                //         cacheExtent: 30,
-                //         itemBuilder: (context, index) {
-                //           final lyric = lyricsList[index];
-                //           final isCurrent = index == currentIndex;
-
-                //           return Text(
-                //             lyric.words,
-                //             textAlign: TextAlign.center,
-                //             style: GoogleFonts.amiri(
-                //               fontWeight: isCurrent ? FontWeight.bold : null,
-                //               fontSize: 24,
-                //               color: isCurrent
-                //                   ? Theme.of(context).colorScheme.primary
-                //                   : Colors.white.withOpacity(0.5),
-                //             ),
-                //           );
-                //         },
-                //       ),
-                //     );
-                //   },
-                // ),
               ),
             ),
           ),

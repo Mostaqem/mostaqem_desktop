@@ -54,12 +54,11 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     player.stream.duration.listen((duration) async {
       state = state.copyWith(duration: duration);
-      if (state.album!.position != 0) {
+      if (state.album?.position != 0) {
         await player.seek(
-          Duration(milliseconds: state.album!.position),
+          Duration(milliseconds: state.album?.position ?? 0),
         );
       }
-      // TODO: FIX THIS
     });
 
     player.stream.buffer.listen((buffering) {
@@ -93,8 +92,8 @@ class PlayerNotifier extends _$PlayerNotifier {
 
       ref.read(
         updateRPCDiscordProvider(
-          surahName: state.album!.surah.simpleName,
-          reciter: state.album!.reciter.englishName,
+          surahName: state.album?.surah.simpleName ?? '',
+          reciter: state.album?.reciter.englishName ?? '',
           position: state.position.inMilliseconds,
           duration: state.duration.inMilliseconds,
         ),

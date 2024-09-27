@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:lrc/lrc.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/lyrics.dart';
@@ -27,7 +28,7 @@ Future<String?> getLyrics(GetLyricsRef ref, {required String filename}) async {
     ).future,
   );
 
-  if (lyrics == null) {
+  if (lyrics == null || lyrics.isEmpty) {
     return null;
   }
 
@@ -56,7 +57,8 @@ Future<({int currentIndex, List<Lyrics> lyricsList})?> syncLyrics(
 ) async {
   final currentAlbum = ref.watch(currentAlbumProvider);
   final fileName =
-      '${(currentAlbum?.surah.id ?? 0) + (currentAlbum?.recitationID ?? 0)}';
+      '${(currentAlbum?.surah.id ?? 0) + (currentAlbum?.recitationID ?? 0) + (currentAlbum?.reciter.id ?? 1)}';
+  debugPrint('Lyrics: $fileName');
 
   final lyrics = await ref.read(getLyricsProvider(filename: fileName).future);
   if (lyrics == null) {
@@ -71,7 +73,6 @@ Future<({int currentIndex, List<Lyrics> lyricsList})?> syncLyrics(
             (e) => Lyrics(time: e.timestamp.inMilliseconds, words: e.lyrics),
           ),
     );
-
     for (final lyric in current) {
       currentLyricsAveragedMap[lyric.time] = lyric.words;
     }

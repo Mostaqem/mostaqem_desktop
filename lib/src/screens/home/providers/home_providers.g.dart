@@ -507,7 +507,7 @@ class _FetchAudioForChapterProviderElement
   int? get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
 }
 
-String _$fetchNextSurahHash() => r'e88f471ba6000a6c624c625808bfd8cf57504c41';
+String _$fetchNextSurahHash() => r'59339eaf6c67f671d0e061075b9a2db19d9bace5';
 
 /// Fetches the next chapter
 ///
