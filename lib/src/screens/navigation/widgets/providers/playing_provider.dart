@@ -22,5 +22,6 @@ final currentAlbumProvider = Provider.autoDispose((ref) {
 
 final isLocalProvider = Provider.autoDispose((ref) {
   return ref.watch(
-      playerNotifierProvider.select((value) => value.album?.isLocal ?? false));
+    playerNotifierProvider.select((value) => value.album?.isLocal ?? false),
+  );
 });

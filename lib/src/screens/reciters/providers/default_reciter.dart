@@ -16,7 +16,7 @@ class DefaultReciter extends _$DefaultReciter {
         id: 1,
         englishName: 'AbdelBaset',
         arabicName: 'عبدالباسط عبدالصمد',
-        isDefault: true
+        isDefault: true,
       );
     }
     return Reciter.fromJson(jsonDecode(cachedReciter) as Map<String, dynamic>);

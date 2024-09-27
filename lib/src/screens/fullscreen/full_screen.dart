@@ -8,7 +8,6 @@ import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/lyrics_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
-import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';

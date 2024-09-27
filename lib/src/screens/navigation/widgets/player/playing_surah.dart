@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
-import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';

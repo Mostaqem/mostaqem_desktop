@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  connectivity_plus
   discord_rpc
   media_kit_libs_windows_audio
   screen_retriever

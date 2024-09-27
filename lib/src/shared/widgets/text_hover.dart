@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
-
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
+import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 
 class TextHover extends ConsumerWidget {
   const TextHover({

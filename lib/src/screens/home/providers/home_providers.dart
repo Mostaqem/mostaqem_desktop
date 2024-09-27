@@ -4,7 +4,6 @@ import 'dart:developer';
 
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
-import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
