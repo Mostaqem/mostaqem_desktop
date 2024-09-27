@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player_repository.dart';
+part of 'lyrics_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerNotifierHash() => r'6d5f702aa1290384a5ebcfd3b41b4c051fa287e9';
+String _$lyricsNotifierHash() => r'521ca6336f3d48818187eef94ce4a875f96d5600';
 
-/// See also [PlayerNotifier].
-@ProviderFor(PlayerNotifier)
-final playerNotifierProvider =
-    AutoDisposeNotifierProvider<PlayerNotifier, AudioState>.internal(
-  PlayerNotifier.new,
-  name: r'playerNotifierProvider',
+/// See also [LyricsNotifier].
+@ProviderFor(LyricsNotifier)
+final lyricsNotifierProvider =
+    AutoDisposeNotifierProvider<LyricsNotifier, bool>.internal(
+  LyricsNotifier.new,
+  name: r'lyricsNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$playerNotifierHash,
+      : _$lyricsNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PlayerNotifier = AutoDisposeNotifier<AudioState>;
+typedef _$LyricsNotifier = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

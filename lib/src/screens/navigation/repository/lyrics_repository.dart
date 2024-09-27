@@ -1,58 +1,108 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:io';
+
 import 'package:lrc/lrc.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/lyrics.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:tuple/tuple.dart';
+
 part 'lyrics_repository.g.dart';
 
 @riverpod
-Stream<Tuple2<int, List<Lyrics>>> syncLyrics(SyncLyricsRef ref) async* {
-  final surahAudio = await ref.read(
-    fetchAudioForChapterProvider(chapterNumber: 1, recitationID: 161).future,
+Future<String?> getLyrics(GetLyricsRef ref, {required String filename}) async {
+  final directory = await getTemporaryDirectory();
+  final cacheDir = directory.path;
+  final file = File('$cacheDir/$filename.lrc');
+  if (file.existsSync() && file.lengthSync() > 0) {
+    return file.readAsString();
+  }
+  final player = ref.read(currentAlbumProvider);
+
+  final lyrics = await ref.read(
+    fetchSurahLyricsProvider(
+      surahID: player!.surah.id,
+      recitationID: player.recitationID,
+    ).future,
   );
-  final lyrics = surahAudio.item3;
 
   if (lyrics == null) {
-    return;
+    return null;
   }
+
+  await ref
+      .read(cacheLyricsProvider(filename: filename, content: lyrics).future);
+
+  return lyrics;
+}
+
+@riverpod
+Future<File> cacheLyrics(
+  CacheLyricsRef ref, {
+  required String filename,
+  required String content,
+}) async {
+  final directory = await getTemporaryDirectory();
+  final cacheDir = directory.path;
+  final file = File('$cacheDir/$filename.lrc');
+
+  return file.writeAsString(content);
+}
+
+@riverpod
+Future<({int currentIndex, List<Lyrics> lyricsList})?> syncLyrics(
+  SyncLyricsRef ref,
+) async {
+  final currentAlbum = ref.watch(currentAlbumProvider);
+  final fileName =
+      '${(currentAlbum?.surah.id ?? 0) + (currentAlbum?.recitationID ?? 0)}';
+
+  final lyrics = await ref.read(getLyricsProvider(filename: fileName).future);
+  if (lyrics == null) {
+    return null;
+  }
+
   final current = <Lyrics>[];
   final currentLyricsAveragedMap = <int, String>{};
-
   if (Lrc.isValid(lyrics)) {
-    debugPrint('Lyrics is valid: ${Lrc.parse(lyrics)}');
     current.addAll(
       Lrc.parse(lyrics).lyrics.map(
             (e) => Lyrics(time: e.timestamp.inMilliseconds, words: e.lyrics),
           ),
     );
-    debugPrint('current: $current');
 
     for (final lyric in current) {
-      currentLyricsAveragedMap[lyric.time ~/ 1000] = lyric.words;
+      currentLyricsAveragedMap[lyric.time] = lyric.words;
     }
-    debugPrint('currentMap: $currentLyricsAveragedMap');
 
-    while (true) {
-      var currentIndex = -1;
-      for (var i = 0; i < currentLyricsAveragedMap.entries.length; i++) {
-        ref.listen(playerNotifierProvider, (_, n) {
+    ref.listen(
+      playerNotifierProvider.select((player) => player.position),
+      (previous, next) {
+        for (var i = 0; i < currentLyricsAveragedMap.entries.length; i++) {
           final lyric = currentLyricsAveragedMap.entries.elementAt(i);
-          if (lyric.key == n.position.inMilliseconds ~/ 1000) {
-            currentIndex = i;
+          if (lyric.key <= next.inMilliseconds) {
+            ref
+                .read(currentLyricsNotifierProvider.notifier)
+                .updateLyrics(value: (currentIndex: i, lyricsList: current));
           }
-        });
-      }
-      if (currentIndex != -1) {
-        debugPrint('CurrentIndex: $currentIndex, Current: $current');
+        }
+      },
+    );
+  }
+  return null;
+}
 
-        yield Tuple2(currentIndex, current);
-      }
-      await Future.delayed(
-        const Duration(milliseconds: 500),
-      ); // Adjust delay as needed
-    }
+@riverpod
+class CurrentLyricsNotifier extends _$CurrentLyricsNotifier {
+  @override
+  Future<({int currentIndex, List<Lyrics> lyricsList})?> build() async {
+    return ref.watch(syncLyricsProvider.future);
+  }
+
+  void updateLyrics({
+    required ({int currentIndex, List<Lyrics> lyricsList}) value,
+  }) {
+    state = AsyncData(value);
   }
 }

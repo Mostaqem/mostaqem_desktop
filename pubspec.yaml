@@ -42,7 +42,6 @@ dependencies:
   rxdart: ^0.27.7
   shared_preferences: "^2.2.3"
   smtc_windows: "^0.1.2"
-  tuple: "^2.0.2"
   url_launcher: "^6.3.0"
   window_manager: "^0.3.9"
   windows_taskbar: "^1.1.2"

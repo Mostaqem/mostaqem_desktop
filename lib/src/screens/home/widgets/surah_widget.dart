@@ -19,7 +19,7 @@ class SurahWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchQuery = ref.watch(searchNotifierProvider('home'));
-    final player = ref.watch(playerSurahProvider)?.surah.id ?? 0;
+    final surahID = ref.watch(currentSurahProvider)?.id ?? 0;
     final downlaodState = ref.watch(downloadAudioProvider)?.downloadState;
     return SizedBox(
       height: MediaQuery.sizeOf(context).height - 255,
@@ -48,7 +48,7 @@ class SurahWidget extends ConsumerWidget {
                     curve: Curves.easeIn,
                     decoration: BoxDecoration(
                       color: downlaodState == DownloadState.downloading &&
-                              player - 1 == index
+                              surahID - 1 == index
                           ? Theme.of(context).colorScheme.tertiaryContainer
                           : Theme.of(context).colorScheme.primaryContainer,
                     ),

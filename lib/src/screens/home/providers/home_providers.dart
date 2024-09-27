@@ -5,12 +5,10 @@ import 'dart:developer';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:tuple/tuple.dart';
 
 part 'home_providers.g.dart';
 
@@ -43,7 +41,7 @@ Future<Surah> fetchChapterById(
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 @riverpod
-Future<Tuple3<String, int, String?>> fetchAudioForChapter(
+Future<({String url, int recitationID})> fetchAudioForChapter(
   FetchAudioForChapterRef ref, {
   required int chapterNumber,
   int? recitationID,
@@ -61,20 +59,17 @@ Future<Tuple3<String, int, String?>> fetchAudioForChapter(
 
   final audioURL = response.data['data']['url'] as String;
   final audioRecitationID = response.data['data']['tilawa_id'] as int;
-  final lrcContent = response.data['data']['lrc_content'] as String?;
 
-  ref.watch(recitationProvider.notifier).state = audioRecitationID;
-
-  return Tuple3(audioURL, audioRecitationID, lrcContent);
+  return (url: audioURL, recitationID: audioRecitationID);
 }
 
 /// Fetches the next chapter
 @riverpod
 Future<Surah?> fetchNextSurah(FetchNextSurahRef ref) async {
   final isLocalAudio =
-      ref.watch(playerNotifierProvider.notifier).isLocalAudio();
+      ref.watch(isLocalProvider);
   if (isLocalAudio) {
-    final currentPlayer = ref.watch(playerSurahProvider);
+    final currentPlayer = ref.watch(currentAlbumProvider);
     final audios = ref.read(getLocalAudioProvider).value;
     final currentIndex = audios!.indexWhere((e) => e == currentPlayer);
     if (currentIndex == audios.length - 1) {
@@ -82,7 +77,7 @@ Future<Surah?> fetchNextSurah(FetchNextSurahRef ref) async {
     }
     return audios[currentIndex + 1].surah;
   }
-  final currentSurahID = ref.watch(playerSurahProvider)!.surah.id;
+  final currentSurahID = ref.watch(currentSurahProvider)!.id;
   if (currentSurahID < 113) {
     return await ref
         .read(fetchChapterByIdProvider(id: currentSurahID + 1).future);
@@ -95,4 +90,16 @@ Future<Surah?> fetchNextSurah(FetchNextSurahRef ref) async {
 Future<String> fetchRandomImage(FetchRandomImageRef ref) async {
   final request = await ref.watch(dioHelperProvider).getHTTP('/image/random');
   return request.data['data'];
+}
+
+@riverpod
+Future<String?> fetchSurahLyrics(
+  FetchSurahLyricsRef ref, {
+  required int surahID,
+  required int recitationID,
+}) async {
+  final request = await ref
+      .watch(dioHelperProvider)
+      .getHTTP('/audio/lrc?surah_id=$surahID&tilawa_id=$recitationID');
+  return request.data?['data']?['lrc_content'];
 }

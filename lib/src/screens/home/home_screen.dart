@@ -6,6 +6,7 @@ import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
@@ -22,7 +23,9 @@ class HomeScreen extends ConsumerWidget {
     HijriCalendar.setLocal('ar');
     final isTyping =
         ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
-    final surahImage = ref.watch(playerSurahProvider)?.surah.image ?? '';
+    final surahImage = ref.watch(
+      playerNotifierProvider.select((value) => value.album?.surah.image),
+    );
 
     return NeworkRequiredWidget(
       child: Row(
@@ -92,7 +95,7 @@ class HomeScreen extends ConsumerWidget {
           ),
           Visibility(
             visible: ref.watch(isCollapsedProvider) &&
-                ref.watch(playerSurahProvider) != null,
+                !ref.watch(isAlbumEmptyProvider),
             child: Expanded(
               child: Column(
                 children: [
@@ -128,7 +131,7 @@ class HomeScreen extends ConsumerWidget {
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: CachedNetworkImageProvider(
-                                    surahImage,
+                                    surahImage ?? '',
                                     errorListener: (_) => const Icon(
                                       Icons.broken_image_outlined,
                                     ),
@@ -141,8 +144,9 @@ class HomeScreen extends ConsumerWidget {
                             ),
                             Text(
                               ref.watch(
-                                playerSurahProvider.select(
-                                  (value) => value?.surah.arabicName ?? '',
+                                playerNotifierProvider.select(
+                                  (value) =>
+                                      value.album?.surah.arabicName ?? '',
                                 ),
                               ),
                               style: TextStyle(
@@ -155,8 +159,9 @@ class HomeScreen extends ConsumerWidget {
                             ),
                             TextHover(
                               text: ref.watch(
-                                playerSurahProvider.select(
-                                  (value) => value?.reciter.arabicName ?? '',
+                                playerNotifierProvider.select(
+                                  (value) =>
+                                      value.album?.reciter.arabicName ?? '',
                                 ),
                               ),
                               onTap: () {

@@ -1,18 +1,26 @@
-import 'package:mostaqem/src/screens/navigation/data/album.dart';
-import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'playing_provider.g.dart';
+final currentSurahProvider = Provider.autoDispose(
+  (ref) =>
+      ref.watch(playerNotifierProvider.select((value) => value.album?.surah)),
+);
 
-@Riverpod(keepAlive: true)
-class PlayerSurah extends _$PlayerSurah {
-  @override
-  Album? build() {
-    final cachedSurah = ref.read(playerCacheProvider());
-    if (cachedSurah != null) {
-      return cachedSurah;
-    }
+final currentReciterProvider = Provider.autoDispose((ref) {
+  return ref
+      .watch(playerNotifierProvider.select((value) => value.album?.reciter));
+});
 
-    return null;
-  }
-}
+final isAlbumEmptyProvider = Provider.autoDispose((ref) {
+  return ref.watch(playerNotifierProvider.select((value) => value.album)) ==
+      null;
+});
+
+final currentAlbumProvider = Provider.autoDispose((ref) {
+  return ref.watch(playerNotifierProvider.select((value) => value.album));
+});
+
+final isLocalProvider = Provider.autoDispose((ref) {
+  return ref.watch(
+      playerNotifierProvider.select((value) => value.album?.isLocal ?? false));
+});

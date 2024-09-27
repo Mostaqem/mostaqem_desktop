@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'reading_providers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 Future<List<Script>> fetchUthmaniScript(
   FetchUthmaniScriptRef ref, {
   required int surahID,

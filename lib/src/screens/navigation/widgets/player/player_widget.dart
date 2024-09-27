@@ -37,10 +37,14 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   @override
   void onWindowClose() {
-    final player = ref.watch(playerSurahProvider);
+    final player = ref.read(currentAlbumProvider);
     if (player == null) return;
 
-    final position = ref.watch(playerNotifierProvider).position;
+    final position =
+        ref.watch(playerNotifierProvider.select((value) => value.position));
+    final duration =
+        ref.watch(playerNotifierProvider.select((value) => value.duration));
+
     ref.read(playerCacheProvider().notifier).setAlbum(
           Album(
             surah: player.surah,
@@ -48,6 +52,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
             url: player.url,
             position: position.inMilliseconds,
             recitationID: player.recitationID,
+            duration: duration.inMilliseconds,
           ),
         );
     super.onWindowClose();
@@ -87,7 +92,8 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
                 ),
         ),
         Visibility(
-          visible: ref.watch(playerSurahProvider) == null,
+          visible:
+              ref.watch(playerNotifierProvider.select((v) => v.album)) == null,
           child: MouseRegion(
             cursor: SystemMouseCursors.forbidden,
             child: Container(

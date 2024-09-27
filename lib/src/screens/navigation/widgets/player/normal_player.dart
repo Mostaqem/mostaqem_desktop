@@ -30,7 +30,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
   final List<Album> downloadedAlbums = [];
 
   bool isBtnVisible(Album? album) {
-    final isOffline = ref.watch(playerNotifierProvider.notifier).isLocalAudio();
+    final isOffline = ref.watch(currentAlbumProvider)?.isLocal ?? false;
     if (isOffline) {
       return false;
     }
@@ -44,7 +44,8 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    final album = ref.watch(playerSurahProvider);
+    final album =
+        ref.watch(playerNotifierProvider.select((value) => value.album));
 
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -93,11 +94,12 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
               ),
               Visibility(
                 visible: !widget.isFullScreen &&
-                    ref.watch(downloadHeightProvider) == 0,
+                    ref.watch(downloadHeightProvider) == 0 &&
+                    !ref.watch(isLocalProvider),
                 child: ToolTipIconButton(
                   message: 'اقرأ',
                   onPressed: () async {
-                    final surah = ref.read(playerSurahProvider)?.surah;
+                    final surah = ref.read(currentSurahProvider);
 
                     ref.read(goRouterProvider).goNamed(
                           'Reading',

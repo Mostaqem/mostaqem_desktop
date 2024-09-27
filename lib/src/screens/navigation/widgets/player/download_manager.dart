@@ -76,7 +76,7 @@ class DownloadManagerWidget extends ConsumerWidget {
                         onPressed: () {
                           ref.invalidate(cancelTokenProvider);
 
-                          final album = ref.read(playerSurahProvider);
+                          final album = ref.read(currentAlbumProvider);
 
                           ref
                               .read(downloadAudioProvider.notifier)

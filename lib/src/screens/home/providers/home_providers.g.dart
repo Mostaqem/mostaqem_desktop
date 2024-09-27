@@ -325,7 +325,7 @@ class _FetchChapterByIdProviderElement
 }
 
 String _$fetchAudioForChapterHash() =>
-    r'0602741ab5c62a69be279a958a5177ff799bbdf7';
+    r'043aae0850fb3ebf449edc654fd892fc84e7f4a3';
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 ///
@@ -337,7 +337,7 @@ const fetchAudioForChapterProvider = FetchAudioForChapterFamily();
 ///
 /// Copied from [fetchAudioForChapter].
 class FetchAudioForChapterFamily
-    extends Family<AsyncValue<Tuple3<String, int, String?>>> {
+    extends Family<AsyncValue<({String url, int recitationID})>> {
   /// Fetches audio for chapter by [chapterNumber] and [reciterID]
   ///
   /// Copied from [fetchAudioForChapter].
@@ -388,7 +388,7 @@ class FetchAudioForChapterFamily
 ///
 /// Copied from [fetchAudioForChapter].
 class FetchAudioForChapterProvider
-    extends AutoDisposeFutureProvider<Tuple3<String, int, String?>> {
+    extends AutoDisposeFutureProvider<({String url, int recitationID})> {
   /// Fetches audio for chapter by [chapterNumber] and [reciterID]
   ///
   /// Copied from [fetchAudioForChapter].
@@ -435,7 +435,7 @@ class FetchAudioForChapterProvider
 
   @override
   Override overrideWith(
-    FutureOr<Tuple3<String, int, String?>> Function(
+    FutureOr<({String url, int recitationID})> Function(
             FetchAudioForChapterRef provider)
         create,
   ) {
@@ -456,7 +456,7 @@ class FetchAudioForChapterProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<Tuple3<String, int, String?>>
+  AutoDisposeFutureProviderElement<({String url, int recitationID})>
       createElement() {
     return _FetchAudioForChapterProviderElement(this);
   }
@@ -481,7 +481,7 @@ class FetchAudioForChapterProvider
 }
 
 mixin FetchAudioForChapterRef
-    on AutoDisposeFutureProviderRef<Tuple3<String, int, String?>> {
+    on AutoDisposeFutureProviderRef<({String url, int recitationID})> {
   /// The parameter `chapterNumber` of this provider.
   int get chapterNumber;
 
@@ -493,7 +493,7 @@ mixin FetchAudioForChapterRef
 }
 
 class _FetchAudioForChapterProviderElement
-    extends AutoDisposeFutureProviderElement<Tuple3<String, int, String?>>
+    extends AutoDisposeFutureProviderElement<({String url, int recitationID})>
     with FetchAudioForChapterRef {
   _FetchAudioForChapterProviderElement(super.provider);
 
@@ -507,7 +507,7 @@ class _FetchAudioForChapterProviderElement
   int? get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
 }
 
-String _$fetchNextSurahHash() => r'aeba07f69691b3487af7456a84b9e4e67b94679c';
+String _$fetchNextSurahHash() => r'e88f471ba6000a6c624c625808bfd8cf57504c41';
 
 /// Fetches the next chapter
 ///
@@ -541,5 +541,149 @@ final fetchRandomImageProvider = AutoDisposeFutureProvider<String>.internal(
 );
 
 typedef FetchRandomImageRef = AutoDisposeFutureProviderRef<String>;
+String _$fetchSurahLyricsHash() => r'332382283caa38d0336fdaeab4cc22d71fc66920';
+
+/// See also [fetchSurahLyrics].
+@ProviderFor(fetchSurahLyrics)
+const fetchSurahLyricsProvider = FetchSurahLyricsFamily();
+
+/// See also [fetchSurahLyrics].
+class FetchSurahLyricsFamily extends Family<AsyncValue<String?>> {
+  /// See also [fetchSurahLyrics].
+  const FetchSurahLyricsFamily();
+
+  /// See also [fetchSurahLyrics].
+  FetchSurahLyricsProvider call({
+    required int surahID,
+    required int recitationID,
+  }) {
+    return FetchSurahLyricsProvider(
+      surahID: surahID,
+      recitationID: recitationID,
+    );
+  }
+
+  @override
+  FetchSurahLyricsProvider getProviderOverride(
+    covariant FetchSurahLyricsProvider provider,
+  ) {
+    return call(
+      surahID: provider.surahID,
+      recitationID: provider.recitationID,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'fetchSurahLyricsProvider';
+}
+
+/// See also [fetchSurahLyrics].
+class FetchSurahLyricsProvider extends AutoDisposeFutureProvider<String?> {
+  /// See also [fetchSurahLyrics].
+  FetchSurahLyricsProvider({
+    required int surahID,
+    required int recitationID,
+  }) : this._internal(
+          (ref) => fetchSurahLyrics(
+            ref as FetchSurahLyricsRef,
+            surahID: surahID,
+            recitationID: recitationID,
+          ),
+          from: fetchSurahLyricsProvider,
+          name: r'fetchSurahLyricsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$fetchSurahLyricsHash,
+          dependencies: FetchSurahLyricsFamily._dependencies,
+          allTransitiveDependencies:
+              FetchSurahLyricsFamily._allTransitiveDependencies,
+          surahID: surahID,
+          recitationID: recitationID,
+        );
+
+  FetchSurahLyricsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.surahID,
+    required this.recitationID,
+  }) : super.internal();
+
+  final int surahID;
+  final int recitationID;
+
+  @override
+  Override overrideWith(
+    FutureOr<String?> Function(FetchSurahLyricsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: FetchSurahLyricsProvider._internal(
+        (ref) => create(ref as FetchSurahLyricsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        surahID: surahID,
+        recitationID: recitationID,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<String?> createElement() {
+    return _FetchSurahLyricsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FetchSurahLyricsProvider &&
+        other.surahID == surahID &&
+        other.recitationID == recitationID;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, surahID.hashCode);
+    hash = _SystemHash.combine(hash, recitationID.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin FetchSurahLyricsRef on AutoDisposeFutureProviderRef<String?> {
+  /// The parameter `surahID` of this provider.
+  int get surahID;
+
+  /// The parameter `recitationID` of this provider.
+  int get recitationID;
+}
+
+class _FetchSurahLyricsProviderElement
+    extends AutoDisposeFutureProviderElement<String?> with FetchSurahLyricsRef {
+  _FetchSurahLyricsProviderElement(super.provider);
+
+  @override
+  int get surahID => (origin as FetchSurahLyricsProvider).surahID;
+  @override
+  int get recitationID => (origin as FetchSurahLyricsProvider).recitationID;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

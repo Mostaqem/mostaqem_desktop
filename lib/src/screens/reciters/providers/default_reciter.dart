@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'default_reciter.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DefaultReciter extends _$DefaultReciter {
   @override
   Reciter build() {

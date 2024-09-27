@@ -13,6 +13,7 @@ class Album with _$Album {
     required String url,
     required int recitationID,
     @Default(0) int position,
+    @Default(0) int duration,
     @Default(false) bool isLocal,
     
   }) = _Album;

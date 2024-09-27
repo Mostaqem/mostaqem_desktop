@@ -300,5 +300,31 @@ class _FetchRecitersProviderElement
   @override
   String? get query => (origin as FetchRecitersProvider).query;
 }
+
+String _$userReciterHash() => r'c04baa62aa2342241249567289e26880333d1db3';
+
+/// A [UserReciter] class to manage the state of the currently selected reciter.
+/// Example:
+/// ```dart
+/// final reciter = ref.watch(userReciterProvider);
+/// ```
+///
+/// To change the reciter:
+/// ```dart
+/// ref.read(userReciterProvider.notifier).setReciter(newReciter);
+/// ```
+///
+/// Copied from [UserReciter].
+@ProviderFor(UserReciter)
+final userReciterProvider = NotifierProvider<UserReciter, Reciter>.internal(
+  UserReciter.new,
+  name: r'userReciterProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userReciterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$UserReciter = Notifier<Reciter>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

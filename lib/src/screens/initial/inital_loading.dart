@@ -45,6 +45,26 @@ class InitialLoading extends ConsumerWidget {
       surah: 'الرعد',
       verseNumber: '28',
     ),
+    LoadingVerse(
+      verse: 'وَاغْفِرْ لِأَبِي',
+      surah: 'الشعراء',
+      verseNumber: '86',
+    ),
+    LoadingVerse(
+      verse: 'رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ',
+      surah: 'البقرة',
+      verseNumber: '127',
+    ),
+    LoadingVerse(
+      verse: 'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',
+      surah: 'آل عمران',
+      verseNumber: '173',
+    ),
+    LoadingVerse(
+      verse: 'وَارْزُقْنَا وَأَنْتَ خَيْرُ الرَّازِقِينَ',
+      surah: 'المائدة',
+      verseNumber: '114',
+    ),
   ];
   @override
   Widget build(BuildContext context, WidgetRef ref) {

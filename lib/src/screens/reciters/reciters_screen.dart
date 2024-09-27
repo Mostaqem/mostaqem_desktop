@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
@@ -163,17 +161,18 @@ class RecitersScreen extends ConsumerWidget {
                                   child: Radio(
                                     value: ref.watch(defaultReciterProvider).id,
                                     onChanged: (value) {
-                                      final player =
-                                          ref.read(playerSurahProvider);
                                       ref
-                                          .read(defaultReciterProvider.notifier)
-                                          .setDefault(data[indexInPage]);
-                                      ref.read(reciterProvider.notifier).state =
-                                          data[indexInPage];
+                                          .read(userReciterProvider.notifier)
+                                          .setReciter(data[indexInPage]);
+                                      final surah = ref.read(
+                                        playerNotifierProvider.select(
+                                          (value) => value.album?.surah,
+                                        ),
+                                      );
                                       ref
                                           .read(playerNotifierProvider.notifier)
                                           .play(
-                                            surahID: player!.surah.id,
+                                            surahID: surah!.id,
                                           );
                                     },
                                     groupValue: data[indexInPage].id,
@@ -182,8 +181,9 @@ class RecitersScreen extends ConsumerWidget {
                                 ToolTipIconButton(
                                   message: 'اختيار الشيخ للتالي',
                                   onPressed: () {
-                                    ref.read(reciterProvider.notifier).state =
-                                        data[indexInPage];
+                                    ref
+                                        .read(userReciterProvider.notifier)
+                                        .setReciter(data[indexInPage]);
                                   },
                                   icon: const Icon(
                                     Icons.queue_play_next_outlined,
@@ -193,15 +193,18 @@ class RecitersScreen extends ConsumerWidget {
                                 ToolTipIconButton(
                                   message: 'اختيار الشيخ',
                                   onPressed: () {
-                                    final player =
-                                        ref.read(playerSurahProvider);
-
-                                    ref.read(reciterProvider.notifier).state =
-                                        data[indexInPage];
+                                    ref
+                                        .read(userReciterProvider.notifier)
+                                        .setReciter(data[indexInPage]);
+                                    final surah = ref.read(
+                                      playerNotifierProvider.select(
+                                        (value) => value.album?.surah,
+                                      ),
+                                    );
                                     ref
                                         .read(playerNotifierProvider.notifier)
                                         .play(
-                                          surahID: player!.surah.id,
+                                          surahID: surah!.id,
                                         );
                                   },
                                   icon: const Icon(Icons.play_arrow),

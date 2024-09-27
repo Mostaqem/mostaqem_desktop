@@ -20,7 +20,8 @@ class PlayingSurah extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final player = ref.watch(playerSurahProvider);
+    final surah = ref.watch(currentSurahProvider);
+    final reciter = ref.watch(currentReciterProvider);
 
     return Visibility(
       visible: !isFullScreen,
@@ -39,7 +40,7 @@ class PlayingSurah extends StatelessWidget {
                   SizedBox(
                     width: 100,
                     child: Text(
-                      player?.surah.arabicName ?? '',
+                      surah?.arabicName ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -49,10 +50,8 @@ class PlayingSurah extends StatelessWidget {
                     ),
                   ),
                   Visibility(
-                    visible: !ref
-                            .read(playerNotifierProvider.notifier)
-                            .isLocalAudio() &&
-                        ref.watch(playerSurahProvider) != null,
+                    visible: !ref.watch(isLocalProvider) &&
+                        !ref.watch(isAlbumEmptyProvider),
                     child: IconButton(
                       onPressed: () => ref
                           .read(isCollapsedProvider.notifier)
@@ -67,10 +66,9 @@ class PlayingSurah extends StatelessWidget {
                 ],
               ),
               TextHover(
-                text: player?.reciter.arabicName ?? '',
+                text: reciter?.arabicName ?? '',
                 onTap: () {
-                  final isLocalAudio =
-                      ref.read(playerNotifierProvider.notifier).isLocalAudio();
+                  final isLocalAudio = ref.read(isLocalProvider);
 
                   if (isLocalAudio == false) {
                     ref.read(goRouterProvider).go('/reciters');
@@ -87,7 +85,7 @@ class PlayingSurah extends StatelessWidget {
             width: 70,
           ),
           Visibility(
-            visible: !ref.read(playerNotifierProvider.notifier).isLocalAudio(),
+            visible: !ref.read(isLocalProvider),
             child: ToolTipIconButton(
               message: 'تلاوات',
               iconSize: 16,

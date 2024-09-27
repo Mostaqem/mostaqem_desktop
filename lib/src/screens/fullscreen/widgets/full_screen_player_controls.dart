@@ -1,10 +1,13 @@
-// ignore_for_file: strict_raw_type, inference_failure_on_instance_creation
+// ignore_for_file: strict_raw_type, inference_failure_on_instance_creation,
+// ignore_for_file: invalid_use_of_protected_member,
+// ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/screens/fullscreen/providers/lyrics_notifier.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
@@ -43,6 +46,7 @@ class FullScreenPlayControls extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playerNotifierProvider);
     final isSquiggly = ref.watch(squigglyNotifierProvider);
+    final lyricsState = ref.watch(lyricsNotifierProvider);
 
     return Column(
       children: [
@@ -53,7 +57,10 @@ class FullScreenPlayControls extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  ref.watch(playerNotifierProvider.notifier).playerTime().$1,
+                  ref
+                      .watch(playerNotifierProvider.notifier)
+                      .playerTime()
+                      .currentTime,
                   style: const TextStyle(color: Colors.white),
                 ),
                 ConstrainedBox(
@@ -155,7 +162,10 @@ class FullScreenPlayControls extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  ref.watch(playerNotifierProvider.notifier).playerTime().$2,
+                  ref
+                      .watch(playerNotifierProvider.notifier)
+                      .playerTime()
+                      .durationTime,
                   style: const TextStyle(color: Colors.white),
                 ),
               ],
@@ -167,12 +177,11 @@ class FullScreenPlayControls extends ConsumerWidget {
                 children: [
                   Visibility(
                     visible: ref
-                            .watch(playerNotifierProvider.notifier)
-                            .isFirstChapter() &&
-                        ref.watch(playerSurahProvider) != null,
+                        .watch(playerNotifierProvider.notifier)
+                        .isFirstChapter(),
                     child: Tooltip(
                       message: 'قبل',
-                      preferBelow: false,
+                      preferBelow: false, 
                       child: IconButton(
                         onPressed: () async {
                           await ref
@@ -210,9 +219,8 @@ class FullScreenPlayControls extends ConsumerWidget {
                   ),
                   Visibility(
                     visible: ref
-                            .watch(playerNotifierProvider.notifier)
-                            .isLastchapter() &&
-                        ref.watch(playerSurahProvider) != null,
+                        .watch(playerNotifierProvider.notifier)
+                        .isLastchapter(),
                     child: Tooltip(
                       message: 'بعد',
                       preferBelow: false,
@@ -246,12 +254,29 @@ class FullScreenPlayControls extends ConsumerWidget {
                       iconSize: 16,
                     ),
                   ),
-                  const FullScreenControl(isFullScreen: true),
-                  ToolTipIconButton(
-                    message: 'كلام',
-                    onPressed: () {},
-                    icon: const Icon(Icons.lyrics_outlined),
+                  Visibility(
+                    visible: !ref.watch(isLocalProvider),
+                    child: ToolTipIconButton(
+                      iconSize: 16,
+                      message: 'كلمات',
+                      onPressed: () {
+                        if (lyricsState == true) {
+                          ref.read(lyricsNotifierProvider.notifier).state =
+                              false;
+                        } else {
+                          ref.read(lyricsNotifierProvider.notifier).state =
+                              true;
+                        }
+                      },
+                      icon: Icon(
+                        Icons.lyrics_outlined,
+                        color: lyricsState
+                            ? Theme.of(context).colorScheme.tertiary
+                            : null,
+                      ),
+                    ),
                   ),
+                  const FullScreenControl(isFullScreen: true),
                 ],
               ),
             ),

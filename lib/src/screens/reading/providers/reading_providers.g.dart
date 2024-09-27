@@ -7,7 +7,7 @@ part of 'reading_providers.dart';
 // **************************************************************************
 
 String _$fetchUthmaniScriptHash() =>
-    r'c3a45f8daf43e2543c5e34dec0e997481ec05c0d';
+    r'0e8d8b5ea4847784775817e29e217b737dc2540b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -79,7 +79,8 @@ class FetchUthmaniScriptFamily extends Family<AsyncValue<List<Script>>> {
 }
 
 /// See also [fetchUthmaniScript].
-class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
+class FetchUthmaniScriptProvider
+    extends AutoDisposeFutureProvider<List<Script>> {
   /// See also [fetchUthmaniScript].
   FetchUthmaniScriptProvider({
     required int surahID,
@@ -143,7 +144,7 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
   }
 
   @override
-  FutureProviderElement<List<Script>> createElement() {
+  AutoDisposeFutureProviderElement<List<Script>> createElement() {
     return _FetchUthmaniScriptProviderElement(this);
   }
 
@@ -166,7 +167,7 @@ class FetchUthmaniScriptProvider extends FutureProvider<List<Script>> {
   }
 }
 
-mixin FetchUthmaniScriptRef on FutureProviderRef<List<Script>> {
+mixin FetchUthmaniScriptRef on AutoDisposeFutureProviderRef<List<Script>> {
   /// The parameter `surahID` of this provider.
   int get surahID;
 
@@ -178,7 +179,8 @@ mixin FetchUthmaniScriptRef on FutureProviderRef<List<Script>> {
 }
 
 class _FetchUthmaniScriptProviderElement
-    extends FutureProviderElement<List<Script>> with FetchUthmaniScriptRef {
+    extends AutoDisposeFutureProviderElement<List<Script>>
+    with FetchUthmaniScriptRef {
   _FetchUthmaniScriptProviderElement(super.provider);
 
   @override

@@ -12,6 +12,7 @@ _$AlbumImpl _$$AlbumImplFromJson(Map<String, dynamic> json) => _$AlbumImpl(
       url: json['url'] as String,
       recitationID: (json['recitationID'] as num).toInt(),
       position: (json['position'] as num?)?.toInt() ?? 0,
+      duration: (json['duration'] as num?)?.toInt() ?? 0,
       isLocal: json['isLocal'] as bool? ?? false,
     );
 
@@ -22,5 +23,6 @@ Map<String, dynamic> _$$AlbumImplToJson(_$AlbumImpl instance) =>
       'url': instance.url,
       'recitationID': instance.recitationID,
       'position': instance.position,
+      'duration': instance.duration,
       'isLocal': instance.isLocal,
     };

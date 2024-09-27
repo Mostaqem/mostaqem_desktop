@@ -15,7 +15,7 @@ class OfflineRepository {
   final Ref ref;
 
   Stream<FileSystemEntity> getLocalAudio() async* {
-    final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
+    final downloadPath = await ref.watch(downloadDestinationProvider.future);
     final audioFiles = <FileSystemEntity>[];
     final path = downloadPath;
     final dir = Directory(path);
@@ -30,10 +30,11 @@ class OfflineRepository {
   }
 
   Future<List<int>> getDownloadsFiles() async {
-    final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
+    final filenames = <int>[];
+    final downloadPath = await ref.watch(downloadDestinationProvider.future);
+
     final directory = Directory(downloadPath);
     final files = directory.listSync();
-    final filenames = <int>[];
     for (final file in files) {
       if (Platform.isWindows) {
         final filename = file.path.split(r'\').last.split('.').first;
@@ -66,6 +67,7 @@ class OfflineRepository {
             arabicName: metadata.artist ?? '',
           ),
           url: audio.path,
+          isLocal: true,
         );
 
         albums.add(album);
@@ -73,18 +75,6 @@ class OfflineRepository {
     }
 
     yield albums;
-  }
-
-  Future<bool> isAudioDownloaded() async {
-    final localAudios = await getDownloadsFiles();
-
-    final recitationID = ref.watch(playerSurahProvider)?.recitationID ?? 0;
-    final surahID = ref.watch(playerSurahProvider)?.surah.id ?? 0;
-    final downloadedSurah = recitationID + surahID;
-    if (localAudios.contains(downloadedSurah)) {
-      return true;
-    }
-    return false;
   }
 }
 
@@ -96,7 +86,16 @@ final getLocalAudioProvider =
   yield* repo.loadAudioAsAlbum();
 });
 
-final isAudioDownloaded = FutureProvider<bool>((ref) async {
+final isAudioDownloaded = FutureProvider.autoDispose<bool>((ref) async {
   final repo = ref.watch(offlineRepo);
-  return repo.isAudioDownloaded();
+
+  final localAudios = await repo.getDownloadsFiles();
+  final player = ref.watch(currentAlbumProvider);
+  final recitationID = player?.recitationID ?? 0;
+  final surahID = player?.surah.id ?? 0;
+  final downloadedSurah = recitationID + surahID;
+  if (localAudios.contains(downloadedSurah)) {
+    return true;
+  }
+  return false;
 });

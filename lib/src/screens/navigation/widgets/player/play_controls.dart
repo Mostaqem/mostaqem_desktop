@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
@@ -44,7 +43,6 @@ class PlayControls extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playerNotifierProvider);
     final isSquiggly = ref.watch(squigglyNotifierProvider);
-    // TODO(mezoPeeta): Refactor playcontrols
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Transform.scale(
@@ -111,9 +109,8 @@ class PlayControls extends ConsumerWidget {
                 ),
                 Visibility(
                   visible: ref
-                          .watch(playerNotifierProvider.notifier)
-                          .isLastchapter() &&
-                      ref.watch(playerSurahProvider) != null,
+                      .watch(playerNotifierProvider.notifier)
+                      .isLastchapter(),
                   child: Tooltip(
                     message: 'بعد',
                     preferBelow: false,
@@ -161,7 +158,10 @@ class PlayControls extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  ref.watch(playerNotifierProvider.notifier).playerTime().$1,
+                  ref
+                      .watch(playerNotifierProvider.notifier)
+                      .playerTime()
+                      .currentTime,
                   style: TextStyle(
                     color: isFullScreen ? Colors.white : null,
                   ),
@@ -226,7 +226,10 @@ class PlayControls extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  ref.watch(playerNotifierProvider.notifier).playerTime().$2,
+                  ref
+                      .watch(playerNotifierProvider.notifier)
+                      .playerTime()
+                      .durationTime,
                   style: TextStyle(
                     color: isFullScreen ? Colors.white : null,
                   ),

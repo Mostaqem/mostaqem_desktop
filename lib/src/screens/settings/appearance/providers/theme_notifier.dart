@@ -31,3 +31,6 @@ class ThemeNotifier extends _$ThemeNotifier {
     }
   }
 }
+
+final themeProvider =
+    Provider.autoDispose<ThemeData>((ref) => throw UnimplementedError());

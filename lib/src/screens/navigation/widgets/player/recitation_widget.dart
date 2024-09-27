@@ -7,9 +7,8 @@ import 'package:mostaqem/src/screens/navigation/repository/recitation_repository
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
-final recitationProvider = StateProvider<int?>((ref) {
-  final player = ref.watch(playerSurahProvider);
-  return player?.recitationID;
+final recitationProvider = Provider.autoDispose((ref) {
+  return ref.watch(currentAlbumProvider)?.recitationID;
 });
 final recitationHeight = StateProvider<double>((ref) => 0);
 
@@ -23,16 +22,10 @@ class RecitationWidget extends StatelessWidget {
       right: 80,
       child: Consumer(
         builder: (context, ref, child) {
-          final height = ref.watch(recitationHeight);
-
-          if (height == 0) {
-            return const SizedBox.shrink();
-          }
-
-          final player = ref.watch(playerSurahProvider);
+          final album = ref.watch(currentAlbumProvider);
 
           final recitations = ref.watch(
-            fetchReciterRecitationProvider(reciterID: player?.reciter.id ?? 1),
+            fetchReciterRecitationProvider(reciterID: album?.reciter.id ?? 1),
           );
           return AsyncWidget(
             value: recitations,
@@ -52,15 +45,12 @@ class RecitationWidget extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return RadioListTile(
                       title: Text(data[index].name),
-                      value: ref.watch(playerSurahProvider)?.recitationID,
+                      value: ref.watch(recitationProvider),
                       groupValue: data[index].id,
                       onChanged: (v) {
                         // ignore: invalid_use_of_visible_for_testing_member
-                        ref.read(playerSurahProvider.notifier).state =
-                            player?.copyWith(recitationID: data[index].id);
-
                         ref.read(playerNotifierProvider.notifier).play(
-                              surahID: player?.surah.id ?? 1,
+                              surahID: album?.surah.id ?? 1,
                               recitationID: data[index].id,
                             );
                       },
