@@ -13,7 +13,9 @@ class Album with _$Album {
     required String url,
     required int recitationID,
     @Default(0) int position,
-    @Default(false) bool isLocal
+    @Default(0) int duration,
+    @Default(false) bool isLocal,
+    
   }) = _Album;
 
   factory Album.fromJson(Map<String, Object?> json) => _$AlbumFromJson(json);

@@ -42,6 +42,7 @@ For arch
 
 ## Credits:
 - [Omar Sabra](https://github.com/the-sabra) | Backend Engineer
+- [Islam Khalil](https://github.com/islam-khalil0) | Web Developer
 - [Me](https://github.com/mezopeeta) | Flutter
 - [MP3Quran](https://mp3quran.net/ar/api) | API we used for audio
 - [Quran Foundation](https://api-docs.quran.com/docs/category/quran.com-api) | API we used for reading

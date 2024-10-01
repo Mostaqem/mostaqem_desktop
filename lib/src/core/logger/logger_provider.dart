@@ -1,21 +1,19 @@
-import 'package:talker_flutter/talker_flutter.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoggerRepository {
-  final talker = TalkerFlutter.init();
-
-  void warning(String msg) {
-    talker.warning(msg);
-  }
-
-  void info(String msg) {
-    talker.info(msg);
-  }
-
-  void debug(String msg) {
-    talker.debug(msg);
-  }
-
-  void error(Exception e, StackTrace st) {
-    talker.handle(e, st);
+class Logger extends ProviderObserver {
+  @override
+  void didUpdateProvider(
+    ProviderBase<Object?> provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
+    debugPrint('''
+{
+  "Provider": "${provider.name ?? provider.runtimeType}",
+  "newValue": "$newValue",
+  "container": "$container"
+}''');
   }
 }

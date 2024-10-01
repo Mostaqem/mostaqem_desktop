@@ -1,32 +1,22 @@
 // ignore_for_file: strict_raw_type, inference_failure_on_instance_creation
 
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
-import 'package:rxdart/rxdart.dart';
 
-class PlayControls extends ConsumerStatefulWidget {
+class PlayControls extends ConsumerWidget {
   const PlayControls({
     required this.isFullScreen,
-    required this.ref,
     super.key,
   });
   final bool isFullScreen;
-  final WidgetRef ref;
 
-  @override
-  ConsumerState<PlayControls> createState() => _PlayControlsState();
-}
-
-class _PlayControlsState extends ConsumerState<PlayControls> {
   Icon loopIcon(PlaylistMode state, Color color) {
     if (state == PlaylistMode.none) {
       return Icon(
@@ -49,36 +39,14 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
     );
   }
 
-  StreamSubscription? periodicSubscription;
-  final BehaviorSubject<double?> _dragPositionSubject =
-      BehaviorSubject.seeded(null);
   @override
-  void initState() {
-    super.initState();
-
-    periodicSubscription =
-        Stream.periodic(const Duration(seconds: 1)).listen((_) {
-      _dragPositionSubject.add(
-        widget.ref.read(playerNotifierProvider).position.inSeconds.toDouble(),
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    periodicSubscription?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final player = widget.ref.watch(playerNotifierProvider);
-    final isSquiggly = widget.ref.watch(squigglyNotifierProvider);
-    // TODO(mezoPeeta): Refactor playcontrols
+  Widget build(BuildContext context, WidgetRef ref) {
+    final player = ref.watch(playerNotifierProvider);
+    final isSquiggly = ref.watch(squigglyNotifierProvider);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Transform.scale(
-        scale: widget.isFullScreen ? 1.3 : 1,
+        scale: isFullScreen ? 1.3 : 1,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -86,7 +54,7 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Visibility(
-                  visible: widget.ref
+                  visible: ref
                       .watch(playerNotifierProvider.notifier)
                       .isFirstChapter(),
                   child: Tooltip(
@@ -94,13 +62,13 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
                     preferBelow: false,
                     child: IconButton(
                       onPressed: () async {
-                        await widget.ref
+                        await ref
                             .read(playerNotifierProvider.notifier)
                             .playPrevious();
                       },
                       icon: Icon(
                         Icons.skip_next_outlined,
-                        color: widget.isFullScreen
+                        color: isFullScreen
                             ? Colors.white
                             : Theme.of(context)
                                 .colorScheme
@@ -115,14 +83,14 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
                   preferBelow: false,
                   child: IconButton(
                     onPressed: () async {
-                      await widget.ref
+                      await ref
                           .read(playerNotifierProvider.notifier)
                           .handlePlayPause();
                     },
                     icon: player.isPlaying
                         ? Icon(
                             Icons.pause_circle_filled_outlined,
-                            color: widget.isFullScreen
+                            color: isFullScreen
                                 ? Colors.white
                                 : Theme.of(context)
                                     .colorScheme
@@ -130,7 +98,7 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
                           )
                         : Icon(
                             Icons.play_circle_fill_outlined,
-                            color: widget.isFullScreen
+                            color: isFullScreen
                                 ? Colors.white
                                 : Theme.of(context)
                                     .colorScheme
@@ -140,22 +108,21 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
                   ),
                 ),
                 Visibility(
-                  visible: widget.ref
-                          .watch(playerNotifierProvider.notifier)
-                          .isLastchapter() &&
-                      widget.ref.watch(playerSurahProvider) != null,
+                  visible: ref
+                      .watch(playerNotifierProvider.notifier)
+                      .isLastchapter(),
                   child: Tooltip(
                     message: 'بعد',
                     preferBelow: false,
                     child: IconButton(
                       onPressed: () async {
-                        await widget.ref
+                        await ref
                             .read(playerNotifierProvider.notifier)
                             .playNext();
                       },
                       icon: Icon(
                         Icons.skip_previous_outlined,
-                        color: widget.isFullScreen
+                        color: isFullScreen
                             ? Colors.white
                             : Theme.of(context)
                                 .colorScheme
@@ -170,12 +137,12 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
                   preferBelow: false,
                   child: IconButton(
                     onPressed: () async {
-                      widget.ref.read(playerNotifierProvider.notifier).loop();
+                      ref.read(playerNotifierProvider.notifier).loop();
                     },
                     icon: loopIcon(
                       player.loop,
                       player.loop == PlaylistMode.none
-                          ? widget.isFullScreen
+                          ? isFullScreen
                               ? Colors.white
                               : Theme.of(context)
                                   .colorScheme
@@ -191,36 +158,25 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  widget.ref
+                  ref
                       .watch(playerNotifierProvider.notifier)
                       .playerTime()
-                      .$1,
+                      .currentTime,
                   style: TextStyle(
-                    color: widget.isFullScreen ? Colors.white : null,
+                    color: isFullScreen ? Colors.white : null,
                   ),
                 ),
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxWidth: widget.isFullScreen
+                    maxWidth: isFullScreen
                         ? MediaQuery.sizeOf(context).width / 1.5
                         : MediaQuery.sizeOf(context).width / 2.5,
                     maxHeight: 10,
                   ),
-                  child: StreamBuilder(
-                    stream: _dragPositionSubject.stream,
-                    builder: (context, snapshot) {
-                      final position = snapshot.data ??
-                          widget.ref
-                              .watch(playerNotifierProvider)
-                              .position
-                              .inSeconds
-                              .toDouble();
-                      final duration = widget.ref
-                          .watch(playerNotifierProvider)
-                          .duration
-                          .inSeconds
-                          .toDouble();
-
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final position = player.position.inSeconds.toDouble();
+                      final duration = player.duration.inSeconds.toDouble();
                       return Stack(
                         children: [
                           Visibility(
@@ -232,11 +188,7 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
                                 right: 25,
                               ),
                               child: LinearProgressIndicator(
-                                value: widget.ref
-                                    .watch(playerNotifierProvider)
-                                    .buffering
-                                    .inSeconds
-                                    .toDouble(),
+                                value: player.buffering.inSeconds.toDouble(),
                                 borderRadius: BorderRadius.circular(12),
                                 valueColor: AlwaysStoppedAnimation(
                                   Theme.of(context)
@@ -260,16 +212,10 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
                                     ? SquigglyPlayerSlider(
                                         position: position,
                                         duration: duration,
-                                        widget: widget,
-                                        dragPositionSubject:
-                                            _dragPositionSubject,
                                       )
                                     : NormalPlayerSlider(
                                         position: position,
                                         duration: duration,
-                                        widget: widget,
-                                        dragPositionSubject:
-                                            _dragPositionSubject,
                                       ),
                               );
                             },
@@ -280,12 +226,12 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
                   ),
                 ),
                 Text(
-                  widget.ref
+                  ref
                       .watch(playerNotifierProvider.notifier)
                       .playerTime()
-                      .$2,
+                      .durationTime,
                   style: TextStyle(
-                    color: widget.isFullScreen ? Colors.white : null,
+                    color: isFullScreen ? Colors.white : null,
                   ),
                 ),
               ],
@@ -297,58 +243,54 @@ class _PlayControlsState extends ConsumerState<PlayControls> {
   }
 }
 
-class NormalPlayerSlider extends StatelessWidget {
+class NormalPlayerSlider extends ConsumerWidget {
   const NormalPlayerSlider({
     required this.position,
     required this.duration,
-    required this.widget,
-    required BehaviorSubject<double?> dragPositionSubject,
     super.key,
-  }) : _dragPositionSubject = dragPositionSubject;
+  });
 
   final double position;
   final double duration;
-  final PlayControls widget;
-  final BehaviorSubject<double?> _dragPositionSubject;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Slider(
       value: max(0, min(position, duration)),
       max: duration,
       onChangeStart: (_) async {
-        final isPlaying = widget.ref.read(playerNotifierProvider).isPlaying;
+        final isPlaying = ref.read(playerNotifierProvider).isPlaying;
         if (isPlaying) {
-          await widget.ref.read(playerNotifierProvider.notifier).player.pause();
+          await ref.read(playerNotifierProvider.notifier).player.pause();
         }
       },
       onChangeEnd: (value) async {
-        await widget.ref.read(playerNotifierProvider.notifier).handleSeek(
+        await ref.read(playerNotifierProvider.notifier).handleSeek(
               Duration(seconds: value.toInt()),
             );
-        await widget.ref.read(playerNotifierProvider.notifier).player.play();
+        await ref.read(playerNotifierProvider.notifier).player.play();
       },
-      onChanged: _dragPositionSubject.add,
+      onChanged: (value) {
+        ref
+            .read(playerNotifierProvider.notifier)
+            .changePosition(Duration(seconds: value.toInt()));
+      },
     );
   }
 }
 
-class SquigglyPlayerSlider extends StatelessWidget {
+class SquigglyPlayerSlider extends ConsumerWidget {
   const SquigglyPlayerSlider({
     required this.position,
     required this.duration,
-    required this.widget,
-    required BehaviorSubject<double?> dragPositionSubject,
     super.key,
-  }) : _dragPositionSubject = dragPositionSubject;
+  });
 
   final double position;
   final double duration;
-  final PlayControls widget;
-  final BehaviorSubject<double?> _dragPositionSubject;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SquigglySlider(
       squiggleAmplitude: 3,
       squiggleWavelength: 5,
@@ -356,18 +298,22 @@ class SquigglyPlayerSlider extends StatelessWidget {
       value: max(0, min(position, duration)),
       max: duration,
       onChangeStart: (_) async {
-        final isPlaying = widget.ref.read(playerNotifierProvider).isPlaying;
+        final isPlaying = ref.read(playerNotifierProvider).isPlaying;
         if (isPlaying) {
-          await widget.ref.read(playerNotifierProvider.notifier).player.pause();
+          await ref.read(playerNotifierProvider.notifier).player.pause();
         }
       },
       onChangeEnd: (value) async {
-        await widget.ref.read(playerNotifierProvider.notifier).handleSeek(
+        await ref.read(playerNotifierProvider.notifier).handleSeek(
               Duration(seconds: value.toInt()),
             );
-        await widget.ref.read(playerNotifierProvider.notifier).player.play();
+        await ref.read(playerNotifierProvider.notifier).player.play();
       },
-      onChanged: _dragPositionSubject.add,
+      onChanged: (value) {
+        ref
+            .read(playerNotifierProvider.notifier)
+            .changePosition(Duration(seconds: value.toInt()));
+      },
     );
   }
 }

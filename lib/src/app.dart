@@ -75,6 +75,9 @@ class Mostaqem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ProviderScope(child: MaterialApp(home: MyApp()));
+    return const ProviderScope(
+      observers: [],
+      child: MaterialApp(home: MyApp()),
+    );
   }
 }

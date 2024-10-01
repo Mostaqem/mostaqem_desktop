@@ -47,7 +47,7 @@ class DownloadAudio extends _$DownloadAudio {
 
   Future<void> download({required Album album}) async {
     final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
-    final surahID = ref.watch(playerSurahProvider)?.surah.id ?? 0;
+    final surahID = ref.watch(currentSurahProvider)?.id ?? 0;
     final mixIDs = album.recitationID + surahID;
     final savePath = '$downloadPath/$mixIDs.mp3';
     final cancelToken = ref.watch(cancelTokenProvider);

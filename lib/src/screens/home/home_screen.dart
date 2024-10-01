@@ -6,6 +6,7 @@ import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
@@ -22,7 +23,9 @@ class HomeScreen extends ConsumerWidget {
     HijriCalendar.setLocal('ar');
     final isTyping =
         ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
-    final surahImage = ref.watch(playerSurahProvider)?.surah.image ?? '';
+    final surahImage = ref.watch(
+      playerNotifierProvider.select((value) => value.album?.surah.image),
+    );
 
     return NeworkRequiredWidget(
       child: Row(
@@ -30,7 +33,7 @@ class HomeScreen extends ConsumerWidget {
           Expanded(
             flex: 3,
             child: Container(
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.only(left: 18, right: 18, top: 18),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(12),
@@ -46,11 +49,10 @@ class HomeScreen extends ConsumerWidget {
                   Align(
                     child: SearchBar(
                       controller: queryController,
-                      onChanged: (value) async {
+                      onChanged: (value) {
                         ref
                             .read(searchNotifierProvider('home').notifier)
                             .setQuery(value);
-                        ref.refresh(filterSurahByQueryProvider).value;
                       },
                       elevation: const WidgetStatePropertyAll<double>(0),
                       shape: WidgetStatePropertyAll(
@@ -93,76 +95,81 @@ class HomeScreen extends ConsumerWidget {
           ),
           Visibility(
             visible: ref.watch(isCollapsedProvider) &&
-                ref.watch(playerSurahProvider) != null,
+                !ref.watch(isAlbumEmptyProvider),
             child: Expanded(
               child: Column(
                 children: [
-                  Container(
-                    height: 450,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(context).colorScheme.surfaceContainer,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: CloseButton(
-                              onPressed: () => ref
-                                  .read(isCollapsedProvider.notifier)
-                                  .update((state) => !state),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      height: 450,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: CloseButton(
+                                onPressed: () => ref
+                                    .read(isCollapsedProvider.notifier)
+                                    .update((state) => !state),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            height: 300,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: CachedNetworkImageProvider(
-                                  surahImage,
-                                  errorListener: (_) => const Icon(
-                                    Icons.broken_image_outlined,
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 350,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: CachedNetworkImageProvider(
+                                    surahImage ?? '',
+                                    errorListener: (_) => const Icon(
+                                      Icons.broken_image_outlined,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            ref.watch(
-                              playerSurahProvider.select(
-                                (value) => value?.surah.arabicName ?? '',
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              ref.watch(
+                                playerNotifierProvider.select(
+                                  (value) =>
+                                      value.album?.surah.arabicName ?? '',
+                                ),
+                              ),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
                               ),
                             ),
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer,
-                            ),
-                          ),
-                          TextHover(
-                            text: ref.watch(
-                              playerSurahProvider.select(
-                                (value) => value?.reciter.arabicName ?? '',
+                            TextHover(
+                              text: ref.watch(
+                                playerNotifierProvider.select(
+                                  (value) =>
+                                      value.album?.reciter.arabicName ?? '',
+                                ),
                               ),
+                              onTap: () {
+                                ref.read(goRouterProvider).go('/reciters');
+                              },
                             ),
-                            onTap: () {
-                              ref.read(goRouterProvider).go('/reciters');
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

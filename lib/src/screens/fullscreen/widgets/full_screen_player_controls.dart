@@ -1,11 +1,13 @@
-// ignore_for_file: strict_raw_type, inference_failure_on_instance_creation
+// ignore_for_file: strict_raw_type, inference_failure_on_instance_creation,
+// ignore_for_file: invalid_use_of_protected_member,
+// ignore_for_file: invalid_use_of_visible_for_testing_member
 
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/screens/fullscreen/providers/lyrics_notifier.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
@@ -14,17 +16,10 @@ import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider
 import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
-import 'package:rxdart/rxdart.dart';
 
-class FullScreenPlayControls extends StatefulWidget {
-  const FullScreenPlayControls({required this.ref, super.key});
-  final WidgetRef ref;
+class FullScreenPlayControls extends ConsumerWidget {
+  const FullScreenPlayControls({super.key});
 
-  @override
-  State<FullScreenPlayControls> createState() => _FullScreenPlayControlsState();
-}
-
-class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
   Icon loopIcon(PlaylistMode state, Color color) {
     if (state == PlaylistMode.none) {
       return Icon(
@@ -47,31 +42,11 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
     );
   }
 
-  StreamSubscription? periodicSubscription;
-  final BehaviorSubject<double?> _dragPositionSubject =
-      BehaviorSubject.seeded(null);
   @override
-  void initState() {
-    super.initState();
-
-    periodicSubscription =
-        Stream.periodic(const Duration(seconds: 1)).listen((_) {
-      _dragPositionSubject.add(
-        widget.ref.read(playerNotifierProvider).position.inSeconds.toDouble(),
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    periodicSubscription?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final player = widget.ref.watch(playerNotifierProvider);
-    final isSquiggly = widget.ref.watch(squigglyNotifierProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final player = ref.watch(playerNotifierProvider);
+    final isSquiggly = ref.watch(squigglyNotifierProvider);
+    final lyricsState = ref.watch(lyricsNotifierProvider);
 
     return Column(
       children: [
@@ -82,10 +57,10 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  widget.ref
+                  ref
                       .watch(playerNotifierProvider.notifier)
                       .playerTime()
-                      .$1,
+                      .currentTime,
                   style: const TextStyle(color: Colors.white),
                 ),
                 ConstrainedBox(
@@ -93,20 +68,10 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                     maxWidth: MediaQuery.sizeOf(context).width / 1.5,
                     maxHeight: 10,
                   ),
-                  child: StreamBuilder(
-                    stream: _dragPositionSubject.stream,
-                    builder: (context, snapshot) {
-                      final position = snapshot.data ??
-                          widget.ref
-                              .watch(playerNotifierProvider)
-                              .position
-                              .inSeconds
-                              .toDouble();
-                      final duration = widget.ref
-                          .watch(playerNotifierProvider)
-                          .duration
-                          .inSeconds
-                          .toDouble();
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final position = player.position.inSeconds.toDouble();
+                      final duration = player.duration.inSeconds.toDouble();
                       return HoverBuilder(
                         builder: (isHovered) {
                           return SliderTheme(
@@ -125,11 +90,9 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                                     value: max(0, min(position, duration)),
                                     max: duration,
                                     onChangeStart: (_) async {
-                                      final isPlaying = widget.ref
-                                          .read(playerNotifierProvider)
-                                          .isPlaying;
+                                      final isPlaying = player.isPlaying;
                                       if (isPlaying) {
-                                        await widget.ref
+                                        await ref
                                             .read(
                                               playerNotifierProvider.notifier,
                                             )
@@ -138,28 +101,34 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                                       }
                                     },
                                     onChangeEnd: (value) async {
-                                      await widget.ref
+                                      await ref
                                           .read(playerNotifierProvider.notifier)
                                           .handleSeek(
                                             Duration(seconds: value.toInt()),
                                           );
-                                      await widget.ref
+                                      await ref
                                           .read(playerNotifierProvider.notifier)
                                           .player
                                           .play();
                                     },
-                                    onChanged: _dragPositionSubject.add,
+                                    onChanged: (value) {
+                                      ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .changePosition(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                    },
                                   )
                                 : Slider(
                                     activeColor: Colors.white,
                                     value: max(0, min(position, duration)),
                                     max: duration,
                                     onChangeStart: (_) async {
-                                      final isPlaying = widget.ref
+                                      final isPlaying = ref
                                           .read(playerNotifierProvider)
                                           .isPlaying;
                                       if (isPlaying) {
-                                        await widget.ref
+                                        await ref
                                             .read(
                                               playerNotifierProvider.notifier,
                                             )
@@ -168,17 +137,23 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                                       }
                                     },
                                     onChangeEnd: (value) async {
-                                      await widget.ref
+                                      await ref
                                           .read(playerNotifierProvider.notifier)
                                           .handleSeek(
                                             Duration(seconds: value.toInt()),
                                           );
-                                      await widget.ref
+                                      await ref
                                           .read(playerNotifierProvider.notifier)
                                           .player
                                           .play();
                                     },
-                                    onChanged: _dragPositionSubject.add,
+                                    onChanged: (value) {
+                                      ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .changePosition(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                    },
                                   ),
                           );
                         },
@@ -187,10 +162,10 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                   ),
                 ),
                 Text(
-                  widget.ref
+                  ref
                       .watch(playerNotifierProvider.notifier)
                       .playerTime()
-                      .$2,
+                      .durationTime,
                   style: const TextStyle(color: Colors.white),
                 ),
               ],
@@ -201,16 +176,15 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Visibility(
-                    visible: widget.ref
-                            .watch(playerNotifierProvider.notifier)
-                            .isFirstChapter() &&
-                        widget.ref.watch(playerSurahProvider) != null,
+                    visible: ref
+                        .watch(playerNotifierProvider.notifier)
+                        .isFirstChapter(),
                     child: Tooltip(
                       message: 'قبل',
                       preferBelow: false,
                       child: IconButton(
                         onPressed: () async {
-                          await widget.ref
+                          await ref
                               .read(playerNotifierProvider.notifier)
                               .playPrevious();
                         },
@@ -227,7 +201,7 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                     preferBelow: false,
                     child: IconButton(
                       onPressed: () async {
-                        await widget.ref
+                        await ref
                             .read(playerNotifierProvider.notifier)
                             .handlePlayPause();
                       },
@@ -244,16 +218,15 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                     ),
                   ),
                   Visibility(
-                    visible: widget.ref
-                            .watch(playerNotifierProvider.notifier)
-                            .isLastchapter() &&
-                        widget.ref.watch(playerSurahProvider) != null,
+                    visible: ref
+                        .watch(playerNotifierProvider.notifier)
+                        .isLastchapter(),
                     child: Tooltip(
                       message: 'بعد',
                       preferBelow: false,
                       child: IconButton(
                         onPressed: () async {
-                          await widget.ref
+                          await ref
                               .read(playerNotifierProvider.notifier)
                               .playNext();
                         },
@@ -270,7 +243,7 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                     preferBelow: false,
                     child: IconButton(
                       onPressed: () async {
-                        widget.ref.read(playerNotifierProvider.notifier).loop();
+                        ref.read(playerNotifierProvider.notifier).loop();
                       },
                       icon: loopIcon(
                         player.loop,
@@ -281,12 +254,29 @@ class _FullScreenPlayControlsState extends State<FullScreenPlayControls> {
                       iconSize: 16,
                     ),
                   ),
-                  FullScreenControl(ref: widget.ref, isFullScreen: true),
-                  // ToolTipIconButton(
-                  //   message: 'message',
-                  //   onPressed: () {},
-                  //   icon: const Icon(Icons.lyrics_outlined),
-                  // ),
+                  Visibility(
+                    visible: !ref.watch(isLocalProvider),
+                    child: ToolTipIconButton(
+                      iconSize: 16,
+                      message: 'كلمات',
+                      onPressed: () {
+                        if (lyricsState == true) {
+                          ref.read(lyricsNotifierProvider.notifier).state =
+                              false;
+                        } else {
+                          ref.read(lyricsNotifierProvider.notifier).state =
+                              true;
+                        }
+                      },
+                      icon: Icon(
+                        Icons.lyrics_outlined,
+                        color: lyricsState
+                            ? Theme.of(context).colorScheme.tertiary
+                            : Colors.white,
+                      ),
+                    ),
+                  ),
+                  const FullScreenControl(isFullScreen: true),
                 ],
               ),
             ),

@@ -1,25 +1,29 @@
 name: mostaqem
-version: "1.7.0+1"
-
+version: "2.0.0+1"
 publish_to: none
 
 environment:
   sdk: ">=3.4.3 <4.0.0"
-
 description: An islamic audio app
 
 dependencies:
   cached_network_image: "^3.3.1"
+  crypto: ^3.0.5
   device_info_plus: "^10.1.0"
   dio: "^5.4.3+1"
   discord_rpc: "^0.0.2"
   envied: "^0.5.4+1"
   file_picker: "^8.0.6"
+
   flutter:
     sdk: flutter
+
+  flutter_cache_manager: "^3.3.1"
   flutter_colorpicker: "^1.1.0"
+
   flutter_localizations:
     sdk: flutter
+
   flutter_riverpod: "^2.5.1"
   flutter_svg: "^2.0.10+1"
   freezed: "^2.5.2"
@@ -28,8 +32,10 @@ dependencies:
   go_router: "^14.1.4"
   google_fonts: "^6.2.1"
   hijri: "^3.0.0"
-  internet_connection_checker: "^2.0.0"
+  internet_connection_checker: "^1.0.0"
+
   json_annotation: "^4.9.0"
+  lrc: "^1.0.2"
   media_kit: "^1.1.10+1"
   media_kit_libs_audio: "^1.0.4"
   metadata_god: "^0.5.2+1"
@@ -41,36 +47,31 @@ dependencies:
   rxdart: "^0.27.7"
   shared_preferences: "^2.2.3"
   smtc_windows: "^0.1.2"
-  talker_dio_logger: "^4.4.0"
-  talker_flutter: "^4.4.0"
-  tuple: "^2.0.2"
   url_launcher: "^6.3.0"
   window_manager: "^0.3.9"
   windows_taskbar: "^1.1.2"
-  lrc: ^1.0.2
-  flutter_cache_manager: ^3.3.1
 
 dev_dependencies:
   build_runner: "^2.4.11"
-  custom_lint: ^0.6.4
+  custom_lint: "^0.6.4"
   envied_generator: "^0.5.4"
   flutter_lints: "^3.0.0"
   flutter_test:
     sdk: flutter
   json_serializable: "^6.8.0"
+  msix: "^3.16.8"
   pubspec_dependency_sorter: "^1.0.4"
   riverpod_generator: "^2.4.0"
-  riverpod_lint: ^2.3.12
+  riverpod_lint: "^2.3.12"
   very_good_analysis: "^6.0.0"
-  msix: ^3.16.8
 
 msix_config:
   display_name: Mostaqem
-  publisher_display_name: Mostaqem, Inc
+  publisher_display_name: "Mostaqem, Inc"
   identity_name: MostaqemInc.Mostaqem
-  publisher: CN=5EE089E6-BF1D-4AF3-AD61-23B736E7D130
-  msix_version: 1.7.0.0
-  logo_path: D:\\Projects\\Mostaqem\\mostaqem\\assets\\img\\app_icon.png
+  publisher: "CN=5EE089E6-BF1D-4AF3-AD61-23B736E7D130"
+  msix_version: 2.0.0.0
+  logo_path: 'D:\\Projects\\Mostaqem\\mostaqem\\assets\\img\\app_icon.png'
   capabilities: internetClient
   store: true
 

@@ -19,7 +19,7 @@ void main() {
             getConnectionProvider.overrideWith(
               (ref) => Stream.value(InternetConnectionStatus.connected),
             ),
-            filterSurahByQueryProvider.overrideWith(
+            fetchAllChaptersProvider(page: 1).overrideWith(
               (ref) => [
                 const Surah(
                   id: 1,
@@ -52,7 +52,7 @@ void main() {
             getConnectionProvider.overrideWith(
               (ref) => Stream.value(InternetConnectionStatus.connected),
             ),
-            fetchAllChaptersProvider.overrideWith((ref) {
+            fetchAllChaptersProvider(page: 1).overrideWith((ref) {
               return [
                 const Surah(
                   id: 0,

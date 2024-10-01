@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
 import 'package:mostaqem/src/screens/fullscreen/full_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
-
-import '../../core/env/env.dart';
 
 final isExtendedProvider = StateProvider<bool>((ref) => false);
 
@@ -39,12 +38,13 @@ class _NavigationState extends ConsumerState<Navigation> {
   @override
   Widget build(BuildContext context) {
     final isFullScreen = ref.watch(isFullScreenProvider);
-    final player = ref.watch(playerSurahProvider);
+    final player =
+        ref.watch(playerNotifierProvider.select((value) => value.album));
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: isFullScreen
-          ? FullScreenWidget(player: player!, ref: ref)
+          ? FullScreenWidget(player: player!)
           : Stack(
               alignment: Alignment.bottomCenter,
               children: [

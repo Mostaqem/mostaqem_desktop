@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player_repository.dart';
+part of 'showhide_image.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerNotifierHash() => r'376e3168b21f6c4928a1d91010f8f5ad8d38c601';
+String _$hideReciterImageHash() => r'1cbdd7c3bc32874cf99a94702614aaab321e39d7';
 
-/// See also [PlayerNotifier].
-@ProviderFor(PlayerNotifier)
-final playerNotifierProvider =
-    AutoDisposeNotifierProvider<PlayerNotifier, AudioState>.internal(
-  PlayerNotifier.new,
-  name: r'playerNotifierProvider',
+/// See also [HideReciterImage].
+@ProviderFor(HideReciterImage)
+final hideReciterImageProvider =
+    AutoDisposeNotifierProvider<HideReciterImage, bool>.internal(
+  HideReciterImage.new,
+  name: r'hideReciterImageProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$playerNotifierHash,
+      : _$hideReciterImageHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PlayerNotifier = AutoDisposeNotifier<AudioState>;
+typedef _$HideReciterImage = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

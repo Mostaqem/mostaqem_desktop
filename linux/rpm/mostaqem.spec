@@ -1,8 +1,8 @@
 Name:       mostaqem
-Version:    1.7.0
+Version:    2.0.0
 Release:    1
 Summary:    An Islamic app
-License:    GNU-V3
+License:    MCL
 Requires:   mpv, mpv-libs-devel
 AutoReqProv: no
 

@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'default_reciter.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class DefaultReciter extends _$DefaultReciter {
   @override
   Reciter build() {
@@ -16,6 +16,9 @@ class DefaultReciter extends _$DefaultReciter {
         id: 1,
         englishName: 'AbdelBaset',
         arabicName: 'عبدالباسط عبدالصمد',
+        isDefault: true,
+        image:
+            'https://upload.wikimedia.org/wikipedia/commons/5/55/Abdelbasset-abdessamad-27.jpg',
       );
     }
     return Reciter.fromJson(jsonDecode(cachedReciter) as Map<String, dynamic>);
@@ -23,6 +26,9 @@ class DefaultReciter extends _$DefaultReciter {
 
   void setDefault(Reciter reciter) {
     state = reciter;
-    CacheHelper.setString('defaultReciter', jsonEncode(reciter));
+    CacheHelper.setString(
+      'defaultReciter',
+      jsonEncode(reciter),
+    );
   }
 }

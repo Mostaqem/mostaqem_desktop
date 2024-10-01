@@ -25,6 +25,7 @@ mixin _$Reciter {
   String get englishName => throw _privateConstructorUsedError;
   @JsonKey(name: 'name_arabic')
   String get arabicName => throw _privateConstructorUsedError;
+  bool get isDefault => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
 
   /// Serializes this Reciter to a JSON map.
@@ -45,6 +46,7 @@ abstract class $ReciterCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'name_english') String englishName,
       @JsonKey(name: 'name_arabic') String arabicName,
+      bool isDefault,
       String? image});
 }
 
@@ -66,6 +68,7 @@ class _$ReciterCopyWithImpl<$Res, $Val extends Reciter>
     Object? id = null,
     Object? englishName = null,
     Object? arabicName = null,
+    Object? isDefault = null,
     Object? image = freezed,
   }) {
     return _then(_value.copyWith(
@@ -81,6 +84,10 @@ class _$ReciterCopyWithImpl<$Res, $Val extends Reciter>
           ? _value.arabicName
           : arabicName // ignore: cast_nullable_to_non_nullable
               as String,
+      isDefault: null == isDefault
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -100,6 +107,7 @@ abstract class _$$ReciterImplCopyWith<$Res> implements $ReciterCopyWith<$Res> {
       {int id,
       @JsonKey(name: 'name_english') String englishName,
       @JsonKey(name: 'name_arabic') String arabicName,
+      bool isDefault,
       String? image});
 }
 
@@ -119,6 +127,7 @@ class __$$ReciterImplCopyWithImpl<$Res>
     Object? id = null,
     Object? englishName = null,
     Object? arabicName = null,
+    Object? isDefault = null,
     Object? image = freezed,
   }) {
     return _then(_$ReciterImpl(
@@ -134,6 +143,10 @@ class __$$ReciterImplCopyWithImpl<$Res>
           ? _value.arabicName
           : arabicName // ignore: cast_nullable_to_non_nullable
               as String,
+      isDefault: null == isDefault
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -149,6 +162,7 @@ class _$ReciterImpl implements _Reciter {
       {required this.id,
       @JsonKey(name: 'name_english') required this.englishName,
       @JsonKey(name: 'name_arabic') required this.arabicName,
+      this.isDefault = false,
       this.image});
 
   factory _$ReciterImpl.fromJson(Map<String, dynamic> json) =>
@@ -163,11 +177,14 @@ class _$ReciterImpl implements _Reciter {
   @JsonKey(name: 'name_arabic')
   final String arabicName;
   @override
+  @JsonKey()
+  final bool isDefault;
+  @override
   final String? image;
 
   @override
   String toString() {
-    return 'Reciter(id: $id, englishName: $englishName, arabicName: $arabicName, image: $image)';
+    return 'Reciter(id: $id, englishName: $englishName, arabicName: $arabicName, isDefault: $isDefault, image: $image)';
   }
 
   @override
@@ -180,13 +197,15 @@ class _$ReciterImpl implements _Reciter {
                 other.englishName == englishName) &&
             (identical(other.arabicName, arabicName) ||
                 other.arabicName == arabicName) &&
+            (identical(other.isDefault, isDefault) ||
+                other.isDefault == isDefault) &&
             (identical(other.image, image) || other.image == image));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, englishName, arabicName, image);
+      Object.hash(runtimeType, id, englishName, arabicName, isDefault, image);
 
   /// Create a copy of Reciter
   /// with the given fields replaced by the non-null parameter values.
@@ -209,6 +228,7 @@ abstract class _Reciter implements Reciter {
       {required final int id,
       @JsonKey(name: 'name_english') required final String englishName,
       @JsonKey(name: 'name_arabic') required final String arabicName,
+      final bool isDefault,
       final String? image}) = _$ReciterImpl;
 
   factory _Reciter.fromJson(Map<String, dynamic> json) = _$ReciterImpl.fromJson;
@@ -221,6 +241,8 @@ abstract class _Reciter implements Reciter {
   @override
   @JsonKey(name: 'name_arabic')
   String get arabicName;
+  @override
+  bool get isDefault;
   @override
   String? get image;
 

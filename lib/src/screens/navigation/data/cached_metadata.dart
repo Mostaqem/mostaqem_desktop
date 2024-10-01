@@ -1,6 +1,5 @@
-import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
-
 import 'package:mostaqem/src/screens/home/data/surah.dart';
+import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 
 class CachedAudioMetadata {
   CachedAudioMetadata({

@@ -9,19 +9,23 @@ class AsyncWidget<T> extends StatelessWidget {
     required this.data,
     super.key,
     this.loading,
+    this.error,
   });
 
   final AsyncValue<T> value;
   final Widget Function(T) data;
   final Widget Function()? loading;
+  final Widget Function(Object error, StackTrace stackTrace)? error;
+
   @override
   Widget build(BuildContext context) {
     return value.when(
       data: data,
-      error: (e, st) {
-        log('[ERROR]', error: e, stackTrace: st);
-        return const Center(child: Text('حدث خطأ ما!'));
-      },
+      error: error ??
+          (e, st) {
+            log('[ERROR]', error: e, stackTrace: st);
+            return const Center(child: Text('حدث خطأ ما!'));
+          },
       loading: loading ??
           () => const Center(
                 heightFactor: 10,

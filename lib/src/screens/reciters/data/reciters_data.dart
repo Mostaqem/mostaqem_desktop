@@ -10,6 +10,7 @@ class Reciter with _$Reciter {
     required int id,
     @JsonKey(name: 'name_english') required String englishName,
     @JsonKey(name: 'name_arabic') required String arabicName,
+    @Default(false) bool isDefault,
     String? image,
   }) = _Reciter;
 

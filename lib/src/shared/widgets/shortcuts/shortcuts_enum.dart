@@ -6,6 +6,7 @@ enum ShortcutsEnum {
   playPause(
     name: 'تشغيل/ايقاف',
     key: LogicalKeyboardKey.space,
+    control: true,
   ),
   mute(name: 'صامت/تشغيل', key: LogicalKeyboardKey.keyM, control: true),
   playNext(name: 'تشغيل التالي', key: LogicalKeyboardKey.arrowLeft),
