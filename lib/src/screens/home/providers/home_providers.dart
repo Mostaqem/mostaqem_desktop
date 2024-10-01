@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
@@ -51,14 +52,13 @@ Future<({String url, int recitationID})> fetchAudioForChapter(
   final url = recitationID == null
       ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
       : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
-  log(url);
   final response = await ref.read(dioHelperProvider).getHTTP(
         url,
       );
 
   final audioURL = response.data['data']['url'] as String;
   final audioRecitationID = response.data['data']['tilawa_id'] as int;
-
+  debugPrint('audioURL: $audioURL');
   return (url: audioURL, recitationID: audioRecitationID);
 }
 
@@ -96,6 +96,7 @@ Future<String?> fetchSurahLyrics(
   required int surahID,
   required int recitationID,
 }) async {
+  debugPrint('SurahID: $surahID');
   final request = await ref
       .watch(dioHelperProvider)
       .getHTTP('/audio/lrc?surah_id=$surahID&tilawa_id=$recitationID');

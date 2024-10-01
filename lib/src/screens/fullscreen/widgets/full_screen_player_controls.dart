@@ -181,7 +181,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                         .isFirstChapter(),
                     child: Tooltip(
                       message: 'قبل',
-                      preferBelow: false, 
+                      preferBelow: false,
                       child: IconButton(
                         onPressed: () async {
                           await ref
@@ -272,7 +272,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                         Icons.lyrics_outlined,
                         color: lyricsState
                             ? Theme.of(context).colorScheme.tertiary
-                            : null,
+                            : Colors.white,
                       ),
                     ),
                   ),

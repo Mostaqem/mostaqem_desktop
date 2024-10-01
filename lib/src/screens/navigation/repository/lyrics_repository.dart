@@ -19,9 +19,10 @@ Future<String?> getLyrics(GetLyricsRef ref, {required String filename}) async {
   final cacheDir = directory.path;
   final file = File('$cacheDir/$filename.lrc');
   if (file.existsSync() && file.lengthSync() > 0) {
+    debugPrint('File: $file');
     return file.readAsString();
   }
-  final player = ref.read(currentAlbumProvider);
+  final player = ref.watch(currentAlbumProvider);
 
   final lyrics = await ref.read(
     fetchSurahLyricsProvider(
@@ -33,11 +34,12 @@ Future<String?> getLyrics(GetLyricsRef ref, {required String filename}) async {
   if (lyrics == null || lyrics.isEmpty) {
     return null;
   }
+  final adjustedLyrics = lyrics.replaceAll('/', '\n');
+  await ref.read(
+    cacheLyricsProvider(filename: filename, content: adjustedLyrics).future,
+  );
 
-  await ref
-      .read(cacheLyricsProvider(filename: filename, content: lyrics).future);
-
-  return lyrics;
+  return adjustedLyrics;
 }
 
 @riverpod
@@ -59,9 +61,7 @@ Future<({int currentIndex, List<Lyrics> lyricsList})?> syncLyrics(
 ) async {
   final currentAlbum = ref.watch(currentAlbumProvider);
   final fileName =
-      '${(currentAlbum?.surah.id ?? 0) + (currentAlbum?.recitationID ?? 0) + (currentAlbum?.reciter.id ?? 1)}';
-  debugPrint('Lyrics: $fileName');
-
+      'surah_${currentAlbum?.surah.id}_recitation_${currentAlbum?.recitationID}';
   final lyrics = await ref.read(getLyricsProvider(filename: fileName).future);
   if (lyrics == null) {
     return null;

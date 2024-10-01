@@ -60,7 +60,7 @@ class RecitersScreen extends ConsumerWidget {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: CachedNetworkImageProvider(
-                          defaultReciter.image!,
+                          defaultReciter.image ?? '',
                         ),
                       ),
                       borderRadius: BorderRadius.circular(12),
@@ -72,6 +72,41 @@ class RecitersScreen extends ConsumerWidget {
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
+                ),
+                trailing: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ToolTipIconButton(
+                      message: 'اختيار الشيخ للتالي',
+                      onPressed: () {
+                        ref
+                            .read(userReciterProvider.notifier)
+                            .setReciter(defaultReciter);
+                      },
+                      icon: const Icon(
+                        Icons.queue_play_next_outlined,
+                      ),
+                    ),
+                    VerticalDivider(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                    ToolTipIconButton(
+                      message: 'اختيار الشيخ',
+                      onPressed: () {
+                        ref
+                            .read(userReciterProvider.notifier)
+                            .setReciter(defaultReciter);
+                        final surah = ref.read(
+                          currentSurahProvider,
+                        );
+                        ref.read(playerNotifierProvider.notifier).play(
+                              surahID: surah!.id,
+                            );
+                      },
+                      icon: const Icon(Icons.play_arrow),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -147,8 +182,7 @@ class RecitersScreen extends ConsumerWidget {
           const SizedBox(
             height: 12,
           ),
-          SizedBox(
-            height: MediaQuery.sizeOf(context).height - 400,
+          Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
                 final page = index ~/ pageSize + 1;
@@ -159,14 +193,33 @@ class RecitersScreen extends ConsumerWidget {
 
                 return reciters.when(
                   error: (e, _) {
-                    return const SizedBox.shrink();
+                    debugPrint('Reciters Error: $e');
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .error
+                              .withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Text('حدث خطا ما'),
+                      ),
+                    );
                   },
                   loading: () {
                     return Padding(
                       padding: const EdgeInsets.all(10),
                       child: Container(
+                        height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
@@ -244,9 +297,7 @@ class RecitersScreen extends ConsumerWidget {
                                         .read(userReciterProvider.notifier)
                                         .setReciter(data[indexInPage]);
                                     final surah = ref.read(
-                                      playerNotifierProvider.select(
-                                        (value) => value.album?.surah,
-                                      ),
+                                      currentSurahProvider,
                                     );
                                     ref
                                         .read(playerNotifierProvider.notifier)

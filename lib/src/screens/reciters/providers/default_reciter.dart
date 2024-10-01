@@ -17,6 +17,8 @@ class DefaultReciter extends _$DefaultReciter {
         englishName: 'AbdelBaset',
         arabicName: 'عبدالباسط عبدالصمد',
         isDefault: true,
+        image:
+            'https://upload.wikimedia.org/wikipedia/commons/5/55/Abdelbasset-abdessamad-27.jpg',
       );
     }
     return Reciter.fromJson(jsonDecode(cachedReciter) as Map<String, dynamic>);

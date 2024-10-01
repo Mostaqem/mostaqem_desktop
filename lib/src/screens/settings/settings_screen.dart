@@ -5,6 +5,7 @@ import 'package:mostaqem/src/screens/settings/appearance/apperance.dart';
 import 'package:mostaqem/src/screens/settings/download/download_options.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
+import 'package:mostaqem/src/shared/widgets/snackbar.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -62,6 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                     onPressed: () {
                       CacheHelper.clear();
                       DefaultCacheManager().emptyCache();
+                      appSnackBar(context, message: 'تم حدف الملفات بنجاح');
                     },
                     child: const Text('حذف الملفات'),
                   ),

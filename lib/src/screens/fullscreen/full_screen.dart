@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/fullscreen/providers/lyrics_notifier.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -44,7 +45,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
     final theme = Theme.of(context);
     return Stack(
       children: [
-        if (connection == InternetConnectionStatus.connected)
+        if (connection == InternetConnectionStatus.connected && isProduction)
           AsyncWidget(
             value: randomImage,
             data: (data) {
@@ -100,7 +101,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
               width: MediaQuery.sizeOf(context).width,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withOpacity(0.8),
               ),
               child: ScrollConfiguration(
                 behavior:
@@ -111,23 +112,32 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                     if (data == null) {
                       return const Text(
                         'عفوا, لا يوجد كلمات , سوف نضيفها مع الوقت',
+                        style: TextStyle(color: Colors.white),
                       );
                     }
-                    scrollController.animateTo(
-                      (data.currentIndex ~/ 4) * 40,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
+                    final itemHeights = <int, double>{};
+                    final screenWidth = MediaQuery.sizeOf(context).width;
+                    final responsiveWidth = screenWidth * 0.3;
+                    final itemHeight = (screenWidth / 1920) * 95;
+                    final numberOfColumns =
+                        (responsiveWidth / (1920 * 0.5) * 10).round();
+
+                    if (scrollController.hasClients) {
+                      scrollController.animateTo(
+                        (data.currentIndex ~/ numberOfColumns) * itemHeight,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    }
 
                     return SizedBox(
-                      width: 400,
+                      width: responsiveWidth,
                       height: MediaQuery.sizeOf(context).height - 550,
                       child: GridView.builder(
                         controller: scrollController,
                         physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 100,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: numberOfColumns,
                         ),
                         itemCount: data.lyricsList.length,
                         cacheExtent: 30,
@@ -135,16 +145,24 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                           final lyric = data.lyricsList[index];
                           final isCurrent = index == data.currentIndex;
 
-                          return Text(
-                            lyric.words,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.amiri(
-                              fontWeight: isCurrent ? FontWeight.bold : null,
-                              fontSize: 24,
-                              color: isCurrent
-                                  ? theme.colorScheme.primary
-                                  : Colors.white.withOpacity(0.5),
-                            ),
+                          return LayoutBuilder(
+                            builder: (context, constraints) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                itemHeights[index] = constraints.maxHeight;
+                              });
+                              return Text(
+                                lyric.words,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.amiri(
+                                  fontWeight:
+                                      isCurrent ? FontWeight.w900 : null,
+                                  fontSize: 24,
+                                  color: isCurrent
+                                      ? theme.colorScheme.primary
+                                      : Colors.white.withOpacity(0.5),
+                                ),
+                              );
+                            },
                           );
                         },
                       ),
