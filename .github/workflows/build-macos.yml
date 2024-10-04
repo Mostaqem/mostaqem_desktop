@@ -1,6 +1,9 @@
 name: Build MACOS
 
 on:
+  push:
+    branches:
+      - macos
   workflow_dispatch:
 
 jobs:
