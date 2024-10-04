@@ -36,3 +36,6 @@ sudo codesign --deep --force --verify --verbose --sign "$dev_id" --options runti
 
 echo "- Code Signing DMG verification:";
 codesign --verify --verbose "$dmg_path"
+
+echo "- Copy to root:";
+cp "$dmg_path" "../"
