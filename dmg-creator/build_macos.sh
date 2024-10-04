@@ -19,11 +19,11 @@ cd "./dmg-creator";
 rm "$dmg_name";
 
 appdmg ./config.json "$dmg_name";
-cd "../../";
+# cd "../../";
 
 
 # as we move from the folder, keep a reference to the DMG path
-dmg_path="./dmg-creator/$dmg_name";
+dmg_path="./$dmg_name";
 
 echo "- Code Signing DMG:";
 codesign --deep --force --verify --verbose --sign "$dev_id" --options runtime "$dmg_path";

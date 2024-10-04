@@ -34,7 +34,7 @@ jobs:
           security import certificate.p12 -k ~/Library/Keychains/login.keychain -P '' -T /usr/bin/codesign
 
       - name: Build And Sign
-        run: ./dmg-creator/build_macos.sh
+        run: sh ./dmg-creator/build_macos.sh
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
