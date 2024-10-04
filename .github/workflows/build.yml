@@ -94,40 +94,53 @@ jobs:
           tag_name: "vnext"
           body: ${{ github.sha }}
           token: ${{ secrets.PAT }}
-  # build_macos:
-  #   name: Mostaqem MacOS
-  #   runs-on: macos-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  #     - name: Set up Flutter
-  #       uses: subosito/flutter-action@v2
-  #       with:
-  #         channel: stable
+      - name: Setup Node.JS
+        uses: actions/setup-node@v4
 
-  #     - run: flutter pub get
+      - name: install appdmg
+        run: sudo npm install -g appdmg
 
-  #     - run: flutter build macos --verbose
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
 
-  #     # - name: Release
-  #     #   uses: softprops/action-gh-release@v2
-  #     #   with:
-  #     #     draft: true
-  #     #     prerelease: false
-  #     #     tag_name: "vnext"
-  #     #     body: ${{ github.sha }}
-  #     #     files: mostaqem-macos-x64.dmg
-  #     #     token: ${{ secrets.PAT }}
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Create and unlock custom keychain
+        run: |
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+      - name: Import certificate
+        env:
+          CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE }}
+        run: |
+          echo "$CERTIFICATE_P12" | base64 --decode > certificate.p12
+          security import certificate.p12 -k ~/Library/Keychains/build.keychain -P "" -T /usr/bin/codesign
 
-  #     - name: Decode and install certificate
-  #       env:
-  #         CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE }}
-  #       run: |
-  #         echo "$CERTIFICATE_P12" | base64 --decode > certificate.p12
-  #         security import certificate.p12 -k ~/Library/Keychains/login.keychain -P -T /usr/bin/codesign
+      - name: Allow codesign to access the key without prompt
+        run: |
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
 
-  #     - name: Sign the app
-  #       run: |
-  #         codesign --force --deep --sign "Apple Development: ismailalamkhan@icloud.com (MMN4P53468)" build/macos/Build/Products/Release/Mostaqem.app
-  #     - name: Verify the signature
-  #       run: codesign --verify --verbose build/macos/Build/Products/Release/Mostaqem.app
+      - name: Build and Sign
+        run: sh ./dmg-creator/build_macos.sh
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: macOSApp
+      #     path: build/macos/Build/Products/Release/Mostaqem.app
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: false
+          tag_name: "vnext"
+          body: ${{ github.sha }}
+          files: mostaqem-macos-*
+          token: ${{ secrets.PAT }}

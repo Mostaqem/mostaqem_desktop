@@ -1,15 +1,11 @@
 name: Build MACOS
 
 on:
-  push:
-    branches:
-      - macos
   workflow_dispatch:
 
 jobs:
   build-macos:
     runs-on: macos-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,8 +40,13 @@ jobs:
 
       - name: Build and Sign
         run: sh ./dmg-creator/build_macos.sh
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: macOSApp
-          path: build/macos/Build/Products/Release/Mostaqem.app
+          draft: true
+          prerelease: false
+          tag_name: "vnext"
+          body: ${{ github.sha }}
+          files: mostaqem-macos-*
+          token: ${{ secrets.PAT }}

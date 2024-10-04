@@ -1,7 +1,7 @@
 app_path="build/macos/Build/Products/Release/Mostaqem.app";
 dev_email='ismailalamkhan@icloud.com';
 dev_id='Apple Development: ismailalamkhan@icloud.com (MMN4P53468)';
-dmg_name="Mostaqem.dmg";
+dmg_name="mostaqem-macos.dmg";
 
 echo "- Building macOS app:";
 flutter build macos;
