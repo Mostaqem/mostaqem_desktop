@@ -6,8 +6,14 @@ dmg_name="Mostaqem.dmg";
 echo "- Building macOS app:";
 flutter build macos;
 
+echo "- Checking codesigning identity:";
+security find-identity -p codesigning -v
+
+echo "- Unlocking Keychain:";
+security unlock-keychain -p '' ~/Library/Keychains/login.keychain
+
 echo "- Code Signing APP:";
-codesign --deep --force --verify --verbose --sign "$dev_id" --options runtime "$app_path"
+sudo codesign --deep --force --verify --verbose --sign "$dev_id" --options runtime "$app_path"
 
 echo "- Code Sign APP verification:";
 codesign --verify --verbose "$app_path"
@@ -26,7 +32,7 @@ appdmg ./config.json "$dmg_name";
 dmg_path="./$dmg_name";
 
 echo "- Code Signing DMG:";
-codesign --deep --force --verify --verbose --sign "$dev_id" --options runtime "$dmg_path";
+sudo codesign --deep --force --verify --verbose --sign "$dev_id" --options runtime "$dmg_path";
 
 echo "- Code Signing DMG verification:";
 codesign --verify --verbose "$dmg_path"
