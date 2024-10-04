@@ -31,7 +31,7 @@ jobs:
           CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE }}
         run: |
           echo "$CERTIFICATE_P12" | base64 --decode > certificate.p12
-          security import certificate.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign
+          security import certificate.p12 -k ~/Library/Keychains/login.keychain -P '' -T /usr/bin/codesign
 
       - name: Build And Sign
         run: ./dmg-creator/build_macos.sh
