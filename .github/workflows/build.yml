@@ -2,7 +2,7 @@ name: Mostaqem
 on:
   push:
     branches:
-      - macos
+      - main
   workflow_dispatch:
 
 jobs:

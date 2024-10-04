@@ -3,7 +3,7 @@ name: Build and Sign macOS Flutter App
 on:
   push:
     branches:
-      - main
+      - macos
   workflow_dispatch:
 
 jobs:
