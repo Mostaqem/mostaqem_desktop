@@ -6,7 +6,7 @@ part of 'lyrics_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getLyricsHash() => r'24c934303d8664c7ad53a602c5a3f5657fd05cb3';
+String _$getLyricsHash() => r'd9c5865e84113cb9d224d838543222188cc98c93';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -299,7 +299,7 @@ class _CacheLyricsProviderElement extends AutoDisposeFutureProviderElement<File>
   String get content => (origin as CacheLyricsProvider).content;
 }
 
-String _$syncLyricsHash() => r'16538a89244ef1afefcd41a591a9f054285cf12a';
+String _$syncLyricsHash() => r'cf953663c02166db81ae35a91a003c0eee25d905';
 
 /// See also [syncLyrics].
 @ProviderFor(syncLyrics)

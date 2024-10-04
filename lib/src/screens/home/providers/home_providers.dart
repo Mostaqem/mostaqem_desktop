@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_dynamic_calls, inference_failure_on_untyped_parameter
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
@@ -19,14 +17,10 @@ Future<List<Surah>> fetchAllChapters(
   required int page,
   String? query,
 }) async {
-  final url = query == null
-      ? '/surah?page=$page&take=30'
-      : '/surah?page=$page&take=30&name=$query';
+  final url = query == null ? '/surah?page=$page&take=30' : '/surah?page=$page&take=30&name=$query';
   final response = await ref.read(dioHelperProvider).getHTTP(url);
 
-  return response.data['data']['surah']
-      .map<Surah>((e) => Surah.fromJson(e as Map<String, Object?>))
-      .toList();
+  return response.data['data']['surah'].map<Surah>((e) => Surah.fromJson(e as Map<String, Object?>)).toList();
 }
 
 /// Fetches chapter by [id]
@@ -77,8 +71,7 @@ Future<Surah?> fetchNextSurah(FetchNextSurahRef ref) async {
   }
   final currentSurahID = ref.watch(currentSurahProvider)!.id;
   if (currentSurahID < 113) {
-    return await ref
-        .read(fetchChapterByIdProvider(id: currentSurahID + 1).future);
+    return await ref.read(fetchChapterByIdProvider(id: currentSurahID + 1).future);
   }
   return await ref.read(fetchChapterByIdProvider(id: 1).future);
 }
@@ -97,8 +90,6 @@ Future<String?> fetchSurahLyrics(
   required int recitationID,
 }) async {
   debugPrint('SurahID: $surahID');
-  final request = await ref
-      .watch(dioHelperProvider)
-      .getHTTP('/audio/lrc?surah_id=$surahID&tilawa_id=$recitationID');
+  final request = await ref.watch(dioHelperProvider).getHTTP('/audio/lrc?surah_id=$surahID&tilawa_id=$recitationID');
   return request.data?['data']?['lrc_content'];
 }

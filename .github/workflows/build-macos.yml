@@ -1,0 +1,46 @@
+name: Build and Sign macOS Flutter App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.0.0" # Specify the version you need
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build macOS App
+        run: flutter build macos --release
+
+      - name: Decode and install certificate
+        env:
+          CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE }}
+        run: |
+          echo "$CERTIFICATE_P12" | base64 --decode > certificate.p12
+          security import certificate.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign
+
+      - name: Sign the app
+        run: |
+          codesign --force --deep --sign "Apple Development: ismailalamkhan@icloud.com (MMN4P53468)" build/macos/Build/Products/Release/Mostaqem.app
+
+      - name: Verify the signature
+        run: codesign --verify --verbose build/macos/Build/Products/Release/Mostaqem.app
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: macOSApp
+          path: build/macos/Build/Products/Release/Mostaqem.app

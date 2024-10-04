@@ -19,7 +19,9 @@ void main() async {
     ProviderScope(child: InitialLoading()),
   );
   HttpOverrides.global = MyHttpOverrides();
-  DiscordRPC.initialize();
+  if (!Platform.isMacOS) {
+    DiscordRPC.initialize();
+  }
   await windowManager.ensureInitialized();
 
   MediaKit.ensureInitialized();
@@ -31,8 +33,7 @@ void main() async {
     center: true,
     title: 'Mostaqem',
     backgroundColor: Colors.transparent,
-    titleBarStyle:
-        Platform.isWindows ? TitleBarStyle.hidden : TitleBarStyle.normal,
+    titleBarStyle: Platform.isWindows ? TitleBarStyle.hidden : TitleBarStyle.normal,
   );
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();

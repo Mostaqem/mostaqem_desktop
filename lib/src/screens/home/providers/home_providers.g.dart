@@ -325,7 +325,7 @@ class _FetchChapterByIdProviderElement
 }
 
 String _$fetchAudioForChapterHash() =>
-    r'043aae0850fb3ebf449edc654fd892fc84e7f4a3';
+    r'1e793aaad20246c00716de72bbbbb28fa1a2f622';
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 ///
@@ -541,7 +541,7 @@ final fetchRandomImageProvider = AutoDisposeFutureProvider<String>.internal(
 );
 
 typedef FetchRandomImageRef = AutoDisposeFutureProviderRef<String>;
-String _$fetchSurahLyricsHash() => r'332382283caa38d0336fdaeab4cc22d71fc66920';
+String _$fetchSurahLyricsHash() => r'faafd02854377499551e93a44365394c98b8ebbf';
 
 /// See also [fetchSurahLyrics].
 @ProviderFor(fetchSurahLyrics)

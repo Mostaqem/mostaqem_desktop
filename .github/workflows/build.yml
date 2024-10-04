@@ -39,7 +39,6 @@ jobs:
             mostaqem-windows-exe.zip
             Output/mostaqem-windows-setup.exe
           token: ${{ secrets.PAT }}
-         
 
   build_linux:
     name: Mostaqem Linux
@@ -95,3 +94,40 @@ jobs:
           tag_name: "vnext"
           body: ${{ github.sha }}
           token: ${{ secrets.PAT }}
+  # build_macos:
+  #   name: Mostaqem MacOS
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Set up Flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: stable
+
+  #     - run: flutter pub get
+
+  #     - run: flutter build macos --verbose
+
+  #     # - name: Release
+  #     #   uses: softprops/action-gh-release@v2
+  #     #   with:
+  #     #     draft: true
+  #     #     prerelease: false
+  #     #     tag_name: "vnext"
+  #     #     body: ${{ github.sha }}
+  #     #     files: mostaqem-macos-x64.dmg
+  #     #     token: ${{ secrets.PAT }}
+
+  #     - name: Decode and install certificate
+  #       env:
+  #         CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE }}
+  #       run: |
+  #         echo "$CERTIFICATE_P12" | base64 --decode > certificate.p12
+  #         security import certificate.p12 -k ~/Library/Keychains/login.keychain -P -T /usr/bin/codesign
+
+  #     - name: Sign the app
+  #       run: |
+  #         codesign --force --deep --sign "Apple Development: ismailalamkhan@icloud.com (MMN4P53468)" build/macos/Build/Products/Release/Mostaqem.app
+  #     - name: Verify the signature
+  #       run: codesign --verify --verbose build/macos/Build/Products/Release/Mostaqem.app
