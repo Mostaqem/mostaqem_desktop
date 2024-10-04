@@ -10,7 +10,7 @@ echo "- Checking codesigning identity:";
 security find-identity -p codesigning -v
 
 echo "- Unlocking Keychain:";
-security unlock-keychain -p '' ~/Library/Keychains/login.keychain
+security unlock-keychain -p '' ~/Library/Keychains/build.keychain
 
 echo "- Code Signing APP:";
 sudo codesign --deep --force --verify --verbose --sign "$dev_id" --options runtime "$app_path"

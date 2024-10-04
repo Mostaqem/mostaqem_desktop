@@ -25,17 +25,25 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-
-      - name: Decode and install certificate
+      - name: Create and unlock custom keychain
+        run: |
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+      - name: Import certificate
         env:
           CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE }}
         run: |
           echo "$CERTIFICATE_P12" | base64 --decode > certificate.p12
-          security import certificate.p12 -k ~/Library/Keychains/login.keychain -P '' -T /usr/bin/codesign
+          security import certificate.p12 -k ~/Library/Keychains/build.keychain -P "" -T /usr/bin/codesign
 
-      - name: Build And Sign
+      - name: Allow codesign to access the key without prompt
+        run: |
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+
+      - name: Build and Sign
         run: sh ./dmg-creator/build_macos.sh
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
