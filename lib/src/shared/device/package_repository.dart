@@ -68,6 +68,10 @@ class PackageRepository {
         await launchUrlString(installUrl);
       case 'linux':
         await launchUrlString(latestRelease.htmlUrl!);
+      case 'macos':
+        installUrl = latestRelease.assets!
+            .firstWhere((element) => element.name!.contains('.dmg'))
+            .browserDownloadUrl;
     }
   }
 }
