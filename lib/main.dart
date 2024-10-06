@@ -12,8 +12,8 @@ import 'package:mostaqem/src/shared/http_override/http_override.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
-  await CacheHelper.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await CacheHelper.init();
 
   runApp(
     ProviderScope(child: InitialLoading()),
