@@ -13,6 +13,7 @@ Future<String> downloadDestination(DownloadDestinationRef ref) async {
   }
 
   final downloadPath = await getDownloadsDirectory();
+
   return downloadPath!.path;
 }
 

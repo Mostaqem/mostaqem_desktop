@@ -39,7 +39,6 @@ jobs:
             mostaqem-windows-exe.zip
             Output/mostaqem-windows-setup.exe
           token: ${{ secrets.PAT }}
-         
 
   build_linux:
     name: Mostaqem Linux
@@ -94,4 +93,54 @@ jobs:
           files: mostaqem-linux-*
           tag_name: "vnext"
           body: ${{ github.sha }}
+          token: ${{ secrets.PAT }}
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.JS
+        uses: actions/setup-node@v4
+
+      - name: install appdmg
+        run: sudo npm install -g appdmg
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Create and unlock custom keychain
+        run: |
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+      - name: Import certificate
+        env:
+          CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE }}
+        run: |
+          echo "$CERTIFICATE_P12" | base64 --decode > certificate.p12
+          security import certificate.p12 -k ~/Library/Keychains/build.keychain -P "" -T /usr/bin/codesign
+
+      - name: Allow codesign to access the key without prompt
+        run: |
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+
+      - name: Build and Sign
+        run: sh ./dmg-creator/build_macos.sh
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: macOSApp
+      #     path: build/macos/Build/Products/Release/Mostaqem.app
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: false
+          tag_name: "vnext"
+          body: ${{ github.sha }}
+          files: dmg-creator/mostaqem-macos.dmg
           token: ${{ secrets.PAT }}

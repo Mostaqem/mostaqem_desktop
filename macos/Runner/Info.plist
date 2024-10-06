@@ -28,5 +28,8 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSDownloadsDirectoryUsageDescription</key>
+	<string>We need access to your Downloads folder for offline playback.</string>
+
 </dict>
 </plist>

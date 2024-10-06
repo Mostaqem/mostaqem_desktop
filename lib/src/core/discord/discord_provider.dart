@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:discord_rpc/discord_rpc.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,18 +18,20 @@ class DiscordImp {
     required int duration,
     required String reciter,
   }) {
-    rpc
-      ..start(autoRegister: true)
-      ..updatePresence(
-        DiscordPresence(
-          state: surahName,
-          startTimeStamp: position,
-          endTimeStamp: duration,
-          details: reciter,
-          largeImageKey: largeImage,
-          smallImageKey: smallImage,
-        ),
-      );
+    if (!Platform.isMacOS) {
+      rpc
+        ..start(autoRegister: true)
+        ..updatePresence(
+          DiscordPresence(
+            state: surahName,
+            startTimeStamp: position,
+            endTimeStamp: duration,
+            details: reciter,
+            largeImageKey: largeImage,
+            smallImageKey: smallImage,
+          ),
+        );
+    }
   }
 }
 
