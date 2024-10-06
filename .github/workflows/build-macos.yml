@@ -3,7 +3,7 @@ name: Build MACOS
 on:
   push:
     branches:
-      - macos
+      - main
   workflow_dispatch:
 
 jobs:
