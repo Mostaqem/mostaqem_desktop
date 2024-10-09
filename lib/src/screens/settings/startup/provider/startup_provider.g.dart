@@ -22,21 +22,5 @@ final startupNotifierProvider =
 );
 
 typedef _$StartupNotifier = AutoDisposeAsyncNotifier<String>;
-String _$minimizeNotifierHash() => r'9e872a1c163e93226c992f33c7ebf2adebc4943e';
-
-/// See also [MinimizeNotifier].
-@ProviderFor(MinimizeNotifier)
-final minimizeNotifierProvider =
-    AutoDisposeNotifierProvider<MinimizeNotifier, bool>.internal(
-  MinimizeNotifier.new,
-  name: r'minimizeNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$minimizeNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$MinimizeNotifier = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
