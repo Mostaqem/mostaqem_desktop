@@ -38,10 +38,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   @override
   void onWindowClose() {
-    final isMinimizeEnabled = ref.read(minimizeNotifierProvider);
-    if (isMinimizeEnabled) {
-      windowManager.minimize();
-    }
+  
     final player = ref.read(currentAlbumProvider);
     if (player == null) return;
 
