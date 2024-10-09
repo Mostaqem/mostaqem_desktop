@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:discord_rpc/discord_rpc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/app.dart';
@@ -19,6 +20,13 @@ void main() async {
     ProviderScope(child: InitialLoading()),
   );
   HttpOverrides.global = MyHttpOverrides();
+
+  launchAtStartup.setup(
+    appName: 'Mostaqem',
+    appPath: Platform.resolvedExecutable,
+    // Set packageName parameter to support MSIX.
+  );
+
   if (!Platform.isMacOS) {
     DiscordRPC.initialize();
   }
@@ -33,7 +41,8 @@ void main() async {
     center: true,
     title: 'Mostaqem',
     backgroundColor: Colors.transparent,
-    titleBarStyle: Platform.isWindows ? TitleBarStyle.hidden : TitleBarStyle.normal,
+    titleBarStyle:
+        Platform.isWindows ? TitleBarStyle.hidden : TitleBarStyle.normal,
   );
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();

@@ -201,16 +201,16 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
         const SizedBox(
           height: 12,
         ),
-        CheckboxListTile(
+        ListTile(
           subtitle: const Text(
             'قد يؤدي الي ارتفاع استخدام الرام الخاص بك',
           ),
-          value: ref.watch(squigglyNotifierProvider),
-          onChanged: (value) {
-            ref
+          trailing: Switch(
+            value: ref.watch(squigglyNotifierProvider),
+            onChanged: (value) => ref
                 .read(squigglyNotifierProvider.notifier)
-                .toggle(value: value ?? false);
-          },
+                .toggle(value: value),
+          ),
           title: const Text('تغير الشكل الي موجات'),
         ),
       ],

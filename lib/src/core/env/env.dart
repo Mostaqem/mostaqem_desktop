@@ -1,13 +1,7 @@
-import 'package:envied/envied.dart';
+class Constants {
+  static String devBaseAPI = const String.fromEnvironment('DEV_BASE_API');
 
-part 'env.g.dart';
+  static String prodBaseAPI = const String.fromEnvironment('PROD_BASE_API');
 
-@Envied(path: '.env')
-abstract class Env {
-  @EnviedField(varName: 'PROD_BASE_API', obfuscate: true)
-  static final String prodBaseAPI = _Env.prodBaseAPI;
-  @EnviedField(varName: 'DEV_BASE_API')
-  static const String devBaseAPI = _Env.devBaseAPI;
-  @EnviedField(varName: 'MSTORE')
-  static const bool mStore = _Env.mStore;
+  static bool mStore = const bool.fromEnvironment('MSTORE');
 }
