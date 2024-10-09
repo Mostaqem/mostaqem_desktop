@@ -192,60 +192,13 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     final chosenReciter = ref.read(userReciterProvider);
 
-    final mixID =
-        createShortHash(currentSurah.id, recitationID, chosenReciter.id);
-
-    final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
-
-    if (cachedAlbum == null) {
-      final nextAlbum = await fetchAlbum(
-        surahID: nextID,
-        reciterID: chosenReciter.id,
-        recitationID: recitationID,
-      );
-
-      state = state.copyWith(album: nextAlbum);
-      await player.open(Media(nextAlbum.url));
-
-      await ref
-          .read(playerCacheProvider(key: mixID).notifier)
-          .setAlbum(nextAlbum, key: mixID);
-
-      await DefaultCacheManager().downloadFile(nextAlbum.url, key: mixID);
-
-      return;
-    }
-    final cachedFile =
-        await DefaultCacheManager().getFileFromCache(cachedAlbum.url);
-
-    if (cachedFile == null && cachedAlbum.url != state.album?.url) {
-      final nextAlbum = await fetchAlbum(
-        surahID: nextID,
-        reciterID: chosenReciter.id,
-        recitationID: recitationID,
-      );
-
-      state = state.copyWith(album: nextAlbum);
-      await player.open(Media(nextAlbum.url));
-
-      await DefaultCacheManager()
-          .downloadFile(nextAlbum.url, key: mixID)
-          .then((value) {
-        debugPrint('Caching File');
-      });
-
-      return;
-    }
-
-    final nextAlbum = Album(
-      surah: cachedAlbum.surah,
-      reciter: chosenReciter,
-      recitationID: recitationID ?? 0,
-      url: cachedFile!.file.path,
+    final nextAlbum = await fetchAlbum(
+      surahID: nextID,
+      reciterID: chosenReciter.id,
+      recitationID: recitationID,
     );
 
     state = state.copyWith(album: nextAlbum);
-
     await player.open(Media(nextAlbum.url));
   }
 
@@ -269,40 +222,14 @@ class PlayerNotifier extends _$PlayerNotifier {
     final previousID = surahID - 1;
     final chosenReciter = ref.read(userReciterProvider);
 
-    final mixID = createShortHash(previousID, recitationID, chosenReciter.id);
-
-    final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
-
-    if (cachedAlbum == null) {
-      final previousAlbum =
-          await fetchAlbum(surahID: previousID, reciterID: chosenReciter.id);
-
-      await player.open(Media(previousAlbum.url));
-      state = state.copyWith(album: previousAlbum);
-      await ref
-          .read(playerCacheProvider(key: mixID).notifier)
-          .setAlbum(previousAlbum, key: mixID);
-      await DefaultCacheManager().downloadFile(previousAlbum.url, key: mixID);
-      return;
-    }
-    final cachedFile = await DefaultCacheManager().getFileFromCache(mixID);
-    if (cachedFile != null) {
-      final previousAlbum = Album(
-        surah: cachedAlbum.surah,
-        reciter: cachedAlbum.reciter,
-        url: cachedFile.file.path,
-        recitationID: cachedAlbum.recitationID,
-      );
-      state = state.copyWith(album: previousAlbum);
-      await player.open(Media(previousAlbum.url));
-      return;
-    }
-    final previousAlbum =
-        await fetchAlbum(surahID: previousID, reciterID: chosenReciter.id);
+    final previousAlbum = await fetchAlbum(
+      surahID: previousID,
+      reciterID: chosenReciter.id,
+      recitationID: recitationID,
+    );
 
     state = state.copyWith(album: previousAlbum);
     await player.open(Media(previousAlbum.url));
-    await DefaultCacheManager().downloadFile(previousAlbum.url, key: mixID);
   }
 
   Future<Album> fetchAlbum({

@@ -299,12 +299,11 @@ class _CacheLyricsProviderElement extends AutoDisposeFutureProviderElement<File>
   String get content => (origin as CacheLyricsProvider).content;
 }
 
-String _$syncLyricsHash() => r'cf953663c02166db81ae35a91a003c0eee25d905';
+String _$syncLyricsHash() => r'74c2d7aeaf625301dcc0d0c998d48766e841245a';
 
 /// See also [syncLyrics].
 @ProviderFor(syncLyrics)
-final syncLyricsProvider = AutoDisposeFutureProvider<
-    ({int currentIndex, List<Lyrics> lyricsList})?>.internal(
+final syncLyricsProvider = AutoDisposeFutureProvider<String?>.internal(
   syncLyrics,
   name: r'syncLyricsProvider',
   debugGetCreateSourceHash:
@@ -313,16 +312,14 @@ final syncLyricsProvider = AutoDisposeFutureProvider<
   allTransitiveDependencies: null,
 );
 
-typedef SyncLyricsRef = AutoDisposeFutureProviderRef<
-    ({int currentIndex, List<Lyrics> lyricsList})?>;
+typedef SyncLyricsRef = AutoDisposeFutureProviderRef<String?>;
 String _$currentLyricsNotifierHash() =>
-    r'65cd2261ad541f6a7b43d000872dd1c0f41ee89a';
+    r'e041d0cee3d19ff12ce2f713189b266573cf90d3';
 
 /// See also [CurrentLyricsNotifier].
 @ProviderFor(CurrentLyricsNotifier)
-final currentLyricsNotifierProvider = AutoDisposeAsyncNotifierProvider<
-    CurrentLyricsNotifier,
-    ({int currentIndex, List<Lyrics> lyricsList})?>.internal(
+final currentLyricsNotifierProvider =
+    AutoDisposeAsyncNotifierProvider<CurrentLyricsNotifier, String?>.internal(
   CurrentLyricsNotifier.new,
   name: r'currentLyricsNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -332,7 +329,6 @@ final currentLyricsNotifierProvider = AutoDisposeAsyncNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$CurrentLyricsNotifier
-    = AutoDisposeAsyncNotifier<({int currentIndex, List<Lyrics> lyricsList})?>;
+typedef _$CurrentLyricsNotifier = AutoDisposeAsyncNotifier<String?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

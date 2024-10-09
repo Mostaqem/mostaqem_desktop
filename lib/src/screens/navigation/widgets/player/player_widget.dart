@@ -7,6 +7,7 @@ import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/normal_player.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
+import 'package:mostaqem/src/screens/settings/startup/provider/startup_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 final isCollapsedProvider = StateProvider<bool>((ref) => false);
@@ -37,6 +38,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   @override
   void onWindowClose() {
+  
     final player = ref.read(currentAlbumProvider);
     if (player == null) return;
 

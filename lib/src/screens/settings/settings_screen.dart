@@ -3,6 +3,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/settings/appearance/apperance.dart';
 import 'package:mostaqem/src/screens/settings/download/download_options.dart';
+import 'package:mostaqem/src/screens/settings/startup/startup_options.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/snackbar.dart';
@@ -33,6 +34,10 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   const SizedBox(
                     height: 52,
+                  ),
+                  const StartupOptions(),
+                  const SizedBox(
+                    height: 30,
                   ),
                   const DownloadOptions(),
                   const SizedBox(

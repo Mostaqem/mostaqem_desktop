@@ -115,58 +115,52 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         style: TextStyle(color: Colors.white),
                       );
                     }
-                    final itemHeights = <int, double>{};
-                    final screenWidth = MediaQuery.sizeOf(context).width;
-                    final responsiveWidth = screenWidth * 0.3;
-                    final itemHeight = (screenWidth / 1920) * 95;
-                    final numberOfColumns =
-                        (responsiveWidth / (1920 * 0.5) * 10).round();
 
-                    if (scrollController.hasClients) {
-                      scrollController.animateTo(
-                        (data.currentIndex ~/ numberOfColumns) * itemHeight,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-
-                    return SizedBox(
-                      width: responsiveWidth,
-                      height: MediaQuery.sizeOf(context).height - 550,
-                      child: GridView.builder(
-                        controller: scrollController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: numberOfColumns,
-                        ),
-                        itemCount: data.lyricsList.length,
-                        cacheExtent: 30,
-                        itemBuilder: (context, index) {
-                          final lyric = data.lyricsList[index];
-                          final isCurrent = index == data.currentIndex;
-
-                          return LayoutBuilder(
-                            builder: (context, constraints) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                itemHeights[index] = constraints.maxHeight;
-                              });
-                              return Text(
-                                lyric.words,
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.amiri(
-                                  fontWeight:
-                                      isCurrent ? FontWeight.w900 : null,
-                                  fontSize: 24,
-                                  color: isCurrent
-                                      ? theme.colorScheme.primary
-                                      : Colors.white.withOpacity(0.5),
-                                ),
-                              );
-                            },
-                          );
-                        },
+                    return Text(
+                      data,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.amiri(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 24,
+                        color: theme.colorScheme.primary,
                       ),
                     );
+
+                    // return SizedBox(
+                    //   width: responsiveWidth,
+                    //   height: MediaQuery.sizeOf(context).height - 550,
+                    //   child: GridView.builder(
+                    //     controller: scrollController,
+                    //     physics: const NeverScrollableScrollPhysics(),
+                    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    //       crossAxisCount: numberOfColumns,
+                    //     ),
+                    //     itemCount: data.lyricsList.length,
+                    //     cacheExtent: 30,
+                    //     itemBuilder: (context, index) {
+
+                    //       return LayoutBuilder(
+                    //         builder: (context, constraints) {
+                    //           WidgetsBinding.instance.addPostFrameCallback((_) {
+                    //             itemHeights[index] = constraints.maxHeight;
+                    //           });
+                    //           return Text(
+                    //             lyric.words,
+                    //             textAlign: TextAlign.center,
+                    //             style: GoogleFonts.amiri(
+                    //               fontWeight:
+                    //                   isCurrent ? FontWeight.w900 : null,
+                    //               fontSize: 24,
+                    //               color: isCurrent
+                    //                   ? theme.colorScheme.primary
+                    //                   : Colors.white.withOpacity(0.5),
+                    //             ),
+                    //           );
+                    //         },
+                    //       );
+                    //     },
+                    //   ),
+                    // );
                   },
                 ),
               ),

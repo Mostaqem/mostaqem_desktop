@@ -56,7 +56,7 @@ Future<File> cacheLyrics(
 }
 
 @riverpod
-Future<({int currentIndex, List<Lyrics> lyricsList})?> syncLyrics(
+Future<String?> syncLyrics(
   SyncLyricsRef ref,
 ) async {
   final currentAlbum = ref.watch(currentAlbumProvider);
@@ -87,7 +87,7 @@ Future<({int currentIndex, List<Lyrics> lyricsList})?> syncLyrics(
           if (lyric.key <= next.inMilliseconds) {
             ref
                 .read(currentLyricsNotifierProvider.notifier)
-                .updateLyrics(value: (currentIndex: i, lyricsList: current));
+                .updateLyrics(value: lyric.value);
           }
         }
       },
@@ -99,12 +99,12 @@ Future<({int currentIndex, List<Lyrics> lyricsList})?> syncLyrics(
 @riverpod
 class CurrentLyricsNotifier extends _$CurrentLyricsNotifier {
   @override
-  Future<({int currentIndex, List<Lyrics> lyricsList})?> build() async {
+  Future<String?> build() async {
     return ref.watch(syncLyricsProvider.future);
   }
 
   void updateLyrics({
-    required ({int currentIndex, List<Lyrics> lyricsList}) value,
+    required String value,
   }) {
     state = AsyncData(value);
   }

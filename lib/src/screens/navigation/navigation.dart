@@ -24,7 +24,7 @@ class _NavigationState extends ConsumerState<Navigation> {
   @override
   void initState() {
     super.initState();
-    if (Env.mStore == false) {
+    if (Constants.mStore == false) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final state = await ref.read(checkUpdateProvider.future);
         if (!mounted) return;
