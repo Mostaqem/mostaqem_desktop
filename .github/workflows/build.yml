@@ -18,10 +18,11 @@ jobs:
       - run: flutter config --enable-windows-desktop
       - name: Create .env file
         run: |
-          "@"
+          $envContent = @"
           PROD_BASE_API=${{ secrets.PRODAPI }}
           mStore=false
-          "@" | Out-File -FilePath .env -Encoding ascii
+          "@
+          $envContent | Out-File -FilePath .env -Encoding ascii
         shell: pwsh
         
       - run: flutter pub get
