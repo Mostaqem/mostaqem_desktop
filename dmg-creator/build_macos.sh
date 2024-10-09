@@ -4,7 +4,7 @@ dev_id='Apple Development: ismailalamkhan@icloud.com (MMN4P53468)';
 dmg_name="mostaqem-macos.dmg";
 
 echo "- Building macOS app:";
-flutter build macos --dart-define-from-file=.env;
+flutter build macos --dart-define-from-file ../.env;
 
 echo "- Checking codesigning identity:";
 security find-identity -p codesigning -v
