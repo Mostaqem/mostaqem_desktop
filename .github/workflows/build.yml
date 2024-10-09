@@ -3,10 +3,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-
-env:
-  
+  workflow_dispatch:  
 
 jobs:
   build_windows:
@@ -28,7 +25,7 @@ jobs:
           
       - run: flutter pub get
 
-      - run: flutter build windows --dart-define-from-file .env
+      - run: flutter build windows --dart-define-from-file=.env
 
       - run: cp -r build/windows/x64/runner/Release mostaqem-windows-exe
       - run: tar.exe -a -c -f mostaqem-windows-exe.zip mostaqem-windows-exe
@@ -74,7 +71,7 @@ jobs:
           
       - run: flutter pub get
 
-      - run: flutter build linux --verbose --dart-define-from-file .env
+      - run: flutter build linux --verbose --dart-define-from-file=.env
 
       - name: Build RPM Package
         run: |
