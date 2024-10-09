@@ -44,23 +44,6 @@ class StartupOptions extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(
-          height: 12,
-        ),
-        ListTile(
-          title: const Text('زر الإغلاق يصغر شاشة مستقيم'),
-          trailing: Consumer(
-            builder: (context, ref, child) {
-              final isMinimize = ref.watch(minimizeNotifierProvider);
-              return Switch(
-                value: isMinimize,
-                onChanged: (value) => ref
-                    .read(minimizeNotifierProvider.notifier)
-                    .toggle(value: value),
-              );
-            },
-          ),
-        ),
       ],
     );
   }

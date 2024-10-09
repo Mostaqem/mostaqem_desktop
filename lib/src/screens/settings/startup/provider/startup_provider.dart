@@ -24,16 +24,3 @@ class StartupNotifier extends _$StartupNotifier {
     }
   }
 }
-
-@riverpod
-class MinimizeNotifier extends _$MinimizeNotifier {
-  @override
-  bool build() {
-    return CacheHelper.getBool('isMinimize') ?? false;
-  }
-
-  void toggle({required bool value}) {
-    state = value;
-    CacheHelper.setBool('isMinimize', value: value);
-  }
-}
