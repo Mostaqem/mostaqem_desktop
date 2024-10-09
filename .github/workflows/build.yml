@@ -6,8 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  PROD_BASE_API: ${{ secrets.PRODAPI }}
-  mStore: false
+  
 
 jobs:
   build_windows:
@@ -20,10 +19,16 @@ jobs:
         uses: subosito/flutter-action@v2
 
       - run: flutter config --enable-windows-desktop
-
+      - name: Create .env file
+        run: |
+          cat > .env <<EOF
+          PROD_BASE_API= ${{ secrets.PRODAPI }}
+          mStore=false
+          EOF
+          
       - run: flutter pub get
 
-      - run: flutter build windows
+      - run: flutter build windows --dart-define-from-file .env
 
       - run: cp -r build/windows/x64/runner/Release mostaqem-windows-exe
       - run: tar.exe -a -c -f mostaqem-windows-exe.zip mostaqem-windows-exe
@@ -60,10 +65,16 @@ jobs:
       - run: sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev mpv libmpv-dev dpkg-dev rpm tree
 
       - run: flutter config --enable-linux-desktop
-
+      - name: Create .env file
+        run: |
+          cat > .env <<EOF
+          PROD_BASE_API= ${{ secrets.PRODAPI }}
+          mStore=false
+          EOF
+          
       - run: flutter pub get
 
-      - run: flutter build linux --verbose
+      - run: flutter build linux --verbose --dart-define-from-file .env
 
       - name: Build RPM Package
         run: |
@@ -111,7 +122,14 @@ jobs:
 
       - name: install appdmg
         run: sudo npm install -g appdmg
-
+        
+      - name: Create .env file
+        run: |
+          cat > .env <<EOF
+          PROD_BASE_API= ${{ secrets.PRODAPI }}
+          mStore=false
+          EOF
+          
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
 
