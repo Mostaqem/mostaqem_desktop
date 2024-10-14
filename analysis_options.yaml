@@ -4,6 +4,7 @@ analyzer:
   plugins:
     - custom_lint
   errors:
+    avoid_bool_literals_in_conditional_expressions: ignore
     invalid_annotation_target: ignore
     prefer_asserts_with_message: ignore
     public_member_api_docs: ignore

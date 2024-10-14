@@ -12,6 +12,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provid
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class FullScreenWidget extends ConsumerStatefulWidget {
   const FullScreenWidget({required this.player, super.key});
@@ -22,17 +23,13 @@ class FullScreenWidget extends ConsumerStatefulWidget {
 }
 
 class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
-  late final ScrollController scrollController;
-
   @override
   void initState() {
-    scrollController = ScrollController();
     super.initState();
   }
 
   @override
   void dispose() {
-    scrollController.dispose();
     super.dispose();
   }
 
@@ -206,7 +203,9 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                       ),
                     ),
                     Visibility(
-                      visible: ref.watch(isLocalProvider),
+                      visible: UniversalPlatform.isWeb
+                          ? false
+                          : ref.watch(isLocalProvider),
                       child: Text(
                         'تشغيل اوفلاين',
                         style: TextStyle(

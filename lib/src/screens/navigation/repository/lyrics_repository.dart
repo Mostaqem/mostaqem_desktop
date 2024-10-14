@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lrc/lrc.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
@@ -10,17 +11,20 @@ import 'package:mostaqem/src/screens/navigation/repository/player_repository.dar
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 part 'lyrics_repository.g.dart';
 
 @riverpod
 Future<String?> getLyrics(GetLyricsRef ref, {required String filename}) async {
-  final directory = await getTemporaryDirectory();
-  final cacheDir = directory.path;
-  final file = File('$cacheDir/$filename.lrc');
-  if (file.existsSync() && file.lengthSync() > 0) {
-    debugPrint('File: $file');
-    return file.readAsString();
+  if (!UniversalPlatform.isWeb) {
+    final directory = await getTemporaryDirectory();
+    final cacheDir = directory.path;
+    final file = File('$cacheDir/$filename.lrc');
+    if (file.existsSync() && file.lengthSync() > 0) {
+      debugPrint('File: $file');
+      return file.readAsString();
+    }
   }
   final player = ref.watch(currentAlbumProvider);
 
@@ -35,9 +39,12 @@ Future<String?> getLyrics(GetLyricsRef ref, {required String filename}) async {
     return null;
   }
   final adjustedLyrics = lyrics.replaceAll('/', '\n');
-  await ref.read(
-    cacheLyricsProvider(filename: filename, content: adjustedLyrics).future,
-  );
+
+  if (!UniversalPlatform.isWeb) {
+    await ref.read(
+      cacheLyricsProvider(filename: filename, content: adjustedLyrics).future,
+    );
+  }
 
   return adjustedLyrics;
 }
@@ -51,7 +58,6 @@ Future<File> cacheLyrics(
   final directory = await getTemporaryDirectory();
   final cacheDir = directory.path;
   final file = File('$cacheDir/$filename.lrc');
-
   return file.writeAsString(content);
 }
 

@@ -3,7 +3,10 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build_windows:
@@ -24,7 +27,7 @@ jobs:
           "@
           $envContent | Out-File -FilePath .env -Encoding ascii
         shell: pwsh
-        
+
       - run: flutter pub get
 
       - run: flutter build windows --dart-define-from-file .env
@@ -70,7 +73,7 @@ jobs:
           PROD_BASE_API= ${{ secrets.PRODAPI }}
           mStore=false
           EOF
-          
+
       - run: flutter pub get
 
       - run: flutter build linux --verbose --dart-define-from-file .env
@@ -121,14 +124,14 @@ jobs:
 
       - name: install appdmg
         run: sudo npm install -g appdmg
-        
+
       - name: Create .env file
         run: |
           cat > .env <<EOF
           PROD_BASE_API= ${{ secrets.PRODAPI }}
           mStore=false
           EOF
-          
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
 
@@ -153,7 +156,7 @@ jobs:
 
       - name: Build and Sign
         run: sh ./dmg-creator/build_macos.sh
-  
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:

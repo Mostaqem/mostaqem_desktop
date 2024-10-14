@@ -10,6 +10,7 @@ import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 final isExtendedProvider = StateProvider<bool>((ref) => false);
 
@@ -37,6 +38,7 @@ class _NavigationState extends ConsumerState<Navigation> {
 
   @override
   Widget build(BuildContext context) {
+    ignoreDownloadScreenIfWeb();
     final isFullScreen = ref.watch(isFullScreenProvider);
     final player =
         ref.watch(playerNotifierProvider.select((value) => value.album));
@@ -50,7 +52,7 @@ class _NavigationState extends ConsumerState<Navigation> {
               children: [
                 Column(
                   children: [
-                    const WindowButtons(),
+                    if (!UniversalPlatform.isWeb) const WindowButtons(),
                     Expanded(
                       child: Consumer(
                         builder: (context, ref, child) {
@@ -123,8 +125,18 @@ class RightSide extends ConsumerWidget {
               ...children.map(
                 (child) => NavigationRailDestination(
                   icon: child.icon,
-                  label: Text(child.label),
+                  label: Text(
+                    child.label,
+                    style: TextStyle(
+                      color: UniversalPlatform.isWeb &&
+                              child.label == Constants.fakeLableString
+                          ? Colors.transparent
+                          : null,
+                    ),
+                  ),
                   selectedIcon: child.selectedIcon,
+                  disabled: UniversalPlatform.isWeb &&
+                      child.label == Constants.fakeLableString,
                 ),
               ),
             ],

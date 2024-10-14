@@ -10,6 +10,7 @@ import 'package:mostaqem/src/screens/reciters/providers/showhide_image.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class RecitersScreen extends ConsumerWidget {
   const RecitersScreen({super.key});
@@ -26,7 +27,7 @@ class RecitersScreen extends ConsumerWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const WindowButtons(),
+          if (!UniversalPlatform.isWeb) const WindowButtons(),
           const SizedBox(
             height: 10,
           ),
@@ -242,9 +243,13 @@ class RecitersScreen extends ConsumerWidget {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: CachedNetworkImageProvider(
-                                      data[indexInPage].image!,
-                                    ),
+                                    image: UniversalPlatform.isWeb
+                                        ? Image.network(
+                                            data[indexInPage].image!,
+                                          ).image
+                                        : CachedNetworkImageProvider(
+                                            data[indexInPage].image!,
+                                          ),
                                   ),
                                   borderRadius: BorderRadius.circular(12),
                                 ),

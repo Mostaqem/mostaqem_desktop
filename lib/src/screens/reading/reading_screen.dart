@@ -6,6 +6,7 @@ import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class ReadingScreen extends ConsumerWidget {
   const ReadingScreen({required this.surah, super.key});
@@ -23,7 +24,7 @@ class ReadingScreen extends ConsumerWidget {
         primary: true,
         child: Column(
           children: [
-            const WindowButtons(),
+            if (!UniversalPlatform.isWeb) const WindowButtons(),
             const SizedBox(
               height: 10,
             ),

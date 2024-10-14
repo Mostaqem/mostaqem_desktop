@@ -13,6 +13,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.da
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class NormalPlayer extends ConsumerStatefulWidget {
   const NormalPlayer({
@@ -65,7 +66,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
           Row(
             children: [
               Visibility(
-                visible: isBtnVisible(album),
+                visible: UniversalPlatform.isWeb ? false : isBtnVisible(album),
                 child: ToolTipIconButton(
                   message: 'تحميل',
                   iconSize: 16,

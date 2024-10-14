@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:mostaqem/src/core/SMTC/smtc_provider.dart';
+import 'package:mostaqem/src/core/SMTC/stmc_kit.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -19,6 +19,7 @@ import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart'
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 
 part 'player_repository.g.dart';
@@ -78,7 +79,7 @@ class PlayerNotifier extends _$PlayerNotifier {
     });
     player.stream.playing.listen((playing) async {
       state = state.copyWith(isPlaying: playing);
-      if (Platform.isWindows) {
+      if (UniversalPlatform.isWindows) {
         windowThumbnailBar();
         ref.read(
           initSMTCProvider(
@@ -91,15 +92,16 @@ class PlayerNotifier extends _$PlayerNotifier {
           ),
         );
       }
-
-      ref.read(
-        updateRPCDiscordProvider(
-          surahName: state.album?.surah.simpleName ?? '',
-          reciter: state.album?.reciter.englishName ?? '',
-          position: state.position.inMilliseconds,
-          duration: state.duration.inMilliseconds,
-        ),
-      );
+      if (!UniversalPlatform.isWeb) {
+        ref.read(
+          updateRPCDiscordProvider(
+            surahName: state.album?.surah.simpleName ?? '',
+            reciter: state.album?.reciter.englishName ?? '',
+            position: state.position.inMilliseconds,
+            duration: state.duration.inMilliseconds,
+          ),
+        );
+      }
     });
   }
 
@@ -275,7 +277,6 @@ class PlayerNotifier extends _$PlayerNotifier {
     final chosenReciter = ref.read(userReciterProvider);
 
     final mixID = createShortHash(surahID, recitationID, chosenReciter.id);
-    debugPrint(mixID);
     final cachedFile = await cacheManager.getFileFromCache(mixID);
     final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
 
@@ -291,14 +292,16 @@ class PlayerNotifier extends _$PlayerNotifier {
           album.url,
         ),
       );
-      await cacheManager.downloadFile(album.url, key: mixID);
-      debugPrint('Cached');
+
+      if (!UniversalPlatform.isWeb) {
+        debugPrint('Cached');
+        await cacheManager.downloadFile(album.url, key: mixID);
+      }
+
       return;
     }
-    debugPrint(cachedFile.toString());
-    if (cachedFile != null) {
+    if (cachedFile != null && !UniversalPlatform.isWeb) {
       debugPrint('Loading from cache');
-
       final album = Album(
         surah: cachedAlbum.surah,
         reciter: cachedAlbum.reciter,

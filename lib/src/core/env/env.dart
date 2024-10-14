@@ -4,4 +4,6 @@ class Constants {
   static String prodBaseAPI = const String.fromEnvironment('PROD_BASE_API');
 
   static bool mStore = const bool.fromEnvironment('MSTORE');
+
+  static String fakeLableString = 'fake screen';
 }

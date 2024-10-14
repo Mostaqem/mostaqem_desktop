@@ -6,6 +6,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class PlayingSurah extends StatelessWidget {
   const PlayingSurah({
@@ -21,7 +22,6 @@ class PlayingSurah extends StatelessWidget {
   Widget build(BuildContext context) {
     final surah = ref.watch(currentSurahProvider);
     final reciter = ref.watch(currentReciterProvider);
-
     return Visibility(
       visible: !isFullScreen,
       child: Row(
@@ -67,6 +67,11 @@ class PlayingSurah extends StatelessWidget {
               TextHover(
                 text: reciter?.arabicName ?? '',
                 onTap: () {
+                  if (UniversalPlatform.isWeb) {
+                    ref.read(goRouterProvider).go('/reciters');
+                    return;
+                  }
+
                   final isLocalAudio = ref.read(isLocalProvider);
 
                   if (isLocalAudio == false) {

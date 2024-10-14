@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:discord_rpc/discord_rpc.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 part 'discord_provider.g.dart';
 
@@ -18,7 +19,7 @@ class DiscordImp {
     required int duration,
     required String reciter,
   }) {
-    if (!Platform.isMacOS) {
+    if (!UniversalPlatform.isMacOS && !UniversalPlatform.isWeb) {
       rpc
         ..start(autoRegister: true)
         ..updatePresence(
