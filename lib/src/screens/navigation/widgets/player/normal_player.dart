@@ -13,6 +13,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.da
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class NormalPlayer extends ConsumerStatefulWidget {
   const NormalPlayer({
@@ -30,6 +31,10 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
   final List<Album> downloadedAlbums = [];
 
   bool isBtnVisible(Album? album) {
+    if (UniversalPlatform.isWeb) {
+      return false;
+    }
+
     final isOffline = ref.watch(currentAlbumProvider)?.isLocal ?? false;
     if (isOffline) {
       return false;

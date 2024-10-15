@@ -10,6 +10,7 @@ import 'package:mostaqem/src/app.dart';
 import 'package:mostaqem/src/screens/initial/inital_loading.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:mostaqem/src/shared/http_override/http_override.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -21,33 +22,39 @@ void main() async {
   );
   HttpOverrides.global = MyHttpOverrides();
 
-  launchAtStartup.setup(
-    appName: 'Mostaqem',
-    appPath: Platform.resolvedExecutable,
-    // Set packageName parameter to support MSIX.
-  );
+  if (!UniversalPlatform.isWeb) {
+    launchAtStartup.setup(
+      appName: 'Mostaqem',
+      appPath: Platform.resolvedExecutable,
+      // Set packageName parameter to support MSIX.
+    );
+    await windowManager.ensureInitialized();
+  }
 
-  if (!Platform.isMacOS) {
+  if (!UniversalPlatform.isMacOS && !UniversalPlatform.isWeb) {
     DiscordRPC.initialize();
   }
-  await windowManager.ensureInitialized();
 
   MediaKit.ensureInitialized();
-  MetadataGod.initialize();
 
-  final windowOptions = WindowOptions(
-    size: const Size(1280, 780),
-    minimumSize: const Size(800, 500),
-    center: true,
-    title: 'Mostaqem',
-    backgroundColor: Colors.transparent,
-    titleBarStyle:
-        Platform.isWindows ? TitleBarStyle.hidden : TitleBarStyle.normal,
-  );
-  await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+  if (!UniversalPlatform.isWeb) {
+    MetadataGod.initialize();
+
+    final windowOptions = WindowOptions(
+      size: const Size(1280, 780),
+      minimumSize: const Size(800, 500),
+      center: true,
+      title: 'Mostaqem',
+      backgroundColor: Colors.transparent,
+      titleBarStyle:
+          Platform.isWindows ? TitleBarStyle.hidden : TitleBarStyle.normal,
+    );
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
+
   await Future<void>.delayed(const Duration(seconds: 1));
   runApp(const Mostaqem());
 }

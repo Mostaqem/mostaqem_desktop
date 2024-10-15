@@ -8,6 +8,7 @@ import 'package:mostaqem/src/screens/navigation/repository/player_repository.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player/normal_player.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/settings/startup/provider/startup_provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:window_manager/window_manager.dart';
 
 final isCollapsedProvider = StateProvider<bool>((ref) => false);
@@ -26,19 +27,21 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
   @override
   void initState() {
     super.initState();
+    if (UniversalPlatform.isWeb) {
+      return;
+    }
+
     windowManager.addListener(this);
   }
 
   @override
   void dispose() {
     windowManager.removeListener(this);
-
     super.dispose();
   }
 
   @override
   void onWindowClose() {
-  
     final player = ref.read(currentAlbumProvider);
     if (player == null) return;
 

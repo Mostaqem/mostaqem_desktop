@@ -50,6 +50,8 @@ dependencies:
   url_launcher: "^6.3.0"
   window_manager: "^0.3.9"
   windows_taskbar: "^1.1.2"
+  universal_platform: ^1.1.0
+  web: ^1.1.0
 
 dev_dependencies:
   build_runner: "^2.4.11"

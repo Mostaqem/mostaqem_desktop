@@ -3,12 +3,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/core/theme/theme.dart';
+import 'package:mostaqem/src/screens/initial/widgets/mobile_warning.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
+import 'package:mostaqem/src/shared/device/is_mobile_kit.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_widgets.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -18,6 +21,8 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(goRouterProvider);
     final userSeedColor = ref.watch(userSeedColorProvider);
     final userTheme = ref.watch(themeNotifierProvider);
+    final isMobile = isMobileBrowser();
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: router,
@@ -38,21 +43,25 @@ class MyApp extends ConsumerWidget {
               alignment: Alignment.bottomCenter,
               children: [
                 child!,
-                SizedBox(
-                  height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                    ),
-                    child: Overlay(
-                      initialEntries: [
-                        OverlayEntry(
-                          builder: (context) => const PlayerWidget(),
-                        ),
-                      ],
+                if (UniversalPlatform.isWeb)
+                  if (isMobile) const MobileWarningOverlay(),
+                if (!UniversalPlatform.isWeb ||
+                    (UniversalPlatform.isWeb && !isMobile))
+                  SizedBox(
+                    height: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      child: Overlay(
+                        initialEntries: [
+                          OverlayEntry(
+                            builder: (context) => const PlayerWidget(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 const DownloadManagerWidget(),
                 const RecitationWidget(),
               ],

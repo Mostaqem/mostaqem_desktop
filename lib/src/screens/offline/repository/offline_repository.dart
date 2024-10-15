@@ -79,7 +79,8 @@ class OfflineRepository {
 
 final offlineRepo = Provider(OfflineRepository.new);
 
-final getLocalAudioProvider = StreamProvider.autoDispose<List<Album>>((ref) async* {
+final getLocalAudioProvider =
+    StreamProvider.autoDispose<List<Album>>((ref) async* {
   final repo = ref.watch(offlineRepo);
   yield* repo.loadAudioAsAlbum();
 });

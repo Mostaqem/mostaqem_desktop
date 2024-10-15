@@ -10,6 +10,7 @@ import 'package:mostaqem/src/screens/reciters/providers/showhide_image.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class RecitersScreen extends ConsumerWidget {
   const RecitersScreen({super.key});

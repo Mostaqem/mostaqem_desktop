@@ -93,6 +93,7 @@ Map<ShortcutActivator, VoidCallback> shortcutsBindings(
         bindings[shortcut.activator] = () => checkUpdateDialog(context, ref);
       case ShortcutsEnum.exitFullscreen:
         bindings[shortcut.activator] = () {
+          debugPrint('exit full screen ${ref.read(isFullScreenProvider)}');
           if (ref.read(isFullScreenProvider)) {
             ref.read(isFullScreenProvider.notifier).toggle(value: false);
           }

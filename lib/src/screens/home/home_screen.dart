@@ -13,6 +13,7 @@ import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/nework_required_widget.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -128,16 +129,51 @@ class HomeScreen extends ConsumerWidget {
                               height: 350,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: CachedNetworkImageProvider(
-                                    surahImage ?? '',
-                                    errorListener: (_) => const Icon(
-                                      Icons.broken_image_outlined,
-                                    ),
-                                  ),
-                                ),
                               ),
+                              child: UniversalPlatform.isWeb
+                                  ? Image.network(
+                                      surahImage ?? '',
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child; // Image loaded
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Icon(
+                                        Icons.broken_image_outlined,
+                                      ),
+                                    )
+                                  : CachedNetworkImage(
+                                      imageUrl: surahImage ?? '',
+                                      fit: BoxFit.cover,
+                                      progressIndicatorBuilder:
+                                          (context, url, downloadProgress) =>
+                                              Center(
+                                        child: CircularProgressIndicator(
+                                          value: downloadProgress.progress,
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(
+                                        Icons.broken_image_outlined,
+                                      ),
+                                    ),
                             ),
                             const SizedBox(
                               height: 15,

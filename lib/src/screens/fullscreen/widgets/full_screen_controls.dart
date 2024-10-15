@@ -5,6 +5,7 @@ import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.d
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:window_manager/window_manager.dart';
 
 class FullScreenControl extends ConsumerWidget {
@@ -19,7 +20,9 @@ class FullScreenControl extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ToolTipIconButton(
       onPressed: () async {
-        if (await windowManager.isFullScreen()) {
+        if (UniversalPlatform.isWeb &&
+                ref.read(isFullScreenProvider.notifier).isFullScreen() ||
+            !UniversalPlatform.isWeb && await windowManager.isFullScreen()) {
           ref.read(isFullScreenProvider.notifier).toggle(value: false);
         } else {
           ref.read(isFullScreenProvider.notifier).toggle(value: true);
