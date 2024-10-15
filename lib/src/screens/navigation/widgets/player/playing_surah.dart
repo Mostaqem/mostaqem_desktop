@@ -67,11 +67,6 @@ class PlayingSurah extends StatelessWidget {
               TextHover(
                 text: reciter?.arabicName ?? '',
                 onTap: () {
-                  if (UniversalPlatform.isWeb) {
-                    ref.read(goRouterProvider).go('/reciters');
-                    return;
-                  }
-
                   final isLocalAudio = ref.read(isLocalProvider);
 
                   if (isLocalAudio == false) {

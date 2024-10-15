@@ -31,6 +31,10 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
   final List<Album> downloadedAlbums = [];
 
   bool isBtnVisible(Album? album) {
+    if (UniversalPlatform.isWeb) {
+      return false;
+    }
+
     final isOffline = ref.watch(currentAlbumProvider)?.isLocal ?? false;
     if (isOffline) {
       return false;
@@ -66,7 +70,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
           Row(
             children: [
               Visibility(
-                visible: UniversalPlatform.isWeb ? false : isBtnVisible(album),
+                visible: isBtnVisible(album),
                 child: ToolTipIconButton(
                   message: 'تحميل',
                   iconSize: 16,

@@ -9,7 +9,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
-// import 'package:mostaqem/src/shared/device/is_mobile_kit.dart';
+import 'package:mostaqem/src/shared/device/is_mobile_kit.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_widgets.dart';
 import 'package:universal_platform/universal_platform.dart';
 
@@ -21,8 +21,7 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(goRouterProvider);
     final userSeedColor = ref.watch(userSeedColorProvider);
     final userTheme = ref.watch(themeNotifierProvider);
-    // final isMobile = isMobileBrowser();
-    const isMobile = false;
+    final isMobile = isMobileBrowser();
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
@@ -46,8 +45,8 @@ class MyApp extends ConsumerWidget {
                 child!,
                 if (UniversalPlatform.isWeb)
                   if (isMobile) const MobileWarningOverlay(),
-                if (UniversalPlatform.isWeb && !isMobile ||
-                    !UniversalPlatform.isWeb)
+                if (!UniversalPlatform.isWeb ||
+                    (UniversalPlatform.isWeb && !isMobile))
                   SizedBox(
                     height: 100,
                     child: Padding(

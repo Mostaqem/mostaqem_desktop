@@ -27,7 +27,7 @@ class RecitersScreen extends ConsumerWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!UniversalPlatform.isWeb) const WindowButtons(),
+          const WindowButtons(),
           const SizedBox(
             height: 10,
           ),
@@ -243,13 +243,9 @@ class RecitersScreen extends ConsumerWidget {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: UniversalPlatform.isWeb
-                                        ? Image.network(
-                                            data[indexInPage].image!,
-                                          ).image
-                                        : CachedNetworkImageProvider(
-                                            data[indexInPage].image!,
-                                          ),
+                                    image: CachedNetworkImageProvider(
+                                      data[indexInPage].image!,
+                                    ),
                                   ),
                                   borderRadius: BorderRadius.circular(12),
                                 ),

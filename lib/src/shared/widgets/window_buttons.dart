@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:window_manager/window_manager.dart';
 
 class WindowButtons extends StatelessWidget {
@@ -9,7 +10,7 @@ class WindowButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Platform.isWindows
+    return UniversalPlatform.isWindows
         ? Directionality(
             textDirection: TextDirection.ltr,
             child: SizedBox(

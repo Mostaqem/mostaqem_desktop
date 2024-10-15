@@ -24,7 +24,7 @@ class ReadingScreen extends ConsumerWidget {
         primary: true,
         child: Column(
           children: [
-            if (!UniversalPlatform.isWeb) const WindowButtons(),
+            const WindowButtons(),
             const SizedBox(
               height: 10,
             ),

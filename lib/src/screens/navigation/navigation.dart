@@ -52,7 +52,7 @@ class _NavigationState extends ConsumerState<Navigation> {
               children: [
                 Column(
                   children: [
-                    if (!UniversalPlatform.isWeb) const WindowButtons(),
+                    const WindowButtons(),
                     Expanded(
                       child: Consumer(
                         builder: (context, ref, child) {

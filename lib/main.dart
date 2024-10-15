@@ -28,23 +28,18 @@ void main() async {
       appPath: Platform.resolvedExecutable,
       // Set packageName parameter to support MSIX.
     );
+    await windowManager.ensureInitialized();
   }
 
   if (!UniversalPlatform.isMacOS && !UniversalPlatform.isWeb) {
     DiscordRPC.initialize();
   }
 
-  if (!UniversalPlatform.isWeb) {
-    await windowManager.ensureInitialized();
-  }
-
   MediaKit.ensureInitialized();
 
   if (!UniversalPlatform.isWeb) {
     MetadataGod.initialize();
-  }
 
-  if (!UniversalPlatform.isWeb) {
     final windowOptions = WindowOptions(
       size: const Size(1280, 780),
       minimumSize: const Size(800, 500),
