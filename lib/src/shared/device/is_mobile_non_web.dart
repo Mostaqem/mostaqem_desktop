@@ -1,0 +1,3 @@
+bool isMobileBrowser() {
+  return false;
+}

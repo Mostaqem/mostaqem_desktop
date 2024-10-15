@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'fullscreen_kit.dart';
+import 'package:mostaqem/src/screens/navigation/repository/fullscreen_kit.dart';
 import 'package:universal_platform/universal_platform.dart';
-import 'package:web/web.dart' as web;
-import 'package:window_manager/window_manager.dart';
 
 final isFullScreenProvider =
     NotifierProvider<FullScreenNotifier, bool>(FullScreenNotifier.new);
@@ -16,13 +16,13 @@ class FullScreenNotifier extends Notifier<bool> {
     state = value;
 
     if (UniversalPlatform.isWeb) {
-      if (web.document.fullscreenElement == null) {
-        web.document.documentElement?.requestFullscreen();
+      if (!isFullScreenWeb()) {
+        requestFullScreen();
       } else {
-        web.document.exitFullscreen();
+        exitFullScreen();
       }
     } else {
-      windowManager.setFullScreen(value);
+      setFullScreen(value);
     }
   }
 
