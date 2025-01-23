@@ -21,6 +21,7 @@ jobs:
           $envContent = @"
           PROD_BASE_API=${{ secrets.PRODAPI }}
           mStore=false
+          DISCORD=${{ secrets.DISCORD }}
           "@
           $envContent | Out-File -FilePath .env -Encoding ascii
         shell: pwsh
@@ -69,6 +70,7 @@ jobs:
           cat > .env <<EOF
           PROD_BASE_API= ${{ secrets.PRODAPI }}
           mStore=false
+          DISCORD=${{ secrets.DISCORD }}
           EOF
           
       - run: flutter pub get
@@ -127,6 +129,7 @@ jobs:
           cat > .env <<EOF
           PROD_BASE_API= ${{ secrets.PRODAPI }}
           mStore=false
+          DISCORD=${{ secrets.DISCORD }}
           EOF
           
       - name: Set up Flutter
