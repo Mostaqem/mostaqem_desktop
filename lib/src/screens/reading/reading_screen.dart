@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -73,24 +74,44 @@ class ReadingScreen extends StatelessWidget {
                               .map(
                                 (e) => TextSpan(
                                   text: e.verse,
-                                  style: GoogleFonts.amiri(
+                                  style: GoogleFonts.amiriQuran(
                                     fontSize: 25,
                                   ),
                                   children: [
-                                    WidgetSpan(
-                                      alignment: PlaceholderAlignment.middle,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 10,
-                                          horizontal: 10,
-                                        ),
-                                        child: CircleAvatar(
-                                          child: Text(
-                                            e.verseNumber
-                                                .toString()
-                                                .toArabicNumbers,
+                                    const WidgetSpan(
+                                      child: SizedBox(
+                                        width: 10,
+                                        height: 70,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: e.verseNumber
+                                              .toString()
+                                              .toArabicNumbers,
+                                          style: GoogleFonts.amiri(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w800,
                                           ),
                                         ),
+                                      ],
+                                      text: '۝',
+                                      style: GoogleFonts.amiri(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                    const WidgetSpan(
+                                      child: SizedBox(
+                                        width: 10,
+                                        height: 70,
                                       ),
                                     ),
                                   ],
@@ -99,54 +120,7 @@ class ReadingScreen extends StatelessWidget {
                               .toList(),
                         ),
                       ),
-                      // Wrap(
-                      //   spacing: 8,
-                      //   runSpacing: 18,
-                      //   runAlignment: WrapAlignment.center,
-                      //   children: data
-                      //       .map(
-                      //         (e) => Row(
-                      //           mainAxisSize: MainAxisSize.min,
-                      //           mainAxisAlignment: MainAxisAlignment.center,
-                      //           spacing: 8,
-                      //           children: [
-                      //             Flexible(
-                      //               child: Text(
-                      //                 e.verse,
-                      //                 style: GoogleFonts.amiri(
-                      //                   fontSize: 25,
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //             CircleAvatar(
-                      //               child: Text(
-                      //                 e.verseNumber.toString().toArabicNumbers,
-                      //               ),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       )
-                      //       .toList(),
-                      // ),
                     );
-                    // return ListView.builder(
-                    //   itemCount: data.length,
-                    //   itemBuilder: (context, index) {
-                    //     return Padding(
-                    //       padding: const EdgeInsets.symmetric(
-                    //         vertical: 25,
-                    //         horizontal: 20,
-                    //       ),
-                    //       child: Text(
-                    //         data[index].verse,
-                    //         // textAlign: TextAlign.center,
-                    //         style: GoogleFonts.amiri(
-                    //           fontSize: 25,
-                    //         ),
-                    //       ),
-                    //     );
-                    //   },
-                    // );
                   },
                 );
               },
@@ -158,16 +132,14 @@ class ReadingScreen extends StatelessWidget {
   }
 }
 
-extension ToArabicNumber on String {
+extension ArabicNumbers on String {
   String get toArabicNumbers {
-    const englishNumbers = '0123456789';
-    const arabicNumbers = '٠١٢٣٤٥٦٧٨٩';
-
-    var result = this;
-    for (var i = 0; i < englishNumbers.length; i++) {
-      result = result.replaceAll(englishNumbers[i], arabicNumbers[i]);
+    const english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const arabic = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    var text = this;
+    for (var i = 0; i < english.length; i++) {
+      text = text.replaceAll(english[i], arabic[i]);
     }
-
-    return result;
+    return text;
   }
 }
