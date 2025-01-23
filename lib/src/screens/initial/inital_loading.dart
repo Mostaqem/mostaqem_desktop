@@ -73,7 +73,6 @@ class InitialLoading extends ConsumerWidget {
     final userColor = ref.watch(userSeedColorProvider);
     final userTheme = ref.watch(themeNotifierProvider);
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       themeMode: userTheme,
       theme: AppTheme.userLightTheme(userColor),
       darkTheme: AppTheme.userDarkTheme(userColor),

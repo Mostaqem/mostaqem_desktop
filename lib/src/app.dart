@@ -19,7 +19,6 @@ class MyApp extends ConsumerWidget {
     final userSeedColor = ref.watch(userSeedColorProvider);
     final userTheme = ref.watch(themeNotifierProvider);
     return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
       routerConfig: router,
       localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,
@@ -73,7 +72,6 @@ class Mostaqem extends StatelessWidget {
     return const ProviderScope(
       observers: [],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
         home: MyApp(),
       ),
     );
