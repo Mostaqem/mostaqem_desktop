@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -65,6 +64,9 @@ class ReadingScreen extends StatelessWidget {
                 );
                 return AsyncWidget(
                   value: scripts,
+                  error: (e, s) {
+                    return Text('Error: $e| ST: $s');
+                  },
                   data: (data) {
                     return Padding(
                       padding: const EdgeInsets.all(20),
