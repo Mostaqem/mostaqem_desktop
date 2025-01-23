@@ -30,6 +30,11 @@ jobs:
 
       - run: flutter build windows --dart-define-from-file .env
 
+      - name: Print all files in the directory
+        run: |
+          echo "Listing all files in the directory:"
+          ls -R build/windows/x64/runner/Release
+
       - run: cp -r build/windows/x64/runner/Release mostaqem-windows-exe
       - run: tar.exe -a -c -f mostaqem-windows-exe.zip mostaqem-windows-exe
 
