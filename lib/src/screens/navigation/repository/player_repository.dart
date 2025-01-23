@@ -56,11 +56,24 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     player.stream.duration.listen((duration) async {
       state = state.copyWith(duration: duration);
+
       if (state.album?.position != 0) {
+        final positionAlbum =
+            Duration(milliseconds: state.album?.position ?? 0);
         await player.seek(
-          Duration(milliseconds: state.album?.position ?? 0),
+          positionAlbum,
         );
       }
+      ref.read(
+        updateRPCDiscordProvider(
+          surahName: state.album?.surah.simpleName ?? '',
+          reciter: state.album?.reciter.englishName ?? '',
+          position: DateTime.now().add(state.position).millisecondsSinceEpoch,
+          duration: DateTime.now()
+              .add(state.position + duration)
+              .millisecondsSinceEpoch,
+        ),
+      );
     });
 
     player.stream.buffer.listen((buffering) {
@@ -91,15 +104,6 @@ class PlayerNotifier extends _$PlayerNotifier {
           ),
         );
       }
-
-      ref.read(
-        updateRPCDiscordProvider(
-          surahName: state.album?.surah.simpleName ?? '',
-          reciter: state.album?.reciter.englishName ?? '',
-          position: state.position.inMilliseconds,
-          duration: state.duration.inMilliseconds,
-        ),
-      );
     });
   }
 

@@ -6,7 +6,7 @@ part of 'mpris_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mprisRepositoryHash() => r'edb597b5af68d242498d5e906a331ab1f617b283';
+String _$mprisRepositoryHash() => r'4358a7b5af6b6032e18b1562ae9db974a0357f96';
 
 /// See also [mprisRepository].
 @ProviderFor(mprisRepository)
@@ -20,8 +20,10 @@ final mprisRepositoryProvider = AutoDisposeProvider<MPRISRepository>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef MprisRepositoryRef = AutoDisposeProviderRef<MPRISRepository>;
-String _$createMetadataHash() => r'7604ea1abea95c42dcf8405181f5284b9575c2e8';
+String _$createMetadataHash() => r'4489cfabfba171c3c4fd06b061b7bf724de15965';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -202,6 +204,8 @@ class CreateMetadataProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CreateMetadataRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `reciterName` of this provider.
   String get reciterName;
@@ -235,4 +239,4 @@ class _CreateMetadataProviderElement
   Duration get position => (origin as CreateMetadataProvider).position;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

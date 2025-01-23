@@ -2,6 +2,8 @@
 // ignore_for_file: inference_failure_on_untyped_parameter,
 // ignore_for_file: use_setters_to_change_properties
 
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
@@ -13,10 +15,11 @@ part 'reciters_repository.g.dart';
 abstract class RecitersRepository {
   Future<List<Reciter>> fetchReciters({
     required int page,
-    String? query,
   });
 
   Future<Reciter> fetchReciter({required int id});
+
+  Future<List<Reciter>> searchReciter({required String query});
 }
 
 class RecitersImpl implements RecitersRepository {
@@ -31,11 +34,19 @@ class RecitersImpl implements RecitersRepository {
   @override
   Future<List<Reciter>> fetchReciters({
     required int page,
-    String? query,
   }) async {
-    final url = query == null
-        ? '/reciter?page=$page&take=20'
-        : '/reciter?page=$page&take=20&name=$query';
+    final url = '/reciter?page=$page&take=20';
+
+    final request = await ref.watch(dioHelperProvider).getHTTP(url);
+    return request.data['data']['reciters']
+        .map<Reciter>((e) => Reciter.fromJson(e as Map<String, Object?>))
+        .toList();
+  }
+
+  @override
+  Future<List<Reciter>> searchReciter({String? query}) async {
+    final url = '/reciter/search?name=$query';
+
     final request = await ref.watch(dioHelperProvider).getHTTP(url);
     return request.data['data']['reciters']
         .map<Reciter>((e) => Reciter.fromJson(e as Map<String, Object?>))
@@ -46,19 +57,24 @@ class RecitersImpl implements RecitersRepository {
 final reciterRepositoryProvider = Provider<RecitersImpl>(RecitersImpl.new);
 
 @riverpod
-Future<Reciter> fetchReciter(FetchReciterRef ref, {required int id}) {
+Future<Reciter> fetchReciter(Ref ref, {required int id}) {
   return ref.watch(reciterRepositoryProvider).fetchReciter(id: id);
 }
 
 @riverpod
 Future<List<Reciter>> fetchReciters(
-  FetchRecitersRef ref, {
+  Ref ref, {
   required int page,
+}) {
+  return ref.watch(reciterRepositoryProvider).fetchReciters(page: page);
+}
+
+@riverpod
+Future<List<Reciter>> searchReciter(
+  Ref ref, {
   String? query,
 }) {
-  return ref
-      .watch(reciterRepositoryProvider)
-      .fetchReciters(page: page, query: query);
+  return ref.watch(reciterRepositoryProvider).searchReciter(query: query);
 }
 
 /// A [UserReciter] class to manage the state of the currently selected reciter.

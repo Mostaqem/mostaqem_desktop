@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -5,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'download_cache.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<String> downloadDestination(DownloadDestinationRef ref) async {
+Future<String> downloadDestination(Ref ref) async {
   final cache = ref.watch(downloadCacheProvider);
 
   if (cache != null) {

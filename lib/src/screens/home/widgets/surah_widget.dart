@@ -64,7 +64,7 @@ class SurahWidget extends ConsumerWidget {
                               Theme.of(context)
                                   .colorScheme
                                   .onPrimaryContainer
-                                  .withOpacity(0.1),
+                                  .withValues(alpha: 0.1),
                               BlendMode.srcIn,
                             ),
                           ),
@@ -96,7 +96,7 @@ class SurahWidget extends ConsumerWidget {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onPrimaryContainer
-                                          .withOpacity(0.5),
+                                          .withValues(alpha: 0.5),
                                     ),
                                   ),
                                 ),
@@ -149,7 +149,7 @@ class SurahWidget extends ConsumerWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.3),
+                        .withValues(alpha: 0.3),
                   ),
                   child: ToolTipIconButton(
                     message: 'اعادة المحاولة',
@@ -170,7 +170,7 @@ class SurahWidget extends ConsumerWidget {
                     color: Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.3),
+                        .withValues(alpha: 0.3),
                   ),
                 ),
               );

@@ -45,7 +45,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
     final theme = Theme.of(context);
     return Stack(
       children: [
-        if (connection == InternetConnectionStatus.connected && isProduction)
+        if (true)
           AsyncWidget(
             value: randomImage,
             data: (data) {
@@ -101,7 +101,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
               width: MediaQuery.sizeOf(context).width,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.8),
+                color: Colors.black.withValues(alpha: 0.8),
               ),
               child: ScrollConfiguration(
                 behavior:
@@ -125,42 +125,6 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         color: theme.colorScheme.primary,
                       ),
                     );
-
-                    // return SizedBox(
-                    //   width: responsiveWidth,
-                    //   height: MediaQuery.sizeOf(context).height - 550,
-                    //   child: GridView.builder(
-                    //     controller: scrollController,
-                    //     physics: const NeverScrollableScrollPhysics(),
-                    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //       crossAxisCount: numberOfColumns,
-                    //     ),
-                    //     itemCount: data.lyricsList.length,
-                    //     cacheExtent: 30,
-                    //     itemBuilder: (context, index) {
-
-                    //       return LayoutBuilder(
-                    //         builder: (context, constraints) {
-                    //           WidgetsBinding.instance.addPostFrameCallback((_) {
-                    //             itemHeights[index] = constraints.maxHeight;
-                    //           });
-                    //           return Text(
-                    //             lyric.words,
-                    //             textAlign: TextAlign.center,
-                    //             style: GoogleFonts.amiri(
-                    //               fontWeight:
-                    //                   isCurrent ? FontWeight.w900 : null,
-                    //               fontSize: 24,
-                    //               color: isCurrent
-                    //                   ? theme.colorScheme.primary
-                    //                   : Colors.white.withOpacity(0.5),
-                    //             ),
-                    //           );
-                    //         },
-                    //       );
-                    //     },
-                    //   ),
-                    // );
                   },
                 ),
               ),
@@ -202,7 +166,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                       widget.player.reciter.arabicName,
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.white.withOpacity(0.5),
+                        color: Colors.white.withValues(alpha: 0.5),
                       ),
                     ),
                     Visibility(

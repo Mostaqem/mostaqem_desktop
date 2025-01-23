@@ -1,13 +1,14 @@
 // ignore_for_file: inference_failure_on_function_invocation
 
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/env/env.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'dio_helper.g.dart';
 
 @Riverpod(keepAlive: true)
-DioHelper dioHelper(DioHelperRef ref) => DioHelper();
+DioHelper dioHelper(Ref ref) => DioHelper();
 
 bool isProduction = const bool.fromEnvironment('dart.vm.product');
 final baseAPIURL = Constants.prodBaseAPI;

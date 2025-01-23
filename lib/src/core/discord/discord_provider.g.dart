@@ -6,7 +6,7 @@ part of 'discord_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateRPCDiscordHash() => r'f6a45e224271de0d3d7a41949b3a4424442b8180';
+String _$updateRPCDiscordHash() => r'8208cc7ceebd4f174a647c43ff81c9dff2fad2be';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -176,6 +176,8 @@ class UpdateRPCDiscordProvider extends AutoDisposeProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateRPCDiscordRef on AutoDisposeProviderRef<void> {
   /// The parameter `surahName` of this provider.
   String get surahName;
@@ -204,4 +206,4 @@ class _UpdateRPCDiscordProviderElement extends AutoDisposeProviderElement<void>
   String get reciter => (origin as UpdateRPCDiscordProvider).reciter;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

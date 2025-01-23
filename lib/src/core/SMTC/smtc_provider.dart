@@ -45,18 +45,18 @@ class SMTCRepository {
       switch (event) {
         case PressedButton.play:
           ref.read(playerNotifierProvider.notifier).player.play();
-          smtc!.setPlaybackStatus(PlaybackStatus.Playing);
+          smtc!.setPlaybackStatus(PlaybackStatus.playing);
         case PressedButton.pause:
           ref.read(playerNotifierProvider.notifier).player.pause();
 
-          smtc!.setPlaybackStatus(PlaybackStatus.Paused);
+          smtc!.setPlaybackStatus(PlaybackStatus.paused);
         case PressedButton.next:
           ref.read(playerNotifierProvider.notifier).playNext();
         case PressedButton.previous:
           ref.read(playerNotifierProvider.notifier).playPrevious();
 
         case PressedButton.stop:
-          smtc!.setPlaybackStatus(PlaybackStatus.Stopped);
+          smtc!.setPlaybackStatus(PlaybackStatus.stopped);
         case PressedButton.fastForward:
           break;
         case PressedButton.rewind:
@@ -87,13 +87,13 @@ class SMTCRepository {
 }
 
 @riverpod
-SMTCRepository smtcRepo(SmtcRepoRef ref) {
+SMTCRepository smtcRepo(Ref ref) {
   return SMTCRepository(ref);
 }
 
 @riverpod
 void updateSMTC(
-  UpdateSMTCRef ref, {
+  Ref ref, {
   required String surah,
   required String reciter,
   required String image,
@@ -104,7 +104,7 @@ void updateSMTC(
 
 @riverpod
 void initSMTC(
-  InitSMTCRef ref, {
+  Ref ref, {
   required String surah,
   required String reciter,
   required String image,
