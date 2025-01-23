@@ -9,7 +9,6 @@ class MainFlutterWindow: NSWindow {
     self.contentViewController = flutterViewController
     self.setFrame(windowFrame, display: true)
 
-    RegisterGeneratedPlugins(registry: flutterViewController)
     FlutterMethodChannel(
         name: "launch_at_startup", binaryMessenger: flutterViewController.engine.binaryMessenger
       )
@@ -26,6 +25,8 @@ class MainFlutterWindow: NSWindow {
           result(FlutterMethodNotImplemented)
         }
       }
+      
+    RegisterGeneratedPlugins(registry: flutterViewController)
     super.awakeFromNib()
   }
 }
