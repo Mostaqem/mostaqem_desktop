@@ -47,7 +47,6 @@ For arch
 - [Islam Khalil](https://github.com/islam-khalil0) | Web Developer
 - [Me](https://github.com/mezopeeta) | Flutter
 - [MP3Quran](https://mp3quran.net/ar/api) | API we used for audio
-- [Quran Foundation](https://api-docs.quran.com/docs/category/quran.com-api) | API we used for reading
 - [Unsplash](https://unsplash.com/developers) | API for generating random image for the fullscreen mode
 
 ## License:
