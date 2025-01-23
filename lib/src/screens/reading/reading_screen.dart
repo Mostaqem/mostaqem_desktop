@@ -47,11 +47,11 @@ class ReadingScreen extends StatelessWidget {
               height: 20,
             ),
             Image.asset(
-              'assets/img/basmalah.png',
+              surah.id != 9
+                  ? 'assets/img/basmalah.png'
+                  : 'assets/img/a3ooz.png',
               width: 300,
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
+              color: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(
               height: 20,
@@ -74,14 +74,15 @@ class ReadingScreen extends StatelessWidget {
                               .map(
                                 (e) => TextSpan(
                                   text: e.verse,
-                                  style: GoogleFonts.amiriQuran(
-                                    fontSize: 25,
+                                  style: GoogleFonts.amiri(
+                                    fontSize: 30,
+                                    height: 3.2,
                                   ),
                                   children: [
                                     const WidgetSpan(
                                       child: SizedBox(
-                                        width: 10,
-                                        height: 70,
+                                        width: 15,
+                                        height: 50,
                                       ),
                                     ),
                                     TextSpan(
@@ -110,8 +111,8 @@ class ReadingScreen extends StatelessWidget {
                                     ),
                                     const WidgetSpan(
                                       child: SizedBox(
-                                        width: 10,
-                                        height: 70,
+                                        width: 15,
+                                        height: 50,
                                       ),
                                     ),
                                   ],

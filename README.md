@@ -6,7 +6,7 @@
 ![Example](screenshots/1.png)
 ![Example](screenshots/2.png)
 ![Example](screenshots/4.png)
-![Example](screenshots/5.png)
+![Example](screenshots/9.png)
 ![Example](screenshots/6.png)
 
 # Getting Started
