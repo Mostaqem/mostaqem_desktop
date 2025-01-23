@@ -6,7 +6,7 @@ part of 'player_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerNotifierHash() => r'b15a99165206e26acf82d74b79199efa6ad45115';
+String _$playerNotifierHash() => r'38efb7e43b907d8bb9025b68d715534cbb7c0f11';
 
 /// See also [PlayerNotifier].
 @ProviderFor(PlayerNotifier)
@@ -23,4 +23,4 @@ final playerNotifierProvider =
 
 typedef _$PlayerNotifier = AutoDisposeNotifier<AudioState>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

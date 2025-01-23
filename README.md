@@ -3,6 +3,11 @@
 
  An app for Islamic media like quran and podcasts without ads and subscriptions
 
+![Example](screenshots/1.png)
+![Example](screenshots/2.png)
+![Example](screenshots/4.png)
+![Example](screenshots/5.png)
+![Example](screenshots/6.png)
 
 # Getting Started
 ## Dependencies
@@ -14,9 +19,6 @@ sudo apt install mpv libmpv-dev
 For arch
 
 [Download AUR Package](https://aur.archlinux.org/packages/mostaqem)
-
-## Screenshot
-![Example](demo/demo2.jpg)
 
 
 ## Features:

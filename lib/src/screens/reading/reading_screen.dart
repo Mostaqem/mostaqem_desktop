@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
-import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
+import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
-class ReadingScreen extends ConsumerWidget {
+class ReadingScreen extends StatelessWidget {
   const ReadingScreen({required this.surah, super.key});
 
   final Surah surah;
-  static const pageSize = 10;
-  static final queryController = TextEditingController();
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isTyping =
-        ref.watch(searchNotifierProvider('verse'))?.isEmpty ?? false;
-
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         primary: true,
@@ -28,123 +24,150 @@ class ReadingScreen extends ConsumerWidget {
               height: 10,
             ),
             const Align(alignment: Alignment.topLeft, child: AppBackButton()),
-            const SizedBox(
-              height: 10,
-            ),
-            Align(
-              child: SearchBar(
-                controller: queryController,
-                onChanged: (value) async {
-                  ref
-                      .read(searchNotifierProvider('verse').notifier)
-                      .setQuery(value);
-                },
-                elevation: const WidgetStatePropertyAll<double>(0),
-                shape: WidgetStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/img/border.svg',
+                  width: 700,
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.primary,
+                    BlendMode.srcIn,
                   ),
                 ),
-                trailing: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: isTyping
-                        ? IconButton(
-                            icon: const Icon(Icons.close),
-                            onPressed: () {
-                              ref
-                                  .read(
-                                    searchNotifierProvider('verse').notifier,
-                                  )
-                                  .clear();
-                              queryController.clear();
-                            },
-                          )
-                        : const Icon(Icons.search),
-                  ),
-                ],
-                hintText: 'بحث عن اية...',
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              'سورة ${surah.arabicName}',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.amiri(fontSize: 30),
+                Text(
+                  'سورة ${surah.arabicName}',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.amiri(fontSize: 30),
+                ),
+              ],
             ),
             const SizedBox(
               height: 20,
             ),
             Image.asset(
               'assets/img/basmalah.png',
-              width: 500,
+              width: 300,
               color: Theme.of(context).brightness == Brightness.dark
                   ? Colors.white
                   : Colors.black,
             ),
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height - 450,
-              child: ListView.builder(
-                primary: false,
-                itemBuilder: (context, index) {
-                  final page = index ~/ pageSize + 1;
-                  final indexInPage = index % pageSize;
-                  final scripts = ref.watch(
-                    fetchUthmaniScriptProvider(
-                      surahID: surah.id,
-                      page: page,
-                      query: queryController.text,
-                    ),
-                  );
-
-                  return scripts.when(
-                    data: (data) {
-                      if (indexInPage >= data.length) {
-                        return null;
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 25,
-                          horizontal: 20,
-                        ),
-                        child: Text(
-                          data[indexInPage].verse,
-                          // textAlign: TextAlign.center,
-                          style: GoogleFonts.amiri(
-                            fontSize: 25,
-                          ),
-                        ),
-                      );
-                    },
-                    error: (e, _) {
-                      debugPrint('Error: $e');
-                      return const SizedBox.shrink();
-                    },
-                    loading: () {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 25,
-                          horizontal: 20,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
             const SizedBox(
-              height: 100,
+              height: 20,
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                final scripts = ref.watch(
+                  fetchQuranProvider(
+                    surahID: surah.id,
+                  ),
+                );
+                return AsyncWidget(
+                  value: scripts,
+                  data: (data) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text.rich(
+                        TextSpan(
+                          children: data
+                              .map(
+                                (e) => TextSpan(
+                                  text: e.verse,
+                                  style: GoogleFonts.amiri(
+                                    fontSize: 25,
+                                  ),
+                                  children: [
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 10,
+                                          horizontal: 10,
+                                        ),
+                                        child: CircleAvatar(
+                                          child: Text(
+                                            e.verseNumber
+                                                .toString()
+                                                .toArabicNumbers,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                      // Wrap(
+                      //   spacing: 8,
+                      //   runSpacing: 18,
+                      //   runAlignment: WrapAlignment.center,
+                      //   children: data
+                      //       .map(
+                      //         (e) => Row(
+                      //           mainAxisSize: MainAxisSize.min,
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           spacing: 8,
+                      //           children: [
+                      //             Flexible(
+                      //               child: Text(
+                      //                 e.verse,
+                      //                 style: GoogleFonts.amiri(
+                      //                   fontSize: 25,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //             CircleAvatar(
+                      //               child: Text(
+                      //                 e.verseNumber.toString().toArabicNumbers,
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       )
+                      //       .toList(),
+                      // ),
+                    );
+                    // return ListView.builder(
+                    //   itemCount: data.length,
+                    //   itemBuilder: (context, index) {
+                    //     return Padding(
+                    //       padding: const EdgeInsets.symmetric(
+                    //         vertical: 25,
+                    //         horizontal: 20,
+                    //       ),
+                    //       child: Text(
+                    //         data[index].verse,
+                    //         // textAlign: TextAlign.center,
+                    //         style: GoogleFonts.amiri(
+                    //           fontSize: 25,
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // );
+                  },
+                );
+              },
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+extension ToArabicNumber on String {
+  String get toArabicNumbers {
+    const englishNumbers = '0123456789';
+    const arabicNumbers = '٠١٢٣٤٥٦٧٨٩';
+
+    var result = this;
+    for (var i = 0; i < englishNumbers.length; i++) {
+      result = result.replaceAll(englishNumbers[i], arabicNumbers[i]);
+    }
+
+    return result;
   }
 }

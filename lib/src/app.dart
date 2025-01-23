@@ -19,7 +19,6 @@ class MyApp extends ConsumerWidget {
     final userSeedColor = ref.watch(userSeedColorProvider);
     final userTheme = ref.watch(themeNotifierProvider);
     return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
       routerConfig: router,
       localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,
@@ -40,17 +39,12 @@ class MyApp extends ConsumerWidget {
                 child!,
                 SizedBox(
                   height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                    ),
-                    child: Overlay(
-                      initialEntries: [
-                        OverlayEntry(
-                          builder: (context) => const PlayerWidget(),
-                        ),
-                      ],
-                    ),
+                  child: Overlay(
+                    initialEntries: [
+                      OverlayEntry(
+                        builder: (context) => const PlayerWidget(),
+                      ),
+                    ],
                   ),
                 ),
                 const DownloadManagerWidget(),
@@ -77,7 +71,9 @@ class Mostaqem extends StatelessWidget {
   Widget build(BuildContext context) {
     return const ProviderScope(
       observers: [],
-      child: MaterialApp(home: MyApp()),
+      child: MaterialApp(
+        home: MyApp(),
+      ),
     );
   }
 }

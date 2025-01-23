@@ -6,7 +6,7 @@ part of 'home_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchAllChaptersHash() => r'025d414a949c067e57d6453da31800783aaaf4d2';
+String _$fetchAllChaptersHash() => r'f6c81ab262117b94031957cb5fa2544710486533';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -166,6 +166,8 @@ class FetchAllChaptersProvider extends FutureProvider<List<Surah>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchAllChaptersRef on FutureProviderRef<List<Surah>> {
   /// The parameter `page` of this provider.
   int get page;
@@ -184,7 +186,7 @@ class _FetchAllChaptersProviderElement
   String? get query => (origin as FetchAllChaptersProvider).query;
 }
 
-String _$fetchChapterByIdHash() => r'26a2fde193ae47d75901e800dee5f8afecd81cdf';
+String _$fetchChapterByIdHash() => r'258e68c6d16af8179bf5efb4c8ec8dc3ec3b5553';
 
 /// Fetches chapter by [id]
 ///
@@ -311,6 +313,8 @@ class FetchChapterByIdProvider extends AutoDisposeFutureProvider<Surah> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchChapterByIdRef on AutoDisposeFutureProviderRef<Surah> {
   /// The parameter `id` of this provider.
   int get id;
@@ -325,7 +329,7 @@ class _FetchChapterByIdProviderElement
 }
 
 String _$fetchAudioForChapterHash() =>
-    r'1e793aaad20246c00716de72bbbbb28fa1a2f622';
+    r'5722f7881d735f51c219a6db6a054f7c87ef851e';
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
 ///
@@ -480,6 +484,8 @@ class FetchAudioForChapterProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchAudioForChapterRef
     on AutoDisposeFutureProviderRef<({String url, int recitationID})> {
   /// The parameter `chapterNumber` of this provider.
@@ -507,7 +513,7 @@ class _FetchAudioForChapterProviderElement
   int? get reciterID => (origin as FetchAudioForChapterProvider).reciterID;
 }
 
-String _$fetchNextSurahHash() => r'59339eaf6c67f671d0e061075b9a2db19d9bace5';
+String _$fetchNextSurahHash() => r'b1232870bd93d823ab45ff594e903a3e46c9533f';
 
 /// Fetches the next chapter
 ///
@@ -523,8 +529,10 @@ final fetchNextSurahProvider = AutoDisposeFutureProvider<Surah?>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchNextSurahRef = AutoDisposeFutureProviderRef<Surah?>;
-String _$fetchRandomImageHash() => r'654b50af4c87b5f5a1146f7a0e973c0f98ae580e';
+String _$fetchRandomImageHash() => r'53346e756dda4aa58453cd9c78d80988fb0a88dd';
 
 /// Fetches random image from Unsplash API
 ///
@@ -540,8 +548,10 @@ final fetchRandomImageProvider = AutoDisposeFutureProvider<String>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchRandomImageRef = AutoDisposeFutureProviderRef<String>;
-String _$fetchSurahLyricsHash() => r'faafd02854377499551e93a44365394c98b8ebbf';
+String _$fetchSurahLyricsHash() => r'bd7f54aeaf70540e7bc1d9336b514be7cae8fff4';
 
 /// See also [fetchSurahLyrics].
 @ProviderFor(fetchSurahLyrics)
@@ -668,6 +678,8 @@ class FetchSurahLyricsProvider extends AutoDisposeFutureProvider<String?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchSurahLyricsRef on AutoDisposeFutureProviderRef<String?> {
   /// The parameter `surahID` of this provider.
   int get surahID;
@@ -686,4 +698,4 @@ class _FetchSurahLyricsProviderElement
   int get recitationID => (origin as FetchSurahLyricsProvider).recitationID;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

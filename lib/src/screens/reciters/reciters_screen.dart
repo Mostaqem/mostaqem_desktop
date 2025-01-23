@@ -7,6 +7,7 @@ import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/screens/reciters/providers/showhide_image.dart';
+import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
@@ -17,11 +18,13 @@ class RecitersScreen extends ConsumerWidget {
   static const pageSize = 20;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchQuery = ref.watch(searchNotifierProvider('reciter'));
+    final searchQuery = ref.watch(searchNotifierProvider('reciter')) ?? '';
     final isTyping =
         ref.watch(searchNotifierProvider('reciter'))?.isEmpty ?? false;
     final isImageHidden = ref.watch(hideReciterImageProvider);
     final defaultReciter = ref.watch(defaultReciterProvider);
+    final searchedReciters =
+        ref.watch(searchReciterProvider(query: searchQuery));
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,142 +185,240 @@ class RecitersScreen extends ConsumerWidget {
           const SizedBox(
             height: 12,
           ),
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                final page = index ~/ pageSize + 1;
-                final indexInPage = index % pageSize;
-                final reciters = ref.watch(
-                  fetchRecitersProvider(page: page, query: searchQuery),
-                );
+          if (searchQuery.isEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  final page = index ~/ pageSize + 1;
+                  final indexInPage = index % pageSize;
+                  final reciters = ref.watch(
+                    fetchRecitersProvider(page: page),
+                  );
 
-                return reciters.when(
-                  error: (e, _) {
-                    debugPrint('Reciters Error: $e');
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .error
-                              .withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
+                  return reciters.when(
+                    error: (e, _) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
+                          height: 50,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .error
+                                .withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Text('حدث خطا ما'),
                         ),
-                        child: const Text('حدث خطا ما'),
-                      ),
-                    );
-                  },
-                  loading: () {
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(12),
+                      );
+                    },
+                    loading: () {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  data: (data) {
-                    if (indexInPage >= data.length) {
-                      return null;
-                    }
-                    return Consumer(
-                      builder: (context, ref, child) {
-                        return Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: ListTile(
-                            leading: Visibility(
-                              visible: !isImageHidden,
-                              child: Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: CachedNetworkImageProvider(
-                                      data[indexInPage].image!,
-                                    ),
+                      );
+                    },
+                    data: (data) {
+                      if (indexInPage >= data.length) {
+                        return null;
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ListTile(
+                          leading: Visibility(
+                            visible: !isImageHidden,
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: CachedNetworkImageProvider(
+                                    data[indexInPage].image!,
                                   ),
-                                  borderRadius: BorderRadius.circular(12),
                                 ),
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            title: Text(data[indexInPage].arabicName),
-                            trailing: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Tooltip(
-                                  message: 'اختيار الشيخ افتراضي',
-                                  preferBelow: false,
-                                  child: Radio(
-                                    value: ref.watch(defaultReciterProvider).id,
-                                    onChanged: (value) {
-                                      ref
-                                          .read(defaultReciterProvider.notifier)
-                                          .setDefault(
-                                            data[indexInPage],
-                                          );
-                                      final surah = ref.read(
-                                        currentSurahProvider,
-                                      );
-                                      ref
-                                          .read(playerNotifierProvider.notifier)
-                                          .play(
-                                            surahID: surah!.id,
-                                          );
-                                    },
-                                    groupValue: data[indexInPage].id,
-                                  ),
-                                ),
-                                ToolTipIconButton(
-                                  message: 'اختيار الشيخ للتالي',
-                                  onPressed: () {
+                          ),
+                          title: Text(data[indexInPage].arabicName),
+                          trailing: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Tooltip(
+                                message: 'اختيار الشيخ افتراضي',
+                                preferBelow: false,
+                                child: Radio(
+                                  value: ref.watch(defaultReciterProvider).id,
+                                  onChanged: (value) {
                                     ref
-                                        .read(userReciterProvider.notifier)
-                                        .setReciter(data[indexInPage]);
-                                  },
-                                  icon: const Icon(
-                                    Icons.queue_play_next_outlined,
-                                  ),
-                                ),
-                                const VerticalDivider(),
-                                ToolTipIconButton(
-                                  message: 'اختيار الشيخ',
-                                  onPressed: () {
-                                    ref
-                                        .read(userReciterProvider.notifier)
-                                        .setReciter(data[indexInPage]);
+                                        .read(
+                                          defaultReciterProvider.notifier,
+                                        )
+                                        .setDefault(
+                                          data[indexInPage],
+                                        );
                                     final surah = ref.read(
                                       currentSurahProvider,
                                     );
                                     ref
-                                        .read(playerNotifierProvider.notifier)
+                                        .read(
+                                          playerNotifierProvider.notifier,
+                                        )
                                         .play(
                                           surahID: surah!.id,
                                         );
                                   },
-                                  icon: const Icon(Icons.play_arrow),
+                                  groupValue: data[indexInPage].id,
                                 ),
-                              ],
+                              ),
+                              ToolTipIconButton(
+                                message: 'اختيار الشيخ للتالي',
+                                onPressed: () {
+                                  ref
+                                      .read(userReciterProvider.notifier)
+                                      .setReciter(data[indexInPage]);
+                                },
+                                icon: const Icon(
+                                  Icons.queue_play_next_outlined,
+                                ),
+                              ),
+                              const VerticalDivider(),
+                              ToolTipIconButton(
+                                message: 'اختيار الشيخ',
+                                onPressed: () {
+                                  ref
+                                      .read(userReciterProvider.notifier)
+                                      .setReciter(data[indexInPage]);
+                                  final surah = ref.read(
+                                    currentSurahProvider,
+                                  );
+                                  ref
+                                      .read(playerNotifierProvider.notifier)
+                                      .play(
+                                        surahID: surah!.id,
+                                      );
+                                },
+                                icon: const Icon(Icons.play_arrow),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            )
+          else
+            AsyncWidget(
+              value: searchedReciters,
+              error: (e, s) => const Text('Error'),
+              data: (data) {
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ListTile(
+                          leading: Visibility(
+                            visible: !isImageHidden,
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: CachedNetworkImageProvider(
+                                    data[index].image!,
+                                  ),
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                           ),
-                        );
-                      },
-                    );
-                  },
+                          title: Text(data[index].arabicName),
+                          trailing: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Tooltip(
+                                message: 'اختيار الشيخ افتراضي',
+                                preferBelow: false,
+                                child: Radio(
+                                  value: ref.watch(defaultReciterProvider).id,
+                                  onChanged: (value) {
+                                    ref
+                                        .read(
+                                          defaultReciterProvider.notifier,
+                                        )
+                                        .setDefault(
+                                          data[index],
+                                        );
+                                    final surah = ref.read(
+                                      currentSurahProvider,
+                                    );
+                                    ref
+                                        .read(
+                                          playerNotifierProvider.notifier,
+                                        )
+                                        .play(
+                                          surahID: surah!.id,
+                                        );
+                                  },
+                                  groupValue: data[index].id,
+                                ),
+                              ),
+                              ToolTipIconButton(
+                                message: 'اختيار الشيخ للتالي',
+                                onPressed: () {
+                                  ref
+                                      .read(userReciterProvider.notifier)
+                                      .setReciter(data[index]);
+                                },
+                                icon: const Icon(
+                                  Icons.queue_play_next_outlined,
+                                ),
+                              ),
+                              const VerticalDivider(),
+                              ToolTipIconButton(
+                                message: 'اختيار الشيخ',
+                                onPressed: () {
+                                  ref
+                                      .read(userReciterProvider.notifier)
+                                      .setReciter(data[index]);
+                                  final surah = ref.read(
+                                    currentSurahProvider,
+                                  );
+                                  ref
+                                      .read(playerNotifierProvider.notifier)
+                                      .play(
+                                        surahID: surah!.id,
+                                      );
+                                },
+                                icon: const Icon(Icons.play_arrow),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),
-          ),
           const SizedBox(
             height: 100,
           ),

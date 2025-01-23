@@ -1,5 +1,4 @@
 import 'package:launch_at_startup/launch_at_startup.dart';
-import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'startup_provider.g.dart';

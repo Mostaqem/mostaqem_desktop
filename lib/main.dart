@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:discord_rpc/discord_rpc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_discord_rpc/flutter_discord_rpc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/app.dart';
+import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/screens/initial/inital_loading.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:mostaqem/src/shared/http_override/http_override.dart';
@@ -24,16 +25,17 @@ void main() async {
   launchAtStartup.setup(
     appName: 'Mostaqem',
     appPath: Platform.resolvedExecutable,
-    // Set packageName parameter to support MSIX.
   );
 
   if (!Platform.isMacOS) {
-    DiscordRPC.initialize();
+    await FlutterDiscordRPC.initialize(
+      Constants.discordAPPID,
+    );
   }
   await windowManager.ensureInitialized();
 
   MediaKit.ensureInitialized();
-  MetadataGod.initialize();
+  await MetadataGod.initialize();
 
   final windowOptions = WindowOptions(
     size: const Size(1280, 780),

@@ -7,7 +7,7 @@ part of 'recitation_repository.dart';
 // **************************************************************************
 
 String _$fetchReciterRecitationHash() =>
-    r'197a435a1b360a89ac82fc6abc67901652b0efe2';
+    r'22d07b7224e9ad9583fb277f6116fa702b510e85';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -147,6 +147,8 @@ class FetchReciterRecitationProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchReciterRecitationRef
     on AutoDisposeFutureProviderRef<List<Recitation>> {
   /// The parameter `reciterID` of this provider.
@@ -162,4 +164,4 @@ class _FetchReciterRecitationProviderElement
   int get reciterID => (origin as FetchReciterRecitationProvider).reciterID;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

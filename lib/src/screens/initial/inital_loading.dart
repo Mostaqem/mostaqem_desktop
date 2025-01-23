@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:mostaqem/src/core/theme/theme.dart';
@@ -81,9 +82,16 @@ class InitialLoading extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/img/app_icon.png',
-                width: 140,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: SvgPicture.asset(
+                  'assets/img/logo.svg',
+                  width: 100,
+                  colorFilter: ColorFilter.mode(
+                    AppTheme.userLightTheme(userColor).colorScheme.primary,
+                    BlendMode.color,
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 30,
@@ -106,7 +114,7 @@ class InitialLoading extends ConsumerWidget {
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  'مستقيم 2.1.0',
+                  'مستقيم 2.1.1',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),

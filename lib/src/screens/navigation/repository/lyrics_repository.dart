@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lrc/lrc.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/lyrics.dart';
@@ -14,7 +15,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'lyrics_repository.g.dart';
 
 @riverpod
-Future<String?> getLyrics(GetLyricsRef ref, {required String filename}) async {
+Future<String?> getLyrics(Ref ref, {required String filename}) async {
   final directory = await getTemporaryDirectory();
   final cacheDir = directory.path;
   final file = File('$cacheDir/$filename.lrc');
@@ -44,7 +45,7 @@ Future<String?> getLyrics(GetLyricsRef ref, {required String filename}) async {
 
 @riverpod
 Future<File> cacheLyrics(
-  CacheLyricsRef ref, {
+  Ref ref, {
   required String filename,
   required String content,
 }) async {
@@ -57,7 +58,7 @@ Future<File> cacheLyrics(
 
 @riverpod
 Future<String?> syncLyrics(
-  SyncLyricsRef ref,
+  Ref ref,
 ) async {
   final currentAlbum = ref.watch(currentAlbumProvider);
   final fileName =

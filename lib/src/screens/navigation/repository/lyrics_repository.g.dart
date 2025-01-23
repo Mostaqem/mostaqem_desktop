@@ -6,7 +6,7 @@ part of 'lyrics_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getLyricsHash() => r'd9c5865e84113cb9d224d838543222188cc98c93';
+String _$getLyricsHash() => r'23e147bb8c961ab40e5ec41f531ae13e659b37c2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -141,6 +141,8 @@ class GetLyricsProvider extends AutoDisposeFutureProvider<String?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetLyricsRef on AutoDisposeFutureProviderRef<String?> {
   /// The parameter `filename` of this provider.
   String get filename;
@@ -154,7 +156,7 @@ class _GetLyricsProviderElement
   String get filename => (origin as GetLyricsProvider).filename;
 }
 
-String _$cacheLyricsHash() => r'07fd5c24cf26061720823ea2701ae224a4b83931';
+String _$cacheLyricsHash() => r'6d1bd7ad55556f56a46ff4ddbe206025caa7d9d8';
 
 /// See also [cacheLyrics].
 @ProviderFor(cacheLyrics)
@@ -281,6 +283,8 @@ class CacheLyricsProvider extends AutoDisposeFutureProvider<File> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CacheLyricsRef on AutoDisposeFutureProviderRef<File> {
   /// The parameter `filename` of this provider.
   String get filename;
@@ -299,7 +303,7 @@ class _CacheLyricsProviderElement extends AutoDisposeFutureProviderElement<File>
   String get content => (origin as CacheLyricsProvider).content;
 }
 
-String _$syncLyricsHash() => r'74c2d7aeaf625301dcc0d0c998d48766e841245a';
+String _$syncLyricsHash() => r'56b2f3740ffae236fe4c8dc3e3df9aee3846fb14';
 
 /// See also [syncLyrics].
 @ProviderFor(syncLyrics)
@@ -312,6 +316,8 @@ final syncLyricsProvider = AutoDisposeFutureProvider<String?>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SyncLyricsRef = AutoDisposeFutureProviderRef<String?>;
 String _$currentLyricsNotifierHash() =>
     r'e041d0cee3d19ff12ce2f713189b266573cf90d3';
@@ -331,4 +337,4 @@ final currentLyricsNotifierProvider =
 
 typedef _$CurrentLyricsNotifier = AutoDisposeAsyncNotifier<String?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

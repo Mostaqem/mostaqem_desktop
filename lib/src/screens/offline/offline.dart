@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_use_of_protected_member, 
+// ignore_for_file: invalid_use_of_protected_member,
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
@@ -31,7 +31,7 @@ class DownloadsScreen extends ConsumerWidget {
                         width: 220,
                         colorFilter: ColorFilter.mode(
                           const Color.fromARGB(255, 202, 197, 197)
-                              .withOpacity(0.5),
+                              .withValues(alpha: 0.5),
                           BlendMode.modulate,
                         ),
                       ),

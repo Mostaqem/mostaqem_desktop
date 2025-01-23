@@ -6,7 +6,7 @@ part of 'smtc_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$smtcRepoHash() => r'6def57bc6f7377b71ae05c9e1fdc2726a17942d0';
+String _$smtcRepoHash() => r'b280d1dd64d41dc06f48b1afa17ed8272b38fd2e';
 
 /// See also [smtcRepo].
 @ProviderFor(smtcRepo)
@@ -19,8 +19,10 @@ final smtcRepoProvider = AutoDisposeProvider<SMTCRepository>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SmtcRepoRef = AutoDisposeProviderRef<SMTCRepository>;
-String _$updateSMTCHash() => r'1f0e0873c49b62a50e7f298b118876b627baa25a';
+String _$updateSMTCHash() => r'd3ab0baffa8bfb5de9090e03c119c1478856141e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -179,6 +181,8 @@ class UpdateSMTCProvider extends AutoDisposeProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateSMTCRef on AutoDisposeProviderRef<void> {
   /// The parameter `surah` of this provider.
   String get surah;
@@ -202,7 +206,7 @@ class _UpdateSMTCProviderElement extends AutoDisposeProviderElement<void>
   String get image => (origin as UpdateSMTCProvider).image;
 }
 
-String _$initSMTCHash() => r'aa909fdf3245af1e86bf018ada5a02d98d556884';
+String _$initSMTCHash() => r'78630df817e360e5e5868a6305f8c00025c26819';
 
 /// See also [initSMTC].
 @ProviderFor(initSMTC)
@@ -361,6 +365,8 @@ class InitSMTCProvider extends AutoDisposeProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin InitSMTCRef on AutoDisposeProviderRef<void> {
   /// The parameter `surah` of this provider.
   String get surah;
@@ -394,4 +400,4 @@ class _InitSMTCProviderElement extends AutoDisposeProviderElement<void>
   int get duration => (origin as InitSMTCProvider).duration;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

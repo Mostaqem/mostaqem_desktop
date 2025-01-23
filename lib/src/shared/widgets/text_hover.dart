@@ -34,7 +34,7 @@ class TextHover extends ConsumerWidget {
                     : Theme.of(context)
                         .colorScheme
                         .onSecondaryContainer
-                        .withOpacity(0.5),
+                        .withValues(alpha: 0.5),
               ),
             ),
           ),

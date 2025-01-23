@@ -1,14 +1,12 @@
 import 'dart:io';
 
-import 'package:discord_rpc/discord_rpc.dart';
+import 'package:flutter_discord_rpc/flutter_discord_rpc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'discord_provider.g.dart';
 
 class DiscordImp {
-  DiscordRPC rpc = DiscordRPC(
-    applicationId: '1251240254250156195',
-  );
   String largeImage = 'large';
   String smallImage = 'small_image';
 
@@ -19,25 +17,49 @@ class DiscordImp {
     required String reciter,
   }) {
     if (!Platform.isMacOS) {
-      rpc
-        ..start(autoRegister: true)
-        ..updatePresence(
-          DiscordPresence(
+      final isconnected = FlutterDiscordRPC.instance.isConnected;
+
+      if (isconnected) {
+        FlutterDiscordRPC.instance.setActivity(
+          activity: RPCActivity(
+            activityType: ActivityType.listening,
             state: surahName,
-            startTimeStamp: position,
-            endTimeStamp: duration,
             details: reciter,
-            largeImageKey: largeImage,
-            smallImageKey: smallImage,
+            timestamps: RPCTimestamps(
+              start: position,
+              end: duration,
+            ),
+            assets: RPCAssets(
+              largeImage: largeImage,
+              smallText: smallImage,
+            ),
           ),
         );
+      } else {
+        FlutterDiscordRPC.instance.connect();
+        FlutterDiscordRPC.instance.setActivity(
+          activity: RPCActivity(
+            activityType: ActivityType.listening,
+            state: surahName,
+            details: reciter,
+            timestamps: RPCTimestamps(
+              start: position,
+              end: duration,
+            ),
+            assets: RPCAssets(
+              largeImage: largeImage,
+              smallText: smallImage,
+            ),
+          ),
+        );
+      }
     }
   }
 }
 
 @riverpod
 void updateRPCDiscord(
-  UpdateRPCDiscordRef ref, {
+  Ref ref, {
   required String surahName,
   required int position,
   required int duration,

@@ -71,13 +71,13 @@ class MPRISRepository {
   }
 }
 @riverpod
-MPRISRepository mprisRepository(MprisRepositoryRef ref){
+MPRISRepository mprisRepository(Ref ref){
   return MPRISRepository(ref);
 }
 
 @riverpod
 Future<void> createMetadata(
-  CreateMetadataRef ref, {
+  Ref ref, {
   required String reciterName,
   required String surah,
   required String image,

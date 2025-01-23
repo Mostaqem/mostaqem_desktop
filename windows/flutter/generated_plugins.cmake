@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  discord_rpc
   media_kit_libs_windows_audio
   screen_retriever
   url_launcher_windows
@@ -12,6 +11,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
+  flutter_discord_rpc
   media_kit_native_event_loop
   metadata_god
   smtc_windows
