@@ -76,9 +76,6 @@ class SettingsScreen extends ConsumerWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Text(
-                    'Discord Connected: ${FlutterDiscordRPC.instance.isConnected}',
-                  ),
                 ],
               ),
             ),
