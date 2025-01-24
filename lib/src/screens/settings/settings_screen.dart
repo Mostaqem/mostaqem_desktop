@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_discord_rpc/flutter_discord_rpc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/settings/appearance/apperance.dart';
 import 'package:mostaqem/src/screens/settings/download/download_options.dart';
@@ -74,6 +75,9 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   const SizedBox(
                     height: 8,
+                  ),
+                  Text(
+                    'Discord Connected: ${FlutterDiscordRPC.instance.isConnected}',
                   ),
                 ],
               ),
