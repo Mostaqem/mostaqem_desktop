@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_discord_rpc/flutter_discord_rpc.dart';
@@ -7,20 +8,20 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'discord_provider.g.dart';
 
 class DiscordImp {
-  String largeImage = 'large';
-  String smallImage = 'small_image';
+  String largeImage = 'discord_im';
 
-  void updateDiscordPresence({
+  Future<void> updateDiscordPresence({
     required String surahName,
     required int position,
     required int duration,
     required String reciter,
-  }) {
-    if (!Platform.isMacOS) {
+  }) async {
+    try {
       final isconnected = FlutterDiscordRPC.instance.isConnected;
 
+      await FlutterDiscordRPC.instance.connect(autoRetry: true);
       if (isconnected) {
-        FlutterDiscordRPC.instance.setActivity(
+        await FlutterDiscordRPC.instance.setActivity(
           activity: RPCActivity(
             activityType: ActivityType.listening,
             state: surahName,
@@ -28,16 +29,12 @@ class DiscordImp {
             timestamps: RPCTimestamps(
               start: position,
               end: duration,
-            ),
-            assets: RPCAssets(
-              largeImage: largeImage,
-              smallText: smallImage,
             ),
           ),
         );
       } else {
-        FlutterDiscordRPC.instance.connect();
-        FlutterDiscordRPC.instance.setActivity(
+        await FlutterDiscordRPC.instance.reconnect();
+        await FlutterDiscordRPC.instance.setActivity(
           activity: RPCActivity(
             activityType: ActivityType.listening,
             state: surahName,
@@ -46,25 +43,21 @@ class DiscordImp {
               start: position,
               end: duration,
             ),
-            assets: RPCAssets(
-              largeImage: largeImage,
-              smallText: smallImage,
-            ),
           ),
         );
       }
-    }
+    } catch (e) {}
   }
 }
 
 @riverpod
-void updateRPCDiscord(
+Future<void> updateRPCDiscord(
   Ref ref, {
   required String surahName,
   required int position,
   required int duration,
   required String reciter,
-}) {
+}) async {
   final discord = DiscordImp();
   return discord.updateDiscordPresence(
     surahName: surahName,

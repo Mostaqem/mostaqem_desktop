@@ -27,11 +27,10 @@ void main() async {
     appPath: Platform.resolvedExecutable,
   );
 
-  if (!Platform.isMacOS) {
-    await FlutterDiscordRPC.initialize(
-      Constants.discordAPPID,
-    );
-  }
+  await FlutterDiscordRPC.initialize(
+    Constants.discordAPPID,
+  );
+
   await windowManager.ensureInitialized();
 
   MediaKit.ensureInitialized();

@@ -6,7 +6,7 @@ part of 'discord_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateRPCDiscordHash() => r'8208cc7ceebd4f174a647c43ff81c9dff2fad2be';
+String _$updateRPCDiscordHash() => r'aa95cb1f151fb1d6f8398669eb999d99fff9bae7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const updateRPCDiscordProvider = UpdateRPCDiscordFamily();
 
 /// See also [updateRPCDiscord].
-class UpdateRPCDiscordFamily extends Family<void> {
+class UpdateRPCDiscordFamily extends Family<AsyncValue<void>> {
   /// See also [updateRPCDiscord].
   const UpdateRPCDiscordFamily();
 
@@ -81,7 +81,7 @@ class UpdateRPCDiscordFamily extends Family<void> {
 }
 
 /// See also [updateRPCDiscord].
-class UpdateRPCDiscordProvider extends AutoDisposeProvider<void> {
+class UpdateRPCDiscordProvider extends AutoDisposeFutureProvider<void> {
   /// See also [updateRPCDiscord].
   UpdateRPCDiscordProvider({
     required String surahName,
@@ -131,7 +131,7 @@ class UpdateRPCDiscordProvider extends AutoDisposeProvider<void> {
 
   @override
   Override overrideWith(
-    void Function(UpdateRPCDiscordRef provider) create,
+    FutureOr<void> Function(UpdateRPCDiscordRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -151,7 +151,7 @@ class UpdateRPCDiscordProvider extends AutoDisposeProvider<void> {
   }
 
   @override
-  AutoDisposeProviderElement<void> createElement() {
+  AutoDisposeFutureProviderElement<void> createElement() {
     return _UpdateRPCDiscordProviderElement(this);
   }
 
@@ -178,7 +178,7 @@ class UpdateRPCDiscordProvider extends AutoDisposeProvider<void> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin UpdateRPCDiscordRef on AutoDisposeProviderRef<void> {
+mixin UpdateRPCDiscordRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `surahName` of this provider.
   String get surahName;
 
@@ -192,8 +192,8 @@ mixin UpdateRPCDiscordRef on AutoDisposeProviderRef<void> {
   String get reciter;
 }
 
-class _UpdateRPCDiscordProviderElement extends AutoDisposeProviderElement<void>
-    with UpdateRPCDiscordRef {
+class _UpdateRPCDiscordProviderElement
+    extends AutoDisposeFutureProviderElement<void> with UpdateRPCDiscordRef {
   _UpdateRPCDiscordProviderElement(super.provider);
 
   @override

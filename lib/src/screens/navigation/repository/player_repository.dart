@@ -64,7 +64,7 @@ class PlayerNotifier extends _$PlayerNotifier {
           positionAlbum,
         );
       }
-      ref.read(
+      await ref.read(
         updateRPCDiscordProvider(
           surahName: state.album?.surah.simpleName ?? '',
           reciter: state.album?.reciter.englishName ?? '',
@@ -72,7 +72,7 @@ class PlayerNotifier extends _$PlayerNotifier {
           duration: DateTime.now()
               .add(state.position + duration)
               .millisecondsSinceEpoch,
-        ),
+        ).future,
       );
     });
 

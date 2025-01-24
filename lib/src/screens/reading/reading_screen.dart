@@ -29,7 +29,6 @@ class ReadingScreen extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   'assets/img/border.svg',
-                  width: 700,
                   colorFilter: ColorFilter.mode(
                     Theme.of(context).colorScheme.primary,
                     BlendMode.srcIn,
@@ -38,7 +37,7 @@ class ReadingScreen extends StatelessWidget {
                 Text(
                   'سورة ${surah.arabicName}',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.amiri(fontSize: 30),
+                  style: GoogleFonts.amiri(fontSize: 40),
                 ),
               ],
             ),

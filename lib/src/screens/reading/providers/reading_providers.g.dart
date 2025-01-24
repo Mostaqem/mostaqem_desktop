@@ -6,7 +6,7 @@ part of 'reading_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchQuranHash() => r'42cfe10cf35487d475b6558f55ed63aed45e0caa';
+String _$fetchQuranHash() => r'f00e360ecc78857417da9514b038fed65f91e935';
 
 /// Copied from Dart SDK
 class _SystemHash {
