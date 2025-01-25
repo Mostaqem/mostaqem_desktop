@@ -45,7 +45,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
     final theme = Theme.of(context);
     return Stack(
       children: [
-        if (true)
+        if (connection == InternetConnectionStatus.connected && isProduction)
           AsyncWidget(
             value: randomImage,
             data: (data) {

@@ -2,7 +2,6 @@
 // ignore_for_file: inference_failure_on_untyped_parameter,
 // ignore_for_file: use_setters_to_change_properties
 
-import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
