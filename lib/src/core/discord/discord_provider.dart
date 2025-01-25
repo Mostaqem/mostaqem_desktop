@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:flutter_discord_rpc/flutter_discord_rpc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,37 +13,35 @@ class DiscordImp {
     required int duration,
     required String reciter,
   }) async {
-    try {
-      final isconnected = FlutterDiscordRPC.instance.isConnected;
+    final isconnected = FlutterDiscordRPC.instance.isConnected;
 
-      await FlutterDiscordRPC.instance.connect(autoRetry: true);
-      if (isconnected) {
-        await FlutterDiscordRPC.instance.setActivity(
-          activity: RPCActivity(
-            activityType: ActivityType.listening,
-            state: surahName,
-            details: reciter,
-            timestamps: RPCTimestamps(
-              start: position,
-              end: duration,
-            ),
+    await FlutterDiscordRPC.instance.connect(autoRetry: true);
+    if (isconnected) {
+      await FlutterDiscordRPC.instance.setActivity(
+        activity: RPCActivity(
+          activityType: ActivityType.listening,
+          state: surahName,
+          details: reciter,
+          timestamps: RPCTimestamps(
+            start: position,
+            end: duration,
           ),
-        );
-      } else {
-        await FlutterDiscordRPC.instance.reconnect();
-        await FlutterDiscordRPC.instance.setActivity(
-          activity: RPCActivity(
-            activityType: ActivityType.listening,
-            state: surahName,
-            details: reciter,
-            timestamps: RPCTimestamps(
-              start: position,
-              end: duration,
-            ),
+        ),
+      );
+    } else {
+      await FlutterDiscordRPC.instance.reconnect();
+      await FlutterDiscordRPC.instance.setActivity(
+        activity: RPCActivity(
+          activityType: ActivityType.listening,
+          state: surahName,
+          details: reciter,
+          timestamps: RPCTimestamps(
+            start: position,
+            end: duration,
           ),
-        );
-      }
-    } catch (e) {}
+        ),
+      );
+    }
   }
 }
 
