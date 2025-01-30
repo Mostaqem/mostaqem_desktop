@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:metadata_god/metadata_god.dart';
+// import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
@@ -87,13 +87,13 @@ class DownloadAudio extends _$DownloadAudio {
   }
 
   Future<void> writeMetaData(String filePath, Album album) async {
-    await MetadataGod.writeMetadata(
-      file: filePath,
-      metadata: Metadata(
-        genre: 'Quran',
-        title: album.surah.arabicName,
-        artist: album.reciter.arabicName,
-      ),
-    );
+    // await MetadataGod.writeMetadata(
+    //   file: filePath,
+    //   metadata: Metadata(
+    //     genre: 'Quran',
+    //     title: album.surah.arabicName,
+    //     artist: album.reciter.arabicName,
+    //   ),
+    // );
   }
 }

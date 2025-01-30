@@ -166,6 +166,8 @@ class FetchAllChaptersProvider extends FutureProvider<List<Surah>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchAllChaptersRef on FutureProviderRef<List<Surah>> {
   /// The parameter `page` of this provider.
   int get page;
@@ -311,6 +313,8 @@ class FetchChapterByIdProvider extends AutoDisposeFutureProvider<Surah> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchChapterByIdRef on AutoDisposeFutureProviderRef<Surah> {
   /// The parameter `id` of this provider.
   int get id;
@@ -480,6 +484,8 @@ class FetchAudioForChapterProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchAudioForChapterRef
     on AutoDisposeFutureProviderRef<({String url, int recitationID})> {
   /// The parameter `chapterNumber` of this provider.
@@ -523,6 +529,8 @@ final fetchNextSurahProvider = AutoDisposeFutureProvider<Surah?>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchNextSurahRef = AutoDisposeFutureProviderRef<Surah?>;
 String _$fetchRandomImageHash() => r'654b50af4c87b5f5a1146f7a0e973c0f98ae580e';
 
@@ -540,6 +548,8 @@ final fetchRandomImageProvider = AutoDisposeFutureProvider<String>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchRandomImageRef = AutoDisposeFutureProviderRef<String>;
 String _$fetchSurahLyricsHash() => r'faafd02854377499551e93a44365394c98b8ebbf';
 
@@ -668,6 +678,8 @@ class FetchSurahLyricsProvider extends AutoDisposeFutureProvider<String?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchSurahLyricsRef on AutoDisposeFutureProviderRef<String?> {
   /// The parameter `surahID` of this provider.
   int get surahID;
@@ -686,4 +698,4 @@ class _FetchSurahLyricsProviderElement
   int get recitationID => (origin as FetchSurahLyricsProvider).recitationID;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

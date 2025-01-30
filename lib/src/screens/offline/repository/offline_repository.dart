@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:metadata_god/metadata_god.dart';
+// import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
@@ -48,34 +48,35 @@ class OfflineRepository {
 
   Stream<List<Album>> loadAudioAsAlbum() async* {
     final albums = <Album>[];
-    final localAudios = getLocalAudio();
-    await for (final audio in localAudios) {
-      final metadata = await MetadataGod.readMetadata(file: audio.path);
-      if (metadata.title != null) {
-        final album = Album(
-          recitationID: 0,
-          surah: Surah(
-            id: 1,
-            simpleName: '',
-            arabicName: metadata.title ?? '',
-            revelationPlace: '',
-          ),
-          reciter: Reciter(
-            id: 1,
-            englishName: '',
-            arabicName: metadata.artist ?? '',
-          ),
-          url: audio.path,
-          isLocal: true,
-        );
 
-        albums.add(album);
-      }
-    }
+  //   await for (final audio in localAudios) {
+  //     final metadata = await MetadataGod.readMetadata(file: audio.path);
+  //     if (metadata.title != null) {
+  //       final album = Album(
+  //         recitationID: 0,
+  //         surah: Surah(
+  //           id: 1,
+  //           simpleName: '',
+  //           arabicName: metadata.title ?? '',
+  //           revelationPlace: '',
+  //         ),
+  //         reciter: Reciter(
+  //           id: 1,
+  //           englishName: '',
+  //           arabicName: metadata.artist ?? '',
+  //         ),
+  //         url: audio.path,
+  //         isLocal: true,
+  //       );
 
-    yield albums;
+  //       albums.add(album);
+  //     }
+  //   }
+
+  //   yield albums;
+   yield albums;
   }
-}
+} 
 
 final offlineRepo = Provider(OfflineRepository.new);
 

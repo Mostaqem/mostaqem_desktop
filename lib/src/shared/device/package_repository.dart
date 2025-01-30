@@ -5,6 +5,7 @@ import 'package:github/github.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 enum UpdateState {
@@ -47,6 +48,9 @@ class PackageRepository {
     final currentV = getExtendedVersionNumber(version);
     final latestV = getExtendedVersionNumber(latestVersion);
 
+    if(UniversalPlatform.isWeb) {
+      return UpdateState.notAvailable; 
+    } 
     return currentV < latestV
         ? UpdateState.available
         : UpdateState.notAvailable;

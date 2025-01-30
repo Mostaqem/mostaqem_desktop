@@ -6,4 +6,5 @@ class Constants {
   static bool mStore = const bool.fromEnvironment('MSTORE');
 
   static String fakeLableString = 'fake screen';
+  static String discordAPPID = "1251240254250156195";
 }

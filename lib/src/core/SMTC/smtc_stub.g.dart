@@ -6,7 +6,7 @@ part of 'smtc_stub.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$smtcRepoHash() => r'26976cfbfb2683c7c508a28bd8960037b796ced6';
+String _$smtcRepoHash() => r'6def57bc6f7377b71ae05c9e1fdc2726a17942d0';
 
 /// See also [smtcRepo].
 @ProviderFor(smtcRepo)
@@ -19,6 +19,8 @@ final smtcRepoProvider = AutoDisposeProvider<SMTCRepository>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SmtcRepoRef = AutoDisposeProviderRef<SMTCRepository>;
 String _$updateSMTCHash() => r'daedc185f45320a25024211f62f16f4736c70438';
 
@@ -179,6 +181,8 @@ class UpdateSMTCProvider extends AutoDisposeProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateSMTCRef on AutoDisposeProviderRef<void> {
   /// The parameter `surah` of this provider.
   String get surah;
@@ -361,6 +365,8 @@ class InitSMTCProvider extends AutoDisposeProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin InitSMTCRef on AutoDisposeProviderRef<void> {
   /// The parameter `surah` of this provider.
   String get surah;
@@ -394,4 +400,4 @@ class _InitSMTCProviderElement extends AutoDisposeProviderElement<void>
   int get duration => (origin as InitSMTCProvider).duration;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

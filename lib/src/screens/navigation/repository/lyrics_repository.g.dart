@@ -141,6 +141,8 @@ class GetLyricsProvider extends AutoDisposeFutureProvider<String?> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin GetLyricsRef on AutoDisposeFutureProviderRef<String?> {
   /// The parameter `filename` of this provider.
   String get filename;
@@ -281,6 +283,8 @@ class CacheLyricsProvider extends AutoDisposeFutureProvider<File> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin CacheLyricsRef on AutoDisposeFutureProviderRef<File> {
   /// The parameter `filename` of this provider.
   String get filename;
@@ -312,6 +316,8 @@ final syncLyricsProvider = AutoDisposeFutureProvider<String?>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SyncLyricsRef = AutoDisposeFutureProviderRef<String?>;
 String _$currentLyricsNotifierHash() =>
     r'e041d0cee3d19ff12ce2f713189b266573cf90d3';
@@ -331,4 +337,4 @@ final currentLyricsNotifierProvider =
 
 typedef _$CurrentLyricsNotifier = AutoDisposeAsyncNotifier<String?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

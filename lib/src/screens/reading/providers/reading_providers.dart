@@ -1,24 +1,23 @@
 // ignore_for_file: avoid_dynamic_calls, inference_failure_on_untyped_parameter
 
-import 'package:mostaqem/src/core/dio/dio_helper.dart';
+import 'dart:convert';
+
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/reading/data/script.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'reading_providers.g.dart';
 
 @riverpod
-Future<List<Script>> fetchUthmaniScript(
-  FetchUthmaniScriptRef ref, {
+Future<List<Script>> fetchQuran(
+  Ref ref, {
   required int surahID,
-  required int page,
-  String? query,
 }) async {
-  final url = query == null
-      ? '/verse/surah?surah_id=$surahID&page=$page&take=13'
-      : '/verse/surah?surah_id=$surahID&page=$page&take=13&name=$query';
-  final response = await ref.read(dioHelperProvider).getHTTP(url);
-
-  return response.data['data']['verses']
-      .map<Script>((e) => Script.fromJson(e as Map<String, Object?>))
+  final quran = await rootBundle.loadString('assets/quran/quran.json');
+  final jsonData = jsonDecode(quran) as Map<String, dynamic>;
+  final decodedJson = jsonData['$surahID'] as List;
+  return decodedJson
+      .map<Script>((e) => Script.fromJson(e as Map<String, dynamic>))
       .toList();
 }

@@ -6,8 +6,7 @@ part of 'reading_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchUthmaniScriptHash() =>
-    r'0e8d8b5ea4847784775817e29e217b737dc2540b';
+String _$fetchQuranHash() => r'f00e360ecc78857417da9514b038fed65f91e935';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,36 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [fetchUthmaniScript].
-@ProviderFor(fetchUthmaniScript)
-const fetchUthmaniScriptProvider = FetchUthmaniScriptFamily();
+/// See also [fetchQuran].
+@ProviderFor(fetchQuran)
+const fetchQuranProvider = FetchQuranFamily();
 
-/// See also [fetchUthmaniScript].
-class FetchUthmaniScriptFamily extends Family<AsyncValue<List<Script>>> {
-  /// See also [fetchUthmaniScript].
-  const FetchUthmaniScriptFamily();
+/// See also [fetchQuran].
+class FetchQuranFamily extends Family<AsyncValue<List<Script>>> {
+  /// See also [fetchQuran].
+  const FetchQuranFamily();
 
-  /// See also [fetchUthmaniScript].
-  FetchUthmaniScriptProvider call({
+  /// See also [fetchQuran].
+  FetchQuranProvider call({
     required int surahID,
-    required int page,
-    String? query,
   }) {
-    return FetchUthmaniScriptProvider(
+    return FetchQuranProvider(
       surahID: surahID,
-      page: page,
-      query: query,
     );
   }
 
   @override
-  FetchUthmaniScriptProvider getProviderOverride(
-    covariant FetchUthmaniScriptProvider provider,
+  FetchQuranProvider getProviderOverride(
+    covariant FetchQuranProvider provider,
   ) {
     return call(
       surahID: provider.surahID,
-      page: provider.page,
-      query: provider.query,
     );
   }
 
@@ -75,39 +68,32 @@ class FetchUthmaniScriptFamily extends Family<AsyncValue<List<Script>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'fetchUthmaniScriptProvider';
+  String? get name => r'fetchQuranProvider';
 }
 
-/// See also [fetchUthmaniScript].
-class FetchUthmaniScriptProvider
-    extends AutoDisposeFutureProvider<List<Script>> {
-  /// See also [fetchUthmaniScript].
-  FetchUthmaniScriptProvider({
+/// See also [fetchQuran].
+class FetchQuranProvider extends AutoDisposeFutureProvider<List<Script>> {
+  /// See also [fetchQuran].
+  FetchQuranProvider({
     required int surahID,
-    required int page,
-    String? query,
   }) : this._internal(
-          (ref) => fetchUthmaniScript(
-            ref as FetchUthmaniScriptRef,
+          (ref) => fetchQuran(
+            ref as FetchQuranRef,
             surahID: surahID,
-            page: page,
-            query: query,
           ),
-          from: fetchUthmaniScriptProvider,
-          name: r'fetchUthmaniScriptProvider',
+          from: fetchQuranProvider,
+          name: r'fetchQuranProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$fetchUthmaniScriptHash,
-          dependencies: FetchUthmaniScriptFamily._dependencies,
+                  : _$fetchQuranHash,
+          dependencies: FetchQuranFamily._dependencies,
           allTransitiveDependencies:
-              FetchUthmaniScriptFamily._allTransitiveDependencies,
+              FetchQuranFamily._allTransitiveDependencies,
           surahID: surahID,
-          page: page,
-          query: query,
         );
 
-  FetchUthmaniScriptProvider._internal(
+  FetchQuranProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -115,80 +101,60 @@ class FetchUthmaniScriptProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.surahID,
-    required this.page,
-    required this.query,
   }) : super.internal();
 
   final int surahID;
-  final int page;
-  final String? query;
 
   @override
   Override overrideWith(
-    FutureOr<List<Script>> Function(FetchUthmaniScriptRef provider) create,
+    FutureOr<List<Script>> Function(FetchQuranRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: FetchUthmaniScriptProvider._internal(
-        (ref) => create(ref as FetchUthmaniScriptRef),
+      override: FetchQuranProvider._internal(
+        (ref) => create(ref as FetchQuranRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         surahID: surahID,
-        page: page,
-        query: query,
       ),
     );
   }
 
   @override
   AutoDisposeFutureProviderElement<List<Script>> createElement() {
-    return _FetchUthmaniScriptProviderElement(this);
+    return _FetchQuranProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FetchUthmaniScriptProvider &&
-        other.surahID == surahID &&
-        other.page == page &&
-        other.query == query;
+    return other is FetchQuranProvider && other.surahID == surahID;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, surahID.hashCode);
-    hash = _SystemHash.combine(hash, page.hashCode);
-    hash = _SystemHash.combine(hash, query.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin FetchUthmaniScriptRef on AutoDisposeFutureProviderRef<List<Script>> {
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin FetchQuranRef on AutoDisposeFutureProviderRef<List<Script>> {
   /// The parameter `surahID` of this provider.
   int get surahID;
-
-  /// The parameter `page` of this provider.
-  int get page;
-
-  /// The parameter `query` of this provider.
-  String? get query;
 }
 
-class _FetchUthmaniScriptProviderElement
-    extends AutoDisposeFutureProviderElement<List<Script>>
-    with FetchUthmaniScriptRef {
-  _FetchUthmaniScriptProviderElement(super.provider);
+class _FetchQuranProviderElement
+    extends AutoDisposeFutureProviderElement<List<Script>> with FetchQuranRef {
+  _FetchQuranProviderElement(super.provider);
 
   @override
-  int get surahID => (origin as FetchUthmaniScriptProvider).surahID;
-  @override
-  int get page => (origin as FetchUthmaniScriptProvider).page;
-  @override
-  String? get query => (origin as FetchUthmaniScriptProvider).query;
+  int get surahID => (origin as FetchQuranProvider).surahID;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

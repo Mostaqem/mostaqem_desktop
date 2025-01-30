@@ -6,7 +6,7 @@ part of 'download_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$downloadAudioHash() => r'4a20815251abab850b3402dc626b1278909b1b5a';
+String _$downloadAudioHash() => r'7cda78309d40d2a8b473412f28adb925ca8220aa';
 
 /// See also [DownloadAudio].
 @ProviderFor(DownloadAudio)
@@ -23,4 +23,4 @@ final downloadAudioProvider =
 
 typedef _$DownloadAudio = AutoDisposeNotifier<DownloadProgress?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -45,18 +45,18 @@ class SMTCRepository {
       switch (event) {
         case PressedButton.play:
           ref.read(playerNotifierProvider.notifier).player.play();
-          smtc!.setPlaybackStatus(PlaybackStatus.Playing);
+          smtc!.setPlaybackStatus(PlaybackStatus.playing);
         case PressedButton.pause:
           ref.read(playerNotifierProvider.notifier).player.pause();
 
-          smtc!.setPlaybackStatus(PlaybackStatus.Paused);
+          smtc!.setPlaybackStatus(PlaybackStatus.paused);
         case PressedButton.next:
           ref.read(playerNotifierProvider.notifier).playNext();
         case PressedButton.previous:
           ref.read(playerNotifierProvider.notifier).playPrevious();
 
         case PressedButton.stop:
-          smtc!.setPlaybackStatus(PlaybackStatus.Stopped);
+          smtc!.setPlaybackStatus(PlaybackStatus.stopped);
         case PressedButton.fastForward:
           break;
         case PressedButton.rewind:

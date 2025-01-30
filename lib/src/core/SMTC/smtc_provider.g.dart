@@ -19,6 +19,8 @@ final smtcRepoProvider = AutoDisposeProvider<SMTCRepository>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SmtcRepoRef = AutoDisposeProviderRef<SMTCRepository>;
 String _$updateSMTCHash() => r'1f0e0873c49b62a50e7f298b118876b627baa25a';
 
@@ -179,6 +181,8 @@ class UpdateSMTCProvider extends AutoDisposeProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin UpdateSMTCRef on AutoDisposeProviderRef<void> {
   /// The parameter `surah` of this provider.
   String get surah;
@@ -361,6 +365,8 @@ class InitSMTCProvider extends AutoDisposeProvider<void> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin InitSMTCRef on AutoDisposeProviderRef<void> {
   /// The parameter `surah` of this provider.
   String get surah;
@@ -394,4 +400,4 @@ class _InitSMTCProviderElement extends AutoDisposeProviderElement<void>
   int get duration => (origin as InitSMTCProvider).duration;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

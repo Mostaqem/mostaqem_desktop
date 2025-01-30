@@ -20,10 +20,9 @@ Script _$ScriptFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Script {
-  int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'vers')
+  @JsonKey(name: 'text')
   String get verse => throw _privateConstructorUsedError;
-  @JsonKey(name: 'verse_number')
+  @JsonKey(name: 'verse')
   int get verseNumber => throw _privateConstructorUsedError;
 
   /// Serializes this Script to a JSON map.
@@ -41,9 +40,8 @@ abstract class $ScriptCopyWith<$Res> {
       _$ScriptCopyWithImpl<$Res, Script>;
   @useResult
   $Res call(
-      {int id,
-      @JsonKey(name: 'vers') String verse,
-      @JsonKey(name: 'verse_number') int verseNumber});
+      {@JsonKey(name: 'text') String verse,
+      @JsonKey(name: 'verse') int verseNumber});
 }
 
 /// @nodoc
@@ -61,15 +59,10 @@ class _$ScriptCopyWithImpl<$Res, $Val extends Script>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? verse = null,
     Object? verseNumber = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       verse: null == verse
           ? _value.verse
           : verse // ignore: cast_nullable_to_non_nullable
@@ -90,9 +83,8 @@ abstract class _$$ScriptImplCopyWith<$Res> implements $ScriptCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id,
-      @JsonKey(name: 'vers') String verse,
-      @JsonKey(name: 'verse_number') int verseNumber});
+      {@JsonKey(name: 'text') String verse,
+      @JsonKey(name: 'verse') int verseNumber});
 }
 
 /// @nodoc
@@ -108,15 +100,10 @@ class __$$ScriptImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? verse = null,
     Object? verseNumber = null,
   }) {
     return _then(_$ScriptImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       verse: null == verse
           ? _value.verse
           : verse // ignore: cast_nullable_to_non_nullable
@@ -133,25 +120,22 @@ class __$$ScriptImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ScriptImpl implements _Script {
   const _$ScriptImpl(
-      {required this.id,
-      @JsonKey(name: 'vers') required this.verse,
-      @JsonKey(name: 'verse_number') required this.verseNumber});
+      {@JsonKey(name: 'text') required this.verse,
+      @JsonKey(name: 'verse') required this.verseNumber});
 
   factory _$ScriptImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScriptImplFromJson(json);
 
   @override
-  final int id;
-  @override
-  @JsonKey(name: 'vers')
+  @JsonKey(name: 'text')
   final String verse;
   @override
-  @JsonKey(name: 'verse_number')
+  @JsonKey(name: 'verse')
   final int verseNumber;
 
   @override
   String toString() {
-    return 'Script(id: $id, verse: $verse, verseNumber: $verseNumber)';
+    return 'Script(verse: $verse, verseNumber: $verseNumber)';
   }
 
   @override
@@ -159,7 +143,6 @@ class _$ScriptImpl implements _Script {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ScriptImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.verse, verse) || other.verse == verse) &&
             (identical(other.verseNumber, verseNumber) ||
                 other.verseNumber == verseNumber));
@@ -167,7 +150,7 @@ class _$ScriptImpl implements _Script {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, verse, verseNumber);
+  int get hashCode => Object.hash(runtimeType, verse, verseNumber);
 
   /// Create a copy of Script
   /// with the given fields replaced by the non-null parameter values.
@@ -187,20 +170,16 @@ class _$ScriptImpl implements _Script {
 
 abstract class _Script implements Script {
   const factory _Script(
-          {required final int id,
-          @JsonKey(name: 'vers') required final String verse,
-          @JsonKey(name: 'verse_number') required final int verseNumber}) =
-      _$ScriptImpl;
+      {@JsonKey(name: 'text') required final String verse,
+      @JsonKey(name: 'verse') required final int verseNumber}) = _$ScriptImpl;
 
   factory _Script.fromJson(Map<String, dynamic> json) = _$ScriptImpl.fromJson;
 
   @override
-  int get id;
-  @override
-  @JsonKey(name: 'vers')
+  @JsonKey(name: 'text')
   String get verse;
   @override
-  @JsonKey(name: 'verse_number')
+  @JsonKey(name: 'verse')
   int get verseNumber;
 
   /// Create a copy of Script

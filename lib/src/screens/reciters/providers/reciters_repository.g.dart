@@ -142,6 +142,8 @@ class FetchReciterProvider extends AutoDisposeFutureProvider<Reciter> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchReciterRef on AutoDisposeFutureProviderRef<Reciter> {
   /// The parameter `id` of this provider.
   int get id;
@@ -282,6 +284,8 @@ class FetchRecitersProvider extends AutoDisposeFutureProvider<List<Reciter>> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchRecitersRef on AutoDisposeFutureProviderRef<List<Reciter>> {
   /// The parameter `page` of this provider.
   int get page;
@@ -327,4 +331,4 @@ final userReciterProvider = NotifierProvider<UserReciter, Reciter>.internal(
 
 typedef _$UserReciter = Notifier<Reciter>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
