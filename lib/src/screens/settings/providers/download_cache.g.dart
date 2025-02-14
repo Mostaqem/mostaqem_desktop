@@ -14,9 +14,10 @@ String _$downloadDestinationHash() =>
 final downloadDestinationProvider = FutureProvider<String>.internal(
   downloadDestination,
   name: r'downloadDestinationProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$downloadDestinationHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$downloadDestinationHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -31,9 +32,10 @@ String _$downloadCacheHash() => r'e39be20c87f2397c43700350a057e65d6600a0e7';
 final downloadCacheProvider = NotifierProvider<DownloadCache, String?>.internal(
   DownloadCache.new,
   name: r'downloadCacheProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$downloadCacheHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$downloadCacheHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

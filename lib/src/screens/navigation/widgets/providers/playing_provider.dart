@@ -7,8 +7,9 @@ final currentSurahProvider = Provider.autoDispose(
 );
 
 final currentReciterProvider = Provider.autoDispose((ref) {
-  return ref
-      .watch(playerNotifierProvider.select((value) => value.album?.reciter));
+  return ref.watch(
+    playerNotifierProvider.select((value) => value.album?.reciter),
+  );
 });
 
 final isAlbumEmptyProvider = Provider.autoDispose((ref) {

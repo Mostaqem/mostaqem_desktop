@@ -30,8 +30,12 @@ class DownloadsScreen extends ConsumerWidget {
                         'assets/img/empty_box.svg',
                         width: 220,
                         colorFilter: ColorFilter.mode(
-                          const Color.fromARGB(255, 202, 197, 197)
-                              .withValues(alpha: 0.5),
+                          const Color.fromARGB(
+                            255,
+                            202,
+                            197,
+                            197,
+                          ).withValues(alpha: 0.5),
                           BlendMode.modulate,
                         ),
                       ),
@@ -47,7 +51,9 @@ class DownloadsScreen extends ConsumerWidget {
                         trailing: ToolTipIconButton(
                           message: 'تشغيل',
                           onPressed: () {
-                            ref.read(playerNotifierProvider.notifier).localPlay(
+                            ref
+                                .read(playerNotifierProvider.notifier)
+                                .localPlay(
                                   album: data[index].copyWith(isLocal: true),
                                 );
                           },
@@ -61,9 +67,7 @@ class DownloadsScreen extends ConsumerWidget {
             },
           ),
         ),
-        const SizedBox(
-          height: 100,
-        ),
+        const SizedBox(height: 100),
       ],
     );
   }

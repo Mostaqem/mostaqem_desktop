@@ -12,7 +12,8 @@ part of 'script.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Script _$ScriptFromJson(Map<String, dynamic> json) {
   return _Script.fromJson(json);
@@ -39,9 +40,10 @@ abstract class $ScriptCopyWith<$Res> {
   factory $ScriptCopyWith(Script value, $Res Function(Script) then) =
       _$ScriptCopyWithImpl<$Res, Script>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'text') String verse,
-      @JsonKey(name: 'verse') int verseNumber});
+  $Res call({
+    @JsonKey(name: 'text') String verse,
+    @JsonKey(name: 'verse') int verseNumber,
+  });
 }
 
 /// @nodoc
@@ -58,33 +60,37 @@ class _$ScriptCopyWithImpl<$Res, $Val extends Script>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? verse = null,
-    Object? verseNumber = null,
-  }) {
-    return _then(_value.copyWith(
-      verse: null == verse
-          ? _value.verse
-          : verse // ignore: cast_nullable_to_non_nullable
-              as String,
-      verseNumber: null == verseNumber
-          ? _value.verseNumber
-          : verseNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  $Res call({Object? verse = null, Object? verseNumber = null}) {
+    return _then(
+      _value.copyWith(
+            verse:
+                null == verse
+                    ? _value.verse
+                    : verse // ignore: cast_nullable_to_non_nullable
+                        as String,
+            verseNumber:
+                null == verseNumber
+                    ? _value.verseNumber
+                    : verseNumber // ignore: cast_nullable_to_non_nullable
+                        as int,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$ScriptImplCopyWith<$Res> implements $ScriptCopyWith<$Res> {
   factory _$$ScriptImplCopyWith(
-          _$ScriptImpl value, $Res Function(_$ScriptImpl) then) =
-      __$$ScriptImplCopyWithImpl<$Res>;
+    _$ScriptImpl value,
+    $Res Function(_$ScriptImpl) then,
+  ) = __$$ScriptImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'text') String verse,
-      @JsonKey(name: 'verse') int verseNumber});
+  $Res call({
+    @JsonKey(name: 'text') String verse,
+    @JsonKey(name: 'verse') int verseNumber,
+  });
 }
 
 /// @nodoc
@@ -92,36 +98,39 @@ class __$$ScriptImplCopyWithImpl<$Res>
     extends _$ScriptCopyWithImpl<$Res, _$ScriptImpl>
     implements _$$ScriptImplCopyWith<$Res> {
   __$$ScriptImplCopyWithImpl(
-      _$ScriptImpl _value, $Res Function(_$ScriptImpl) _then)
-      : super(_value, _then);
+    _$ScriptImpl _value,
+    $Res Function(_$ScriptImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Script
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? verse = null,
-    Object? verseNumber = null,
-  }) {
-    return _then(_$ScriptImpl(
-      verse: null == verse
-          ? _value.verse
-          : verse // ignore: cast_nullable_to_non_nullable
-              as String,
-      verseNumber: null == verseNumber
-          ? _value.verseNumber
-          : verseNumber // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
+  $Res call({Object? verse = null, Object? verseNumber = null}) {
+    return _then(
+      _$ScriptImpl(
+        verse:
+            null == verse
+                ? _value.verse
+                : verse // ignore: cast_nullable_to_non_nullable
+                    as String,
+        verseNumber:
+            null == verseNumber
+                ? _value.verseNumber
+                : verseNumber // ignore: cast_nullable_to_non_nullable
+                    as int,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ScriptImpl implements _Script {
-  const _$ScriptImpl(
-      {@JsonKey(name: 'text') required this.verse,
-      @JsonKey(name: 'verse') required this.verseNumber});
+  const _$ScriptImpl({
+    @JsonKey(name: 'text') required this.verse,
+    @JsonKey(name: 'verse') required this.verseNumber,
+  });
 
   factory _$ScriptImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScriptImplFromJson(json);
@@ -162,16 +171,15 @@ class _$ScriptImpl implements _Script {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ScriptImplToJson(
-      this,
-    );
+    return _$$ScriptImplToJson(this);
   }
 }
 
 abstract class _Script implements Script {
-  const factory _Script(
-      {@JsonKey(name: 'text') required final String verse,
-      @JsonKey(name: 'verse') required final int verseNumber}) = _$ScriptImpl;
+  const factory _Script({
+    @JsonKey(name: 'text') required final String verse,
+    @JsonKey(name: 'verse') required final int verseNumber,
+  }) = _$ScriptImpl;
 
   factory _Script.fromJson(Map<String, dynamic> json) = _$ScriptImpl.fromJson;
 

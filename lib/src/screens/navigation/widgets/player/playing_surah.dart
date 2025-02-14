@@ -27,9 +27,7 @@ class PlayingSurah extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(
-            width: 10,
-          ),
+          const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,12 +47,14 @@ class PlayingSurah extends StatelessWidget {
                     ),
                   ),
                   Visibility(
-                    visible: !ref.watch(isLocalProvider) &&
+                    visible:
+                        !ref.watch(isLocalProvider) &&
                         !ref.watch(isAlbumEmptyProvider),
                     child: IconButton(
-                      onPressed: () => ref
-                          .read(isCollapsedProvider.notifier)
-                          .update((state) => !state),
+                      onPressed:
+                          () => ref
+                              .read(isCollapsedProvider.notifier)
+                              .update((state) => !state),
                       icon: Icon(
                         Icons.arrow_drop_up_outlined,
                         color:
@@ -80,9 +80,16 @@ class PlayingSurah extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            width: 70,
+          const SizedBox(width: 50),
+          ToolTipIconButton(
+            message: 'قائمة التشغيل',
+            iconSize: 20,
+            onPressed: () {
+              ref.read(goRouterProvider).go('/queue');
+            },
+            icon: const Icon(Icons.playlist_play),
           ),
+          const SizedBox(width: 10),
           Visibility(
             visible: !ref.read(isLocalProvider),
             child: ToolTipIconButton(

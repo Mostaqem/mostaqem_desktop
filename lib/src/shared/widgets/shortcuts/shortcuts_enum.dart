@@ -3,11 +3,7 @@ import 'package:flutter/services.dart';
 
 enum ShortcutsEnum {
   help(name: 'مساعدة', key: LogicalKeyboardKey.f1, hidden: true),
-  playPause(
-    name: 'تشغيل/ايقاف',
-    key: LogicalKeyboardKey.space,
-    control: true,
-  ),
+  playPause(name: 'تشغيل/ايقاف', key: LogicalKeyboardKey.space, control: true),
   mute(name: 'صامت/تشغيل', key: LogicalKeyboardKey.keyM, control: true),
   playNext(name: 'تشغيل التالي', key: LogicalKeyboardKey.arrowLeft),
   playPrevious(name: 'تشغيل القبل', key: LogicalKeyboardKey.arrowRight),
@@ -15,11 +11,7 @@ enum ShortcutsEnum {
 
   settings(name: 'الأعدادات', key: LogicalKeyboardKey.keyP, control: true),
 
-  checkUpdate(
-    name: 'تحديث',
-    key: LogicalKeyboardKey.keyU,
-    control: true,
-  ),
+  checkUpdate(name: 'تحديث', key: LogicalKeyboardKey.keyU, control: true),
 
   enterFullscreen(
     name: 'الشاشة الكبيرة',

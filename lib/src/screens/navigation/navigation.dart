@@ -38,43 +38,45 @@ class _NavigationState extends ConsumerState<Navigation> {
   @override
   Widget build(BuildContext context) {
     final isFullScreen = ref.watch(isFullScreenProvider);
-    final player =
-        ref.watch(playerNotifierProvider.select((value) => value.album));
+    final player = ref.watch(
+      playerNotifierProvider.select((value) => value.album),
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: isFullScreen
-          ? FullScreenWidget(player: player!)
-          : Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Column(
-                  children: [
-                    const WindowButtons(),
-                    Expanded(
-                      child: Consumer(
-                        builder: (context, ref, child) {
-                          final children = ref.watch(childrenProvider);
-                          final screenIndex = ref.watch(indexScreenProvider);
-                          return Row(
-                            children: [
-                              RightSide(
-                                children: children,
-                                screenIndex: screenIndex,
-                              ),
-                              LeftSide(
-                                children: children,
-                                screenIndex: screenIndex,
-                              ),
-                            ],
-                          );
-                        },
+      body:
+          isFullScreen
+              ? FullScreenWidget(player: player!)
+              : Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Column(
+                    children: [
+                      const WindowButtons(),
+                      Expanded(
+                        child: Consumer(
+                          builder: (context, ref, child) {
+                            final children = ref.watch(childrenProvider);
+                            final screenIndex = ref.watch(indexScreenProvider);
+                            return Row(
+                              children: [
+                                RightSide(
+                                  children: children,
+                                  screenIndex: screenIndex,
+                                ),
+                                LeftSide(
+                                  children: children,
+                                  screenIndex: screenIndex,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                    ],
+                  ),
+                ],
+              ),
     );
   }
 }
@@ -113,12 +115,14 @@ class RightSide extends ConsumerWidget {
             leading: ToolTipIconButton(
               message: ref.watch(isExtendedProvider) ? 'تصغير' : 'توسيع',
               icon: const Icon(Icons.menu),
-              onPressed: () => ref
-                  .read(isExtendedProvider.notifier)
-                  .update((state) => !state),
+              onPressed:
+                  () => ref
+                      .read(isExtendedProvider.notifier)
+                      .update((state) => !state),
             ),
-            indicatorShape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            indicatorShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             destinations: [
               ...children.map(
                 (child) => NavigationRailDestination(
@@ -129,8 +133,8 @@ class RightSide extends ConsumerWidget {
               ),
             ],
             selectedIndex: screenIndex,
-            onDestinationSelected: (value) =>
-                ref.read(indexScreenProvider.notifier).state = value,
+            onDestinationSelected:
+                (value) => ref.read(indexScreenProvider.notifier).state = value,
           ),
         ),
       ),

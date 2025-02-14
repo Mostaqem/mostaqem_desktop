@@ -10,10 +10,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'reading_providers.g.dart';
 
 @riverpod
-Future<List<Script>> fetchQuran(
-  Ref ref, {
-  required int surahID,
-}) async {
+Future<List<Script>> fetchQuran(Ref ref, {required int surahID}) async {
   final quran = await rootBundle.loadString('assets/quran/quran.json');
   final jsonData = jsonDecode(quran) as Map<String, dynamic>;
   final decodedJson = jsonData['$surahID'] as List;

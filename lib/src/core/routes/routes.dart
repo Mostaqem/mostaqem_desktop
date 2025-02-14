@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/navigation.dart';
+import 'package:mostaqem/src/screens/queue/presentation/queue_screen.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
 import 'package:mostaqem/src/screens/reciters/reciters_screen.dart';
 import 'package:mostaqem/src/screens/settings/settings_screen.dart';
@@ -19,9 +20,8 @@ class NavigationRepository {
           GoRoute(
             path: 'reading',
             name: 'Reading',
-            builder: (context, state) => ReadingScreen(
-              surah: state.extra! as Surah,
-            ),
+            builder:
+                (context, state) => ReadingScreen(surah: state.extra! as Surah),
           ),
         ],
         builder: (context, state) => const Navigation(),
@@ -30,6 +30,7 @@ class NavigationRepository {
         path: '/reciters',
         builder: (context, state) => const RecitersScreen(),
       ),
+      GoRoute(path: '/queue', builder: (context, state) => const QueueScreen()),
       GoRoute(
         path: '/licenses',
         builder: (context, state) => const AppLicensePage(),
@@ -47,5 +48,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   return repo.router;
 });
 
-final navigationProvider =
-    Provider<NavigationRepository>(NavigationRepository.new);
+final navigationProvider = Provider<NavigationRepository>(
+  NavigationRepository.new,
+);

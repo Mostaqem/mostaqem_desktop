@@ -8,10 +8,7 @@ import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:window_manager/window_manager.dart';
 
 class FullScreenControl extends ConsumerWidget {
-  const FullScreenControl({
-    required this.isFullScreen,
-    super.key,
-  });
+  const FullScreenControl({required this.isFullScreen, super.key});
 
   final bool isFullScreen;
 
@@ -35,9 +32,10 @@ class FullScreenControl extends ConsumerWidget {
             ? Icons.close_fullscreen_outlined
             : Icons.open_in_full_outlined,
         size: 16,
-        color: isFullScreen
-            ? Colors.white
-            : Theme.of(context).colorScheme.onSecondaryContainer,
+        color:
+            isFullScreen
+                ? Colors.white
+                : Theme.of(context).colorScheme.onSecondaryContainer,
       ),
       message: isFullScreen ? 'تصغير الشاشة' : 'تكبير الشاشة',
     );

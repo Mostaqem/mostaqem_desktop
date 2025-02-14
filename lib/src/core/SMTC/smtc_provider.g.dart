@@ -60,11 +60,7 @@ class UpdateSMTCFamily extends Family<void> {
     required String reciter,
     required String image,
   }) {
-    return UpdateSMTCProvider(
-      surah: surah,
-      reciter: reciter,
-      image: image,
-    );
+    return UpdateSMTCProvider(surah: surah, reciter: reciter, image: image);
   }
 
   @override
@@ -101,25 +97,24 @@ class UpdateSMTCProvider extends AutoDisposeProvider<void> {
     required String reciter,
     required String image,
   }) : this._internal(
-          (ref) => updateSMTC(
-            ref as UpdateSMTCRef,
-            surah: surah,
-            reciter: reciter,
-            image: image,
-          ),
-          from: updateSMTCProvider,
-          name: r'updateSMTCProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$updateSMTCHash,
-          dependencies: UpdateSMTCFamily._dependencies,
-          allTransitiveDependencies:
-              UpdateSMTCFamily._allTransitiveDependencies,
-          surah: surah,
-          reciter: reciter,
-          image: image,
-        );
+         (ref) => updateSMTC(
+           ref as UpdateSMTCRef,
+           surah: surah,
+           reciter: reciter,
+           image: image,
+         ),
+         from: updateSMTCProvider,
+         name: r'updateSMTCProvider',
+         debugGetCreateSourceHash:
+             const bool.fromEnvironment('dart.vm.product')
+                 ? null
+                 : _$updateSMTCHash,
+         dependencies: UpdateSMTCFamily._dependencies,
+         allTransitiveDependencies: UpdateSMTCFamily._allTransitiveDependencies,
+         surah: surah,
+         reciter: reciter,
+         image: image,
+       );
 
   UpdateSMTCProvider._internal(
     super._createNotifier, {
@@ -138,9 +133,7 @@ class UpdateSMTCProvider extends AutoDisposeProvider<void> {
   final String image;
 
   @override
-  Override overrideWith(
-    void Function(UpdateSMTCRef provider) create,
-  ) {
+  Override overrideWith(void Function(UpdateSMTCRef provider) create) {
     return ProviderOverride(
       origin: this,
       override: UpdateSMTCProvider._internal(
@@ -235,9 +228,7 @@ class InitSMTCFamily extends Family<void> {
   }
 
   @override
-  InitSMTCProvider getProviderOverride(
-    covariant InitSMTCProvider provider,
-  ) {
+  InitSMTCProvider getProviderOverride(covariant InitSMTCProvider provider) {
     return call(
       surah: provider.surah,
       reciter: provider.reciter,
@@ -272,28 +263,28 @@ class InitSMTCProvider extends AutoDisposeProvider<void> {
     required int position,
     required int duration,
   }) : this._internal(
-          (ref) => initSMTC(
-            ref as InitSMTCRef,
-            surah: surah,
-            reciter: reciter,
-            image: image,
-            position: position,
-            duration: duration,
-          ),
-          from: initSMTCProvider,
-          name: r'initSMTCProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$initSMTCHash,
-          dependencies: InitSMTCFamily._dependencies,
-          allTransitiveDependencies: InitSMTCFamily._allTransitiveDependencies,
-          surah: surah,
-          reciter: reciter,
-          image: image,
-          position: position,
-          duration: duration,
-        );
+         (ref) => initSMTC(
+           ref as InitSMTCRef,
+           surah: surah,
+           reciter: reciter,
+           image: image,
+           position: position,
+           duration: duration,
+         ),
+         from: initSMTCProvider,
+         name: r'initSMTCProvider',
+         debugGetCreateSourceHash:
+             const bool.fromEnvironment('dart.vm.product')
+                 ? null
+                 : _$initSMTCHash,
+         dependencies: InitSMTCFamily._dependencies,
+         allTransitiveDependencies: InitSMTCFamily._allTransitiveDependencies,
+         surah: surah,
+         reciter: reciter,
+         image: image,
+         position: position,
+         duration: duration,
+       );
 
   InitSMTCProvider._internal(
     super._createNotifier, {
@@ -316,9 +307,7 @@ class InitSMTCProvider extends AutoDisposeProvider<void> {
   final int duration;
 
   @override
-  Override overrideWith(
-    void Function(InitSMTCRef provider) create,
-  ) {
+  Override overrideWith(void Function(InitSMTCRef provider) create) {
     return ProviderOverride(
       origin: this,
       override: InitSMTCProvider._internal(
@@ -399,5 +388,6 @@ class _InitSMTCProviderElement extends AutoDisposeProviderElement<void>
   @override
   int get duration => (origin as InitSMTCProvider).duration;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

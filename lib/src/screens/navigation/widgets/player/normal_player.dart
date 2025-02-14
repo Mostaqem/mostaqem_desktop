@@ -15,10 +15,7 @@ import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart'
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 class NormalPlayer extends ConsumerStatefulWidget {
-  const NormalPlayer({
-    required this.isFullScreen,
-    super.key,
-  });
+  const NormalPlayer({required this.isFullScreen, super.key});
 
   final bool isFullScreen;
 
@@ -44,23 +41,19 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    final album =
-        ref.watch(playerNotifierProvider.select((value) => value.album));
+    final album = ref.watch(
+      playerNotifierProvider.select((value) => value.album),
+    );
 
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          PlayingSurah(
-            isFullScreen: widget.isFullScreen,
-            ref: ref,
-          ),
+          PlayingSurah(isFullScreen: widget.isFullScreen, ref: ref),
           Padding(
             padding: const EdgeInsets.only(right: 80),
-            child: PlayControls(
-              isFullScreen: widget.isFullScreen,
-            ),
+            child: PlayControls(isFullScreen: widget.isFullScreen),
           ),
           Row(
             children: [
@@ -93,7 +86,8 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
                 ),
               ),
               Visibility(
-                visible: !widget.isFullScreen &&
+                visible:
+                    !widget.isFullScreen &&
                     ref.watch(downloadHeightProvider) == 0 &&
                     !ref.watch(isLocalProvider),
                 child: ToolTipIconButton(
@@ -101,10 +95,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
                   onPressed: () async {
                     final surah = ref.read(currentSurahProvider);
 
-                    ref.read(goRouterProvider).goNamed(
-                          'Reading',
-                          extra: surah,
-                        );
+                    ref.read(goRouterProvider).goNamed('Reading', extra: surah);
                   },
                   icon: SvgPicture.asset(
                     'assets/img/read.svg',
@@ -117,9 +108,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
                 ),
               ),
               const VolumeControls(),
-              FullScreenControl(
-                isFullScreen: widget.isFullScreen,
-              ),
+              FullScreenControl(isFullScreen: widget.isFullScreen),
             ],
           ),
         ],

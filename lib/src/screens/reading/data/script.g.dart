@@ -7,12 +7,9 @@ part of 'script.dart';
 // **************************************************************************
 
 _$ScriptImpl _$$ScriptImplFromJson(Map<String, dynamic> json) => _$ScriptImpl(
-      verse: json['text'] as String,
-      verseNumber: (json['verse'] as num).toInt(),
-    );
+  verse: json['text'] as String,
+  verseNumber: (json['verse'] as num).toInt(),
+);
 
 Map<String, dynamic> _$$ScriptImplToJson(_$ScriptImpl instance) =>
-    <String, dynamic>{
-      'text': instance.verse,
-      'verse': instance.verseNumber,
-    };
+    <String, dynamic>{'text': instance.verse, 'verse': instance.verseNumber};

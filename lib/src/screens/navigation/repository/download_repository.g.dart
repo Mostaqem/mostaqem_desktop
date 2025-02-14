@@ -12,14 +12,15 @@ String _$downloadAudioHash() => r'4a20815251abab850b3402dc626b1278909b1b5a';
 @ProviderFor(DownloadAudio)
 final downloadAudioProvider =
     AutoDisposeNotifierProvider<DownloadAudio, DownloadProgress?>.internal(
-  DownloadAudio.new,
-  name: r'downloadAudioProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$downloadAudioHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      DownloadAudio.new,
+      name: r'downloadAudioProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$downloadAudioHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$DownloadAudio = AutoDisposeNotifier<DownloadProgress?>;
 // ignore_for_file: type=lint

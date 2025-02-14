@@ -6,20 +6,21 @@ part of 'player_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerNotifierHash() => r'e1ec84a2591d12fb795256112fedbd466a1922e7';
+String _$playerNotifierHash() => r'27adbd2485b1c4c48a4bed24d80999ffde24539f';
 
 /// See also [PlayerNotifier].
 @ProviderFor(PlayerNotifier)
 final playerNotifierProvider =
     AutoDisposeNotifierProvider<PlayerNotifier, AudioState>.internal(
-  PlayerNotifier.new,
-  name: r'playerNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$playerNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      PlayerNotifier.new,
+      name: r'playerNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$playerNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$PlayerNotifier = AutoDisposeNotifier<AudioState>;
 // ignore_for_file: type=lint

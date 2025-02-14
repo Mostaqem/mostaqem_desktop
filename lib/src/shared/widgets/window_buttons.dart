@@ -11,16 +11,16 @@ class WindowButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Platform.isWindows
         ? Directionality(
-            textDirection: TextDirection.ltr,
-            child: SizedBox(
-              height: 30,
-              child: WindowCaption(
-                backgroundColor: Colors.transparent,
-                brightness: Theme.of(context).brightness,
-                title: const AppMenuBar(),
-              ),
+          textDirection: TextDirection.ltr,
+          child: SizedBox(
+            height: 30,
+            child: WindowCaption(
+              backgroundColor: Colors.transparent,
+              brightness: Theme.of(context).brightness,
+              title: const AppMenuBar(),
             ),
-          )
+          ),
+        )
         : const SizedBox.shrink();
   }
 }

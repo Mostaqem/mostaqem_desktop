@@ -4,7 +4,7 @@ part 'surah.freezed.dart';
 
 part 'surah.g.dart';
 
-@freezed
+@Freezed(toJson: true)
 class Surah with _$Surah {
   const factory Surah({
     required int id,
@@ -15,5 +15,5 @@ class Surah with _$Surah {
     String? image,
   }) = _Surah;
 
-  factory Surah.fromJson(Map<String, Object?> json) => _$SurahFromJson(json);
+  factory Surah.fromJson(Map<String, dynamic> json) => _$SurahFromJson(json);
 }

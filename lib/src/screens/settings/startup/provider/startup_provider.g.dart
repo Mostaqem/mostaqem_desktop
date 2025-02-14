@@ -12,14 +12,15 @@ String _$startupNotifierHash() => r'789cde3b0045032366501643eaa734090f26e93d';
 @ProviderFor(StartupNotifier)
 final startupNotifierProvider =
     AutoDisposeAsyncNotifierProvider<StartupNotifier, String>.internal(
-  StartupNotifier.new,
-  name: r'startupNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$startupNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      StartupNotifier.new,
+      name: r'startupNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$startupNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$StartupNotifier = AutoDisposeAsyncNotifier<String>;
 // ignore_for_file: type=lint

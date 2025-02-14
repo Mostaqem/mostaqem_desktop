@@ -19,9 +19,7 @@ class SettingsScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const WindowButtons(),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             const Align(alignment: Alignment.topLeft, child: AppBackButton()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -32,17 +30,11 @@ class SettingsScreen extends ConsumerWidget {
                     'الاعدادات',
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    height: 52,
-                  ),
+                  const SizedBox(height: 52),
                   const StartupOptions(),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   const DownloadOptions(),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   Text(
                     'مظهر',
                     style: TextStyle(
@@ -50,13 +42,9 @@ class SettingsScreen extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   const ApperanceSettings(),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   Text(
                     'ملفات المؤقتة',
                     style: TextStyle(
@@ -72,15 +60,11 @@ class SettingsScreen extends ConsumerWidget {
                     },
                     child: const Text('حذف الملفات'),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 100,
-            ),
+            const SizedBox(height: 100),
           ],
         ),
       ),

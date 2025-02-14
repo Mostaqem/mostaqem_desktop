@@ -7,9 +7,7 @@ import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_noti
 import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
 
 class ApperanceSettings extends ConsumerStatefulWidget {
-  const ApperanceSettings({
-    super.key,
-  });
+  const ApperanceSettings({super.key});
 
   @override
   ConsumerState<ApperanceSettings> createState() => _ApperanceSettingsState();
@@ -52,9 +50,7 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
                 ),
               ),
             ),
-            const SizedBox(
-              width: 12,
-            ),
+            const SizedBox(width: 12),
             InkWell(
               onTap: () {
                 ref
@@ -69,15 +65,10 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
                   color: const Color.fromARGB(255, 255, 176, 147),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
-                  Icons.sunny,
-                  color: Colors.black,
-                ),
+                child: const Icon(Icons.sunny, color: Colors.black),
               ),
             ),
-            const SizedBox(
-              width: 12,
-            ),
+            const SizedBox(width: 12),
             InkWell(
               onTap: () {
                 ref
@@ -100,9 +91,7 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
             ),
           ],
         ),
-        const SizedBox(
-          height: 12,
-        ),
+        const SizedBox(height: 12),
         Text(
           'تغيير اللون',
           style: TextStyle(
@@ -110,25 +99,22 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        const SizedBox(
-          height: 12,
-        ),
+        const SizedBox(height: 12),
         Wrap(
           children: [
             Wrap(
               spacing: 12,
-              children: availableColors
-                  .map(
-                    (e) => ApperanceColor(
-                      color: e,
-                      isSelected: ref.watch(userSeedColorProvider) == e,
-                    ),
-                  )
-                  .toList(),
+              children:
+                  availableColors
+                      .map(
+                        (e) => ApperanceColor(
+                          color: e,
+                          isSelected: ref.watch(userSeedColorProvider) == e,
+                        ),
+                      )
+                      .toList(),
             ),
-            const SizedBox(
-              width: 12,
-            ),
+            const SizedBox(width: 12),
             InkWell(
               onTap: () {
                 showDialog<AlertDialog>(
@@ -175,9 +161,7 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
                 child: const Icon(Icons.colorize),
               ),
             ),
-            const SizedBox(
-              width: 12,
-            ),
+            const SizedBox(width: 12),
             InkWell(
               onTap: () {
                 ref.read(userSeedColorProvider.notifier).clear();
@@ -198,18 +182,15 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
             ),
           ],
         ),
-        const SizedBox(
-          height: 12,
-        ),
+        const SizedBox(height: 12),
         ListTile(
-          subtitle: const Text(
-            'قد يؤدي الي ارتفاع استخدام الرام الخاص بك',
-          ),
+          subtitle: const Text('قد يؤدي الي ارتفاع استخدام الرام الخاص بك'),
           trailing: Switch(
             value: ref.watch(squigglyNotifierProvider),
-            onChanged: (value) => ref
-                .read(squigglyNotifierProvider.notifier)
-                .toggle(value: value),
+            onChanged:
+                (value) => ref
+                    .read(squigglyNotifierProvider.notifier)
+                    .toggle(value: value),
           ),
           title: const Text('تغير الشكل الي موجات'),
         ),
@@ -243,12 +224,13 @@ class ApperanceColor extends ConsumerWidget {
             color: color,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: isSelected
-              ? Icon(
-                  Icons.radio_button_checked,
-                  color: changeColorLightness(color, 0.2),
-                )
-              : null,
+          child:
+              isSelected
+                  ? Icon(
+                    Icons.radio_button_checked,
+                    color: changeColorLightness(color, 0.2),
+                  )
+                  : null,
         ),
       ),
     );

@@ -32,9 +32,7 @@ class _SystemHash {
 abstract class _$SearchNotifier extends BuildlessAutoDisposeNotifier<String?> {
   late final String screenID;
 
-  String? build(
-    String screenID,
-  );
+  String? build(String screenID);
 }
 
 /// See also [SearchNotifier].
@@ -47,21 +45,15 @@ class SearchNotifierFamily extends Family<String?> {
   const SearchNotifierFamily();
 
   /// See also [SearchNotifier].
-  SearchNotifierProvider call(
-    String screenID,
-  ) {
-    return SearchNotifierProvider(
-      screenID,
-    );
+  SearchNotifierProvider call(String screenID) {
+    return SearchNotifierProvider(screenID);
   }
 
   @override
   SearchNotifierProvider getProviderOverride(
     covariant SearchNotifierProvider provider,
   ) {
-    return call(
-      provider.screenID,
-    );
+    return call(provider.screenID);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -83,21 +75,20 @@ class SearchNotifierFamily extends Family<String?> {
 class SearchNotifierProvider
     extends AutoDisposeNotifierProviderImpl<SearchNotifier, String?> {
   /// See also [SearchNotifier].
-  SearchNotifierProvider(
-    String screenID,
-  ) : this._internal(
-          () => SearchNotifier()..screenID = screenID,
-          from: searchNotifierProvider,
-          name: r'searchNotifierProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$searchNotifierHash,
-          dependencies: SearchNotifierFamily._dependencies,
-          allTransitiveDependencies:
-              SearchNotifierFamily._allTransitiveDependencies,
-          screenID: screenID,
-        );
+  SearchNotifierProvider(String screenID)
+    : this._internal(
+        () => SearchNotifier()..screenID = screenID,
+        from: searchNotifierProvider,
+        name: r'searchNotifierProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$searchNotifierHash,
+        dependencies: SearchNotifierFamily._dependencies,
+        allTransitiveDependencies:
+            SearchNotifierFamily._allTransitiveDependencies,
+        screenID: screenID,
+      );
 
   SearchNotifierProvider._internal(
     super._createNotifier, {
@@ -112,12 +103,8 @@ class SearchNotifierProvider
   final String screenID;
 
   @override
-  String? runNotifierBuild(
-    covariant SearchNotifier notifier,
-  ) {
-    return notifier.build(
-      screenID,
-    );
+  String? runNotifierBuild(covariant SearchNotifier notifier) {
+    return notifier.build(screenID);
   }
 
   @override
@@ -170,5 +157,6 @@ class _SearchNotifierProviderElement
   @override
   String get screenID => (origin as SearchNotifierProvider).screenID;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

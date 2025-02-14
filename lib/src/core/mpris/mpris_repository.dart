@@ -30,9 +30,7 @@ class MPRISRepository {
       ..metadata = MPRISMetadata(
         Uri.parse(url),
         length: position,
-        artUrl: Uri.parse(
-          image,
-        ),
+        artUrl: Uri.parse(image),
         artist: [reciterName],
         title: surah,
       )
@@ -70,8 +68,9 @@ class MPRISRepository {
       );
   }
 }
+
 @riverpod
-MPRISRepository mprisRepository(Ref ref){
+MPRISRepository mprisRepository(Ref ref) {
   return MPRISRepository(ref);
 }
 
@@ -89,9 +88,7 @@ Future<void> createMetadata(
     ..metadata = MPRISMetadata(
       Uri.parse(url),
       length: position,
-      artUrl: Uri.parse(
-        image,
-      ),
+      artUrl: Uri.parse(image),
       artist: [reciterName],
       title: surah,
     )

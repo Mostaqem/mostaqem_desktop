@@ -21,16 +21,18 @@ class AsyncWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return value.when(
       data: data,
-      error: error ??
+      error:
+          error ??
           (e, st) {
             log('[ERROR]', error: e, stackTrace: st);
             return const Center(child: Text('حدث خطأ ما!'));
           },
-      loading: loading ??
+      loading:
+          loading ??
           () => const Center(
-                heightFactor: 10,
-                child: CircularProgressIndicator(),
-              ),
+            heightFactor: 10,
+            child: CircularProgressIndicator(),
+          ),
     );
   }
 }

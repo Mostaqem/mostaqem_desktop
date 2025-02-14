@@ -5,5 +5,4 @@ class Constants {
 
   static bool mStore = const bool.fromEnvironment('MSTORE');
   static String discordAPPID = const String.fromEnvironment('DISCORD');
-
 }

@@ -39,21 +39,15 @@ class FetchQuranFamily extends Family<AsyncValue<List<Script>>> {
   const FetchQuranFamily();
 
   /// See also [fetchQuran].
-  FetchQuranProvider call({
-    required int surahID,
-  }) {
-    return FetchQuranProvider(
-      surahID: surahID,
-    );
+  FetchQuranProvider call({required int surahID}) {
+    return FetchQuranProvider(surahID: surahID);
   }
 
   @override
   FetchQuranProvider getProviderOverride(
     covariant FetchQuranProvider provider,
   ) {
-    return call(
-      surahID: provider.surahID,
-    );
+    return call(surahID: provider.surahID);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -74,24 +68,19 @@ class FetchQuranFamily extends Family<AsyncValue<List<Script>>> {
 /// See also [fetchQuran].
 class FetchQuranProvider extends AutoDisposeFutureProvider<List<Script>> {
   /// See also [fetchQuran].
-  FetchQuranProvider({
-    required int surahID,
-  }) : this._internal(
-          (ref) => fetchQuran(
-            ref as FetchQuranRef,
-            surahID: surahID,
-          ),
-          from: fetchQuranProvider,
-          name: r'fetchQuranProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$fetchQuranHash,
-          dependencies: FetchQuranFamily._dependencies,
-          allTransitiveDependencies:
-              FetchQuranFamily._allTransitiveDependencies,
-          surahID: surahID,
-        );
+  FetchQuranProvider({required int surahID})
+    : this._internal(
+        (ref) => fetchQuran(ref as FetchQuranRef, surahID: surahID),
+        from: fetchQuranProvider,
+        name: r'fetchQuranProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$fetchQuranHash,
+        dependencies: FetchQuranFamily._dependencies,
+        allTransitiveDependencies: FetchQuranFamily._allTransitiveDependencies,
+        surahID: surahID,
+      );
 
   FetchQuranProvider._internal(
     super._createNotifier, {
@@ -150,11 +139,13 @@ mixin FetchQuranRef on AutoDisposeFutureProviderRef<List<Script>> {
 }
 
 class _FetchQuranProviderElement
-    extends AutoDisposeFutureProviderElement<List<Script>> with FetchQuranRef {
+    extends AutoDisposeFutureProviderElement<List<Script>>
+    with FetchQuranRef {
   _FetchQuranProviderElement(super.provider);
 
   @override
   int get surahID => (origin as FetchQuranProvider).surahID;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

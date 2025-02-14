@@ -11,8 +11,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'download_repository.g.dart';
 
-final cancelTokenProvider =
-    StateProvider.autoDispose<CancelToken>((ref) => CancelToken());
+final cancelTokenProvider = StateProvider.autoDispose<CancelToken>(
+  (ref) => CancelToken(),
+);
 
 enum DownloadState { pending, downloading, finished, cancelled }
 
@@ -30,12 +31,11 @@ class DownloadProgress {
     int? count,
     int? total,
     DownloadState? downloadState,
-  }) =>
-      DownloadProgress(
-        count: count ?? this.count,
-        total: total ?? this.total,
-        downloadState: downloadState ?? this.downloadState,
-      );
+  }) => DownloadProgress(
+    count: count ?? this.count,
+    total: total ?? this.total,
+    downloadState: downloadState ?? this.downloadState,
+  );
 }
 
 @riverpod
@@ -51,38 +51,37 @@ class DownloadAudio extends _$DownloadAudio {
     final mixIDs = album.recitationID + surahID;
     final savePath = '$downloadPath/$mixIDs.mp3';
     final cancelToken = ref.watch(cancelTokenProvider);
-    state = DownloadProgress(
-      count: 0,
-      total: 0,
-    );
-    await Dio().download(
-      album.url,
-      savePath,
-      cancelToken: cancelToken,
-      onReceiveProgress: (count, total) {
-        if (count == total) {
-          state = state!.copyWith(
-            count: count,
-            total: total,
-            downloadState: DownloadState.finished,
-          );
-        }
-        if (count < total) {
-          state = state!.copyWith(
-            count: count,
-            total: total,
-            downloadState: DownloadState.downloading,
-          );
-        }
-      },
-    ).whenComplete(() async {
-      ref.watch(downloadHeightProvider.notifier).state = 0;
-      try {
-        await writeMetaData(savePath, album);
-      } catch (e) {
-        log('[Error Writing metadata]', error: e);
-      }
-    });
+    state = DownloadProgress(count: 0, total: 0);
+    await Dio()
+        .download(
+          album.url,
+          savePath,
+          cancelToken: cancelToken,
+          onReceiveProgress: (count, total) {
+            if (count == total) {
+              state = state!.copyWith(
+                count: count,
+                total: total,
+                downloadState: DownloadState.finished,
+              );
+            }
+            if (count < total) {
+              state = state!.copyWith(
+                count: count,
+                total: total,
+                downloadState: DownloadState.downloading,
+              );
+            }
+          },
+        )
+        .whenComplete(() async {
+          ref.watch(downloadHeightProvider.notifier).state = 0;
+          try {
+            await writeMetaData(savePath, album);
+          } catch (e) {
+            log('[Error Writing metadata]', error: e);
+          }
+        });
     state = null;
   }
 

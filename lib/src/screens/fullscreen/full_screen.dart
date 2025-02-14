@@ -59,10 +59,11 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                     } else {
                       return Center(
                         child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
+                          value:
+                              loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
                         ),
                       );
                     }
@@ -73,10 +74,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
           )
         else
           SizedBox.expand(
-            child: Image.asset(
-              'assets/img/kaaba.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/img/kaaba.jpg', fit: BoxFit.cover),
           ),
         Container(
           decoration: const BoxDecoration(
@@ -104,8 +102,9 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                 color: Colors.black.withValues(alpha: 0.8),
               ),
               child: ScrollConfiguration(
-                behavior:
-                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                behavior: ScrollConfiguration.of(
+                  context,
+                ).copyWith(scrollbars: false),
                 child: AsyncWidget(
                   value: lyrics,
                   data: (data) {
@@ -151,9 +150,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,

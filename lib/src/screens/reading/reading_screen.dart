@@ -15,120 +15,131 @@ class ReadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        primary: true,
-        child: Column(
-          children: [
-            const WindowButtons(),
-            const SizedBox(
-              height: 10,
-            ),
-            const Align(alignment: Alignment.topLeft, child: AppBackButton()),
-            Stack(
-              alignment: Alignment.center,
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          SingleChildScrollView(
+            child: Column(
               children: [
-                SvgPicture.asset(
-                  'assets/img/border.svg',
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).colorScheme.primary,
-                    BlendMode.srcIn,
-                  ),
-                ),
-                Text(
-                  'سورة ${surah.arabicName}',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.amiri(fontSize: 40),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Image.asset(
-              surah.id != 9
-                  ? 'assets/img/basmalah.png'
-                  : 'assets/img/a3ooz.png',
-              width: 300,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Consumer(
-              builder: (context, ref, child) {
-                final scripts = ref.watch(
-                  fetchQuranProvider(
-                    surahID: surah.id,
-                  ),
-                );
-                return AsyncWidget(
-                  value: scripts,
-                  error: (e, s) {
-                    return Text('Error: $e| ST: $s');
-                  },
-                  data: (data) {
-                    return Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text.rich(
-                        TextSpan(
-                          children: data
-                              .map(
-                                (e) => TextSpan(
-                                  text: e.verse,
-                                  style: GoogleFonts.amiri(
-                                    fontSize: 30,
-                                    height: 3.2,
-                                  ),
-                                  children: [
-                                    const WidgetSpan(
-                                      child: SizedBox(
-                                        width: 15,
-                                        height: 50,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: e.verseNumber
-                                              .toString()
-                                              .toArabicNumbers,
-                                          style: GoogleFonts.amiri(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                      ],
-                                      text: '۝',
-                                      style: GoogleFonts.amiri(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                    const WidgetSpan(
-                                      child: SizedBox(
-                                        width: 15,
-                                        height: 50,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
-                        ),
+                const SizedBox(height: 100),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/img/border.svg',
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.primary,
+                        BlendMode.srcIn,
                       ),
+                    ),
+                    Text(
+                      'سورة ${surah.arabicName}',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.amiri(fontSize: 40),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Image.asset(
+                  surah.id != 9
+                      ? 'assets/img/basmalah.png'
+                      : 'assets/img/a3ooz.png',
+                  width: 300,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(height: 20),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final scripts = ref.watch(
+                      fetchQuranProvider(surahID: surah.id),
+                    );
+                    return AsyncWidget(
+                      value: scripts,
+                      error: (e, s) {
+                        return Text('Error: $e| ST: $s');
+                      },
+                      data: (data) {
+                        return Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text.rich(
+                            textAlign: TextAlign.justify,
+                            TextSpan(
+                              children:
+                                  data
+                                      .map(
+                                        (e) => TextSpan(
+                                          text: e.verse,
+                                          style: GoogleFonts.amiri(
+                                            fontSize: 30,
+                                            height: 3.2,
+                                          ),
+                                          children: [
+                                            const WidgetSpan(
+                                              child: SizedBox(
+                                                width: 15,
+                                                height: 50,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      e.verseNumber
+                                                          .toString()
+                                                          .toArabicNumbers,
+                                                  style: GoogleFonts.amiri(
+                                                    color:
+                                                        Theme.of(
+                                                          context,
+                                                        ).colorScheme.primary,
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ),
+                                              ],
+                                              text: '۝',
+                                              style: GoogleFonts.amiri(
+                                                color:
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.primary,
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                            ),
+                                            const WidgetSpan(
+                                              child: SizedBox(
+                                                width: 15,
+                                                height: 50,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                      .toList(),
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
+                ),
+                const SizedBox(height: 100),
+              ],
             ),
-          ],
-        ),
+          ),
+          Container(
+            height: 100,
+            color: Theme.of(context).colorScheme.surface,
+            child: const Column(
+              children: [
+                WindowButtons(),
+                SizedBox(height: 10),
+                Align(alignment: Alignment.topLeft, child: AppBackButton()),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

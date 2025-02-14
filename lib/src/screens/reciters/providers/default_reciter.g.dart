@@ -12,14 +12,15 @@ String _$defaultReciterHash() => r'2e36a4fed902c8e7575712a372f2702489756cea';
 @ProviderFor(DefaultReciter)
 final defaultReciterProvider =
     NotifierProvider<DefaultReciter, Reciter>.internal(
-  DefaultReciter.new,
-  name: r'defaultReciterProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$defaultReciterHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      DefaultReciter.new,
+      name: r'defaultReciterProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$defaultReciterHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$DefaultReciter = Notifier<Reciter>;
 // ignore_for_file: type=lint

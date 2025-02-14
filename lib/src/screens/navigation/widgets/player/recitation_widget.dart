@@ -49,7 +49,9 @@ class RecitationWidget extends StatelessWidget {
                       groupValue: data[index].id,
                       onChanged: (v) {
                         // ignore: invalid_use_of_visible_for_testing_member
-                        ref.read(playerNotifierProvider.notifier).play(
+                        ref
+                            .read(playerNotifierProvider.notifier)
+                            .play(
                               surahID: album?.surah.id ?? 1,
                               recitationID: data[index].id,
                             );

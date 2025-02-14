@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 
 part 'recitation.freezed.dart';
 part 'recitation.g.dart';
@@ -8,6 +9,7 @@ class Recitation with _$Recitation {
   const factory Recitation({
     required int id,
     required String name,
+    Reciter? reciter,
     @JsonKey(name: 'name_english') String? englishName,
   }) = _Recitation;
 

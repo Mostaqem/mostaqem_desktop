@@ -39,21 +39,15 @@ class FetchReciterFamily extends Family<AsyncValue<Reciter>> {
   const FetchReciterFamily();
 
   /// See also [fetchReciter].
-  FetchReciterProvider call({
-    required int id,
-  }) {
-    return FetchReciterProvider(
-      id: id,
-    );
+  FetchReciterProvider call({required int id}) {
+    return FetchReciterProvider(id: id);
   }
 
   @override
   FetchReciterProvider getProviderOverride(
     covariant FetchReciterProvider provider,
   ) {
-    return call(
-      id: provider.id,
-    );
+    return call(id: provider.id);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -74,24 +68,20 @@ class FetchReciterFamily extends Family<AsyncValue<Reciter>> {
 /// See also [fetchReciter].
 class FetchReciterProvider extends AutoDisposeFutureProvider<Reciter> {
   /// See also [fetchReciter].
-  FetchReciterProvider({
-    required int id,
-  }) : this._internal(
-          (ref) => fetchReciter(
-            ref as FetchReciterRef,
-            id: id,
-          ),
-          from: fetchReciterProvider,
-          name: r'fetchReciterProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$fetchReciterHash,
-          dependencies: FetchReciterFamily._dependencies,
-          allTransitiveDependencies:
-              FetchReciterFamily._allTransitiveDependencies,
-          id: id,
-        );
+  FetchReciterProvider({required int id})
+    : this._internal(
+        (ref) => fetchReciter(ref as FetchReciterRef, id: id),
+        from: fetchReciterProvider,
+        name: r'fetchReciterProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$fetchReciterHash,
+        dependencies: FetchReciterFamily._dependencies,
+        allTransitiveDependencies:
+            FetchReciterFamily._allTransitiveDependencies,
+        id: id,
+      );
 
   FetchReciterProvider._internal(
     super._createNotifier, {
@@ -150,7 +140,8 @@ mixin FetchReciterRef on AutoDisposeFutureProviderRef<Reciter> {
 }
 
 class _FetchReciterProviderElement
-    extends AutoDisposeFutureProviderElement<Reciter> with FetchReciterRef {
+    extends AutoDisposeFutureProviderElement<Reciter>
+    with FetchReciterRef {
   _FetchReciterProviderElement(super.provider);
 
   @override
@@ -169,21 +160,15 @@ class FetchRecitersFamily extends Family<AsyncValue<List<Reciter>>> {
   const FetchRecitersFamily();
 
   /// See also [fetchReciters].
-  FetchRecitersProvider call({
-    required int page,
-  }) {
-    return FetchRecitersProvider(
-      page: page,
-    );
+  FetchRecitersProvider call({required int page}) {
+    return FetchRecitersProvider(page: page);
   }
 
   @override
   FetchRecitersProvider getProviderOverride(
     covariant FetchRecitersProvider provider,
   ) {
-    return call(
-      page: provider.page,
-    );
+    return call(page: provider.page);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -204,24 +189,20 @@ class FetchRecitersFamily extends Family<AsyncValue<List<Reciter>>> {
 /// See also [fetchReciters].
 class FetchRecitersProvider extends AutoDisposeFutureProvider<List<Reciter>> {
   /// See also [fetchReciters].
-  FetchRecitersProvider({
-    required int page,
-  }) : this._internal(
-          (ref) => fetchReciters(
-            ref as FetchRecitersRef,
-            page: page,
-          ),
-          from: fetchRecitersProvider,
-          name: r'fetchRecitersProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$fetchRecitersHash,
-          dependencies: FetchRecitersFamily._dependencies,
-          allTransitiveDependencies:
-              FetchRecitersFamily._allTransitiveDependencies,
-          page: page,
-        );
+  FetchRecitersProvider({required int page})
+    : this._internal(
+        (ref) => fetchReciters(ref as FetchRecitersRef, page: page),
+        from: fetchRecitersProvider,
+        name: r'fetchRecitersProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$fetchRecitersHash,
+        dependencies: FetchRecitersFamily._dependencies,
+        allTransitiveDependencies:
+            FetchRecitersFamily._allTransitiveDependencies,
+        page: page,
+      );
 
   FetchRecitersProvider._internal(
     super._createNotifier, {
@@ -300,21 +281,15 @@ class SearchReciterFamily extends Family<AsyncValue<List<Reciter>>> {
   const SearchReciterFamily();
 
   /// See also [searchReciter].
-  SearchReciterProvider call({
-    String? query,
-  }) {
-    return SearchReciterProvider(
-      query: query,
-    );
+  SearchReciterProvider call({String? query}) {
+    return SearchReciterProvider(query: query);
   }
 
   @override
   SearchReciterProvider getProviderOverride(
     covariant SearchReciterProvider provider,
   ) {
-    return call(
-      query: provider.query,
-    );
+    return call(query: provider.query);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -335,24 +310,20 @@ class SearchReciterFamily extends Family<AsyncValue<List<Reciter>>> {
 /// See also [searchReciter].
 class SearchReciterProvider extends AutoDisposeFutureProvider<List<Reciter>> {
   /// See also [searchReciter].
-  SearchReciterProvider({
-    String? query,
-  }) : this._internal(
-          (ref) => searchReciter(
-            ref as SearchReciterRef,
-            query: query,
-          ),
-          from: searchReciterProvider,
-          name: r'searchReciterProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$searchReciterHash,
-          dependencies: SearchReciterFamily._dependencies,
-          allTransitiveDependencies:
-              SearchReciterFamily._allTransitiveDependencies,
-          query: query,
-        );
+  SearchReciterProvider({String? query})
+    : this._internal(
+        (ref) => searchReciter(ref as SearchReciterRef, query: query),
+        from: searchReciterProvider,
+        name: r'searchReciterProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$searchReciterHash,
+        dependencies: SearchReciterFamily._dependencies,
+        allTransitiveDependencies:
+            SearchReciterFamily._allTransitiveDependencies,
+        query: query,
+      );
 
   SearchReciterProvider._internal(
     super._createNotifier, {

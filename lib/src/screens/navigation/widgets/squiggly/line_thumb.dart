@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 /// A variant of the default circle thumb shape
 /// Similar to the one found in Android 13 Media control
 class LineThumbShape extends SliderComponentShape {
-  const LineThumbShape({
-    this.thumbSize = const Size(8, 32),
-  });
+  const LineThumbShape({this.thumbSize = const Size(8, 32)});
 
   /// The size of the thumb
   final Size thumbSize;

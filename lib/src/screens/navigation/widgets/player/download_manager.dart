@@ -10,9 +10,7 @@ final downloadHeightProvider = StateProvider<double>((ref) => 0);
 final downloadSurahProvider = StateProvider<Surah?>((ref) => null);
 
 class DownloadManagerWidget extends ConsumerWidget {
-  const DownloadManagerWidget({
-    super.key,
-  });
+  const DownloadManagerWidget({super.key});
 
   double adjustProgress(double progress) {
     if (progress.isNaN || progress.isInfinite) {
@@ -60,9 +58,7 @@ class DownloadManagerWidget extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 5,
-              ),
+              const SizedBox(width: 5),
               Expanded(
                 child: LinearProgressIndicator(
                   value: isCancelled ? 0 : adjustProgress(progress),
@@ -70,27 +66,28 @@ class DownloadManagerWidget extends ConsumerWidget {
               ),
               Visibility(
                 visible: height != 0,
-                child: isCancelled
-                    ? ToolTipIconButton(
-                        message: 'تحميل',
-                        onPressed: () {
-                          ref.invalidate(cancelTokenProvider);
+                child:
+                    isCancelled
+                        ? ToolTipIconButton(
+                          message: 'تحميل',
+                          onPressed: () {
+                            ref.invalidate(cancelTokenProvider);
 
-                          final album = ref.read(currentAlbumProvider);
+                            final album = ref.read(currentAlbumProvider);
 
-                          ref
-                              .read(downloadAudioProvider.notifier)
-                              .download(album: album!);
-                        },
-                        icon: const Icon(Icons.download_rounded),
-                      )
-                    : CloseButton(
-                        onPressed: () {
-                          ref.read(cancelTokenProvider).cancel();
-                          ref.invalidate(downloadAudioProvider);
-                          ref.read(downloadHeightProvider.notifier).state = 0;
-                        },
-                      ),
+                            ref
+                                .read(downloadAudioProvider.notifier)
+                                .download(album: album!);
+                          },
+                          icon: const Icon(Icons.download_rounded),
+                        )
+                        : CloseButton(
+                          onPressed: () {
+                            ref.read(cancelTokenProvider).cancel();
+                            ref.invalidate(downloadAudioProvider);
+                            ref.read(downloadHeightProvider.notifier).state = 0;
+                          },
+                        ),
               ),
             ],
           ),

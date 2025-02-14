@@ -27,21 +27,28 @@ class VolumeControls extends ConsumerWidget {
                   ref.read(playerNotifierProvider.notifier).handleVolume(1);
                 }
               },
-              icon: player.volume == 0
-                  ? Icon(
-                      Icons.volume_mute_outlined,
-                      size: 16,
-                      color: isFullScreen
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.onSecondaryContainer,
-                    )
-                  : Icon(
-                      Icons.volume_up_outlined,
-                      size: 16,
-                      color: isFullScreen
-                          ? Colors.white
-                          : Theme.of(context).colorScheme.onSecondaryContainer,
-                    ),
+              icon:
+                  player.volume == 0
+                      ? Icon(
+                        Icons.volume_mute_outlined,
+                        size: 16,
+                        color:
+                            isFullScreen
+                                ? Colors.white
+                                : Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
+                      )
+                      : Icon(
+                        Icons.volume_up_outlined,
+                        size: 16,
+                        color:
+                            isFullScreen
+                                ? Colors.white
+                                : Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
+                      ),
             ),
           ),
         ),
@@ -60,8 +67,10 @@ class VolumeControls extends ConsumerWidget {
                   key: const Key('volume'),
                   activeColor: isFullScreen ? Colors.white : null,
                   value: ref.watch(playerNotifierProvider).volume,
-                  onChanged: (v) =>
-                      ref.read(playerNotifierProvider.notifier).handleVolume(v),
+                  onChanged:
+                      (v) => ref
+                          .read(playerNotifierProvider.notifier)
+                          .handleVolume(v),
                 ),
               ),
             );

@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_enum.dart';
 
 class ShortcutLabel extends StatelessWidget {
-  const ShortcutLabel({
-    required this.shortcut,
-    super.key,
-  });
+  const ShortcutLabel({required this.shortcut, super.key});
   final ShortcutsEnum shortcut;
 
   @override
@@ -35,9 +32,7 @@ class ShortcutLabel extends StatelessWidget {
                         color: Theme.of(context).colorScheme.inverseSurface,
                       ),
                     ),
-                    child: const Text(
-                      'Ctrl',
-                    ),
+                    child: const Text('Ctrl'),
                   ),
                 ),
               ),

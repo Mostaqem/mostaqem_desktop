@@ -46,15 +46,14 @@ Dialog helpShortcuts(BuildContext context) {
                   padding: EdgeInsets.symmetric(horizontal: 50),
                   child: Divider(),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                const SizedBox(height: 5),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: ShortcutsEnum.values
-                      .map((e) => ShortcutLabel(shortcut: e))
-                      .toList(),
+                  children:
+                      ShortcutsEnum.values
+                          .map((e) => ShortcutLabel(shortcut: e))
+                          .toList(),
                 ),
               ],
             ),
@@ -101,10 +100,7 @@ Map<ShortcutActivator, VoidCallback> shortcutsBindings(
         bindings[shortcut.activator] = () => exit(0);
       case ShortcutsEnum.help:
         bindings[shortcut.activator] = () {
-          showDialog<Dialog>(
-            context: context,
-            builder: helpShortcuts,
-          );
+          showDialog<Dialog>(context: context, builder: helpShortcuts);
         };
       case ShortcutsEnum.playNext:
         bindings[shortcut.activator] =

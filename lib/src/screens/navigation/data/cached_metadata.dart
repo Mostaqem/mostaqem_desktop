@@ -22,8 +22,8 @@ class CachedAudioMetadata {
 
   // Convert to JSON for easy storage
   Map<String, dynamic> toJson() => {
-        'surah': surah,
-        'reciter': reciter,
-        'audioUrl': audioUrl,
-      };
+    'surah': surah,
+    'reciter': reciter,
+    'audioUrl': audioUrl,
+  };
 }

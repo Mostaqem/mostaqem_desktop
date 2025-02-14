@@ -17,9 +17,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
 
-  runApp(
-    ProviderScope(child: InitialLoading()),
-  );
+  runApp(ProviderScope(child: InitialLoading()));
   HttpOverrides.global = MyHttpOverrides();
 
   launchAtStartup.setup(
@@ -27,9 +25,7 @@ void main() async {
     appPath: Platform.resolvedExecutable,
   );
 
-  await FlutterDiscordRPC.initialize(
-    Constants.discordAPPID,
-  );
+  await FlutterDiscordRPC.initialize(Constants.discordAPPID);
 
   await windowManager.ensureInitialized();
 

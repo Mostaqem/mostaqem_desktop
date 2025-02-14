@@ -12,7 +12,8 @@ part of 'reciters_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Reciter _$ReciterFromJson(Map<String, dynamic> json) {
   return _Reciter.fromJson(json);
@@ -42,12 +43,13 @@ abstract class $ReciterCopyWith<$Res> {
   factory $ReciterCopyWith(Reciter value, $Res Function(Reciter) then) =
       _$ReciterCopyWithImpl<$Res, Reciter>;
   @useResult
-  $Res call(
-      {int id,
-      @JsonKey(name: 'name_english') String englishName,
-      @JsonKey(name: 'name_arabic') String arabicName,
-      bool isDefault,
-      String? image});
+  $Res call({
+    int id,
+    @JsonKey(name: 'name_english') String englishName,
+    @JsonKey(name: 'name_arabic') String arabicName,
+    bool isDefault,
+    String? image,
+  });
 }
 
 /// @nodoc
@@ -71,44 +73,54 @@ class _$ReciterCopyWithImpl<$Res, $Val extends Reciter>
     Object? isDefault = null,
     Object? image = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      englishName: null == englishName
-          ? _value.englishName
-          : englishName // ignore: cast_nullable_to_non_nullable
-              as String,
-      arabicName: null == arabicName
-          ? _value.arabicName
-          : arabicName // ignore: cast_nullable_to_non_nullable
-              as String,
-      isDefault: null == isDefault
-          ? _value.isDefault
-          : isDefault // ignore: cast_nullable_to_non_nullable
-              as bool,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as int,
+            englishName:
+                null == englishName
+                    ? _value.englishName
+                    : englishName // ignore: cast_nullable_to_non_nullable
+                        as String,
+            arabicName:
+                null == arabicName
+                    ? _value.arabicName
+                    : arabicName // ignore: cast_nullable_to_non_nullable
+                        as String,
+            isDefault:
+                null == isDefault
+                    ? _value.isDefault
+                    : isDefault // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            image:
+                freezed == image
+                    ? _value.image
+                    : image // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$ReciterImplCopyWith<$Res> implements $ReciterCopyWith<$Res> {
   factory _$$ReciterImplCopyWith(
-          _$ReciterImpl value, $Res Function(_$ReciterImpl) then) =
-      __$$ReciterImplCopyWithImpl<$Res>;
+    _$ReciterImpl value,
+    $Res Function(_$ReciterImpl) then,
+  ) = __$$ReciterImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      @JsonKey(name: 'name_english') String englishName,
-      @JsonKey(name: 'name_arabic') String arabicName,
-      bool isDefault,
-      String? image});
+  $Res call({
+    int id,
+    @JsonKey(name: 'name_english') String englishName,
+    @JsonKey(name: 'name_arabic') String arabicName,
+    bool isDefault,
+    String? image,
+  });
 }
 
 /// @nodoc
@@ -116,8 +128,9 @@ class __$$ReciterImplCopyWithImpl<$Res>
     extends _$ReciterCopyWithImpl<$Res, _$ReciterImpl>
     implements _$$ReciterImplCopyWith<$Res> {
   __$$ReciterImplCopyWithImpl(
-      _$ReciterImpl _value, $Res Function(_$ReciterImpl) _then)
-      : super(_value, _then);
+    _$ReciterImpl _value,
+    $Res Function(_$ReciterImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Reciter
   /// with the given fields replaced by the non-null parameter values.
@@ -130,40 +143,48 @@ class __$$ReciterImplCopyWithImpl<$Res>
     Object? isDefault = null,
     Object? image = freezed,
   }) {
-    return _then(_$ReciterImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      englishName: null == englishName
-          ? _value.englishName
-          : englishName // ignore: cast_nullable_to_non_nullable
-              as String,
-      arabicName: null == arabicName
-          ? _value.arabicName
-          : arabicName // ignore: cast_nullable_to_non_nullable
-              as String,
-      isDefault: null == isDefault
-          ? _value.isDefault
-          : isDefault // ignore: cast_nullable_to_non_nullable
-              as bool,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$ReciterImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as int,
+        englishName:
+            null == englishName
+                ? _value.englishName
+                : englishName // ignore: cast_nullable_to_non_nullable
+                    as String,
+        arabicName:
+            null == arabicName
+                ? _value.arabicName
+                : arabicName // ignore: cast_nullable_to_non_nullable
+                    as String,
+        isDefault:
+            null == isDefault
+                ? _value.isDefault
+                : isDefault // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        image:
+            freezed == image
+                ? _value.image
+                : image // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ReciterImpl implements _Reciter {
-  const _$ReciterImpl(
-      {required this.id,
-      @JsonKey(name: 'name_english') required this.englishName,
-      @JsonKey(name: 'name_arabic') required this.arabicName,
-      this.isDefault = false,
-      this.image});
+  const _$ReciterImpl({
+    required this.id,
+    @JsonKey(name: 'name_english') required this.englishName,
+    @JsonKey(name: 'name_arabic') required this.arabicName,
+    this.isDefault = false,
+    this.image,
+  });
 
   factory _$ReciterImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReciterImplFromJson(json);
@@ -217,19 +238,18 @@ class _$ReciterImpl implements _Reciter {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ReciterImplToJson(
-      this,
-    );
+    return _$$ReciterImplToJson(this);
   }
 }
 
 abstract class _Reciter implements Reciter {
-  const factory _Reciter(
-      {required final int id,
-      @JsonKey(name: 'name_english') required final String englishName,
-      @JsonKey(name: 'name_arabic') required final String arabicName,
-      final bool isDefault,
-      final String? image}) = _$ReciterImpl;
+  const factory _Reciter({
+    required final int id,
+    @JsonKey(name: 'name_english') required final String englishName,
+    @JsonKey(name: 'name_arabic') required final String arabicName,
+    final bool isDefault,
+    final String? image,
+  }) = _$ReciterImpl;
 
   factory _Reciter.fromJson(Map<String, dynamic> json) = _$ReciterImpl.fromJson;
 

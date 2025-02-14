@@ -77,11 +77,7 @@ class SMTCRepository {
     required String image,
   }) {
     smtc!.updateMetadata(
-      MusicMetadata(
-        title: surah,
-        albumArtist: reciter,
-        thumbnail: image,
-      ),
+      MusicMetadata(title: surah, albumArtist: reciter, thumbnail: image),
     );
   }
 }

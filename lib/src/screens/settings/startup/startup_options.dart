@@ -4,9 +4,7 @@ import 'package:mostaqem/src/screens/settings/startup/provider/startup_provider.
 import 'package:mostaqem/src/screens/settings/startup/startup_state.dart';
 
 class StartupOptions extends StatelessWidget {
-  const StartupOptions({
-    super.key,
-  });
+  const StartupOptions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +18,7 @@ class StartupOptions extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        const SizedBox(
-          height: 30,
-        ),
+        const SizedBox(height: 30),
         ListTile(
           title: const Text(
             'تشغيل مستقيم تلقائيا بعد تسجيل الدخول إلى جهاز الكمبيوتر',
@@ -34,12 +30,17 @@ class StartupOptions extends StatelessWidget {
 
               return DropdownMenu(
                 initialSelection: startup,
-                onSelected: (value) => ref
-                    .read(startupNotifierProvider.notifier)
-                    .toggle(value: value!),
-                dropdownMenuEntries: StartupState.values
-                    .map((e) => DropdownMenuEntry(value: e.text, label: e.text))
-                    .toList(),
+                onSelected:
+                    (value) => ref
+                        .read(startupNotifierProvider.notifier)
+                        .toggle(value: value!),
+                dropdownMenuEntries:
+                    StartupState.values
+                        .map(
+                          (e) =>
+                              DropdownMenuEntry(value: e.text, label: e.text),
+                        )
+                        .toList(),
               );
             },
           ),

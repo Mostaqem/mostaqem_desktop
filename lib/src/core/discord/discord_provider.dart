@@ -20,27 +20,25 @@ class DiscordImp {
       await FlutterDiscordRPC.instance.setActivity(
         activity: RPCActivity(
           activityType: ActivityType.listening,
-          state: surahName,
-          details: reciter,
-          timestamps: RPCTimestamps(
-            start: position,
-            end: duration,
-          ),
+          state: reciter,
+          details: surahName,
+          assets: RPCAssets(largeImage: largeImage),
+          timestamps: RPCTimestamps(start: position, end: duration),
         ),
       );
     } else {
       await FlutterDiscordRPC.instance.reconnect();
-      await FlutterDiscordRPC.instance.setActivity(
-        activity: RPCActivity(
-          activityType: ActivityType.listening,
-          state: surahName,
-          details: reciter,
-          timestamps: RPCTimestamps(
-            start: position,
-            end: duration,
+      try {
+        await FlutterDiscordRPC.instance.setActivity(
+          activity: RPCActivity(
+            activityType: ActivityType.listening,
+            state: reciter,
+            details: surahName,
+            assets: RPCAssets(largeImage: largeImage),
+            timestamps: RPCTimestamps(start: position, end: duration),
           ),
-        ),
-      );
+        );
+      } catch (e) {}
     }
   }
 }
