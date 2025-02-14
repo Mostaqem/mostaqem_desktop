@@ -57,9 +57,7 @@ Future<File> cacheLyrics(
 }
 
 @riverpod
-Future<String?> syncLyrics(
-  Ref ref,
-) async {
+Future<String?> syncLyrics(Ref ref) async {
   final currentAlbum = ref.watch(currentAlbumProvider);
   final fileName =
       'surah_${currentAlbum?.surah.id}_recitation_${currentAlbum?.recitationID}';
@@ -73,26 +71,26 @@ Future<String?> syncLyrics(
   if (Lrc.isValid(lyrics)) {
     current.addAll(
       Lrc.parse(lyrics).lyrics.map(
-            (e) => Lyrics(time: e.timestamp.inMilliseconds, words: e.lyrics),
-          ),
+        (e) => Lyrics(time: e.timestamp.inMilliseconds, words: e.lyrics),
+      ),
     );
     for (final lyric in current) {
       currentLyricsAveragedMap[lyric.time] = lyric.words;
     }
 
-    ref.listen(
-      playerNotifierProvider.select((player) => player.position),
-      (previous, next) {
-        for (var i = 0; i < currentLyricsAveragedMap.entries.length; i++) {
-          final lyric = currentLyricsAveragedMap.entries.elementAt(i);
-          if (lyric.key <= next.inMilliseconds) {
-            ref
-                .read(currentLyricsNotifierProvider.notifier)
-                .updateLyrics(value: lyric.value);
-          }
+    ref.listen(playerNotifierProvider.select((player) => player.position), (
+      previous,
+      next,
+    ) {
+      for (var i = 0; i < currentLyricsAveragedMap.entries.length; i++) {
+        final lyric = currentLyricsAveragedMap.entries.elementAt(i);
+        if (lyric.key <= next.inMilliseconds) {
+          ref
+              .read(currentLyricsNotifierProvider.notifier)
+              .updateLyrics(value: lyric.value);
         }
-      },
-    );
+      }
+    });
   }
   return null;
 }
@@ -104,9 +102,7 @@ class CurrentLyricsNotifier extends _$CurrentLyricsNotifier {
     return ref.watch(syncLyricsProvider.future);
   }
 
-  void updateLyrics({
-    required String value,
-  }) {
+  void updateLyrics({required String value}) {
     state = AsyncData(value);
   }
 }

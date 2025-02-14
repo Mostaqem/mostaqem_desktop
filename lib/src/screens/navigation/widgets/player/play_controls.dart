@@ -11,32 +11,17 @@ import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_noti
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 
 class PlayControls extends ConsumerWidget {
-  const PlayControls({
-    required this.isFullScreen,
-    super.key,
-  });
+  const PlayControls({required this.isFullScreen, super.key});
   final bool isFullScreen;
 
   Icon loopIcon(PlaylistMode state, Color color) {
     if (state == PlaylistMode.none) {
-      return Icon(
-        Icons.repeat,
-        size: 16,
-        color: color,
-      );
+      return Icon(Icons.repeat, size: 16, color: color);
     }
     if (state == PlaylistMode.single) {
-      return Icon(
-        Icons.repeat,
-        size: 16,
-        color: color,
-      );
+      return Icon(Icons.repeat, size: 16, color: color);
     }
-    return Icon(
-      Icons.repeat_one_outlined,
-      size: 16,
-      color: color,
-    );
+    return Icon(Icons.repeat_one_outlined, size: 16, color: color);
   }
 
   @override
@@ -54,9 +39,10 @@ class PlayControls extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Visibility(
-                  visible: ref
-                      .watch(playerNotifierProvider.notifier)
-                      .isFirstChapter(),
+                  visible:
+                      ref
+                          .watch(playerNotifierProvider.notifier)
+                          .isFirstChapter(),
                   child: Tooltip(
                     message: 'قبل',
                     preferBelow: false,
@@ -68,11 +54,12 @@ class PlayControls extends ConsumerWidget {
                       },
                       icon: Icon(
                         Icons.skip_next_outlined,
-                        color: isFullScreen
-                            ? Colors.white
-                            : Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
+                        color:
+                            isFullScreen
+                                ? Colors.white
+                                : Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
                       ),
                       iconSize: 25,
                     ),
@@ -87,30 +74,34 @@ class PlayControls extends ConsumerWidget {
                           .read(playerNotifierProvider.notifier)
                           .handlePlayPause();
                     },
-                    icon: player.isPlaying
-                        ? Icon(
-                            Icons.pause_circle_filled_outlined,
-                            color: isFullScreen
-                                ? Colors.white
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                          )
-                        : Icon(
-                            Icons.play_circle_fill_outlined,
-                            color: isFullScreen
-                                ? Colors.white
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                          ),
+                    icon:
+                        player.isPlaying
+                            ? Icon(
+                              Icons.pause_circle_filled_outlined,
+                              color:
+                                  isFullScreen
+                                      ? Colors.white
+                                      : Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                            )
+                            : Icon(
+                              Icons.play_circle_fill_outlined,
+                              color:
+                                  isFullScreen
+                                      ? Colors.white
+                                      : Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondaryContainer,
+                            ),
                     iconSize: 25,
                   ),
                 ),
                 Visibility(
-                  visible: ref
-                      .watch(playerNotifierProvider.notifier)
-                      .isLastchapter(),
+                  visible:
+                      ref
+                          .watch(playerNotifierProvider.notifier)
+                          .isLastchapter(),
                   child: Tooltip(
                     message: 'بعد',
                     preferBelow: false,
@@ -122,11 +113,12 @@ class PlayControls extends ConsumerWidget {
                       },
                       icon: Icon(
                         Icons.skip_previous_outlined,
-                        color: isFullScreen
-                            ? Colors.white
-                            : Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
+                        color:
+                            isFullScreen
+                                ? Colors.white
+                                : Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
                       ),
                       iconSize: 25,
                     ),
@@ -144,9 +136,9 @@ class PlayControls extends ConsumerWidget {
                       player.loop == PlaylistMode.none
                           ? isFullScreen
                               ? Colors.white
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer
+                              : Theme.of(
+                                context,
+                              ).colorScheme.onSecondaryContainer
                           : Theme.of(context).colorScheme.tertiary,
                     ),
                     iconSize: 16,
@@ -162,15 +154,14 @@ class PlayControls extends ConsumerWidget {
                       .watch(playerNotifierProvider.notifier)
                       .playerTime()
                       .currentTime,
-                  style: TextStyle(
-                    color: isFullScreen ? Colors.white : null,
-                  ),
+                  style: TextStyle(color: isFullScreen ? Colors.white : null),
                 ),
                 ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxWidth: isFullScreen
-                        ? MediaQuery.sizeOf(context).width / 1.5
-                        : MediaQuery.sizeOf(context).width / 2.5,
+                    maxWidth:
+                        isFullScreen
+                            ? MediaQuery.sizeOf(context).width / 1.5
+                            : MediaQuery.sizeOf(context).width / 2.5,
                     maxHeight: 10,
                   ),
                   child: Consumer(
@@ -191,10 +182,9 @@ class PlayControls extends ConsumerWidget {
                                 value: player.buffering.inSeconds.toDouble(),
                                 borderRadius: BorderRadius.circular(12),
                                 valueColor: AlwaysStoppedAnimation(
-                                  Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withValues(alpha: 0.2),
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.2),
                                 ),
                               ),
                             ),
@@ -208,15 +198,16 @@ class PlayControls extends ConsumerWidget {
                                     elevation: 0,
                                   ),
                                 ),
-                                child: isSquiggly
-                                    ? SquigglyPlayerSlider(
-                                        position: position,
-                                        duration: duration,
-                                      )
-                                    : NormalPlayerSlider(
-                                        position: position,
-                                        duration: duration,
-                                      ),
+                                child:
+                                    isSquiggly
+                                        ? SquigglyPlayerSlider(
+                                          position: position,
+                                          duration: duration,
+                                        )
+                                        : NormalPlayerSlider(
+                                          position: position,
+                                          duration: duration,
+                                        ),
                               );
                             },
                           ),
@@ -230,9 +221,7 @@ class PlayControls extends ConsumerWidget {
                       .watch(playerNotifierProvider.notifier)
                       .playerTime()
                       .durationTime,
-                  style: TextStyle(
-                    color: isFullScreen ? Colors.white : null,
-                  ),
+                  style: TextStyle(color: isFullScreen ? Colors.white : null),
                 ),
               ],
             ),
@@ -265,9 +254,9 @@ class NormalPlayerSlider extends ConsumerWidget {
         }
       },
       onChangeEnd: (value) async {
-        await ref.read(playerNotifierProvider.notifier).handleSeek(
-              Duration(seconds: value.toInt()),
-            );
+        await ref
+            .read(playerNotifierProvider.notifier)
+            .handleSeek(Duration(seconds: value.toInt()));
         await ref.read(playerNotifierProvider.notifier).player.play();
       },
       onChanged: (value) {
@@ -304,9 +293,9 @@ class SquigglyPlayerSlider extends ConsumerWidget {
         }
       },
       onChangeEnd: (value) async {
-        await ref.read(playerNotifierProvider.notifier).handleSeek(
-              Duration(seconds: value.toInt()),
-            );
+        await ref
+            .read(playerNotifierProvider.notifier)
+            .handleSeek(Duration(seconds: value.toInt()));
         await ref.read(playerNotifierProvider.notifier).player.play();
       },
       onChanged: (value) {

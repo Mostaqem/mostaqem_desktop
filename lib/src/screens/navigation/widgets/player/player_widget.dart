@@ -12,9 +12,7 @@ import 'package:window_manager/window_manager.dart';
 final isCollapsedProvider = StateProvider<bool>((ref) => false);
 
 class PlayerWidget extends ConsumerStatefulWidget {
-  const PlayerWidget({
-    super.key,
-  });
+  const PlayerWidget({super.key});
 
   @override
   ConsumerState<PlayerWidget> createState() => _PlayerWidgetState();
@@ -37,16 +35,19 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   @override
   void onWindowClose() {
-  
     final player = ref.read(currentAlbumProvider);
     if (player == null) return;
 
-    final position =
-        ref.watch(playerNotifierProvider.select((value) => value.position));
-    final duration =
-        ref.watch(playerNotifierProvider.select((value) => value.duration));
+    final position = ref.watch(
+      playerNotifierProvider.select((value) => value.position),
+    );
+    final duration = ref.watch(
+      playerNotifierProvider.select((value) => value.duration),
+    );
 
-    ref.read(playerCacheProvider().notifier).setAlbum(
+    ref
+        .read(playerCacheProvider().notifier)
+        .setAlbum(
           Album(
             surah: player.surah,
             reciter: player.reciter,
@@ -72,25 +73,23 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
               topLeft: Radius.circular(12),
               topRight: Radius.circular(12),
             ),
-            color: isFullScreen
-                ? Colors.transparent
-                : Theme.of(context).colorScheme.secondaryContainer,
+            color:
+                isFullScreen
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.secondaryContainer,
           ),
-          child: isFullScreen
-              ? const FullScreenPlayControls()
-              : LayoutBuilder(
-                  builder: (context, constraints) {
-                    return constraints.minWidth < 1285
-                        ? FittedBox(
-                            child: NormalPlayer(
-                              isFullScreen: isFullScreen,
-                            ),
+          child:
+              isFullScreen
+                  ? const FullScreenPlayControls()
+                  : LayoutBuilder(
+                    builder: (context, constraints) {
+                      return constraints.minWidth < 1285
+                          ? FittedBox(
+                            child: NormalPlayer(isFullScreen: isFullScreen),
                           )
-                        : NormalPlayer(
-                            isFullScreen: isFullScreen,
-                          );
-                  },
-                ),
+                          : NormalPlayer(isFullScreen: isFullScreen);
+                    },
+                  ),
         ),
         Visibility(
           visible:
@@ -105,10 +104,9 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
                 ),
-                color: Theme.of(context)
-                    .colorScheme
-                    .secondaryContainer
-                    .withValues(alpha:0.4),
+                color: Theme.of(
+                  context,
+                ).colorScheme.secondaryContainer.withValues(alpha: 0.4),
               ),
             ),
           ),

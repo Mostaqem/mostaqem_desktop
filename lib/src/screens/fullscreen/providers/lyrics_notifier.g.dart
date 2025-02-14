@@ -12,14 +12,15 @@ String _$lyricsNotifierHash() => r'521ca6336f3d48818187eef94ce4a875f96d5600';
 @ProviderFor(LyricsNotifier)
 final lyricsNotifierProvider =
     AutoDisposeNotifierProvider<LyricsNotifier, bool>.internal(
-  LyricsNotifier.new,
-  name: r'lyricsNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$lyricsNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      LyricsNotifier.new,
+      name: r'lyricsNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$lyricsNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$LyricsNotifier = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint

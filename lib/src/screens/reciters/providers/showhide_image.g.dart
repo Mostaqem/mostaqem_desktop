@@ -12,14 +12,15 @@ String _$hideReciterImageHash() => r'1cbdd7c3bc32874cf99a94702614aaab321e39d7';
 @ProviderFor(HideReciterImage)
 final hideReciterImageProvider =
     AutoDisposeNotifierProvider<HideReciterImage, bool>.internal(
-  HideReciterImage.new,
-  name: r'hideReciterImageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$hideReciterImageHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      HideReciterImage.new,
+      name: r'hideReciterImageProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$hideReciterImageHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$HideReciterImage = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint

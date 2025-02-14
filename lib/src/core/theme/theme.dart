@@ -7,9 +7,7 @@ class AppTheme {
   static final String? _fontFamily = GoogleFonts.kufam().fontFamily;
 
   static ThemeData lightTheme = ThemeData(
-    snackBarTheme: const SnackBarThemeData(
-      behavior: SnackBarBehavior.floating,
-    ),
+    snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
     colorScheme: ColorScheme.fromSeed(seedColor: _primaryColor),
     fontFamily: _fontFamily,
     useMaterial3: true,
@@ -25,7 +23,6 @@ class AppTheme {
   }
 
   static ThemeData darkTheme = ThemeData(
-   
     fontFamily: _fontFamily,
     colorScheme: ColorScheme.fromSeed(
       seedColor: _primaryColor,

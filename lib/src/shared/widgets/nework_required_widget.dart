@@ -10,15 +10,11 @@ class NeworkRequiredWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final networkState = ref.watch(getConnectionProvider).value;
     if (networkState == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     return networkState == InternetConnectionStatus.connected
         ? child
-        : const Center(
-            child: Text('عفوا لا يوجد أنترنت'),
-          );
+        : const Center(child: Text('عفوا لا يوجد أنترنت'));
   }
 }

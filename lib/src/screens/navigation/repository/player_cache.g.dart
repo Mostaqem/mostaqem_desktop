@@ -32,9 +32,7 @@ class _SystemHash {
 abstract class _$PlayerCache extends BuildlessAutoDisposeNotifier<Album?> {
   late final String key;
 
-  Album? build({
-    String key = 'surah',
-  });
+  Album? build({String key = 'surah'});
 }
 
 /// See also [PlayerCache].
@@ -47,21 +45,15 @@ class PlayerCacheFamily extends Family<Album?> {
   const PlayerCacheFamily();
 
   /// See also [PlayerCache].
-  PlayerCacheProvider call({
-    String key = 'surah',
-  }) {
-    return PlayerCacheProvider(
-      key: key,
-    );
+  PlayerCacheProvider call({String key = 'surah'}) {
+    return PlayerCacheProvider(key: key);
   }
 
   @override
   PlayerCacheProvider getProviderOverride(
     covariant PlayerCacheProvider provider,
   ) {
-    return call(
-      key: provider.key,
-    );
+    return call(key: provider.key);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -83,21 +75,19 @@ class PlayerCacheFamily extends Family<Album?> {
 class PlayerCacheProvider
     extends AutoDisposeNotifierProviderImpl<PlayerCache, Album?> {
   /// See also [PlayerCache].
-  PlayerCacheProvider({
-    String key = 'surah',
-  }) : this._internal(
-          () => PlayerCache()..key = key,
-          from: playerCacheProvider,
-          name: r'playerCacheProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$playerCacheHash,
-          dependencies: PlayerCacheFamily._dependencies,
-          allTransitiveDependencies:
-              PlayerCacheFamily._allTransitiveDependencies,
-          key: key,
-        );
+  PlayerCacheProvider({String key = 'surah'})
+    : this._internal(
+        () => PlayerCache()..key = key,
+        from: playerCacheProvider,
+        name: r'playerCacheProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$playerCacheHash,
+        dependencies: PlayerCacheFamily._dependencies,
+        allTransitiveDependencies: PlayerCacheFamily._allTransitiveDependencies,
+        key: key,
+      );
 
   PlayerCacheProvider._internal(
     super._createNotifier, {
@@ -112,12 +102,8 @@ class PlayerCacheProvider
   final String key;
 
   @override
-  Album? runNotifierBuild(
-    covariant PlayerCache notifier,
-  ) {
-    return notifier.build(
-      key: key,
-    );
+  Album? runNotifierBuild(covariant PlayerCache notifier) {
+    return notifier.build(key: key);
   }
 
   @override
@@ -170,5 +156,6 @@ class _PlayerCacheProviderElement
   @override
   String get key => (origin as PlayerCacheProvider).key;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

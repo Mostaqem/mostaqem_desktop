@@ -1,3 +1,4 @@
+import 'package:context_menus/context_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,108 +32,169 @@ class SurahWidget extends ConsumerWidget {
           final page = index ~/ pageSize + 1;
           final indexInPage = index % pageSize;
 
-          final surahs = ref
-              .watch(fetchAllChaptersProvider(page: page, query: searchQuery));
+          final surahs = ref.watch(
+            fetchAllChaptersProvider(page: page, query: searchQuery),
+          );
 
           return surahs.when(
             data: (data) {
               if (indexInPage >= data.length) {
                 return null;
               }
-              return Padding(
-                padding: const EdgeInsets.all(8),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    decoration: BoxDecoration(
-                      color: downlaodState == DownloadState.downloading &&
-                              surahID - 1 == index
-                          ? Theme.of(context).colorScheme.tertiaryContainer
-                          : Theme.of(context).colorScheme.primaryContainer,
+              return ContextMenuRegion(
+                contextMenu: GenericContextMenu(
+                  buttonConfigs: [
+                    ContextMenuButtonConfig(
+                      'تشغيل التالي',
+                      onPressed: () async {
+                        await ref
+                            .read(playerNotifierProvider.notifier)
+                            .addItemNext(data[indexInPage].id);
+                      },
                     ),
-                    child: Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        Positioned(
-                          left: -70,
-                          child: SvgPicture.asset(
-                            'assets/img/shape.svg',
-                            width: 130,
-                            colorFilter: ColorFilter.mode(
-                              Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer
-                                  .withValues(alpha: 0.1),
-                              BlendMode.srcIn,
+                    ContextMenuButtonConfig(
+                      'اضافة في القائمة التشغيل',
+                      onPressed: () async {
+                        await ref
+                            .read(playerNotifierProvider.notifier)
+                            .addToQueue(surahID: data[indexInPage].id);
+                      },
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      decoration: BoxDecoration(
+                        color:
+                            downlaodState == DownloadState.downloading &&
+                                    surahID - 1 == index
+                                ? Theme.of(
+                                  context,
+                                ).colorScheme.tertiaryContainer
+                                : Theme.of(
+                                  context,
+                                ).colorScheme.primaryContainer,
+                      ),
+                      child: Stack(
+                        alignment: Alignment.centerLeft,
+                        children: [
+                          Positioned(
+                            left: -70,
+                            child: SvgPicture.asset(
+                              'assets/img/shape.svg',
+                              width: 130,
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).colorScheme.onPrimaryContainer
+                                    .withValues(alpha: 0.1),
+                                BlendMode.srcIn,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Flexible(
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    data[indexInPage].arabicName,
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer,
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Flexible(
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      data[indexInPage].arabicName,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.onPrimaryContainer,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Flexible(
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    data[indexInPage].simpleName,
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer
-                                          .withValues(alpha: 0.5),
+                                Flexible(
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      data[indexInPage].simpleName,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimaryContainer
+                                            .withValues(alpha: 0.5),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Flexible(
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Consumer(
-                                    builder: (context, ref, child) {
-                                      return Tooltip(
-                                        message: 'تشغيل',
-                                        preferBelow: false,
-                                        child: IconButton(
-                                          onPressed: () async {
-                                            await ref
-                                                .read(
-                                                  playerNotifierProvider
-                                                      .notifier,
-                                                )
-                                                .play(
-                                                  surahID: data[indexInPage].id,
-                                                );
-                                          },
-                                          icon: const Icon(
-                                            Icons.play_circle_fill_outlined,
+                                Flexible(
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Consumer(
+                                      builder: (context, ref, child) {
+                                        return Tooltip(
+                                          message: 'تشغيل',
+                                          preferBelow: false,
+                                          child: IconButton(
+                                            onPressed: () async {
+                                              await ref
+                                                  .read(
+                                                    playerNotifierProvider
+                                                        .notifier,
+                                                  )
+                                                  .play(
+                                                    surahID:
+                                                        data[indexInPage].id,
+                                                  );
+                                            },
+                                            icon: const Icon(
+                                              Icons.play_circle_fill_outlined,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Positioned(
+                            top: 5,
+                            left: 0,
+                            child: PopupMenuButton(
+                              itemBuilder:
+                                  (context) => [
+                                    PopupMenuItem<String>(
+                                      child: const Text('اضافة التالي'),
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                              playerNotifierProvider.notifier,
+                                            )
+                                            .addItemNext(data[indexInPage].id);
+                                      },
+                                    ),
+                                    PopupMenuItem<String>(
+                                      child: const Text(
+                                        'اضافة في قائمة التشغيل',
+                                      ),
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                              playerNotifierProvider.notifier,
+                                            )
+                                            .addToQueue(
+                                              surahID: data[indexInPage].id,
+                                            );
+                                      },
+                                    ),
+                                  ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -146,10 +208,9 @@ class SurahWidget extends ConsumerWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primaryContainer
-                        .withValues(alpha: 0.3),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer.withValues(alpha: 0.3),
                   ),
                   child: ToolTipIconButton(
                     message: 'اعادة المحاولة',
@@ -167,10 +228,9 @@ class SurahWidget extends ConsumerWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primaryContainer
-                        .withValues(alpha: 0.3),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primaryContainer.withValues(alpha: 0.3),
                   ),
                 ),
               );

@@ -2,10 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class HoverBuilder extends StatefulWidget {
-  const HoverBuilder({
-    required this.builder,
-    super.key,
-  });
+  const HoverBuilder({required this.builder, super.key});
 
   // ignore: avoid_positional_boolean_parameters
   final Widget Function(bool isHovered) builder;

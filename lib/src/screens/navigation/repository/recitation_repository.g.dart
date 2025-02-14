@@ -41,21 +41,15 @@ class FetchReciterRecitationFamily
   const FetchReciterRecitationFamily();
 
   /// See also [fetchReciterRecitation].
-  FetchReciterRecitationProvider call({
-    required int reciterID,
-  }) {
-    return FetchReciterRecitationProvider(
-      reciterID: reciterID,
-    );
+  FetchReciterRecitationProvider call({required int reciterID}) {
+    return FetchReciterRecitationProvider(reciterID: reciterID);
   }
 
   @override
   FetchReciterRecitationProvider getProviderOverride(
     covariant FetchReciterRecitationProvider provider,
   ) {
-    return call(
-      reciterID: provider.reciterID,
-    );
+    return call(reciterID: provider.reciterID);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -77,24 +71,23 @@ class FetchReciterRecitationFamily
 class FetchReciterRecitationProvider
     extends AutoDisposeFutureProvider<List<Recitation>> {
   /// See also [fetchReciterRecitation].
-  FetchReciterRecitationProvider({
-    required int reciterID,
-  }) : this._internal(
-          (ref) => fetchReciterRecitation(
-            ref as FetchReciterRecitationRef,
-            reciterID: reciterID,
-          ),
-          from: fetchReciterRecitationProvider,
-          name: r'fetchReciterRecitationProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$fetchReciterRecitationHash,
-          dependencies: FetchReciterRecitationFamily._dependencies,
-          allTransitiveDependencies:
-              FetchReciterRecitationFamily._allTransitiveDependencies,
+  FetchReciterRecitationProvider({required int reciterID})
+    : this._internal(
+        (ref) => fetchReciterRecitation(
+          ref as FetchReciterRecitationRef,
           reciterID: reciterID,
-        );
+        ),
+        from: fetchReciterRecitationProvider,
+        name: r'fetchReciterRecitationProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$fetchReciterRecitationHash,
+        dependencies: FetchReciterRecitationFamily._dependencies,
+        allTransitiveDependencies:
+            FetchReciterRecitationFamily._allTransitiveDependencies,
+        reciterID: reciterID,
+      );
 
   FetchReciterRecitationProvider._internal(
     super._createNotifier, {
@@ -111,7 +104,7 @@ class FetchReciterRecitationProvider
   @override
   Override overrideWith(
     FutureOr<List<Recitation>> Function(FetchReciterRecitationRef provider)
-        create,
+    create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -163,5 +156,6 @@ class _FetchReciterRecitationProviderElement
   @override
   int get reciterID => (origin as FetchReciterRecitationProvider).reciterID;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

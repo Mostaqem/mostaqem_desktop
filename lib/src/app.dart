@@ -1,3 +1,4 @@
+import 'package:context_menus/context_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,10 +26,7 @@ class MyApp extends ConsumerWidget {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('ar', 'SA'),
-        Locale('en', 'US'),
-      ],
+      supportedLocales: const [Locale('ar', 'SA'), Locale('en', 'US')],
       locale: const Locale('ar', 'SA'),
       builder: (context, child) {
         return Material(
@@ -41,9 +39,7 @@ class MyApp extends ConsumerWidget {
                   height: 100,
                   child: Overlay(
                     initialEntries: [
-                      OverlayEntry(
-                        builder: (context) => const PlayerWidget(),
-                      ),
+                      OverlayEntry(builder: (context) => const PlayerWidget()),
                     ],
                   ),
                 ),
@@ -63,17 +59,12 @@ class MyApp extends ConsumerWidget {
 }
 
 class Mostaqem extends StatelessWidget {
-  const Mostaqem({
-    super.key,
-  });
+  const Mostaqem({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const ProviderScope(
-      observers: [],
-      child: MaterialApp(
-        home: MyApp(),
-      ),
+    return ProviderScope(
+      child: MaterialApp(home: ContextMenuOverlay(child: const MyApp())),
     );
   }
 }

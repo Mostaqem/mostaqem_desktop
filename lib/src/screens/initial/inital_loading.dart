@@ -11,9 +11,7 @@ import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_pro
 import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
 
 class InitialLoading extends ConsumerWidget {
-  InitialLoading({
-    super.key,
-  });
+  InitialLoading({super.key});
   final randomVerses = <LoadingVerse>[
     LoadingVerse(
       verse: 'وَكَانَ فَضْلُ اللَّهِ عَلَيْكَ عَظِيمًا',
@@ -93,9 +91,7 @@ class InitialLoading extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               Text(
                 randomVerse.verse,
                 style: GoogleFonts.amiri(
@@ -103,24 +99,18 @@ class InitialLoading extends ConsumerWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Text(
-                '${randomVerse.surah} : ${randomVerse.verseNumber}',
-              ),
-              const SizedBox(
-                height: 100,
-              ),
+              Text('${randomVerse.surah} : ${randomVerse.verseNumber}'),
+              const SizedBox(height: 100),
               const CircularProgressIndicator(),
               const Spacer(),
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  'مستقيم 2.1.1',
+                  'مستقيم 2.2.0',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

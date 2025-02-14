@@ -25,21 +25,12 @@ class DioHelper {
 
   static final dio = createDio();
 
-  Future<Response<dynamic>> getHTTP(
-    String url, {
-    Options? options,
-  }) async {
-    final response = await dio.get(
-      url,
-      options: options,
-    );
+  Future<Response<dynamic>> getHTTP(String url, {Options? options}) async {
+    final response = await dio.get(url, options: options);
     return response;
   }
 
-  Future<Response<dynamic>> postHTTP(
-    String url,
-    dynamic data,
-  ) async {
+  Future<Response<dynamic>> postHTTP(String url, dynamic data) async {
     final response = await dio.post(url, data: data);
     return response;
   }

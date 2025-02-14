@@ -12,7 +12,8 @@ part of 'surah.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Surah _$SurahFromJson(Map<String, dynamic> json) {
   return _Surah.fromJson(json);
@@ -45,13 +46,14 @@ abstract class $SurahCopyWith<$Res> {
   factory $SurahCopyWith(Surah value, $Res Function(Surah) then) =
       _$SurahCopyWithImpl<$Res, Surah>;
   @useResult
-  $Res call(
-      {int id,
-      @JsonKey(name: 'name_complex') String simpleName,
-      @JsonKey(name: 'name_arabic') String arabicName,
-      @JsonKey(name: 'revelation_place') String revelationPlace,
-      @JsonKey(name: 'verses_count') int? versesCount,
-      String? image});
+  $Res call({
+    int id,
+    @JsonKey(name: 'name_complex') String simpleName,
+    @JsonKey(name: 'name_arabic') String arabicName,
+    @JsonKey(name: 'revelation_place') String revelationPlace,
+    @JsonKey(name: 'verses_count') int? versesCount,
+    String? image,
+  });
 }
 
 /// @nodoc
@@ -76,49 +78,60 @@ class _$SurahCopyWithImpl<$Res, $Val extends Surah>
     Object? versesCount = freezed,
     Object? image = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      simpleName: null == simpleName
-          ? _value.simpleName
-          : simpleName // ignore: cast_nullable_to_non_nullable
-              as String,
-      arabicName: null == arabicName
-          ? _value.arabicName
-          : arabicName // ignore: cast_nullable_to_non_nullable
-              as String,
-      revelationPlace: null == revelationPlace
-          ? _value.revelationPlace
-          : revelationPlace // ignore: cast_nullable_to_non_nullable
-              as String,
-      versesCount: freezed == versesCount
-          ? _value.versesCount
-          : versesCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as int,
+            simpleName:
+                null == simpleName
+                    ? _value.simpleName
+                    : simpleName // ignore: cast_nullable_to_non_nullable
+                        as String,
+            arabicName:
+                null == arabicName
+                    ? _value.arabicName
+                    : arabicName // ignore: cast_nullable_to_non_nullable
+                        as String,
+            revelationPlace:
+                null == revelationPlace
+                    ? _value.revelationPlace
+                    : revelationPlace // ignore: cast_nullable_to_non_nullable
+                        as String,
+            versesCount:
+                freezed == versesCount
+                    ? _value.versesCount
+                    : versesCount // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            image:
+                freezed == image
+                    ? _value.image
+                    : image // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$SurahImplCopyWith<$Res> implements $SurahCopyWith<$Res> {
   factory _$$SurahImplCopyWith(
-          _$SurahImpl value, $Res Function(_$SurahImpl) then) =
-      __$$SurahImplCopyWithImpl<$Res>;
+    _$SurahImpl value,
+    $Res Function(_$SurahImpl) then,
+  ) = __$$SurahImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      @JsonKey(name: 'name_complex') String simpleName,
-      @JsonKey(name: 'name_arabic') String arabicName,
-      @JsonKey(name: 'revelation_place') String revelationPlace,
-      @JsonKey(name: 'verses_count') int? versesCount,
-      String? image});
+  $Res call({
+    int id,
+    @JsonKey(name: 'name_complex') String simpleName,
+    @JsonKey(name: 'name_arabic') String arabicName,
+    @JsonKey(name: 'revelation_place') String revelationPlace,
+    @JsonKey(name: 'verses_count') int? versesCount,
+    String? image,
+  });
 }
 
 /// @nodoc
@@ -126,8 +139,9 @@ class __$$SurahImplCopyWithImpl<$Res>
     extends _$SurahCopyWithImpl<$Res, _$SurahImpl>
     implements _$$SurahImplCopyWith<$Res> {
   __$$SurahImplCopyWithImpl(
-      _$SurahImpl _value, $Res Function(_$SurahImpl) _then)
-      : super(_value, _then);
+    _$SurahImpl _value,
+    $Res Function(_$SurahImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Surah
   /// with the given fields replaced by the non-null parameter values.
@@ -141,45 +155,54 @@ class __$$SurahImplCopyWithImpl<$Res>
     Object? versesCount = freezed,
     Object? image = freezed,
   }) {
-    return _then(_$SurahImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      simpleName: null == simpleName
-          ? _value.simpleName
-          : simpleName // ignore: cast_nullable_to_non_nullable
-              as String,
-      arabicName: null == arabicName
-          ? _value.arabicName
-          : arabicName // ignore: cast_nullable_to_non_nullable
-              as String,
-      revelationPlace: null == revelationPlace
-          ? _value.revelationPlace
-          : revelationPlace // ignore: cast_nullable_to_non_nullable
-              as String,
-      versesCount: freezed == versesCount
-          ? _value.versesCount
-          : versesCount // ignore: cast_nullable_to_non_nullable
-              as int?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$SurahImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as int,
+        simpleName:
+            null == simpleName
+                ? _value.simpleName
+                : simpleName // ignore: cast_nullable_to_non_nullable
+                    as String,
+        arabicName:
+            null == arabicName
+                ? _value.arabicName
+                : arabicName // ignore: cast_nullable_to_non_nullable
+                    as String,
+        revelationPlace:
+            null == revelationPlace
+                ? _value.revelationPlace
+                : revelationPlace // ignore: cast_nullable_to_non_nullable
+                    as String,
+        versesCount:
+            freezed == versesCount
+                ? _value.versesCount
+                : versesCount // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        image:
+            freezed == image
+                ? _value.image
+                : image // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SurahImpl implements _Surah {
-  const _$SurahImpl(
-      {required this.id,
-      @JsonKey(name: 'name_complex') required this.simpleName,
-      @JsonKey(name: 'name_arabic') required this.arabicName,
-      @JsonKey(name: 'revelation_place') required this.revelationPlace,
-      @JsonKey(name: 'verses_count') this.versesCount,
-      this.image});
+  const _$SurahImpl({
+    required this.id,
+    @JsonKey(name: 'name_complex') required this.simpleName,
+    @JsonKey(name: 'name_arabic') required this.arabicName,
+    @JsonKey(name: 'revelation_place') required this.revelationPlace,
+    @JsonKey(name: 'verses_count') this.versesCount,
+    this.image,
+  });
 
   factory _$SurahImpl.fromJson(Map<String, dynamic> json) =>
       _$$SurahImplFromJson(json);
@@ -225,8 +248,15 @@ class _$SurahImpl implements _Surah {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, simpleName, arabicName,
-      revelationPlace, versesCount, image);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    simpleName,
+    arabicName,
+    revelationPlace,
+    versesCount,
+    image,
+  );
 
   /// Create a copy of Surah
   /// with the given fields replaced by the non-null parameter values.
@@ -238,20 +268,19 @@ class _$SurahImpl implements _Surah {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SurahImplToJson(
-      this,
-    );
+    return _$$SurahImplToJson(this);
   }
 }
 
 abstract class _Surah implements Surah {
-  const factory _Surah(
-      {required final int id,
-      @JsonKey(name: 'name_complex') required final String simpleName,
-      @JsonKey(name: 'name_arabic') required final String arabicName,
-      @JsonKey(name: 'revelation_place') required final String revelationPlace,
-      @JsonKey(name: 'verses_count') final int? versesCount,
-      final String? image}) = _$SurahImpl;
+  const factory _Surah({
+    required final int id,
+    @JsonKey(name: 'name_complex') required final String simpleName,
+    @JsonKey(name: 'name_arabic') required final String arabicName,
+    @JsonKey(name: 'revelation_place') required final String revelationPlace,
+    @JsonKey(name: 'verses_count') final int? versesCount,
+    final String? image,
+  }) = _$SurahImpl;
 
   factory _Surah.fromJson(Map<String, dynamic> json) = _$SurahImpl.fromJson;
 

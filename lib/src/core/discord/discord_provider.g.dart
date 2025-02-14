@@ -89,27 +89,27 @@ class UpdateRPCDiscordProvider extends AutoDisposeFutureProvider<void> {
     required int duration,
     required String reciter,
   }) : this._internal(
-          (ref) => updateRPCDiscord(
-            ref as UpdateRPCDiscordRef,
-            surahName: surahName,
-            position: position,
-            duration: duration,
-            reciter: reciter,
-          ),
-          from: updateRPCDiscordProvider,
-          name: r'updateRPCDiscordProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$updateRPCDiscordHash,
-          dependencies: UpdateRPCDiscordFamily._dependencies,
-          allTransitiveDependencies:
-              UpdateRPCDiscordFamily._allTransitiveDependencies,
-          surahName: surahName,
-          position: position,
-          duration: duration,
-          reciter: reciter,
-        );
+         (ref) => updateRPCDiscord(
+           ref as UpdateRPCDiscordRef,
+           surahName: surahName,
+           position: position,
+           duration: duration,
+           reciter: reciter,
+         ),
+         from: updateRPCDiscordProvider,
+         name: r'updateRPCDiscordProvider',
+         debugGetCreateSourceHash:
+             const bool.fromEnvironment('dart.vm.product')
+                 ? null
+                 : _$updateRPCDiscordHash,
+         dependencies: UpdateRPCDiscordFamily._dependencies,
+         allTransitiveDependencies:
+             UpdateRPCDiscordFamily._allTransitiveDependencies,
+         surahName: surahName,
+         position: position,
+         duration: duration,
+         reciter: reciter,
+       );
 
   UpdateRPCDiscordProvider._internal(
     super._createNotifier, {
@@ -193,7 +193,8 @@ mixin UpdateRPCDiscordRef on AutoDisposeFutureProviderRef<void> {
 }
 
 class _UpdateRPCDiscordProviderElement
-    extends AutoDisposeFutureProviderElement<void> with UpdateRPCDiscordRef {
+    extends AutoDisposeFutureProviderElement<void>
+    with UpdateRPCDiscordRef {
   _UpdateRPCDiscordProviderElement(super.provider);
 
   @override
@@ -205,5 +206,6 @@ class _UpdateRPCDiscordProviderElement
   @override
   String get reciter => (origin as UpdateRPCDiscordProvider).reciter;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

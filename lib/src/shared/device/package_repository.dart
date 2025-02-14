@@ -7,10 +7,7 @@ import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-enum UpdateState {
-  available,
-  notAvailable;
-}
+enum UpdateState { available, notAvailable }
 
 class PackageRepository {
   PackageRepository(this.ref);
@@ -40,8 +37,9 @@ class PackageRepository {
     }
     final version = await currentVersion();
 
-    final latestRelease =
-        await _github.repositories.getLatestRelease(_githubRepoSlug);
+    final latestRelease = await _github.repositories.getLatestRelease(
+      _githubRepoSlug,
+    );
     final latestVersion = latestRelease.tagName?.substring(1);
     if (latestVersion == null) return UpdateState.notAvailable;
     final currentV = getExtendedVersionNumber(version);
@@ -53,25 +51,28 @@ class PackageRepository {
   }
 
   Future<void> downloadUpdate() async {
-    final latestRelease =
-        await _github.repositories.getLatestRelease(_githubRepoSlug);
+    final latestRelease = await _github.repositories.getLatestRelease(
+      _githubRepoSlug,
+    );
 
     final os = Platform.operatingSystem;
     String? installUrl;
 
     switch (os) {
       case 'windows':
-        installUrl = latestRelease.assets!
-            .firstWhere((element) => element.name!.contains('.exe'))
-            .browserDownloadUrl;
+        installUrl =
+            latestRelease.assets!
+                .firstWhere((element) => element.name!.contains('.exe'))
+                .browserDownloadUrl;
         if (installUrl == null) return;
         await launchUrlString(installUrl);
       case 'linux':
         await launchUrlString(latestRelease.htmlUrl!);
       case 'macos':
-        installUrl = latestRelease.assets!
-            .firstWhere((element) => element.name!.contains('.dmg'))
-            .browserDownloadUrl;
+        installUrl =
+            latestRelease.assets!
+                .firstWhere((element) => element.name!.contains('.dmg'))
+                .browserDownloadUrl;
     }
   }
 }
@@ -87,14 +88,16 @@ final downloadUpdateProvider = FutureProvider.autoDispose<void>((ref) async {
   return;
 });
 
-final checkUpdateProvider =
-    FutureProvider.autoDispose<UpdateState>((ref) async {
+final checkUpdateProvider = FutureProvider.autoDispose<UpdateState>((
+  ref,
+) async {
   final repo = ref.watch(packageRepoProvider);
   return repo.checkUpdate();
 });
 
-final getCurrentVersionProvider =
-    FutureProvider.autoDispose<String>((ref) async {
+final getCurrentVersionProvider = FutureProvider.autoDispose<String>((
+  ref,
+) async {
   final repo = ref.watch(packageRepoProvider);
   return repo.currentVersion();
 });

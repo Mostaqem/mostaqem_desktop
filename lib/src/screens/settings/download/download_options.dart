@@ -5,9 +5,7 @@ import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
 class DownloadOptions extends StatelessWidget {
-  const DownloadOptions({
-    super.key,
-  });
+  const DownloadOptions({super.key});
 
   static final formKey = GlobalKey<FormState>();
 
@@ -25,15 +23,9 @@ class DownloadOptions extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          const Text(
-            'اختار مكان تنزيل القران',
-          ),
-          const SizedBox(
-            height: 4,
-          ),
+          const SizedBox(height: 8),
+          const Text('اختار مكان تنزيل القران'),
+          const SizedBox(height: 4),
           Consumer(
             builder: (context, ref, child) {
               final path = ref.watch(downloadDestinationProvider);
@@ -43,8 +35,10 @@ class DownloadOptions extends StatelessWidget {
                 loading: () => const SizedBox.shrink(),
                 data: (data) {
                   return ConstrainedBox(
-                    constraints:
-                        const BoxConstraints(minWidth: 200, maxWidth: 500),
+                    constraints: const BoxConstraints(
+                      minWidth: 200,
+                      maxWidth: 500,
+                    ),
                     child: TextFormField(
                       readOnly: true,
                       initialValue: data,
@@ -63,9 +57,7 @@ class DownloadOptions extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Consumer(
             builder: (context, ref, child) {
               return ElevatedButton(

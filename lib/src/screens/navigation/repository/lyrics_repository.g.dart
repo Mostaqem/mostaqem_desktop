@@ -39,21 +39,13 @@ class GetLyricsFamily extends Family<AsyncValue<String?>> {
   const GetLyricsFamily();
 
   /// See also [getLyrics].
-  GetLyricsProvider call({
-    required String filename,
-  }) {
-    return GetLyricsProvider(
-      filename: filename,
-    );
+  GetLyricsProvider call({required String filename}) {
+    return GetLyricsProvider(filename: filename);
   }
 
   @override
-  GetLyricsProvider getProviderOverride(
-    covariant GetLyricsProvider provider,
-  ) {
-    return call(
-      filename: provider.filename,
-    );
+  GetLyricsProvider getProviderOverride(covariant GetLyricsProvider provider) {
+    return call(filename: provider.filename);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -74,23 +66,19 @@ class GetLyricsFamily extends Family<AsyncValue<String?>> {
 /// See also [getLyrics].
 class GetLyricsProvider extends AutoDisposeFutureProvider<String?> {
   /// See also [getLyrics].
-  GetLyricsProvider({
-    required String filename,
-  }) : this._internal(
-          (ref) => getLyrics(
-            ref as GetLyricsRef,
-            filename: filename,
-          ),
-          from: getLyricsProvider,
-          name: r'getLyricsProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$getLyricsHash,
-          dependencies: GetLyricsFamily._dependencies,
-          allTransitiveDependencies: GetLyricsFamily._allTransitiveDependencies,
-          filename: filename,
-        );
+  GetLyricsProvider({required String filename})
+    : this._internal(
+        (ref) => getLyrics(ref as GetLyricsRef, filename: filename),
+        from: getLyricsProvider,
+        name: r'getLyricsProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$getLyricsHash,
+        dependencies: GetLyricsFamily._dependencies,
+        allTransitiveDependencies: GetLyricsFamily._allTransitiveDependencies,
+        filename: filename,
+      );
 
   GetLyricsProvider._internal(
     super._createNotifier, {
@@ -149,7 +137,8 @@ mixin GetLyricsRef on AutoDisposeFutureProviderRef<String?> {
 }
 
 class _GetLyricsProviderElement
-    extends AutoDisposeFutureProviderElement<String?> with GetLyricsRef {
+    extends AutoDisposeFutureProviderElement<String?>
+    with GetLyricsRef {
   _GetLyricsProviderElement(super.provider);
 
   @override
@@ -172,20 +161,14 @@ class CacheLyricsFamily extends Family<AsyncValue<File>> {
     required String filename,
     required String content,
   }) {
-    return CacheLyricsProvider(
-      filename: filename,
-      content: content,
-    );
+    return CacheLyricsProvider(filename: filename, content: content);
   }
 
   @override
   CacheLyricsProvider getProviderOverride(
     covariant CacheLyricsProvider provider,
   ) {
-    return call(
-      filename: provider.filename,
-      content: provider.content,
-    );
+    return call(filename: provider.filename, content: provider.content);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -206,27 +189,24 @@ class CacheLyricsFamily extends Family<AsyncValue<File>> {
 /// See also [cacheLyrics].
 class CacheLyricsProvider extends AutoDisposeFutureProvider<File> {
   /// See also [cacheLyrics].
-  CacheLyricsProvider({
-    required String filename,
-    required String content,
-  }) : this._internal(
-          (ref) => cacheLyrics(
-            ref as CacheLyricsRef,
-            filename: filename,
-            content: content,
-          ),
-          from: cacheLyricsProvider,
-          name: r'cacheLyricsProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$cacheLyricsHash,
-          dependencies: CacheLyricsFamily._dependencies,
-          allTransitiveDependencies:
-              CacheLyricsFamily._allTransitiveDependencies,
+  CacheLyricsProvider({required String filename, required String content})
+    : this._internal(
+        (ref) => cacheLyrics(
+          ref as CacheLyricsRef,
           filename: filename,
           content: content,
-        );
+        ),
+        from: cacheLyricsProvider,
+        name: r'cacheLyricsProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$cacheLyricsHash,
+        dependencies: CacheLyricsFamily._dependencies,
+        allTransitiveDependencies: CacheLyricsFamily._allTransitiveDependencies,
+        filename: filename,
+        content: content,
+      );
 
   CacheLyricsProvider._internal(
     super._createNotifier, {
@@ -326,14 +306,15 @@ String _$currentLyricsNotifierHash() =>
 @ProviderFor(CurrentLyricsNotifier)
 final currentLyricsNotifierProvider =
     AutoDisposeAsyncNotifierProvider<CurrentLyricsNotifier, String?>.internal(
-  CurrentLyricsNotifier.new,
-  name: r'currentLyricsNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentLyricsNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      CurrentLyricsNotifier.new,
+      name: r'currentLyricsNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$currentLyricsNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$CurrentLyricsNotifier = AutoDisposeAsyncNotifier<String?>;
 // ignore_for_file: type=lint

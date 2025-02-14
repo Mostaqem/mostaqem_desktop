@@ -10,12 +10,10 @@ class AppLicensePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // const WindowBarBox(),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           Expanded(
             child: LicensePage(
-              applicationVersion: '2.1.1',
+              applicationVersion: '2.2.0',
               applicationName: 'مستقيم',
             ),
           ),

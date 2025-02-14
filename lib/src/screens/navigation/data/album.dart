@@ -5,7 +5,7 @@ import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 part 'album.freezed.dart';
 part 'album.g.dart';
 
-@Freezed(copyWith: true)
+@Freezed(copyWith: true, toJson: true)
 class Album with _$Album {
   const factory Album({
     required Surah surah,
@@ -15,8 +15,7 @@ class Album with _$Album {
     @Default(0) int position,
     @Default(0) int duration,
     @Default(false) bool isLocal,
-    
   }) = _Album;
 
-  factory Album.fromJson(Map<String, Object?> json) => _$AlbumFromJson(json);
+  factory Album.fromJson(Map<String, dynamic> json) => _$AlbumFromJson(json);
 }

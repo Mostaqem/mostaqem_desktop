@@ -13,9 +13,10 @@ String _$mprisRepositoryHash() => r'4358a7b5af6b6032e18b1562ae9db974a0357f96';
 final mprisRepositoryProvider = AutoDisposeProvider<MPRISRepository>.internal(
   mprisRepository,
   name: r'mprisRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$mprisRepositoryHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$mprisRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -110,29 +111,29 @@ class CreateMetadataProvider extends AutoDisposeFutureProvider<void> {
     required String url,
     required Duration position,
   }) : this._internal(
-          (ref) => createMetadata(
-            ref as CreateMetadataRef,
-            reciterName: reciterName,
-            surah: surah,
-            image: image,
-            url: url,
-            position: position,
-          ),
-          from: createMetadataProvider,
-          name: r'createMetadataProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$createMetadataHash,
-          dependencies: CreateMetadataFamily._dependencies,
-          allTransitiveDependencies:
-              CreateMetadataFamily._allTransitiveDependencies,
-          reciterName: reciterName,
-          surah: surah,
-          image: image,
-          url: url,
-          position: position,
-        );
+         (ref) => createMetadata(
+           ref as CreateMetadataRef,
+           reciterName: reciterName,
+           surah: surah,
+           image: image,
+           url: url,
+           position: position,
+         ),
+         from: createMetadataProvider,
+         name: r'createMetadataProvider',
+         debugGetCreateSourceHash:
+             const bool.fromEnvironment('dart.vm.product')
+                 ? null
+                 : _$createMetadataHash,
+         dependencies: CreateMetadataFamily._dependencies,
+         allTransitiveDependencies:
+             CreateMetadataFamily._allTransitiveDependencies,
+         reciterName: reciterName,
+         surah: surah,
+         image: image,
+         url: url,
+         position: position,
+       );
 
   CreateMetadataProvider._internal(
     super._createNotifier, {
@@ -224,7 +225,8 @@ mixin CreateMetadataRef on AutoDisposeFutureProviderRef<void> {
 }
 
 class _CreateMetadataProviderElement
-    extends AutoDisposeFutureProviderElement<void> with CreateMetadataRef {
+    extends AutoDisposeFutureProviderElement<void>
+    with CreateMetadataRef {
   _CreateMetadataProviderElement(super.provider);
 
   @override
@@ -238,5 +240,6 @@ class _CreateMetadataProviderElement
   @override
   Duration get position => (origin as CreateMetadataProvider).position;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

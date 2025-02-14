@@ -2,7 +2,6 @@
 // ignore_for_file: inference_failure_on_untyped_parameter,
 // ignore_for_file: use_setters_to_change_properties
 
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
@@ -12,9 +11,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'reciters_repository.g.dart';
 
 abstract class RecitersRepository {
-  Future<List<Reciter>> fetchReciters({
-    required int page,
-  });
+  Future<List<Reciter>> fetchReciters({required int page});
 
   Future<Reciter> fetchReciter({required int id});
 
@@ -31,9 +28,7 @@ class RecitersImpl implements RecitersRepository {
   }
 
   @override
-  Future<List<Reciter>> fetchReciters({
-    required int page,
-  }) async {
+  Future<List<Reciter>> fetchReciters({required int page}) async {
     final url = '/reciter?page=$page&take=20';
 
     final request = await ref.watch(dioHelperProvider).getHTTP(url);
@@ -61,18 +56,12 @@ Future<Reciter> fetchReciter(Ref ref, {required int id}) {
 }
 
 @riverpod
-Future<List<Reciter>> fetchReciters(
-  Ref ref, {
-  required int page,
-}) {
+Future<List<Reciter>> fetchReciters(Ref ref, {required int page}) {
   return ref.watch(reciterRepositoryProvider).fetchReciters(page: page);
 }
 
 @riverpod
-Future<List<Reciter>> searchReciter(
-  Ref ref, {
-  String? query,
-}) {
+Future<List<Reciter>> searchReciter(Ref ref, {String? query}) {
   return ref.watch(reciterRepositoryProvider).searchReciter(query: query);
 }
 

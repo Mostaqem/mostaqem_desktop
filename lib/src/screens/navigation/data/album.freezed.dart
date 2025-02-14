@@ -12,7 +12,8 @@ part of 'album.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Album _$AlbumFromJson(Map<String, dynamic> json) {
   return _Album.fromJson(json);
@@ -24,6 +25,7 @@ mixin _$Album {
   Reciter get reciter => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   int get recitationID => throw _privateConstructorUsedError;
+  int? get queueIndex => throw _privateConstructorUsedError;
   int get position => throw _privateConstructorUsedError;
   int get duration => throw _privateConstructorUsedError;
   bool get isLocal => throw _privateConstructorUsedError;
@@ -42,14 +44,16 @@ abstract class $AlbumCopyWith<$Res> {
   factory $AlbumCopyWith(Album value, $Res Function(Album) then) =
       _$AlbumCopyWithImpl<$Res, Album>;
   @useResult
-  $Res call(
-      {Surah surah,
-      Reciter reciter,
-      String url,
-      int recitationID,
-      int position,
-      int duration,
-      bool isLocal});
+  $Res call({
+    Surah surah,
+    Reciter reciter,
+    String url,
+    int recitationID,
+    int? queueIndex,
+    int position,
+    int duration,
+    bool isLocal,
+  });
 
   $SurahCopyWith<$Res> get surah;
   $ReciterCopyWith<$Res> get reciter;
@@ -74,40 +78,56 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
     Object? reciter = null,
     Object? url = null,
     Object? recitationID = null,
+    Object? queueIndex = freezed,
     Object? position = null,
     Object? duration = null,
     Object? isLocal = null,
   }) {
-    return _then(_value.copyWith(
-      surah: null == surah
-          ? _value.surah
-          : surah // ignore: cast_nullable_to_non_nullable
-              as Surah,
-      reciter: null == reciter
-          ? _value.reciter
-          : reciter // ignore: cast_nullable_to_non_nullable
-              as Reciter,
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String,
-      recitationID: null == recitationID
-          ? _value.recitationID
-          : recitationID // ignore: cast_nullable_to_non_nullable
-              as int,
-      position: null == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as int,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as int,
-      isLocal: null == isLocal
-          ? _value.isLocal
-          : isLocal // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            surah:
+                null == surah
+                    ? _value.surah
+                    : surah // ignore: cast_nullable_to_non_nullable
+                        as Surah,
+            reciter:
+                null == reciter
+                    ? _value.reciter
+                    : reciter // ignore: cast_nullable_to_non_nullable
+                        as Reciter,
+            url:
+                null == url
+                    ? _value.url
+                    : url // ignore: cast_nullable_to_non_nullable
+                        as String,
+            recitationID:
+                null == recitationID
+                    ? _value.recitationID
+                    : recitationID // ignore: cast_nullable_to_non_nullable
+                        as int,
+            queueIndex:
+                freezed == queueIndex
+                    ? _value.queueIndex
+                    : queueIndex // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            position:
+                null == position
+                    ? _value.position
+                    : position // ignore: cast_nullable_to_non_nullable
+                        as int,
+            duration:
+                null == duration
+                    ? _value.duration
+                    : duration // ignore: cast_nullable_to_non_nullable
+                        as int,
+            isLocal:
+                null == isLocal
+                    ? _value.isLocal
+                    : isLocal // ignore: cast_nullable_to_non_nullable
+                        as bool,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of Album
@@ -134,18 +154,21 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
 /// @nodoc
 abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
   factory _$$AlbumImplCopyWith(
-          _$AlbumImpl value, $Res Function(_$AlbumImpl) then) =
-      __$$AlbumImplCopyWithImpl<$Res>;
+    _$AlbumImpl value,
+    $Res Function(_$AlbumImpl) then,
+  ) = __$$AlbumImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {Surah surah,
-      Reciter reciter,
-      String url,
-      int recitationID,
-      int position,
-      int duration,
-      bool isLocal});
+  $Res call({
+    Surah surah,
+    Reciter reciter,
+    String url,
+    int recitationID,
+    int? queueIndex,
+    int position,
+    int duration,
+    bool isLocal,
+  });
 
   @override
   $SurahCopyWith<$Res> get surah;
@@ -158,8 +181,9 @@ class __$$AlbumImplCopyWithImpl<$Res>
     extends _$AlbumCopyWithImpl<$Res, _$AlbumImpl>
     implements _$$AlbumImplCopyWith<$Res> {
   __$$AlbumImplCopyWithImpl(
-      _$AlbumImpl _value, $Res Function(_$AlbumImpl) _then)
-      : super(_value, _then);
+    _$AlbumImpl _value,
+    $Res Function(_$AlbumImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
@@ -170,54 +194,71 @@ class __$$AlbumImplCopyWithImpl<$Res>
     Object? reciter = null,
     Object? url = null,
     Object? recitationID = null,
+    Object? queueIndex = freezed,
     Object? position = null,
     Object? duration = null,
     Object? isLocal = null,
   }) {
-    return _then(_$AlbumImpl(
-      surah: null == surah
-          ? _value.surah
-          : surah // ignore: cast_nullable_to_non_nullable
-              as Surah,
-      reciter: null == reciter
-          ? _value.reciter
-          : reciter // ignore: cast_nullable_to_non_nullable
-              as Reciter,
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String,
-      recitationID: null == recitationID
-          ? _value.recitationID
-          : recitationID // ignore: cast_nullable_to_non_nullable
-              as int,
-      position: null == position
-          ? _value.position
-          : position // ignore: cast_nullable_to_non_nullable
-              as int,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as int,
-      isLocal: null == isLocal
-          ? _value.isLocal
-          : isLocal // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+    return _then(
+      _$AlbumImpl(
+        surah:
+            null == surah
+                ? _value.surah
+                : surah // ignore: cast_nullable_to_non_nullable
+                    as Surah,
+        reciter:
+            null == reciter
+                ? _value.reciter
+                : reciter // ignore: cast_nullable_to_non_nullable
+                    as Reciter,
+        url:
+            null == url
+                ? _value.url
+                : url // ignore: cast_nullable_to_non_nullable
+                    as String,
+        recitationID:
+            null == recitationID
+                ? _value.recitationID
+                : recitationID // ignore: cast_nullable_to_non_nullable
+                    as int,
+        queueIndex:
+            freezed == queueIndex
+                ? _value.queueIndex
+                : queueIndex // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        position:
+            null == position
+                ? _value.position
+                : position // ignore: cast_nullable_to_non_nullable
+                    as int,
+        duration:
+            null == duration
+                ? _value.duration
+                : duration // ignore: cast_nullable_to_non_nullable
+                    as int,
+        isLocal:
+            null == isLocal
+                ? _value.isLocal
+                : isLocal // ignore: cast_nullable_to_non_nullable
+                    as bool,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AlbumImpl implements _Album {
-  const _$AlbumImpl(
-      {required this.surah,
-      required this.reciter,
-      required this.url,
-      required this.recitationID,
-      this.position = 0,
-      this.duration = 0,
-      this.isLocal = false});
+  const _$AlbumImpl({
+    required this.surah,
+    required this.reciter,
+    required this.url,
+    required this.recitationID,
+    this.queueIndex,
+    this.position = 0,
+    this.duration = 0,
+    this.isLocal = false,
+  });
 
   factory _$AlbumImpl.fromJson(Map<String, dynamic> json) =>
       _$$AlbumImplFromJson(json);
@@ -231,6 +272,8 @@ class _$AlbumImpl implements _Album {
   @override
   final int recitationID;
   @override
+  final int? queueIndex;
+  @override
   @JsonKey()
   final int position;
   @override
@@ -242,7 +285,7 @@ class _$AlbumImpl implements _Album {
 
   @override
   String toString() {
-    return 'Album(surah: $surah, reciter: $reciter, url: $url, recitationID: $recitationID, position: $position, duration: $duration, isLocal: $isLocal)';
+    return 'Album(surah: $surah, reciter: $reciter, url: $url, recitationID: $recitationID, queueIndex: $queueIndex, position: $position, duration: $duration, isLocal: $isLocal)';
   }
 
   @override
@@ -255,6 +298,8 @@ class _$AlbumImpl implements _Album {
             (identical(other.url, url) || other.url == url) &&
             (identical(other.recitationID, recitationID) ||
                 other.recitationID == recitationID) &&
+            (identical(other.queueIndex, queueIndex) ||
+                other.queueIndex == queueIndex) &&
             (identical(other.position, position) ||
                 other.position == position) &&
             (identical(other.duration, duration) ||
@@ -264,8 +309,17 @@ class _$AlbumImpl implements _Album {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, surah, reciter, url,
-      recitationID, position, duration, isLocal);
+  int get hashCode => Object.hash(
+    runtimeType,
+    surah,
+    reciter,
+    url,
+    recitationID,
+    queueIndex,
+    position,
+    duration,
+    isLocal,
+  );
 
   /// Create a copy of Album
   /// with the given fields replaced by the non-null parameter values.
@@ -277,21 +331,21 @@ class _$AlbumImpl implements _Album {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AlbumImplToJson(
-      this,
-    );
+    return _$$AlbumImplToJson(this);
   }
 }
 
 abstract class _Album implements Album {
-  const factory _Album(
-      {required final Surah surah,
-      required final Reciter reciter,
-      required final String url,
-      required final int recitationID,
-      final int position,
-      final int duration,
-      final bool isLocal}) = _$AlbumImpl;
+  const factory _Album({
+    required final Surah surah,
+    required final Reciter reciter,
+    required final String url,
+    required final int recitationID,
+    final int? queueIndex,
+    final int position,
+    final int duration,
+    final bool isLocal,
+  }) = _$AlbumImpl;
 
   factory _Album.fromJson(Map<String, dynamic> json) = _$AlbumImpl.fromJson;
 
@@ -303,6 +357,8 @@ abstract class _Album implements Album {
   String get url;
   @override
   int get recitationID;
+  @override
+  int? get queueIndex;
   @override
   int get position;
   @override

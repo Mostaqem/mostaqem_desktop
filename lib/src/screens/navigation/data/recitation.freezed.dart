@@ -12,7 +12,8 @@ part of 'recitation.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Recitation _$RecitationFromJson(Map<String, dynamic> json) {
   return _Recitation.fromJson(json);
@@ -22,6 +23,7 @@ Recitation _$RecitationFromJson(Map<String, dynamic> json) {
 mixin _$Recitation {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  Reciter? get reciter => throw _privateConstructorUsedError;
   @JsonKey(name: 'name_english')
   String? get englishName => throw _privateConstructorUsedError;
 
@@ -38,13 +40,18 @@ mixin _$Recitation {
 /// @nodoc
 abstract class $RecitationCopyWith<$Res> {
   factory $RecitationCopyWith(
-          Recitation value, $Res Function(Recitation) then) =
-      _$RecitationCopyWithImpl<$Res, Recitation>;
+    Recitation value,
+    $Res Function(Recitation) then,
+  ) = _$RecitationCopyWithImpl<$Res, Recitation>;
   @useResult
-  $Res call(
-      {int id,
-      String name,
-      @JsonKey(name: 'name_english') String? englishName});
+  $Res call({
+    int id,
+    String name,
+    Reciter? reciter,
+    @JsonKey(name: 'name_english') String? englishName,
+  });
+
+  $ReciterCopyWith<$Res>? get reciter;
 }
 
 /// @nodoc
@@ -64,22 +71,48 @@ class _$RecitationCopyWithImpl<$Res, $Val extends Recitation>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? reciter = freezed,
     Object? englishName = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      englishName: freezed == englishName
-          ? _value.englishName
-          : englishName // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as int,
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            reciter:
+                freezed == reciter
+                    ? _value.reciter
+                    : reciter // ignore: cast_nullable_to_non_nullable
+                        as Reciter?,
+            englishName:
+                freezed == englishName
+                    ? _value.englishName
+                    : englishName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
+  }
+
+  /// Create a copy of Recitation
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ReciterCopyWith<$Res>? get reciter {
+    if (_value.reciter == null) {
+      return null;
+    }
+
+    return $ReciterCopyWith<$Res>(_value.reciter!, (value) {
+      return _then(_value.copyWith(reciter: value) as $Val);
+    });
   }
 }
 
@@ -87,14 +120,20 @@ class _$RecitationCopyWithImpl<$Res, $Val extends Recitation>
 abstract class _$$RecitationImplCopyWith<$Res>
     implements $RecitationCopyWith<$Res> {
   factory _$$RecitationImplCopyWith(
-          _$RecitationImpl value, $Res Function(_$RecitationImpl) then) =
-      __$$RecitationImplCopyWithImpl<$Res>;
+    _$RecitationImpl value,
+    $Res Function(_$RecitationImpl) then,
+  ) = __$$RecitationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      String name,
-      @JsonKey(name: 'name_english') String? englishName});
+  $Res call({
+    int id,
+    String name,
+    Reciter? reciter,
+    @JsonKey(name: 'name_english') String? englishName,
+  });
+
+  @override
+  $ReciterCopyWith<$Res>? get reciter;
 }
 
 /// @nodoc
@@ -102,8 +141,9 @@ class __$$RecitationImplCopyWithImpl<$Res>
     extends _$RecitationCopyWithImpl<$Res, _$RecitationImpl>
     implements _$$RecitationImplCopyWith<$Res> {
   __$$RecitationImplCopyWithImpl(
-      _$RecitationImpl _value, $Res Function(_$RecitationImpl) _then)
-      : super(_value, _then);
+    _$RecitationImpl _value,
+    $Res Function(_$RecitationImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Recitation
   /// with the given fields replaced by the non-null parameter values.
@@ -112,32 +152,45 @@ class __$$RecitationImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? reciter = freezed,
     Object? englishName = freezed,
   }) {
-    return _then(_$RecitationImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      englishName: freezed == englishName
-          ? _value.englishName
-          : englishName // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$RecitationImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as int,
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        reciter:
+            freezed == reciter
+                ? _value.reciter
+                : reciter // ignore: cast_nullable_to_non_nullable
+                    as Reciter?,
+        englishName:
+            freezed == englishName
+                ? _value.englishName
+                : englishName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$RecitationImpl implements _Recitation {
-  const _$RecitationImpl(
-      {required this.id,
-      required this.name,
-      @JsonKey(name: 'name_english') this.englishName});
+  const _$RecitationImpl({
+    required this.id,
+    required this.name,
+    this.reciter,
+    @JsonKey(name: 'name_english') this.englishName,
+  });
 
   factory _$RecitationImpl.fromJson(Map<String, dynamic> json) =>
       _$$RecitationImplFromJson(json);
@@ -147,12 +200,14 @@ class _$RecitationImpl implements _Recitation {
   @override
   final String name;
   @override
+  final Reciter? reciter;
+  @override
   @JsonKey(name: 'name_english')
   final String? englishName;
 
   @override
   String toString() {
-    return 'Recitation(id: $id, name: $name, englishName: $englishName)';
+    return 'Recitation(id: $id, name: $name, reciter: $reciter, englishName: $englishName)';
   }
 
   @override
@@ -162,13 +217,14 @@ class _$RecitationImpl implements _Recitation {
             other is _$RecitationImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.reciter, reciter) || other.reciter == reciter) &&
             (identical(other.englishName, englishName) ||
                 other.englishName == englishName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, englishName);
+  int get hashCode => Object.hash(runtimeType, id, name, reciter, englishName);
 
   /// Create a copy of Recitation
   /// with the given fields replaced by the non-null parameter values.
@@ -180,18 +236,17 @@ class _$RecitationImpl implements _Recitation {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$RecitationImplToJson(
-      this,
-    );
+    return _$$RecitationImplToJson(this);
   }
 }
 
 abstract class _Recitation implements Recitation {
-  const factory _Recitation(
-          {required final int id,
-          required final String name,
-          @JsonKey(name: 'name_english') final String? englishName}) =
-      _$RecitationImpl;
+  const factory _Recitation({
+    required final int id,
+    required final String name,
+    final Reciter? reciter,
+    @JsonKey(name: 'name_english') final String? englishName,
+  }) = _$RecitationImpl;
 
   factory _Recitation.fromJson(Map<String, dynamic> json) =
       _$RecitationImpl.fromJson;
@@ -200,6 +255,8 @@ abstract class _Recitation implements Recitation {
   int get id;
   @override
   String get name;
+  @override
+  Reciter? get reciter;
   @override
   @JsonKey(name: 'name_english')
   String? get englishName;

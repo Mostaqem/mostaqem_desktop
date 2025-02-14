@@ -4,11 +4,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provid
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 
 class TextHover extends ConsumerWidget {
-  const TextHover({
-    required this.text,
-    super.key,
-    this.onTap,
-  });
+  const TextHover({required this.text, super.key, this.onTap});
 
   final String text;
   final VoidCallback? onTap;
@@ -18,23 +14,24 @@ class TextHover extends ConsumerWidget {
     return HoverBuilder(
       builder: (isHovered) {
         return MouseRegion(
-          cursor: isHovered && !isLocal
-              ? SystemMouseCursors.click
-              : SystemMouseCursors.basic,
+          cursor:
+              isHovered && !isLocal
+                  ? SystemMouseCursors.click
+                  : SystemMouseCursors.basic,
           child: GestureDetector(
             onTap: onTap,
             child: Text(
               text,
               style: TextStyle(
-                decoration: isHovered && !isLocal
-                    ? TextDecoration.underline
-                    : TextDecoration.none,
-                color: isHovered && !isLocal
-                    ? Theme.of(context).colorScheme.onSecondaryContainer
-                    : Theme.of(context)
-                        .colorScheme
-                        .onSecondaryContainer
-                        .withValues(alpha: 0.5),
+                decoration:
+                    isHovered && !isLocal
+                        ? TextDecoration.underline
+                        : TextDecoration.none,
+                color:
+                    isHovered && !isLocal
+                        ? Theme.of(context).colorScheme.onSecondaryContainer
+                        : Theme.of(context).colorScheme.onSecondaryContainer
+                            .withValues(alpha: 0.5),
               ),
             ),
           ),
