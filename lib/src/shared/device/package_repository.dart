@@ -73,6 +73,8 @@ class PackageRepository {
             latestRelease.assets!
                 .firstWhere((element) => element.name!.contains('.dmg'))
                 .browserDownloadUrl;
+        if (installUrl == null) return;
+       await launchUrlString(installUrl);
     }
   }
 }
