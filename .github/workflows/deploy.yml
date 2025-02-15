@@ -10,18 +10,27 @@ jobs:
     name: Updating to winget
     runs-on: windows-latest
     steps:
-      - name: Publishing Mostaqem to winget
-        uses: vedantmgoyal9/winget-releaser@main
-        with:
-          identifier: Mostaqem.Mostaqem
-          token: ${{ secrets.PAT }}
-          installers-regex: '\.exe$'
-          fork-user: Mezopeeta
-  
+      - name: Get Latest Version
+        id: get_version
+        run: |
+          $tag = (Invoke-RestMethod -Uri "https://api.github.com/repos/Mostaqem/mostaqem_desktop/releases/latest").tag_name
+          $version = $tag -replace '^v', ''
+          echo "LATEST_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
+        shell: pwsh 
+
+      - name: Installing Komac
+        run: winget install komac
+
+      - name: Publishing Mostaqem to Winget
+        run: |
+          komac update Mostaqem.Mostaqem --version $env:LATEST_VERSION `
+            --urls https://github.com/Mostaqem/mostaqem_desktop/releases/latest/download/mostaqem-windows-setup.exe `
+            --submit --token ${{ secrets.PAT }}
+        shell: pwsh
+
   update-aur:
     name: Updating to AUR
     runs-on: ubuntu-latest
-    container: archlinux:latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,8 +41,8 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-      - name: Install dependencies
-        run: sudo pacman -Syu --noconfirm git base-devel jq
+      - name: Install Dependencies (Ubuntu)
+        run: sudo apt update && sudo apt install -y jq git
 
       - name: Clone AUR package repository
         env:
