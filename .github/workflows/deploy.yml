@@ -7,26 +7,14 @@ on:
 
 jobs:
   release_winget:
-    name: Updating to winget
     runs-on: windows-latest
     steps:
-      - name: Get Latest Version
-        id: get_version
-        run: |
-          $tag = (Invoke-RestMethod -Uri "https://api.github.com/repos/Mostaqem/mostaqem_desktop/releases/latest").tag_name
-          $version = $tag -replace '^v', ''
-          echo "LATEST_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
-        shell: pwsh 
-
-      - name: Installing Komac
-        run: winget install komac
-
-      - name: Publishing Mostaqem to Winget
-        run: |
-          komac update Mostaqem.Mostaqem --version $env:LATEST_VERSION `
-            --urls https://github.com/Mostaqem/mostaqem_desktop/releases/latest/download/mostaqem-windows-setup.exe `
-            --submit --token ${{ secrets.PAT }}
-        shell: pwsh
+      - uses: vedantmgoyal9/winget-releaser@main
+        with:
+          identifier: Mostaqem.Mostaqem
+          installers-regex: '\.exe$'
+          token: ${{ secrets.PAT }}
+          fork-user: MezoPeeta
 
   update-aur:
     name: Updating to AUR
@@ -35,12 +23,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup SSH Key for AUR
+      - name: Setup SSH Key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-
+          echo "${{ secrets.AUR_PRIVATE_KEY }}" > ~/.ssh/aur_key
+          chmod 600 ~/.ssh/aur_key
+          echo "Host aur.archlinux.org
+                User aur
+                IdentityFile ~/.ssh/aur_key
+                StrictHostKeyChecking no" > ~/.ssh/config
+                
       - name: Install Dependencies (Ubuntu)
         run: sudo apt update && sudo apt install -y jq git
 
