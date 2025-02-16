@@ -3,17 +3,33 @@ on:
   release:
     types: [ released ]
 
-  workflow_dispatch:  
+  workflow_dispatch:
+
 
 jobs:
   release_winget:
     runs-on: windows-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        uses: damienaicheh/extract-version-from-tag-action@v1.3.0
+
+      - name: Verify version information
+        if: ${{ env.MAJOR == '' || env.MINOR == '' || env.PATCH == '' }}
+        run: |
+          echo 'ERROR: Invalid version: ${{ env.MAJOR }}.${{ env.MINOR }}.${{ env.PATCH }}'
+          exit 1
+
       - uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: Mostaqem.Mostaqem
           installers-regex: '\.exe$'
           token: ${{ secrets.PAT }}
+          version: ${{ env.MAJOR}}.${{ env.MINOR }}.${{ env.PATCH }}
           fork-user: MezoPeeta
 
   update-aur:
