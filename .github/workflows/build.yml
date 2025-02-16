@@ -169,5 +169,5 @@ jobs:
           prerelease: false
           tag_name: "vnext"
           body: ${{ github.sha }}
-          files: scripts/dmg-creator/mostaqem-macos.dmg
+          files: mostaqem-macos.dmg
           token: ${{ secrets.PAT }}

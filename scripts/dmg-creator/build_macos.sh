@@ -19,7 +19,7 @@ echo "- Code Sign APP verification:";
 codesign --verify --verbose "$app_path"
 
 echo "- Creating DMG:";
-cd "./dmg-creator";
+cd "./scripts/dmg-creator";
 
 # removing DMG if exists.
 rm "$dmg_name";
@@ -38,4 +38,4 @@ echo "- Code Signing DMG verification:";
 codesign --verify --verbose "$dmg_path"
 
 echo "- Copy to root:";
-cp "$dmg_path" "../"
+cp "$dmg_path" "../../"
