@@ -160,7 +160,7 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
 
       - name: Build and Sign
-        run: sh ./scripts/dmg-creator/build_macos.sh
+        run: sh ./dmg-creator/build_macos.sh
   
       - name: Release
         uses: softprops/action-gh-release@v2
