@@ -160,7 +160,7 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
 
       - name: Build and Sign
-        run: sh ./dmg-creator/build_macos.sh
+        run: sh ./scripts/dmg-creator/build_macos.sh
   
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -169,5 +169,5 @@ jobs:
           prerelease: false
           tag_name: "vnext"
           body: ${{ github.sha }}
-          files: dmg-creator/mostaqem-macos.dmg
+          files: scripts/dmg-creator/mostaqem-macos.dmg
           token: ${{ secrets.PAT }}
