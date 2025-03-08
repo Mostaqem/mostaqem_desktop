@@ -411,26 +411,27 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   Future<void> addToQueue({int? surahID}) async {
     if (surahID == null) {
-      final currentID = state.album!.surah.id;
-      final queueIDs = currentID + 20;
-      if (queueIDs < 114) {
-        for (var i = currentID + 1; i < queueIDs; i++) {
-          final album = await ref.read(
-            fetchAlbumProvider(chapterNumber: i).future,
-          );
-          final url = album.url;
-
-          await player.add(
-            Media(
-              url,
-              extras: {
-                'surah': album.surah.toJson(),
-                'reciter': album.reciter.toJson(),
-                'recitationID': album.recitationID,
-                'url': url,
-              },
-            ),
-          );
+      if (state.album != null) {
+        final currentID = state.album!.surah.id;
+        final queueIDs = currentID + 20;
+        if (queueIDs < 114) {
+          for (var i = currentID + 1; i < queueIDs; i++) {
+            final album = await ref.read(
+              fetchAlbumProvider(chapterNumber: i).future,
+            );
+            final url = album.url;
+            await player.add(
+              Media(
+                url,
+                extras: {
+                  'surah': album.surah.toJson(),
+                  'reciter': album.reciter.toJson(),
+                  'recitationID': album.recitationID,
+                  'url': url,
+                },
+              ),
+            );
+          }
         }
       }
       return;
