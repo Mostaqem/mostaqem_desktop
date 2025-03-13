@@ -1,0 +1,104 @@
+name: 🐞 Bug Report
+description: Report a bug or unexpected behavior in Mostaqem Desktop
+title: "[BUG]: [Short Description]"
+labels: ["bug", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before submitting:**
+        - [ ] Check existing issues
+        - [ ] Ensure you're using the latest version
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Summary
+      description: Concise description of the unexpected behavior
+      placeholder: |
+        What did you expect to happen?
+        What actually happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: reproduce Steps
+      description: Exact steps to trigger the issue
+      placeholder: |
+        1. Open application
+        2. Navigate to...
+        3. Select...
+        4. Observe error
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Affected Platform
+      description: Select all that apply
+      multiple: true
+      options:
+        - Windows
+        - Linux (Debian/Ubuntu)
+        - Linux (Arch)
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: App Version
+      placeholder: Found in Settings > About (e.g., v1.2.0)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: installation-type
+    attributes:
+      label: Installation Method
+      options:
+        - GitHub Release
+        - AUR Package
+        - Microsoft Store
+        - Built from Source
+        - Other
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: System Environment
+      description: |
+        - OS Version:
+        - Desktop Environment (Linux):
+        - MPV Version:
+        - Other relevant packages:
+      placeholder: |
+        Example:
+        - Ubuntu 22.04 LTS
+        - GNOME 42
+        - mpv 0.35.1
+        - libmpv-dev 0.35.1
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs
+      description: Application logs from console/output
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: |
+        - Screenshots/video
+        - Frequency (Always/Sometimes)
+        - Related features (Recitations, Downloads, Discord Integration, etc.)
+        - Workarounds tried
+      placeholder: |
+        [Upload screenshots using drag & drop]
