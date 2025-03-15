@@ -45,7 +45,7 @@ body:
         - Windows
         - Linux (Debian/Ubuntu)
         - Linux (Arch)
-        - Other
+        - Macos 
     validations:
       required: true
 

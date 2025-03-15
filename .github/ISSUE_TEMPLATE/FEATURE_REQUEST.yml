@@ -38,9 +38,9 @@ body:
       multiple: true
       options:
         - Windows
-        - Linux (All)
+        - Linux
         - Cross-Platform
-        - Not Platform Specific
+        - Macos 
 
   - type: textarea
     id: description
