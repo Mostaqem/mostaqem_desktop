@@ -1,0 +1,101 @@
+name: 🚀 Feature Request
+description: Suggest an improvement or new functionality for Mostaqem Desktop
+title: "[FEATURE]: [Brief Description]"
+labels: ["feature", "enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before submitting:**
+        - Check existing features and issues
+        - Ensure feature aligns with our mission of ad-free Islamic media
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Category
+      description: Select primary category (required)
+      multiple: false
+      options:
+        - "📖 Quran Features"
+        - "🎧 Audio/Podcast Features"
+        - "🔧 Customization"
+        - "📥 Offline Functionality"
+        - "🌐 API Integration"
+        - "🖥️ UI/UX Improvements"
+        - "🔒 Privacy/Security"
+        - "⚙️ Performance"
+        - "🤖 Integration (Discord/OS)"
+        - "📚 Documentation"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platforms
+    attributes:
+      label: Target Platforms
+      description: Select affected platforms (multiple allowed)
+      multiple: true
+      options:
+        - Windows
+        - Linux
+        - Cross-Platform
+        - Macos 
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Details
+      description: Clear and comprehensive description of your proposal
+      placeholder: |
+        Example: "As a [type of user], I want [goal] so that [reason]"
+        
+        Problem being solved:
+        Proposed solution:
+        Alternative solutions considered:
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: User Stories & Scenarios
+      description: Real-world applications and beneficiary groups
+      placeholder: |
+        - Muslim students wanting to...
+        - Elderly users who need...
+        - Offline users in areas with...
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Visual Concepts (Optional)
+      description: |
+        Attach wireframes/mockups using drag & drop
+        Describe any UI/UX considerations
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I've searched existing issues and confirmed this is new
+          required: true
+        - label: This fits within the app's scope of Islamic media delivery
+          required: true
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution Offer
+      description: For developers interested in implementation
+      options:
+        - label: I'd like to help develop this feature
+        - label: I can provide design assets
+        - label: I can help with documentation
+
+  - type: markdown
+    attributes:
+      value: |
+        **Thank you for helping improve Islamic media accessibility!**
+        Maintainers will review this and may request additional details.
