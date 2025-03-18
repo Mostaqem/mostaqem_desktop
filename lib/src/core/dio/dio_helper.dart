@@ -11,7 +11,7 @@ part 'dio_helper.g.dart';
 DioHelper dioHelper(Ref ref) => DioHelper();
 
 bool isProduction = const bool.fromEnvironment('dart.vm.product');
-final baseAPIURL = Constants.prodBaseAPI;
+final baseAPIURL = isProduction ? Constants.prodBaseAPI : Constants.devBaseAPI;
 
 class DioHelper {
   static final String url = baseAPIURL;
