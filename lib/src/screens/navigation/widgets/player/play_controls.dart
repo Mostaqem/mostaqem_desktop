@@ -69,11 +69,19 @@ class PlayControls extends ConsumerWidget {
                   message: 'تشغيل',
                   preferBelow: false,
                   child: IconButton(
+                    color: Theme.of(context).cardColor,
                     onPressed: () async {
                       await ref
                           .read(playerNotifierProvider.notifier)
                           .handlePlayPause();
                     },
+                    style: ButtonStyle(
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                     icon:
                         player.isPlaying
                             ? Icon(
@@ -81,20 +89,16 @@ class PlayControls extends ConsumerWidget {
                               color:
                                   isFullScreen
                                       ? Colors.white
-                                      : Theme.of(
-                                        context,
-                                      ).colorScheme.onSecondaryContainer,
+                                      : Theme.of(context).colorScheme.primary,
                             )
                             : Icon(
                               Icons.play_circle_fill_outlined,
                               color:
                                   isFullScreen
                                       ? Colors.white
-                                      : Theme.of(
-                                        context,
-                                      ).colorScheme.onSecondaryContainer,
+                                      : Theme.of(context).colorScheme.primary,
                             ),
-                    iconSize: 25,
+                    iconSize: 40,
                   ),
                 ),
                 Visibility(
