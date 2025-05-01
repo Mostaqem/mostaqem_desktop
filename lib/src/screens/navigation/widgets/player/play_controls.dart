@@ -9,6 +9,7 @@ import 'package:mostaqem/src/screens/navigation/repository/player_repository.dar
 import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
+import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 class PlayControls extends ConsumerWidget {
   const PlayControls({required this.isFullScreen, super.key});
@@ -38,31 +39,49 @@ class PlayControls extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Visibility(
-                  visible:
-                      ref
-                          .watch(playerNotifierProvider.notifier)
-                          .isFirstChapter(),
-                  child: Tooltip(
-                    message: 'قبل',
-                    preferBelow: false,
-                    child: IconButton(
-                      onPressed: () async {
-                        await ref
-                            .read(playerNotifierProvider.notifier)
-                            .playPrevious();
-                      },
-                      icon: Icon(
-                        Icons.skip_next_outlined,
-                        color:
-                            isFullScreen
-                                ? Colors.white
-                                : Theme.of(
-                                  context,
-                                ).colorScheme.onSecondaryContainer,
-                      ),
-                      iconSize: 25,
+                ToolTipIconButton(
+                  message: 'عشوائي',
+                  onPressed: () async {
+                    await ref.read(playerNotifierProvider.notifier).shuffle();
+                  },
+                  icon: Icon(
+                    Icons.shuffle,
+                    color:
+                        isFullScreen
+                            ? Colors.white
+                            : player.isShuffle
+                            ? Theme.of(context).colorScheme.onSecondaryContainer
+                            : Theme.of(context).colorScheme.onSecondaryContainer
+                                .withValues(alpha: 0.4),
+                  ),
+                  iconSize: 16,
+                ),
+                Tooltip(
+                  message: 'قبل',
+                  preferBelow: false,
+                  child: IconButton(
+                    onPressed: () async {
+                      await ref
+                          .read(playerNotifierProvider.notifier)
+                          .playPrevious();
+                    },
+                    icon: Icon(
+                      Icons.skip_next_outlined,
+                      color:
+                          isFullScreen
+                              ? Colors.white
+                              : ref
+                                  .watch(playerNotifierProvider.notifier)
+                                  .isFirstChapter()
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer
+                                  .withValues(alpha: 0.5)
+                              : Theme.of(
+                                context,
+                              ).colorScheme.onSecondaryContainer,
                     ),
+                    iconSize: 25,
                   ),
                 ),
                 Tooltip(
@@ -101,52 +120,42 @@ class PlayControls extends ConsumerWidget {
                     iconSize: 40,
                   ),
                 ),
-                Visibility(
-                  visible:
-                      ref
-                          .watch(playerNotifierProvider.notifier)
-                          .isLastchapter(),
-                  child: Tooltip(
-                    message: 'بعد',
-                    preferBelow: false,
-                    child: IconButton(
-                      onPressed: () async {
-                        await ref
-                            .read(playerNotifierProvider.notifier)
-                            .playNext();
-                      },
-                      icon: Icon(
-                        Icons.skip_previous_outlined,
-                        color:
-                            isFullScreen
-                                ? Colors.white
-                                : Theme.of(
-                                  context,
-                                ).colorScheme.onSecondaryContainer,
-                      ),
-                      iconSize: 25,
-                    ),
+                ToolTipIconButton(
+                  message: 'بعد',
+
+                  onPressed: () async {
+                    await ref.read(playerNotifierProvider.notifier).playNext();
+                  },
+                  icon: Icon(
+                    Icons.skip_previous_outlined,
+                    color:
+                        isFullScreen
+                            ? Colors.white
+                            : ref
+                                .watch(playerNotifierProvider.notifier)
+                                .isLastchapter()
+                            ? Theme.of(context).colorScheme.onSecondaryContainer
+                                .withValues(alpha: 0.5)
+                            : Theme.of(
+                              context,
+                            ).colorScheme.onSecondaryContainer,
                   ),
+                  iconSize: 25,
                 ),
-                Tooltip(
+                ToolTipIconButton(
                   message: 'اعادة',
-                  preferBelow: false,
-                  child: IconButton(
-                    onPressed: () async {
-                      ref.read(playerNotifierProvider.notifier).loop();
-                    },
-                    icon: loopIcon(
-                      player.loop,
-                      player.loop == PlaylistMode.none
-                          ? isFullScreen
-                              ? Colors.white
-                              : Theme.of(
-                                context,
-                              ).colorScheme.onSecondaryContainer
-                          : Theme.of(context).colorScheme.tertiary,
-                    ),
-                    iconSize: 16,
+                  onPressed: () async {
+                    ref.read(playerNotifierProvider.notifier).loop();
+                  },
+                  icon: loopIcon(
+                    player.loop,
+                    player.loop == PlaylistMode.none
+                        ? isFullScreen
+                            ? Colors.white
+                            : Theme.of(context).colorScheme.onSecondaryContainer
+                        : Theme.of(context).colorScheme.tertiary,
                   ),
+                  iconSize: 16,
                 ),
               ],
             ),

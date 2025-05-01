@@ -186,7 +186,7 @@ class PlayerNotifier extends _$PlayerNotifier {
     if (currentSurah == null) {
       return false;
     }
-    return currentSurah.id > 1;
+    return player.state.playlist.index == 0;
   }
 
   bool isLastchapter() {
@@ -205,7 +205,7 @@ class PlayerNotifier extends _$PlayerNotifier {
     if (currentSurah == null) {
       return false;
     }
-    return currentSurah.id < 114;
+    return player.state.playlist.index == 19;
   }
 
   Future<void> handlePlayPause() async {
@@ -450,6 +450,11 @@ class PlayerNotifier extends _$PlayerNotifier {
         },
       ),
     );
+  }
+
+  Future<void> shuffle() async {
+    state = state.copyWith(isShuffle: !state.isShuffle);
+    await player.setShuffle(state.isShuffle);
   }
 
   List<Album> getQueue() {
