@@ -41,6 +41,21 @@ class NavigationRepository {
       ),
     ],
   );
+
+  String getCurrentRouter() {
+    final lastMatch = router.routerDelegate.currentConfiguration.last;
+    final matchList =
+        lastMatch is ImperativeRouteMatch
+            ? lastMatch.matches
+            : router.routerDelegate.currentConfiguration;
+    final location = matchList.uri.toString();
+    return location;
+  }
+
+  bool canPop({required String expectedPath}) {
+    final currentRoute = getCurrentRouter();
+    return currentRoute == expectedPath;
+  }
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {

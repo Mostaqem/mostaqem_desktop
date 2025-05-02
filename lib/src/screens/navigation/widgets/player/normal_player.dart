@@ -94,6 +94,13 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
                   message: 'اقرأ',
                   onPressed: () async {
                     final surah = ref.read(currentSurahProvider);
+                    final canPop = ref
+                        .read(navigationProvider)
+                        .canPop(expectedPath: '/reading');
+                    if (canPop) {
+                      ref.read(goRouterProvider).pop();
+                      return;
+                    }
 
                     ref.read(goRouterProvider).goNamed('Reading', extra: surah);
                   },

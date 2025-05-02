@@ -70,6 +70,13 @@ class PlayingSurah extends StatelessWidget {
                   final isLocalAudio = ref.read(isLocalProvider);
 
                   if (isLocalAudio == false) {
+                    final canPop = ref
+                        .read(navigationProvider)
+                        .canPop(expectedPath: '/reciters');
+                    if (canPop) {
+                      ref.read(goRouterProvider).go('/');
+                      return;
+                    }
                     ref.read(goRouterProvider).go('/reciters');
 
                     return;
@@ -85,6 +92,13 @@ class PlayingSurah extends StatelessWidget {
             message: 'قائمة التشغيل',
             iconSize: 20,
             onPressed: () {
+              final canPop = ref
+                  .read(navigationProvider)
+                  .canPop(expectedPath: '/queue');
+              if (canPop) {
+                ref.read(goRouterProvider).go('/');
+                return;
+              }
               ref.read(goRouterProvider).go('/queue');
             },
             icon: const Icon(Icons.playlist_play),

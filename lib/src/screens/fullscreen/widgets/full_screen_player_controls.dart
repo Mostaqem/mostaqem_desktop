@@ -223,7 +223,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                   ),
                   Visibility(
                     visible:
-                        ref
+                        !ref
                             .watch(playerNotifierProvider.notifier)
                             .isLastchapter(),
                     child: Tooltip(

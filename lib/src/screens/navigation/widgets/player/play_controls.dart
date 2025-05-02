@@ -40,7 +40,7 @@ class PlayControls extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ToolTipIconButton(
-                  message: 'عشوائي',
+                  message: 'خلط',
                   onPressed: () async {
                     await ref.read(playerNotifierProvider.notifier).shuffle();
                   },
@@ -153,7 +153,8 @@ class PlayControls extends ConsumerWidget {
                         ? isFullScreen
                             ? Colors.white
                             : Theme.of(context).colorScheme.onSecondaryContainer
-                        : Theme.of(context).colorScheme.tertiary,
+                                .withValues(alpha: 0.5)
+                        : Theme.of(context).colorScheme.onSecondaryContainer,
                   ),
                   iconSize: 16,
                 ),
