@@ -53,7 +53,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
           PlayingSurah(isFullScreen: widget.isFullScreen, ref: ref),
           Padding(
             padding: const EdgeInsets.only(right: 80),
-            child: PlayControls(isFullScreen: widget.isFullScreen),
+            child: PlayControls(),
           ),
           Row(
             children: [

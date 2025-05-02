@@ -47,33 +47,28 @@ class _NavigationState extends ConsumerState<Navigation> {
       body:
           isFullScreen
               ? FullScreenWidget(player: player!)
-              : Stack(
-                alignment: Alignment.bottomCenter,
+              : Column(
                 children: [
-                  Column(
-                    children: [
-                      const WindowButtons(),
-                      Expanded(
-                        child: Consumer(
-                          builder: (context, ref, child) {
-                            final children = ref.watch(childrenProvider);
-                            final screenIndex = ref.watch(indexScreenProvider);
-                            return Row(
-                              children: [
-                                RightSide(
-                                  children: children,
-                                  screenIndex: screenIndex,
-                                ),
-                                LeftSide(
-                                  children: children,
-                                  screenIndex: screenIndex,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+                  const WindowButtons(),
+                  Expanded(
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        final children = ref.watch(childrenProvider);
+                        final screenIndex = ref.watch(indexScreenProvider);
+                        return Row(
+                          children: [
+                            RightSide(
+                              children: children,
+                              screenIndex: screenIndex,
+                            ),
+                            LeftSide(
+                              children: children,
+                              screenIndex: screenIndex,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
