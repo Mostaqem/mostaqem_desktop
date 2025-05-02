@@ -74,10 +74,10 @@ class PlayingSurah extends StatelessWidget {
                         .read(navigationProvider)
                         .canPop(expectedPath: '/reciters');
                     if (canPop) {
-                      ref.read(goRouterProvider).go('/');
+                      ref.read(goRouterProvider).pop();
                       return;
                     }
-                    ref.read(goRouterProvider).go('/reciters');
+                    ref.read(goRouterProvider).push('/reciters');
 
                     return;
                   }
@@ -96,10 +96,10 @@ class PlayingSurah extends StatelessWidget {
                   .read(navigationProvider)
                   .canPop(expectedPath: '/queue');
               if (canPop) {
-                ref.read(goRouterProvider).go('/');
+                ref.read(goRouterProvider).pop();
                 return;
               }
-              ref.read(goRouterProvider).go('/queue');
+              ref.read(goRouterProvider).push('/queue');
             },
             icon: const Icon(Icons.playlist_play),
           ),
