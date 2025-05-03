@@ -39,6 +39,7 @@ class RecitersImpl implements RecitersRepository {
 
   @override
   Future<List<Reciter>> searchReciter({String? query}) async {
+    if (query == null || query.isEmpty) return [];
     final url = '/reciter/search?name=$query';
 
     final request = await ref.watch(dioHelperProvider).getHTTP(url);

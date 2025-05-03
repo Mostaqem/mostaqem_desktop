@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:mostaqem/src/core/theme/theme.dart';
 import 'package:mostaqem/src/screens/initial/data/loading_verse.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class InitialLoading extends ConsumerWidget {
   InitialLoading({super.key});
@@ -82,8 +82,8 @@ class InitialLoading extends ConsumerWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: SvgPicture.asset(
-                  'assets/img/logo.svg',
+                child: VectorGraphic(
+                  loader: const AssetBytesLoader('assets/img/svg/logo.svg'),
                   width: 100,
                   colorFilter: ColorFilter.mode(
                     AppTheme.userLightTheme(userColor).colorScheme.primary,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class ReadingScreen extends StatelessWidget {
   const ReadingScreen({required this.surah, super.key});
@@ -25,8 +25,10 @@ class ReadingScreen extends StatelessWidget {
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'assets/img/border.svg',
+                    VectorGraphic(
+                      loader: const AssetBytesLoader(
+                        'assets/img/svg/border.svg',
+                      ),
                       colorFilter: ColorFilter.mode(
                         Theme.of(context).colorScheme.primary,
                         BlendMode.srcIn,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -13,6 +12,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.da
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:vector_graphics/vector_graphics_compat.dart';
 
 class NormalPlayer extends ConsumerStatefulWidget {
   const NormalPlayer({required this.isFullScreen, super.key});
@@ -104,8 +104,8 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
 
                     ref.read(goRouterProvider).goNamed('Reading', extra: surah);
                   },
-                  icon: SvgPicture.asset(
-                    'assets/img/read.svg',
+                  icon: VectorGraphic(
+                    loader: const AssetBytesLoader('assets/img/svg/read.svg'),
                     width: 16,
                     colorFilter: ColorFilter.mode(
                       Theme.of(context).colorScheme.onSecondaryContainer,

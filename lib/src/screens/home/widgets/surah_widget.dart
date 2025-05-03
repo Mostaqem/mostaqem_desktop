@@ -1,7 +1,6 @@
 import 'package:context_menus/context_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
@@ -10,6 +9,7 @@ import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 final reciterProvider = StateProvider<Reciter?>((ref) {
   return null;
@@ -96,8 +96,10 @@ class SurahWidget extends ConsumerWidget {
                               children: [
                                 Positioned(
                                   left: -70,
-                                  child: SvgPicture.asset(
-                                    'assets/img/shape.svg',
+                                  child: VectorGraphic(
+                                    loader: const AssetBytesLoader(
+                                      'assets/img/svg/shape.svg',
+                                    ),
                                     width: 130,
                                     colorFilter: ColorFilter.mode(
                                       isHovered

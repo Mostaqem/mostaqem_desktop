@@ -4,7 +4,11 @@ import 'package:rxdart/rxdart.dart';
 
 final getConnectionProvider =
     StreamProvider.autoDispose<InternetConnectionStatus>((ref) async* {
-      final connectionChecker = InternetConnectionChecker.instance;
+      final connectionChecker = InternetConnectionChecker.createInstance(
+        addresses: [
+          AddressCheckOption(uri: Uri.parse('https://www.google.com/')),
+        ],
+      );
       final subscription = connectionChecker.onStatusChange;
       yield* subscription.debounceTime(const Duration(seconds: 2));
     });

@@ -3,11 +3,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:vector_graphics/vector_graphics_compat.dart';
 
 class DownloadsScreen extends ConsumerWidget {
   const DownloadsScreen({super.key});
@@ -26,8 +26,10 @@ class DownloadsScreen extends ConsumerWidget {
                 data: (data) {
                   if (data.isEmpty) {
                     return Center(
-                      child: SvgPicture.asset(
-                        'assets/img/empty_box.svg',
+                      child: VectorGraphic(
+                        loader: const AssetBytesLoader(
+                          'assets/img/svg/empty_box.svg',
+                        ),
                         width: 220,
                         colorFilter: ColorFilter.mode(
                           const Color.fromARGB(
