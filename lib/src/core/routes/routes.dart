@@ -58,11 +58,11 @@ class NavigationRepository {
   }
 }
 
-final goRouterProvider = Provider<GoRouter>((ref) {
+final goRouterProvider = Provider.autoDispose<GoRouter>((ref) {
   final repo = ref.watch(navigationProvider);
   return repo.router;
 });
 
-final navigationProvider = Provider<NavigationRepository>(
+final navigationProvider = Provider.autoDispose<NavigationRepository>(
   NavigationRepository.new,
 );

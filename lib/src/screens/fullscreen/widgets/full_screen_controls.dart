@@ -24,7 +24,7 @@ class FullScreenControl extends ConsumerWidget {
           ref.read(downloadHeightProvider.notifier).state = 0;
           if (!context.mounted) return;
 
-          ref.read(goRouterProvider).go('/');
+          ref.read(goRouterProvider).pop();
         }
       },
       icon: Icon(
