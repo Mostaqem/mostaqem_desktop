@@ -6,7 +6,7 @@ part of 'discord_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateRPCDiscordHash() => r'aa95cb1f151fb1d6f8398669eb999d99fff9bae7';
+String _$updateRPCDiscordHash() => r'99335013b6251f586b4c07459a16406878c27880';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,28 +41,16 @@ class UpdateRPCDiscordFamily extends Family<AsyncValue<void>> {
   /// See also [updateRPCDiscord].
   UpdateRPCDiscordProvider call({
     required String surahName,
-    required int position,
-    required int duration,
     required String reciter,
   }) {
-    return UpdateRPCDiscordProvider(
-      surahName: surahName,
-      position: position,
-      duration: duration,
-      reciter: reciter,
-    );
+    return UpdateRPCDiscordProvider(surahName: surahName, reciter: reciter);
   }
 
   @override
   UpdateRPCDiscordProvider getProviderOverride(
     covariant UpdateRPCDiscordProvider provider,
   ) {
-    return call(
-      surahName: provider.surahName,
-      position: provider.position,
-      duration: provider.duration,
-      reciter: provider.reciter,
-    );
+    return call(surahName: provider.surahName, reciter: provider.reciter);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -83,33 +71,25 @@ class UpdateRPCDiscordFamily extends Family<AsyncValue<void>> {
 /// See also [updateRPCDiscord].
 class UpdateRPCDiscordProvider extends AutoDisposeFutureProvider<void> {
   /// See also [updateRPCDiscord].
-  UpdateRPCDiscordProvider({
-    required String surahName,
-    required int position,
-    required int duration,
-    required String reciter,
-  }) : this._internal(
-         (ref) => updateRPCDiscord(
-           ref as UpdateRPCDiscordRef,
-           surahName: surahName,
-           position: position,
-           duration: duration,
-           reciter: reciter,
-         ),
-         from: updateRPCDiscordProvider,
-         name: r'updateRPCDiscordProvider',
-         debugGetCreateSourceHash:
-             const bool.fromEnvironment('dart.vm.product')
-                 ? null
-                 : _$updateRPCDiscordHash,
-         dependencies: UpdateRPCDiscordFamily._dependencies,
-         allTransitiveDependencies:
-             UpdateRPCDiscordFamily._allTransitiveDependencies,
-         surahName: surahName,
-         position: position,
-         duration: duration,
-         reciter: reciter,
-       );
+  UpdateRPCDiscordProvider({required String surahName, required String reciter})
+    : this._internal(
+        (ref) => updateRPCDiscord(
+          ref as UpdateRPCDiscordRef,
+          surahName: surahName,
+          reciter: reciter,
+        ),
+        from: updateRPCDiscordProvider,
+        name: r'updateRPCDiscordProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$updateRPCDiscordHash,
+        dependencies: UpdateRPCDiscordFamily._dependencies,
+        allTransitiveDependencies:
+            UpdateRPCDiscordFamily._allTransitiveDependencies,
+        surahName: surahName,
+        reciter: reciter,
+      );
 
   UpdateRPCDiscordProvider._internal(
     super._createNotifier, {
@@ -119,14 +99,10 @@ class UpdateRPCDiscordProvider extends AutoDisposeFutureProvider<void> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.surahName,
-    required this.position,
-    required this.duration,
     required this.reciter,
   }) : super.internal();
 
   final String surahName;
-  final int position;
-  final int duration;
   final String reciter;
 
   @override
@@ -143,8 +119,6 @@ class UpdateRPCDiscordProvider extends AutoDisposeFutureProvider<void> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         surahName: surahName,
-        position: position,
-        duration: duration,
         reciter: reciter,
       ),
     );
@@ -159,8 +133,6 @@ class UpdateRPCDiscordProvider extends AutoDisposeFutureProvider<void> {
   bool operator ==(Object other) {
     return other is UpdateRPCDiscordProvider &&
         other.surahName == surahName &&
-        other.position == position &&
-        other.duration == duration &&
         other.reciter == reciter;
   }
 
@@ -168,8 +140,6 @@ class UpdateRPCDiscordProvider extends AutoDisposeFutureProvider<void> {
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, surahName.hashCode);
-    hash = _SystemHash.combine(hash, position.hashCode);
-    hash = _SystemHash.combine(hash, duration.hashCode);
     hash = _SystemHash.combine(hash, reciter.hashCode);
 
     return _SystemHash.finish(hash);
@@ -182,12 +152,6 @@ mixin UpdateRPCDiscordRef on AutoDisposeFutureProviderRef<void> {
   /// The parameter `surahName` of this provider.
   String get surahName;
 
-  /// The parameter `position` of this provider.
-  int get position;
-
-  /// The parameter `duration` of this provider.
-  int get duration;
-
   /// The parameter `reciter` of this provider.
   String get reciter;
 }
@@ -199,10 +163,6 @@ class _UpdateRPCDiscordProviderElement
 
   @override
   String get surahName => (origin as UpdateRPCDiscordProvider).surahName;
-  @override
-  int get position => (origin as UpdateRPCDiscordProvider).position;
-  @override
-  int get duration => (origin as UpdateRPCDiscordProvider).duration;
   @override
   String get reciter => (origin as UpdateRPCDiscordProvider).reciter;
 }

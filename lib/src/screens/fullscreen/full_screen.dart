@@ -114,7 +114,6 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         style: TextStyle(color: Colors.white),
                       );
                     }
-
                     return Text(
                       data,
                       textAlign: TextAlign.center,

@@ -51,8 +51,8 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           PlayingSurah(isFullScreen: widget.isFullScreen, ref: ref),
-          Padding(
-            padding: const EdgeInsets.only(right: 80),
+          const Padding(
+            padding: EdgeInsets.only(right: 80),
             child: PlayControls(),
           ),
           Row(

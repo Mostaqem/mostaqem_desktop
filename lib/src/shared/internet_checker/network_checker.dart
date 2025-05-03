@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 
 final getConnectionProvider =
     StreamProvider.autoDispose<InternetConnectionStatus>((ref) async* {
-      final connectionChecker = InternetConnectionChecker();
+      final connectionChecker = InternetConnectionChecker.instance;
       final subscription = connectionChecker.onStatusChange;
       yield* subscription.debounceTime(const Duration(seconds: 2));
     });

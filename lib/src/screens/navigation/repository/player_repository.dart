@@ -125,11 +125,6 @@ class PlayerNotifier extends _$PlayerNotifier {
         updateRPCDiscordProvider(
           surahName: state.album?.surah.simpleName ?? '',
           reciter: state.album?.reciter.englishName ?? '',
-          position: DateTime.now().add(state.position).millisecondsSinceEpoch,
-          duration:
-              DateTime.now()
-                  .add(state.position + duration)
-                  .millisecondsSinceEpoch,
         ).future,
       );
     });

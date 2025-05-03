@@ -25,7 +25,6 @@ mixin _$Album {
   Reciter get reciter => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   int get recitationID => throw _privateConstructorUsedError;
-  int? get queueIndex => throw _privateConstructorUsedError;
   int get position => throw _privateConstructorUsedError;
   int get duration => throw _privateConstructorUsedError;
   bool get isLocal => throw _privateConstructorUsedError;
@@ -49,7 +48,6 @@ abstract class $AlbumCopyWith<$Res> {
     Reciter reciter,
     String url,
     int recitationID,
-    int? queueIndex,
     int position,
     int duration,
     bool isLocal,
@@ -78,7 +76,6 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
     Object? reciter = null,
     Object? url = null,
     Object? recitationID = null,
-    Object? queueIndex = freezed,
     Object? position = null,
     Object? duration = null,
     Object? isLocal = null,
@@ -105,11 +102,6 @@ class _$AlbumCopyWithImpl<$Res, $Val extends Album>
                     ? _value.recitationID
                     : recitationID // ignore: cast_nullable_to_non_nullable
                         as int,
-            queueIndex:
-                freezed == queueIndex
-                    ? _value.queueIndex
-                    : queueIndex // ignore: cast_nullable_to_non_nullable
-                        as int?,
             position:
                 null == position
                     ? _value.position
@@ -164,7 +156,6 @@ abstract class _$$AlbumImplCopyWith<$Res> implements $AlbumCopyWith<$Res> {
     Reciter reciter,
     String url,
     int recitationID,
-    int? queueIndex,
     int position,
     int duration,
     bool isLocal,
@@ -194,7 +185,6 @@ class __$$AlbumImplCopyWithImpl<$Res>
     Object? reciter = null,
     Object? url = null,
     Object? recitationID = null,
-    Object? queueIndex = freezed,
     Object? position = null,
     Object? duration = null,
     Object? isLocal = null,
@@ -221,11 +211,6 @@ class __$$AlbumImplCopyWithImpl<$Res>
                 ? _value.recitationID
                 : recitationID // ignore: cast_nullable_to_non_nullable
                     as int,
-        queueIndex:
-            freezed == queueIndex
-                ? _value.queueIndex
-                : queueIndex // ignore: cast_nullable_to_non_nullable
-                    as int?,
         position:
             null == position
                 ? _value.position
@@ -254,7 +239,6 @@ class _$AlbumImpl implements _Album {
     required this.reciter,
     required this.url,
     required this.recitationID,
-    this.queueIndex,
     this.position = 0,
     this.duration = 0,
     this.isLocal = false,
@@ -272,8 +256,6 @@ class _$AlbumImpl implements _Album {
   @override
   final int recitationID;
   @override
-  final int? queueIndex;
-  @override
   @JsonKey()
   final int position;
   @override
@@ -285,7 +267,7 @@ class _$AlbumImpl implements _Album {
 
   @override
   String toString() {
-    return 'Album(surah: $surah, reciter: $reciter, url: $url, recitationID: $recitationID, queueIndex: $queueIndex, position: $position, duration: $duration, isLocal: $isLocal)';
+    return 'Album(surah: $surah, reciter: $reciter, url: $url, recitationID: $recitationID, position: $position, duration: $duration, isLocal: $isLocal)';
   }
 
   @override
@@ -298,8 +280,6 @@ class _$AlbumImpl implements _Album {
             (identical(other.url, url) || other.url == url) &&
             (identical(other.recitationID, recitationID) ||
                 other.recitationID == recitationID) &&
-            (identical(other.queueIndex, queueIndex) ||
-                other.queueIndex == queueIndex) &&
             (identical(other.position, position) ||
                 other.position == position) &&
             (identical(other.duration, duration) ||
@@ -315,7 +295,6 @@ class _$AlbumImpl implements _Album {
     reciter,
     url,
     recitationID,
-    queueIndex,
     position,
     duration,
     isLocal,
@@ -341,7 +320,6 @@ abstract class _Album implements Album {
     required final Reciter reciter,
     required final String url,
     required final int recitationID,
-    final int? queueIndex,
     final int position,
     final int duration,
     final bool isLocal,
@@ -357,8 +335,6 @@ abstract class _Album implements Album {
   String get url;
   @override
   int get recitationID;
-  @override
-  int? get queueIndex;
   @override
   int get position;
   @override

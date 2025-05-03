@@ -9,13 +9,10 @@ class DiscordImp {
 
   Future<void> updateDiscordPresence({
     required String surahName,
-    required int position,
-    required int duration,
     required String reciter,
   }) async {
     final isconnected = FlutterDiscordRPC.instance.isConnected;
 
-    await FlutterDiscordRPC.instance.connect(autoRetry: true);
     if (isconnected) {
       await FlutterDiscordRPC.instance.setActivity(
         activity: RPCActivity(
@@ -23,22 +20,8 @@ class DiscordImp {
           state: reciter,
           details: surahName,
           assets: RPCAssets(largeImage: largeImage),
-          timestamps: RPCTimestamps(start: position, end: duration),
         ),
       );
-    } else {
-      await FlutterDiscordRPC.instance.reconnect();
-      try {
-        await FlutterDiscordRPC.instance.setActivity(
-          activity: RPCActivity(
-            activityType: ActivityType.listening,
-            state: reciter,
-            details: surahName,
-            assets: RPCAssets(largeImage: largeImage),
-            timestamps: RPCTimestamps(start: position, end: duration),
-          ),
-        );
-      } catch (e) {}
     }
   }
 }
@@ -47,15 +30,8 @@ class DiscordImp {
 Future<void> updateRPCDiscord(
   Ref ref, {
   required String surahName,
-  required int position,
-  required int duration,
   required String reciter,
 }) async {
   final discord = DiscordImp();
-  return discord.updateDiscordPresence(
-    surahName: surahName,
-    position: position,
-    duration: duration,
-    reciter: reciter,
-  );
+  return discord.updateDiscordPresence(surahName: surahName, reciter: reciter);
 }

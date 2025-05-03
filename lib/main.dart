@@ -1,3 +1,4 @@
+// ignore_for_file: missing_provider_scope
 import 'dart:io';
 
 import 'package:flutter/material.dart';
