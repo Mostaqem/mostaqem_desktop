@@ -45,6 +45,12 @@ class _PlayControlsState extends ConsumerState<PlayControls>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final player = ref.watch(playerNotifierProvider);
     final isSquiggly = ref.watch(squigglyNotifierProvider);
@@ -305,7 +311,7 @@ class SquigglyPlayerSlider extends ConsumerWidget {
       squiggleWavelength: 5,
       squiggleSpeed: 0.2,
       useLineThumb: true,
-      
+
       value: max(0, min(position, duration)),
       max: duration,
       onChangeStart: (_) async {

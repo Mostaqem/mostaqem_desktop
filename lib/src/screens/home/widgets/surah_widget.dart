@@ -8,6 +8,7 @@ import 'package:mostaqem/src/screens/navigation/repository/player_repository.dar
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
+import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 final reciterProvider = StateProvider<Reciter?>((ref) {
@@ -64,138 +65,156 @@ class SurahWidget extends ConsumerWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      decoration: BoxDecoration(
-                        color:
-                            downlaodState == DownloadState.downloading &&
-                                    surahID - 1 == index
-                                ? Theme.of(
-                                  context,
-                                ).colorScheme.tertiaryContainer
-                                : Theme.of(
-                                  context,
-                                ).colorScheme.primaryContainer,
-                      ),
-                      child: Stack(
-                        alignment: Alignment.centerLeft,
-                        children: [
-                          Positioned(
-                            left: -70,
-                            child: SvgPicture.asset(
-                              'assets/img/shape.svg',
-                              width: 130,
-                              colorFilter: ColorFilter.mode(
-                                Theme.of(context).colorScheme.onPrimaryContainer
-                                    .withValues(alpha: 0.1),
-                                BlendMode.srcIn,
-                              ),
+                  child: HoverBuilder(
+                    builder: (isHovered) {
+                      return InkWell(
+                        onTap: () async {
+                          await ref
+                              .read(playerNotifierProvider.notifier)
+                              .play(surahID: data[indexInPage].id);
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeIn,
+                            decoration: BoxDecoration(
+                              color:
+                                  downlaodState == DownloadState.downloading &&
+                                          surahID - 1 == index
+                                      ? Theme.of(
+                                        context,
+                                      ).colorScheme.tertiaryContainer
+                                      : isHovered
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(
+                                        context,
+                                      ).colorScheme.primaryContainer,
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            child: Stack(
+                              alignment: Alignment.centerLeft,
                               children: [
-                                Flexible(
-                                  child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: Text(
-                                      data[indexInPage].arabicName,
-                                      style: TextStyle(
-                                        color:
-                                            Theme.of(
+                                Positioned(
+                                  left: -70,
+                                  child: SvgPicture.asset(
+                                    'assets/img/shape.svg',
+                                    width: 130,
+                                    colorFilter: ColorFilter.mode(
+                                      isHovered
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary
+                                              .withValues(alpha: 0.1)
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .onPrimaryContainer
+                                              .withValues(alpha: 0.1),
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Flexible(
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Text(
+                                            data[indexInPage].arabicName,
+                                            style: TextStyle(
+                                              color:
+                                                  isHovered
+                                                      ? Theme.of(
+                                                        context,
+                                                      ).colorScheme.onPrimary
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimaryContainer,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            data[indexInPage].simpleName,
+                                            style: TextStyle(
+                                              color:
+                                                  isHovered
+                                                      ? Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimary
+                                                          .withValues(
+                                                            alpha: 0.5,
+                                                          )
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimaryContainer
+                                                          .withValues(
+                                                            alpha: 0.5,
+                                                          ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 5,
+                                  left: 0,
+                                  child: PopupMenuButton(
+                                    iconColor:
+                                        isHovered
+                                            ? Theme.of(
                                               context,
-                                            ).colorScheme.onPrimaryContainer,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      data[indexInPage].simpleName,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimaryContainer
-                                            .withValues(alpha: 0.5),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Consumer(
-                                      builder: (context, ref, child) {
-                                        return Tooltip(
-                                          message: 'تشغيل',
-                                          preferBelow: false,
-                                          child: IconButton(
-                                            onPressed: () async {
-                                              await ref
+                                            ).colorScheme.onPrimary
+                                            : null,
+
+                                    itemBuilder:
+                                        (context) => [
+                                          PopupMenuItem<String>(
+                                            child: const Text('اضافة التالي'),
+                                            onTap: () {
+                                              ref
                                                   .read(
                                                     playerNotifierProvider
                                                         .notifier,
                                                   )
-                                                  .play(
+                                                  .addItemNext(
+                                                    data[indexInPage].id,
+                                                  );
+                                            },
+                                          ),
+                                          PopupMenuItem<String>(
+                                            child: const Text(
+                                              'اضافة في قائمة التشغيل',
+                                            ),
+                                            onTap: () {
+                                              ref
+                                                  .read(
+                                                    playerNotifierProvider
+                                                        .notifier,
+                                                  )
+                                                  .addToQueue(
                                                     surahID:
                                                         data[indexInPage].id,
                                                   );
                                             },
-                                            icon: const Icon(
-                                              Icons.play_circle_fill_outlined,
-                                            ),
                                           ),
-                                        );
-                                      },
-                                    ),
+                                        ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Positioned(
-                            top: 5,
-                            left: 0,
-                            child: PopupMenuButton(
-                              itemBuilder:
-                                  (context) => [
-                                    PopupMenuItem<String>(
-                                      child: const Text('اضافة التالي'),
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .addItemNext(data[indexInPage].id);
-                                      },
-                                    ),
-                                    PopupMenuItem<String>(
-                                      child: const Text(
-                                        'اضافة في قائمة التشغيل',
-                                      ),
-                                      onTap: () {
-                                        ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .addToQueue(
-                                              surahID: data[indexInPage].id,
-                                            );
-                                      },
-                                    ),
-                                  ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               );

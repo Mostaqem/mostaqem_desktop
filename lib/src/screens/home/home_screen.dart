@@ -98,6 +98,7 @@ class HomeScreen extends ConsumerWidget {
                   Flexible(
                     flex: 2,
                     child: Container(
+                      height: MediaQuery.sizeOf(context).height * 0.54,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: Theme.of(context).colorScheme.surfaceContainer,
@@ -119,9 +120,9 @@ class HomeScreen extends ConsumerWidget {
                             const SizedBox(height: 15),
                             Container(
                               width: double.infinity,
-                              height: 350,
+                              height: MediaQuery.sizeOf(context).height * 0.34,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
+                                shape: BoxShape.circle,
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: CachedNetworkImageProvider(
