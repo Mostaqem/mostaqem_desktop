@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/screens/broadcast/broadcast.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 
 import 'package:mostaqem/src/screens/offline/offline.dart';
@@ -29,6 +30,12 @@ final List<Screen> _childrenScreens = [
     selectedIcon: const Icon(Icons.folder),
     label: 'التحميلات',
     widget: const DownloadsScreen(),
+  ),
+  Screen(
+    icon: const Icon(Icons.radio_outlined),
+    selectedIcon: const Icon(Icons.radio_outlined),
+    label: 'الإذاعات',
+    widget: const BroadcastScreen(),
   ),
 ];
 

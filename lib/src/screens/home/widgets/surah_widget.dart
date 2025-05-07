@@ -18,6 +18,42 @@ final reciterProvider = StateProvider<Reciter?>((ref) {
 class SurahWidget extends ConsumerWidget {
   const SurahWidget({super.key});
   static const pageSize = 30;
+
+  Color getCardColor({
+    required DownloadState? downloadState,
+    required int surahID,
+    required int index,
+    required bool isHovered,
+    required BuildContext context,
+  }) {
+    final currentSurah = isSurahPlaying(index: index, surahID: surahID);
+
+    if (downloadState == DownloadState.downloading && currentSurah) {
+      return Theme.of(context).colorScheme.tertiaryContainer;
+    } else if (currentSurah && downloadState == null || isHovered) {
+      return Theme.of(context).colorScheme.primary;
+    }
+    //TODO: Fix show Surah that is downloaded 
+    return Theme.of(context).colorScheme.primaryContainer;
+  }
+
+  Color getCardForeground({
+    required bool isHovered,
+    required BuildContext context,
+    required int surahID,
+    required int index,
+  }) {
+    if (isHovered || isSurahPlaying(index: index, surahID: surahID)) {
+      return Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.5);
+    }
+    return Theme.of(
+      context,
+    ).colorScheme.onPrimaryContainer.withValues(alpha: 0.5);
+  }
+
+  bool isSurahPlaying({required int surahID, required int index}) =>
+      surahID - 1 == index;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchQuery = ref.watch(searchNotifierProvider('home'));
@@ -79,17 +115,13 @@ class SurahWidget extends ConsumerWidget {
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeIn,
                             decoration: BoxDecoration(
-                              color:
-                                  downlaodState == DownloadState.downloading &&
-                                          surahID - 1 == index
-                                      ? Theme.of(
-                                        context,
-                                      ).colorScheme.tertiaryContainer
-                                      : isHovered
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(
-                                        context,
-                                      ).colorScheme.primaryContainer,
+                              color: getCardColor(
+                                context: context,
+                                downloadState: downlaodState,
+                                index: index,
+                                isHovered: isHovered,
+                                surahID: surahID,
+                              ),
                             ),
                             child: Stack(
                               alignment: Alignment.centerLeft,
@@ -102,7 +134,11 @@ class SurahWidget extends ConsumerWidget {
                                     ),
                                     width: 130,
                                     colorFilter: ColorFilter.mode(
-                                      isHovered
+                                      isHovered ||
+                                              isSurahPlaying(
+                                                index: index,
+                                                surahID: surahID,
+                                              )
                                           ? Theme.of(context)
                                               .colorScheme
                                               .onPrimary
@@ -127,14 +163,20 @@ class SurahWidget extends ConsumerWidget {
                                           child: Text(
                                             data[indexInPage].arabicName,
                                             style: TextStyle(
-                                              color:
-                                                  isHovered
-                                                      ? Theme.of(
-                                                        context,
-                                                      ).colorScheme.onPrimary
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimaryContainer,
+                                              color: getCardForeground(
+                                                isHovered: isHovered,
+                                                context: context,
+                                                surahID: surahID,
+                                                index: index,
+                                              ),
+                                              fontWeight:
+                                                  isHovered ||
+                                                          isSurahPlaying(
+                                                            surahID: surahID,
+                                                            index: index,
+                                                          )
+                                                      ? FontWeight.bold
+                                                      : null,
                                             ),
                                           ),
                                         ),
@@ -145,20 +187,20 @@ class SurahWidget extends ConsumerWidget {
                                           child: Text(
                                             data[indexInPage].simpleName,
                                             style: TextStyle(
-                                              color:
-                                                  isHovered
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimary
-                                                          .withValues(
-                                                            alpha: 0.5,
+                                              color: getCardForeground(
+                                                isHovered: isHovered,
+                                                context: context,
+                                                surahID: surahID,
+                                                index: index,
+                                              ),
+                                              fontWeight:
+                                                  isHovered ||
+                                                          isSurahPlaying(
+                                                            surahID: surahID,
+                                                            index: index,
                                                           )
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimaryContainer
-                                                          .withValues(
-                                                            alpha: 0.5,
-                                                          ),
+                                                      ? FontWeight.bold
+                                                      : null,
                                             ),
                                           ),
                                         ),
@@ -171,7 +213,11 @@ class SurahWidget extends ConsumerWidget {
                                   left: 0,
                                   child: PopupMenuButton(
                                     iconColor:
-                                        isHovered
+                                        isHovered ||
+                                                isSurahPlaying(
+                                                  index: index,
+                                                  surahID: surahID,
+                                                )
                                             ? Theme.of(
                                               context,
                                             ).colorScheme.onPrimary
@@ -203,6 +249,20 @@ class SurahWidget extends ConsumerWidget {
                                                         .notifier,
                                                   )
                                                   .addToQueue(
+                                                    surahID:
+                                                        data[indexInPage].id,
+                                                  );
+                                            },
+                                          ),
+                                          PopupMenuItem<String>(
+                                            child: const Text('تحميل السورة'),
+                                            onTap: () {
+                                              ref
+                                                  .read(
+                                                    downloadAudioProvider
+                                                        .notifier,
+                                                  )
+                                                  .downloadSurah(
                                                     surahID:
                                                         data[indexInPage].id,
                                                   );

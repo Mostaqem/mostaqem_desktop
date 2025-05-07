@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_dynamic_calls, inference_failure_on_untyped_parameter
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';

@@ -5,6 +5,7 @@ import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dar
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/Playing_broadcast.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/play_controls.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/playing_surah.dart';
@@ -44,13 +45,17 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
     final album = ref.watch(
       playerNotifierProvider.select((value) => value.album),
     );
+    final isBroadcast = ref.watch(isBroadcastProvider);
 
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          PlayingSurah(isFullScreen: widget.isFullScreen, ref: ref),
+          if (isBroadcast)
+            const PlayingBroadcast()
+          else
+            PlayingSurah(isFullScreen: widget.isFullScreen, ref: ref),
           const Padding(
             padding: EdgeInsets.only(right: 80),
             child: PlayControls(),
@@ -74,9 +79,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
                     final downloadState =
                         ref.read(downloadAudioProvider)?.downloadState;
                     if (downloadState != DownloadState.downloading) {
-                      await ref
-                          .read(downloadAudioProvider.notifier)
-                          .download(album: album);
+                      await ref.read(downloadAudioProvider.notifier).download();
                     }
                     setState(() {
                       downloadedAlbums.add(album);

@@ -5,7 +5,7 @@ part 'reciters_data.freezed.dart';
 part 'reciters_data.g.dart';
 
 @freezed
-class Reciter with _$Reciter {
+abstract class Reciter with _$Reciter {
   const factory Reciter({
     required int id,
     @JsonKey(name: 'name_english') required String englishName,

@@ -5,6 +5,8 @@ import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/broadcast_player.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/fullscreen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/normal_player.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -63,6 +65,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
   @override
   Widget build(BuildContext context) {
     final isFullScreen = ref.watch(isFullScreenProvider);
+    final isBroadcast = ref.watch(isBroadcastProvider);
     return Stack(
       children: [
         Container(
@@ -80,13 +83,17 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
           ),
           child:
               isFullScreen
-                  ? const FullScreenPlayControls()
+                  ? isBroadcast
+                      ? const BroadcastFullscreenControls()
+                      : const FullScreenPlayControls()
                   : LayoutBuilder(
                     builder: (context, constraints) {
-                      return constraints.minWidth < 1285
+                      return constraints.minWidth < 1285 && isBroadcast == false
                           ? FittedBox(
                             child: NormalPlayer(isFullScreen: isFullScreen),
                           )
+                          : isBroadcast
+                          ? BroadcastPlayer(isFullScreen: isFullScreen)
                           : NormalPlayer(isFullScreen: isFullScreen);
                     },
                   ),

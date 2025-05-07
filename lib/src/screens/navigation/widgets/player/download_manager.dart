@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 final downloadHeightProvider = StateProvider<double>((ref) => 0);
@@ -73,11 +72,9 @@ class DownloadManagerWidget extends ConsumerWidget {
                           onPressed: () {
                             ref.invalidate(cancelTokenProvider);
 
-                            final album = ref.read(currentAlbumProvider);
-
                             ref
                                 .read(downloadAudioProvider.notifier)
-                                .download(album: album!);
+                                .download();
                           },
                           icon: const Icon(Icons.download_rounded),
                         )

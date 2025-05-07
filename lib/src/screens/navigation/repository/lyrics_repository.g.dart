@@ -283,7 +283,7 @@ class _CacheLyricsProviderElement extends AutoDisposeFutureProviderElement<File>
   String get content => (origin as CacheLyricsProvider).content;
 }
 
-String _$syncLyricsHash() => r'56b2f3740ffae236fe4c8dc3e3df9aee3846fb14';
+String _$syncLyricsHash() => r'4780e061137546af1c4f2d6ef9873525a0864509';
 
 /// See also [syncLyrics].
 @ProviderFor(syncLyrics)

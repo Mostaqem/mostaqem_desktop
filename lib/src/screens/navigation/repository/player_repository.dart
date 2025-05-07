@@ -292,6 +292,8 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> play({required int surahID, int? recitationID}) async {
+    state = state.copyWith(broadcastName: '');
+
     final cacheManager = DefaultCacheManager();
     final chosenReciter = ref.read(userReciterProvider);
 
@@ -483,6 +485,11 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   Future<void> playItem(int index) async {
     await player.jump(index);
+  }
+
+  Future<void> playBroadcast(String url, String name) async {
+    await player.open(Media(url));
+    state = state.copyWith(broadcastName: name);
   }
 
   Future<void> removeItem(int index) async {

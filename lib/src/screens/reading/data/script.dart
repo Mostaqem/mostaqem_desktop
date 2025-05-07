@@ -5,7 +5,7 @@ part 'script.freezed.dart';
 part 'script.g.dart';
 
 @freezed
-class Script with _$Script {
+abstract class Script with _$Script {
   const factory Script({
     @JsonKey(name: 'text') required String verse,
     @JsonKey(name: 'verse') required int verseNumber,

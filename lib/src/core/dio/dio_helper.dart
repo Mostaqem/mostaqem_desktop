@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mostaqem/src/core/env/env.dart';
+import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'dio_helper.g.dart';
@@ -11,27 +11,30 @@ part 'dio_helper.g.dart';
 DioHelper dioHelper(Ref ref) => DioHelper();
 
 bool isProduction = const bool.fromEnvironment('dart.vm.product');
-final baseAPIURL = Constants.baseAPI;
 
 class DioHelper {
-  static final String url = baseAPIURL;
-  static BaseOptions opts = BaseOptions(
-    baseUrl: url,
-    headers: {'Accept-Language': 'ar'},
-  );
-  static Dio createDio() {
-    return Dio(opts);
-  }
+  final dio = Dio();
 
-  static final dio = createDio();
+  Future<Response<dynamic>> getHTTP(
+    String url, {
+    Options? options,
+    String? baseAPI,
+  }) async {
+    final uri = baseAPI ?? APIs.baseAPIURL;
+    final path = '$uri$url';
 
-  Future<Response<dynamic>> getHTTP(String url, {Options? options}) async {
-    final response = await dio.get(url, options: options);
+    final response = await dio.get(path, options: options);
     return response;
   }
 
-  Future<Response<dynamic>> postHTTP(String url, dynamic data) async {
-    final response = await dio.post(url, data: data);
+  Future<Response<dynamic>> postHTTP(
+    String url,
+    dynamic data,
+    String? baseAPI,
+  ) async {
+    final uri = baseAPI ?? APIs.baseAPIURL;
+    final path = '$uri$url';
+    final response = await dio.post(path, data: data);
     return response;
   }
 }

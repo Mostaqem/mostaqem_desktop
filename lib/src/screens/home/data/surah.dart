@@ -5,7 +5,7 @@ part 'surah.freezed.dart';
 part 'surah.g.dart';
 
 @Freezed(toJson: true)
-class Surah with _$Surah {
+abstract class Surah with _$Surah {
   const factory Surah({
     required int id,
     @JsonKey(name: 'name_complex') required String simpleName,

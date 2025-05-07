@@ -2,6 +2,7 @@
 // ignore_for_file: inference_failure_on_untyped_parameter,
 // ignore_for_file: use_setters_to_change_properties
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
@@ -21,9 +22,12 @@ abstract class RecitersRepository {
 class RecitersImpl implements RecitersRepository {
   RecitersImpl(this.ref);
   final Ref ref;
+  final options = Options(headers: {'Accept-Language': 'ar'});
   @override
   Future<Reciter> fetchReciter({required int id}) async {
-    final request = await ref.watch(dioHelperProvider).getHTTP('/reciter/$id');
+    final request = await ref
+        .watch(dioHelperProvider)
+        .getHTTP('/reciter/$id', options: options);
     return Reciter.fromJson(request.data['data'] as Map<String, dynamic>);
   }
 
@@ -31,7 +35,9 @@ class RecitersImpl implements RecitersRepository {
   Future<List<Reciter>> fetchReciters({required int page}) async {
     final url = '/reciter?page=$page&take=20';
 
-    final request = await ref.watch(dioHelperProvider).getHTTP(url);
+    final request = await ref
+        .watch(dioHelperProvider)
+        .getHTTP(url, options: options);
     return request.data['data']['reciters']
         .map<Reciter>((e) => Reciter.fromJson(e as Map<String, Object?>))
         .toList();
@@ -42,7 +48,9 @@ class RecitersImpl implements RecitersRepository {
     if (query == null || query.isEmpty) return [];
     final url = '/reciter/search?name=$query';
 
-    final request = await ref.watch(dioHelperProvider).getHTTP(url);
+    final request = await ref
+        .watch(dioHelperProvider)
+        .getHTTP(url, options: options);
     return request.data['data']['reciters']
         .map<Reciter>((e) => Reciter.fromJson(e as Map<String, Object?>))
         .toList();

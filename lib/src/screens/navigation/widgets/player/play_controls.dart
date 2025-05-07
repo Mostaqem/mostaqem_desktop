@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
@@ -54,6 +55,7 @@ class _PlayControlsState extends ConsumerState<PlayControls>
   Widget build(BuildContext context) {
     final player = ref.watch(playerNotifierProvider);
     final isSquiggly = ref.watch(squigglyNotifierProvider);
+
     if (player.isPlaying) {
       controller.reverse();
     } else {
