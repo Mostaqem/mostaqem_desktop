@@ -7,12 +7,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'broadcast_repository.g.dart';
 
-abstract class BroadcastRepository {
-  Future<List<Broadcast>> fetchBroadcasts();
-}
 
-class BroadcastImpl extends BroadcastRepository {
-  BroadcastImpl(this.ref);
+
+class BroadcastRepository {
+  BroadcastRepository(this.ref);
   final Ref ref;
   final baseAPI = APIs.radioAPIURL;
 
@@ -40,4 +38,4 @@ class BroadcastImpl extends BroadcastRepository {
 
 @riverpod
 Future<List<Broadcast>> fetchBroadcasts(Ref ref) =>
-    BroadcastImpl(ref).fetchBroadcasts();
+    BroadcastRepository(ref).fetchBroadcasts();
