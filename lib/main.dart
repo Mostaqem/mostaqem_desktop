@@ -27,7 +27,7 @@ void main() async {
   );
 
   await FlutterDiscordRPC.initialize(Constants.discordAPPID);
-
+  
   await windowManager.ensureInitialized();
 
   MediaKit.ensureInitialized();

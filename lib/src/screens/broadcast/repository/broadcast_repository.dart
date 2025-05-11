@@ -14,7 +14,6 @@ class BroadcastRepository {
   final Ref ref;
   final baseAPI = APIs.radioAPIURL;
 
-  @override
   Future<List<Broadcast>> fetchBroadcasts() async {
     final query = ref.watch(searchNotifierProvider('broadcast'));
     final response = await ref

@@ -184,7 +184,6 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
         ),
         const SizedBox(height: 12),
         ListTile(
-          subtitle: const Text('قد يؤدي الي ارتفاع استخدام الرام الخاص بك'),
           trailing: Switch(
             value: ref.watch(squigglyNotifierProvider),
             onChanged:

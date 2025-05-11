@@ -6,6 +6,7 @@ import 'package:mostaqem/src/screens/queue/presentation/queue_screen.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
 import 'package:mostaqem/src/screens/reciters/reciters_screen.dart';
 import 'package:mostaqem/src/screens/settings/settings_screen.dart';
+import 'package:mostaqem/src/screens/share/share_screen.dart';
 import 'package:mostaqem/src/shared/widgets/custom_license_page.dart';
 
 class NavigationRepository {
@@ -38,6 +39,10 @@ class NavigationRepository {
       GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
+      ),
+       GoRoute(
+        path: '/share',
+        builder: (context, state) =>  ShareScreen(verse: state.extra! as String,),
       ),
     ],
   );

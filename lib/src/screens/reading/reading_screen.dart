@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
@@ -71,6 +73,10 @@ class ReadingScreen extends StatelessWidget {
                                       .map(
                                         (e) => TextSpan(
                                           text: e.verse,
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                            context.push("/share",extra: e.verse);
+                                            },
                                           style: GoogleFonts.amiri(
                                             fontSize: 30,
                                             height: 3.2,

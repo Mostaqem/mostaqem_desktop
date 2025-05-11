@@ -126,7 +126,9 @@ class PlayerNotifier extends _$PlayerNotifier {
           surahName: state.album?.surah.simpleName ?? '',
           reciter: state.album?.reciter.englishName ?? '',
         ).future,
+       
       );
+  
     });
 
     player.stream.buffer.listen((buffering) {
@@ -137,17 +139,7 @@ class PlayerNotifier extends _$PlayerNotifier {
       state = state.copyWith(isPlaying: playing);
       if (Platform.isWindows) {
         windowThumbnailBar();
-        ref.read(
-          initSMTCProvider(
-            duration: state.duration.inMilliseconds,
-            position: state.position.inMilliseconds,
-            image:
-                state.album?.surah.image ??
-                'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
-            surah: state.album!.surah.arabicName,
-            reciter: state.album?.reciter.arabicName ?? '',
-          ),
-        );
+    
       }
     });
   }
