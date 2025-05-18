@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:dio/dio.dart';
@@ -9,23 +10,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
+import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 import 'package:path_provider/path_provider.dart';
 
-class ShareScreen extends StatelessWidget {
+class ShareScreen extends StatefulWidget {
   const ShareScreen({super.key, this.verse = 'بسم الله الرحمن الرحيم'});
   final String verse;
-  static final _previewKey = GlobalKey();
 
-  Future<void> saveFullResolutionNetworkImageWithText(String imageUrl) async {
+  @override
+  State<ShareScreen> createState() => _ShareScreenState();
+}
+
+class _ShareScreenState extends State<ShareScreen> {
+  final _previewKey = GlobalKey();
+  File image = File('');
+
+  Future<void> saveFullResolutionNetworkImageWithText() async {
     try {
-      // 1. Download the image from network
-      final response = await http.get(Uri.parse(imageUrl));
-      if (response.statusCode != 200) {
-        throw Exception('Failed to download image');
-      }
-
-      final bytes = response.bodyBytes;
+      final bytes = await image.readAsBytes();
 
       // 2. Decode the image
       final codec = await ui.instantiateImageCodec(bytes);
@@ -51,7 +54,7 @@ class ShareScreen extends StatelessWidget {
         textAlign: TextAlign.center,
 
         text: TextSpan(
-          text: verse,
+          text: widget.verse,
           style: GoogleFonts.amiri(
             color: Colors.white,
             fontSize: _calculateFontSize(originalImage),
@@ -76,7 +79,7 @@ class ShareScreen extends StatelessWidget {
             fontSize: _calculateFontSize(originalImage) / 2,
           ),
         ),
-        textDirection: TextDirection.rtl, // Changed to RTL for Arabic text
+        textDirection: TextDirection.rtl, 
       )..layout(maxWidth: originalImage.width.toDouble());
 
       // Calculate center-bottom position
@@ -139,21 +142,43 @@ class ShareScreen extends StatelessWidget {
                             color: Theme.of(context).colorScheme.primary,
                             width: 5,
                           ),
-                          image: const DecorationImage(
+                          image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(
-                              'https://images.unsplash.com/photo-1656077217715-bdaeb06bd01f',
-                            ),
+                            image: AssetImage(image.path),
                           ),
                         ),
                       ),
                     ),
                   ),
                   Text(
-                    verse,
+                    widget.verse,
                     style: GoogleFonts.amiri(color: Colors.white, fontSize: 26),
                   ),
                 ],
+              ),
+
+              ElevatedButton(
+                onPressed: () async {
+                  final result = await FilePicker.platform.pickFiles(
+                    type: FileType.image,
+                  );
+
+                  if (result != null) {
+                    final file = File(result.files.single.path!);
+                    setState(() {
+                      image = file;
+                    });
+                  } else {
+                    // User canceled the picker
+                  }
+                },
+                style: const ButtonStyle(
+                  shape: WidgetStatePropertyAll(
+                    StarBorder(points: 4, pointRounding: 0.65, rotation: 45),
+                  ),
+                  minimumSize: WidgetStatePropertyAll(Size(150, 150)),
+                ),
+                child: const Icon(Icons.image_rounded, size: 25),
               ),
             ],
           ),
@@ -168,14 +193,18 @@ class ShareScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed:
-                          () => saveFullResolutionNetworkImageWithText(
-                            'https://images.unsplash.com/photo-1656077217715-bdaeb06bd01f',
-                          ),
+                    ToolTipIconButton(
+                      message: 'حفظ الصورة',
+                      onPressed: saveFullResolutionNetworkImageWithText,
                       icon: const Icon(Icons.save_alt_outlined),
                     ),
-
+                    const Text(
+                      'تجريبي',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                      ),
+                    ),
                     const Align(
                       alignment: Alignment.topLeft,
                       child: AppBackButton(),

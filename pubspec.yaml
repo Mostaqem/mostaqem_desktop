@@ -50,6 +50,7 @@ dependencies:
   windows_taskbar: "^1.1.2"
   context_menus: ^2.0.0+1
   vector_graphics: ^1.1.18
+  flutter_single_instance: ^1.5.0
   
 dev_dependencies:
   build_runner: "^2.4.14"
