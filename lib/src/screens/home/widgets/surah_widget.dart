@@ -1,9 +1,11 @@
 import 'package:context_menus/context_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
@@ -33,7 +35,7 @@ class SurahWidget extends ConsumerWidget {
     } else if (currentSurah && downloadState == null || isHovered) {
       return Theme.of(context).colorScheme.primary;
     }
-    //TODO: Fix show Surah that is downloaded 
+    //TODO: Fix show Surah that is downloaded
     return Theme.of(context).colorScheme.primaryContainer;
   }
 
@@ -140,13 +142,13 @@ class SurahWidget extends ConsumerWidget {
                                                 surahID: surahID,
                                               )
                                           ? Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary
-                                              .withValues(alpha: 0.1)
+                                                .colorScheme
+                                                .onPrimary
+                                                .withValues(alpha: 0.1)
                                           : Theme.of(context)
-                                              .colorScheme
-                                              .onPrimaryContainer
-                                              .withValues(alpha: 0.1),
+                                                .colorScheme
+                                                .onPrimaryContainer
+                                                .withValues(alpha: 0.1),
                                       BlendMode.srcIn,
                                     ),
                                   ),
@@ -171,12 +173,12 @@ class SurahWidget extends ConsumerWidget {
                                               ),
                                               fontWeight:
                                                   isHovered ||
-                                                          isSurahPlaying(
-                                                            surahID: surahID,
-                                                            index: index,
-                                                          )
-                                                      ? FontWeight.bold
-                                                      : null,
+                                                      isSurahPlaying(
+                                                        surahID: surahID,
+                                                        index: index,
+                                                      )
+                                                  ? FontWeight.bold
+                                                  : null,
                                             ),
                                           ),
                                         ),
@@ -195,12 +197,12 @@ class SurahWidget extends ConsumerWidget {
                                               ),
                                               fontWeight:
                                                   isHovered ||
-                                                          isSurahPlaying(
-                                                            surahID: surahID,
-                                                            index: index,
-                                                          )
-                                                      ? FontWeight.bold
-                                                      : null,
+                                                      isSurahPlaying(
+                                                        surahID: surahID,
+                                                        index: index,
+                                                      )
+                                                  ? FontWeight.bold
+                                                  : null,
                                             ),
                                           ),
                                         ),
@@ -214,61 +216,99 @@ class SurahWidget extends ConsumerWidget {
                                   child: PopupMenuButton(
                                     iconColor:
                                         isHovered ||
-                                                isSurahPlaying(
-                                                  index: index,
-                                                  surahID: surahID,
-                                                )
-                                            ? Theme.of(
-                                              context,
-                                            ).colorScheme.onPrimary
-                                            : null,
+                                            isSurahPlaying(
+                                              index: index,
+                                              surahID: surahID,
+                                            )
+                                        ? Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary
+                                        : null,
 
-                                    itemBuilder:
-                                        (context) => [
-                                          PopupMenuItem<String>(
-                                            child: const Text('اضافة التالي'),
-                                            onTap: () {
-                                              ref
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem<String>(
+                                        child: const Text('اضافة التالي'),
+                                        onTap: () {
+                                          ref
+                                              .read(
+                                                playerNotifierProvider.notifier,
+                                              )
+                                              .addItemNext(
+                                                data[indexInPage].id,
+                                              );
+                                        },
+                                      ),
+                                      PopupMenuItem<String>(
+                                        child: const Text(
+                                          'اضافة في قائمة التشغيل',
+                                        ),
+                                        onTap: () {
+                                          ref
+                                              .read(
+                                                playerNotifierProvider.notifier,
+                                              )
+                                              .addToQueue(
+                                                surahID: data[indexInPage].id,
+                                              );
+                                        },
+                                      ),
+                                      PopupMenuItem<String>(
+                                        child: const Text('تحميل السورة'),
+                                        onTap: () async {
+                                          final height = ref.read(
+                                            downloadHeightProvider,
+                                          );
+                                          final surah = data[indexInPage];
+                                          if (height == 100) {
+                                            ref
+                                                    .read(
+                                                      downloadHeightProvider
+                                                          .notifier,
+                                                    )
+                                                    .state =
+                                                0;
+                                          } else {
+                                            ref
+                                                    .read(
+                                                      downloadHeightProvider
+                                                          .notifier,
+                                                    )
+                                                    .state =
+                                                100;
+                                          }
+                                          ref
                                                   .read(
-                                                    playerNotifierProvider
+                                                    downloadSurahProvider
                                                         .notifier,
                                                   )
-                                                  .addItemNext(
-                                                    data[indexInPage].id,
-                                                  );
-                                            },
-                                          ),
-                                          PopupMenuItem<String>(
-                                            child: const Text(
-                                              'اضافة في قائمة التشغيل',
-                                            ),
-                                            onTap: () {
-                                              ref
-                                                  .read(
-                                                    playerNotifierProvider
-                                                        .notifier,
-                                                  )
-                                                  .addToQueue(
-                                                    surahID:
-                                                        data[indexInPage].id,
-                                                  );
-                                            },
-                                          ),
-                                          PopupMenuItem<String>(
-                                            child: const Text('تحميل السورة'),
-                                            onTap: () {
-                                              ref
-                                                  .read(
-                                                    downloadAudioProvider
-                                                        .notifier,
-                                                  )
-                                                  .downloadSurah(
-                                                    surahID:
-                                                        data[indexInPage].id,
-                                                  );
-                                            },
-                                          ),
-                                        ],
+                                                  .state =
+                                              surah;
+                                          final downloadState = ref
+                                              .read(downloadAudioProvider)
+                                              ?.downloadState;
+                                          if (downloadState !=
+                                              DownloadState.downloading) {
+                                            await ref
+                                                .read(
+                                                  downloadAudioProvider
+                                                      .notifier,
+                                                )
+                                                .downloadSurah(
+                                                  surahID: surah.id,
+                                                );
+                                          }
+                                        },
+                                      ),
+                                      PopupMenuItem<String>(
+                                        child: const Text('اقرأ السورة'),
+                                        onTap: () {
+                                          context.pushNamed(
+                                            'Reading',
+                                            extra: data[indexInPage],
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

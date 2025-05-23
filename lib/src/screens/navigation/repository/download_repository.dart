@@ -90,9 +90,15 @@ class DownloadAudio extends _$DownloadAudio {
           ref.watch(downloadHeightProvider.notifier).state = 0;
           try {
             await writeMetaData(savePath, album);
+            ref.watch(cancelTokenProvider.notifier).state = CancelToken();
           } catch (e) {
             log('[Error Writing metadata]', error: e);
           }
+        })
+        .catchError((e) {
+          log('[Error Downloading]', error: e);
+          state = state!.copyWith(downloadState: DownloadState.cancelled);
+          cancelToken.cancel();
         });
     state = null;
   }
@@ -146,6 +152,7 @@ class DownloadAudio extends _$DownloadAudio {
       file: filePath,
       metadata: Metadata(
         genre: 'Quran',
+        discNumber: album.surah.id,
         title: album.surah.arabicName,
         artist: album.reciter.arabicName,
       ),

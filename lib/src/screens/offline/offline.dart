@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
@@ -50,16 +51,32 @@ class DownloadsScreen extends ConsumerWidget {
                       return ListTile(
                         title: Text(data[index].surah.arabicName),
                         subtitle: Text(data[index].reciter.arabicName),
-                        trailing: ToolTipIconButton(
-                          message: 'تشغيل',
-                          onPressed: () {
-                            ref
-                                .read(playerNotifierProvider.notifier)
-                                .localPlay(
-                                  album: data[index].copyWith(isLocal: true),
+                        onTap: () {
+                          ref
+                              .read(playerNotifierProvider.notifier)
+                              .localPlay(
+                                album: data[index].copyWith(isLocal: true),
+                              );
+                        },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ToolTipIconButton(
+                              message: 'اقرأ السورة',
+                              onPressed: () {
+                                context.pushNamed(
+                                  'Reading',
+                                  extra: data[index].surah,
                                 );
-                          },
-                          icon: const Icon(Icons.play_arrow),
+                              },
+                              icon: const VectorGraphic(
+                                loader: AssetBytesLoader(
+                                  'assets/img/svg/read.svg',
+                                ),
+                                width: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },

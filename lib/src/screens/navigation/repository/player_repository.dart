@@ -9,7 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:mostaqem/src/core/SMTC/smtc_provider.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
@@ -66,7 +65,11 @@ class PlayerNotifier extends _$PlayerNotifier {
   void init() {
     player.stream.playlist.listen((data) async {
       if (player.state.playlist.medias.length == 1) {
-        await addToQueue();
+        if (isLocalAudio()) {
+          await addLocalQueue();
+        } else {
+          await addToQueue();
+        }
       }
       Album? parseAlbum(int index) {
         if (index < 0 || index >= data.medias.length) return null;
@@ -85,25 +88,24 @@ class PlayerNotifier extends _$PlayerNotifier {
         album: parseAlbum(data.index),
         nextAlbum: parseAlbum(data.index + 1),
         queueIndex: data.index,
-        queue:
-            data.medias
-                .map((media) {
-                  final extras = media.extras;
-                  return extras == null
-                      ? null
-                      : Album(
-                        surah: Surah.fromJson(
-                          extras['surah'] as Map<String, dynamic>,
-                        ),
-                        reciter: Reciter.fromJson(
-                          extras['reciter'] as Map<String, dynamic>,
-                        ),
-                        url: extras['url'] as String,
-                        recitationID: extras['recitationID'] as int,
-                      );
-                })
-                .whereType<Album>()
-                .toList(), // Remove nulls
+        queue: data.medias
+            .map((media) {
+              final extras = media.extras;
+              return extras == null
+                  ? null
+                  : Album(
+                      surah: Surah.fromJson(
+                        extras['surah'] as Map<String, dynamic>,
+                      ),
+                      reciter: Reciter.fromJson(
+                        extras['reciter'] as Map<String, dynamic>,
+                      ),
+                      url: extras['url'] as String,
+                      recitationID: extras['recitationID'] as int,
+                    );
+            })
+            .whereType<Album>()
+            .toList(),
       );
     });
 
@@ -125,10 +127,9 @@ class PlayerNotifier extends _$PlayerNotifier {
         updateRPCDiscordProvider(
           surahName: state.album?.surah.simpleName ?? '',
           reciter: state.album?.reciter.englishName ?? '',
+          url: state.album?.url ?? '',
         ).future,
-       
       );
-  
     });
 
     player.stream.buffer.listen((buffering) {
@@ -139,7 +140,6 @@ class PlayerNotifier extends _$PlayerNotifier {
       state = state.copyWith(isPlaying: playing);
       if (Platform.isWindows) {
         windowThumbnailBar();
-    
       }
     });
   }
@@ -160,13 +160,10 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   bool isFirstChapter() {
     if (isLocalAudio()) {
-      final currentURL = state.album?.url;
       final audios = ref.read(getLocalAudioProvider).value;
       if (audios == null) return false;
 
-      final currentIndex = audios.indexWhere((e) => e.url == currentURL);
-
-      return currentIndex > 0;
+      return player.state.playlist.index == 0;
     }
 
     final currentSurah = state.album?.surah;
@@ -178,14 +175,15 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   bool isLastchapter() {
     if (isLocalAudio()) {
-      final currentURL = state.album?.url;
       final audios = ref.read(getLocalAudioProvider).value;
       if (audios == null) return false;
 
-      final currentIndex = audios.indexWhere((e) => e.url == currentURL);
+      final currentIndex = player.state.playlist.index;
       final lastIndex = audios.length - 1;
-      debugPrint('CurrentIndex: $currentIndex, Lastindex:$lastIndex');
-      return currentIndex < lastIndex;
+      debugPrint(
+        'CurrentIndex: ${player.state.playlist.index}, Lastindex:$lastIndex',
+      );
+      return currentIndex <= lastIndex;
     }
     final currentSurah = state.album?.surah;
 
@@ -208,24 +206,21 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> localPlay({required Album album}) async {
-    await player.open(Media(album.url));
-    state = state.copyWith(album: album);
-  }
-
-  Future<void> localPlayNext() async {
-    final currentURL = state.album?.url;
-    final audios = await ref.read(getLocalAudioProvider.future);
-    final currentIndex = audios.indexWhere((e) => e.url == currentURL);
-    state = state.copyWith(album: audios[currentIndex + 1]);
-    await player.open(Media(audios[currentIndex + 1].url));
+    state = state.copyWith(album: album, broadcastName: '');
+    await player.open(
+      Media(
+        album.url,
+        extras: {
+          'surah': album.surah.toJson(),
+          'reciter': album.reciter.toJson(),
+          'recitationID': album.recitationID,
+          'url': album.url,
+        },
+      ),
+    );
   }
 
   Future<void> playNext() async {
-    if (isLocalAudio()) {
-      await localPlayNext();
-      return;
-    }
-
     await player.next();
   }
 
@@ -234,17 +229,6 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> playPrevious() async {
-    if (isLocalAudio()) {
-      final currentUrl = state.album?.url;
-
-      await player.previous();
-      final audios = await ref.read(getLocalAudioProvider.future);
-      final currentIndex = audios.indexWhere((e) => e.url == currentUrl);
-      state = state.copyWith(album: audios[currentIndex - 1]);
-      await player.open(Media(audios[currentIndex - 1].url));
-      return;
-    }
-
     await player.previous();
   }
 
@@ -396,6 +380,29 @@ class PlayerNotifier extends _$PlayerNotifier {
     await player.setVolume(value * 100);
 
     state = state.copyWith(volume: value);
+  }
+
+  Future<void> addLocalQueue() async {
+    final audios = await ref.read(getLocalAudioProvider.future);
+    final currentIndex = audios.indexWhere((e) => e.url == state.album!.url);
+
+    if (currentIndex < audios.length) {
+      for (var i = currentIndex + 1; i < audios.length; i++) {
+        final album = audios[i];
+
+        await player.add(
+          Media(
+            album.url,
+            extras: {
+              'surah': album.surah.toJson(),
+              'reciter': album.reciter.toJson(),
+              'recitationID': album.recitationID,
+              'url': album.url,
+            },
+          ),
+        );
+      }
+    }
   }
 
   Future<void> addToQueue({int? surahID}) async {

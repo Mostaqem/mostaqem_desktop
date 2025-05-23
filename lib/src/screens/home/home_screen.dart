@@ -60,22 +60,21 @@ class HomeScreen extends ConsumerWidget {
                       trailing: [
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child:
-                              isTyping
-                                  ? IconButton(
-                                    icon: const Icon(Icons.close),
-                                    onPressed: () {
-                                      ref
-                                          .read(
-                                            searchNotifierProvider(
-                                              'home',
-                                            ).notifier,
-                                          )
-                                          .clear();
-                                      queryController.clear();
-                                    },
-                                  )
-                                  : const Icon(Icons.search),
+                          child: isTyping
+                              ? IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () {
+                                    ref
+                                        .read(
+                                          searchNotifierProvider(
+                                            'home',
+                                          ).notifier,
+                                        )
+                                        .clear();
+                                    queryController.clear();
+                                  },
+                                )
+                              : const Icon(Icons.search),
                         ),
                       ],
                       hintText: 'ماذا تريد ان تسمع؟',
@@ -111,10 +110,9 @@ class HomeScreen extends ConsumerWidget {
                             Align(
                               alignment: Alignment.topLeft,
                               child: CloseButton(
-                                onPressed:
-                                    () => ref
-                                        .read(isCollapsedProvider.notifier)
-                                        .update((state) => !state),
+                                onPressed: () => ref
+                                    .read(isCollapsedProvider.notifier)
+                                    .update((state) => !state),
                               ),
                             ),
                             const SizedBox(height: 15),
@@ -127,10 +125,8 @@ class HomeScreen extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                   image: CachedNetworkImageProvider(
                                     surahImage ?? '',
-                                    errorListener:
-                                        (_) => const Icon(
-                                          Icons.broken_image_outlined,
-                                        ),
+                                    errorListener: (_) =>
+                                        const Icon(Icons.broken_image_outlined),
                                   ),
                                 ),
                               ),
@@ -145,10 +141,9 @@ class HomeScreen extends ConsumerWidget {
                               ),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onSecondaryContainer,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
                               ),
                             ),
                             TextHover(

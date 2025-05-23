@@ -68,63 +68,67 @@ class ReadingScreen extends StatelessWidget {
                           child: Text.rich(
                             textAlign: TextAlign.justify,
                             TextSpan(
-                              children:
-                                  data
-                                      .map(
-                                        (e) => TextSpan(
-                                          text: e.verse,
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                            context.push("/share",extra: e.verse);
+                              children: data
+                                  .map(
+                                    (e) => TextSpan(
+                                      text: e.verse,
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          context.pushNamed(
+                                            'Share',
+                                            extra: e.verse,
+                                            pathParameters: {
+                                              'surahName': surah.arabicName,
+                                              'verseNumber': e.verseNumber
+                                                  .toString(),
                                             },
-                                          style: GoogleFonts.amiri(
-                                            fontSize: 30,
-                                            height: 3.2,
+                                          );
+                                        },
+                                      style: GoogleFonts.amiri(
+                                        fontSize: 30,
+                                        height: 3.2,
+                                      ),
+                                      children: [
+                                        const WidgetSpan(
+                                          child: SizedBox(
+                                            width: 15,
+                                            height: 50,
                                           ),
+                                        ),
+                                        TextSpan(
                                           children: [
-                                            const WidgetSpan(
-                                              child: SizedBox(
-                                                width: 15,
-                                                height: 50,
-                                              ),
-                                            ),
                                             TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                      e.verseNumber
-                                                          .toString()
-                                                          .toArabicNumbers,
-                                                  style: GoogleFonts.amiri(
-                                                    color:
-                                                        Theme.of(
-                                                          context,
-                                                        ).colorScheme.primary,
-                                                    fontSize: 30,
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                ),
-                                              ],
-                                              text: '۝',
+                                              text: e.verseNumber
+                                                  .toString()
+                                                  .toArabicNumbers,
                                               style: GoogleFonts.amiri(
-                                                color:
-                                                    Theme.of(
-                                                      context,
-                                                    ).colorScheme.primary,
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.primary,
                                                 fontSize: 30,
                                                 fontWeight: FontWeight.w800,
                                               ),
                                             ),
-                                            const WidgetSpan(
-                                              child: SizedBox(
-                                                width: 15,
-                                                height: 50,
-                                              ),
-                                            ),
                                           ],
+                                          text: '۝',
+                                          style: GoogleFonts.amiri(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w800,
+                                          ),
                                         ),
-                                      )
-                                      .toList(),
+                                        const WidgetSpan(
+                                          child: SizedBox(
+                                            width: 15,
+                                            height: 50,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
                             ),
                           ),
                         );

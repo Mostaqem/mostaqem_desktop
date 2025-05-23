@@ -21,8 +21,8 @@ class NavigationRepository {
           GoRoute(
             path: 'reading',
             name: 'Reading',
-            builder:
-                (context, state) => ReadingScreen(surah: state.extra! as Surah),
+            builder: (context, state) =>
+                ReadingScreen(surah: state.extra! as Surah),
           ),
         ],
         builder: (context, state) => const Navigation(),
@@ -40,19 +40,23 @@ class NavigationRepository {
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
       ),
-       GoRoute(
-        path: '/share',
-        builder: (context, state) =>  ShareScreen(verse: state.extra! as String,),
+      GoRoute(
+        name: 'Share',
+        path: '/share/:surahName/:verseNumber',
+        builder: (context, state) => ShareScreen(
+          verse: state.extra! as String,
+          surahName: state.pathParameters['surahName']!,
+          verseNumber: state.pathParameters['verseNumber']!,
+        ),
       ),
     ],
   );
 
   String getCurrentRouter() {
     final lastMatch = router.routerDelegate.currentConfiguration.last;
-    final matchList =
-        lastMatch is ImperativeRouteMatch
-            ? lastMatch.matches
-            : router.routerDelegate.currentConfiguration;
+    final matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : router.routerDelegate.currentConfiguration;
     final location = matchList.uri.toString();
     return location;
   }

@@ -56,10 +56,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
             const PlayingBroadcast()
           else
             PlayingSurah(isFullScreen: widget.isFullScreen, ref: ref),
-          const Padding(
-            padding: EdgeInsets.only(right: 80),
-            child: PlayControls(),
-          ),
+          const PlayControls(),
           Row(
             children: [
               Visibility(
@@ -76,8 +73,9 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
                     }
                     ref.read(downloadSurahProvider.notifier).state =
                         album!.surah;
-                    final downloadState =
-                        ref.read(downloadAudioProvider)?.downloadState;
+                    final downloadState = ref
+                        .read(downloadAudioProvider)
+                        ?.downloadState;
                     if (downloadState != DownloadState.downloading) {
                       await ref.read(downloadAudioProvider.notifier).download();
                     }
@@ -91,8 +89,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
               Visibility(
                 visible:
                     !widget.isFullScreen &&
-                    ref.watch(downloadHeightProvider) == 0 &&
-                    !ref.watch(isLocalProvider),
+                    ref.watch(downloadHeightProvider) == 0,
                 child: ToolTipIconButton(
                   message: 'اقرأ',
                   onPressed: () async {

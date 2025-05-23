@@ -24,7 +24,7 @@ class FullScreenControl extends ConsumerWidget {
           ref.read(downloadHeightProvider.notifier).state = 0;
           if (!context.mounted) return;
 
-          ref.read(goRouterProvider).pop();
+          ref.read(goRouterProvider).go('/');
         }
       },
       icon: Icon(
@@ -32,10 +32,9 @@ class FullScreenControl extends ConsumerWidget {
             ? Icons.close_fullscreen_outlined
             : Icons.open_in_full_outlined,
         size: 16,
-        color:
-            isFullScreen
-                ? Colors.white
-                : Theme.of(context).colorScheme.onSecondaryContainer,
+        color: isFullScreen
+            ? Colors.white
+            : Theme.of(context).colorScheme.onSecondaryContainer,
       ),
       message: isFullScreen ? 'تصغير الشاشة' : 'تكبير الشاشة',
     );
