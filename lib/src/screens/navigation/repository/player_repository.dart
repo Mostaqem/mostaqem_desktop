@@ -19,6 +19,7 @@ import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart'
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
+import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_focus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 

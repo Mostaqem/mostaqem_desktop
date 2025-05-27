@@ -11,6 +11,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dar
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/nework_required_widget.dart';
+import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_focus.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -25,6 +26,7 @@ class HomeScreen extends ConsumerWidget {
     final surahImage = ref.watch(
       playerNotifierProvider.select((value) => value.album?.surah.image),
     );
+    final focusNode = ref.watch(textFieldFocusProvider);
 
     return NeworkRequiredWidget(
       child: Row(
@@ -45,7 +47,16 @@ class HomeScreen extends ConsumerWidget {
                   const SizedBox(height: 10),
                   Align(
                     child: SearchBar(
+                      focusNode: focusNode,
                       controller: queryController,
+                      onTapOutside: (_) {
+                        focusNode?.unfocus();
+                        ref.read(shortcutsEnabledProvider.notifier).state =
+                            true;
+                      },
+                      onTap: () => ref
+                          .read(shortcutsEnabledProvider.notifier)
+                          .update((state) => !state),
                       onChanged: (value) {
                         ref
                             .read(searchNotifierProvider('home').notifier)

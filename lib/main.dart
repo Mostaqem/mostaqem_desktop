@@ -19,8 +19,7 @@ void main() async {
   await CacheHelper.init();
   await windowManager.ensureInitialized();
   final windowOptions = WindowOptions(
-    size: const Size(1610, 910),
-    minimumSize: const Size(800, 500),
+    minimumSize: const Size(1024, 600),
     center: true,
     title: 'Mostaqem',
     backgroundColor: Colors.transparent,

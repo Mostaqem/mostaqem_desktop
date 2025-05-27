@@ -45,22 +45,21 @@ class BroadcastScreen extends ConsumerWidget {
                   trailing: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child:
-                          isTyping
-                              ? IconButton(
-                                icon: const Icon(Icons.close),
-                                onPressed: () {
-                                  ref
-                                      .read(
-                                        searchNotifierProvider(
-                                          'broadcast',
-                                        ).notifier,
-                                      )
-                                      .clear();
-                                  queryController.clear();
-                                },
-                              )
-                              : const Icon(Icons.search),
+                      child: isTyping
+                          ? IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                ref
+                                    .read(
+                                      searchNotifierProvider(
+                                        'broadcast',
+                                      ).notifier,
+                                    )
+                                    .clear();
+                                queryController.clear();
+                              },
+                            )
+                          : const Icon(Icons.search),
                     ),
                   ],
                   hintText: 'ماذا تريد ان تسمع؟',
@@ -71,11 +70,11 @@ class BroadcastScreen extends ConsumerWidget {
                 value: broadcasts,
                 data: (data) {
                   return SizedBox(
-                    height: MediaQuery.sizeOf(context).height - 130,
+                    height: MediaQuery.sizeOf(context).height - 180,
                     child: ListView.separated(
                       itemCount: data.length,
-                      separatorBuilder:
-                          (context, index) => const SizedBox(height: 16),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 16),
                       itemBuilder: (context, index) {
                         return ListTile(
                           leading: Text(
@@ -83,10 +82,12 @@ class BroadcastScreen extends ConsumerWidget {
                             style: const TextStyle(fontSize: 16),
                           ),
                           selected: data[index].name == currentBroadcast,
-                          selectedTileColor:
-                              Theme.of(context).colorScheme.primaryContainer,
-                          selectedColor:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
+                          selectedTileColor: Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer,
+                          selectedColor: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
                           trailing: const Icon(Icons.play_arrow),
                           onTap: () {
                             ref

@@ -1,25 +1,23 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaqem/src/shared/widgets/snackbar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:file_picker/file_picker.dart';
 
 class ShareRepository {
   ShareRepository({
     required this.context,
     required this.verse,
     required this.surahName,
-    required this.verseNumber,
     this.image,
   });
   final BuildContext context;
   final String verse;
   final String surahName;
-  final String verseNumber;
   final File? image;
   ui.PictureRecorder? _recorder;
 
@@ -35,14 +33,13 @@ class ShareRepository {
 
       final pngBytes = await _finalizeImage(originalImage);
       await _saveImage(pngBytes);
-
-      if (context.mounted) {
-        appSnackBar(context, message: 'لقد تم حفظ الصورة بنجاح');
-      }
     } catch (e) {
       throw Exception('Failed to save image: $e');
     } finally {
-      _recorder?.endRecording();
+      if (_recorder!.isRecording) {
+        _recorder?.endRecording();
+        _recorder = null;
+      }
     }
   }
 
@@ -78,7 +75,7 @@ class ShareRepository {
 
   void _drawVerseText(Canvas canvas, ui.Image originalImage) {
     final versePainter = TextPainter(
-      maxLines: 3,
+      maxLines: 2,
       textAlign: TextAlign.center,
       text: TextSpan(
         text: verse,
@@ -102,7 +99,7 @@ class ShareRepository {
       maxLines: 1,
       textAlign: TextAlign.center,
       text: TextSpan(
-        text: '$surahName : $verseNumber',
+        text: '- $surahName -',
         style: GoogleFonts.amiri(
           color: Colors.white,
           fontSize: _calculateFontSize(originalImage) * 0.8,
@@ -182,10 +179,13 @@ class ShareRepository {
 
     if (savePath != null) {
       await File(savePath).writeAsBytes(pngBytes);
+      if (context.mounted) {
+        appSnackBar(context, message: 'لقد تم حفظ الصورة بنجاح');
+      }
     }
   }
 
   double _calculateFontSize(ui.Image image) {
-    return image.width * 0.03; 
+    return image.width * 0.03; //TODO: ADjust Size
   }
 }

@@ -67,6 +67,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
     final isFullScreen = ref.watch(isFullScreenProvider);
     final isBroadcast = ref.watch(isBroadcastProvider);
     return Stack(
+      
       children: [
         Container(
           height: 100,

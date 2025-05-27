@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mostaqem/src/core/routes/routes.dart';
 
 class AppBackButton extends StatelessWidget {
   const AppBackButton({super.key});
@@ -12,24 +14,31 @@ class AppBackButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         spacing: 10,
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Tooltip(
-              message: 'رجوع',
-              preferBelow: false,
-              child: IconButton(
-                icon: const Icon(Icons.home_outlined),
-                onPressed: () {
-                  context.go('/');
-                },
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
+          Consumer(
+            builder: (context, ref, child) {
+              return Visibility(
+                visible: ref.watch(navigationProvider).isNavigationStackDeep(),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Tooltip(
+                    message: 'رجوع',
+                    preferBelow: false,
+                    child: IconButton(
+                      icon: const Icon(Icons.home_outlined),
+                      onPressed: () {
+                        context.go('/');
+                      },
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
           Container(
             width: 40,

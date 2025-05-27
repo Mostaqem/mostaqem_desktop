@@ -10,13 +10,11 @@ import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 class ShareScreen extends StatefulWidget {
   const ShareScreen({
     required this.surahName,
-    required this.verseNumber,
     super.key,
     this.verse = 'بسم الله الرحمن الرحيم',
   });
   final String verse;
   final String surahName;
-  final String verseNumber;
 
   @override
   State<ShareScreen> createState() => _ShareScreenState();
@@ -24,6 +22,7 @@ class ShareScreen extends StatefulWidget {
 
 class _ShareScreenState extends State<ShareScreen> {
   File? image;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,15 +64,19 @@ class _ShareScreenState extends State<ShareScreen> {
                   Column(
                     spacing: 10,
                     children: [
-                      Text(
-                        widget.verse,
-                        style: GoogleFonts.amiri(
-                          color: Colors.white,
-                          fontSize: 26,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          widget.verse,
+                          maxLines: 2,
+                          style: GoogleFonts.amiri(
+                            color: Colors.white,
+                            fontSize: 26,
+                          ),
                         ),
                       ),
                       Text(
-                        '${widget.surahName} :  ${widget.verseNumber}',
+                        '- ${widget.surahName} - ',
                         style: GoogleFonts.amiri(
                           color: Colors.white,
                           fontSize: 26,
@@ -88,55 +91,80 @@ class _ShareScreenState extends State<ShareScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: 10,
                 children: [
-                  Tooltip(
-                    message: 'حفظ الصورة',
-                    child: FilledButton(
-                      onPressed: image != null
-                          ? () async {
-                              final repo = ShareRepository(
-                                context: context,
-                                verse: widget.verse,
-                                surahName: widget.surahName,
-                                verseNumber: widget.verseNumber,
-                                image: image,
-                              );
-                              await repo.exportImage();
-                            }
-                          : null,
-                      style: const ButtonStyle(
-                        shape: WidgetStatePropertyAll(
-                          StarBorder(points: 3, pointRounding: 0.65),
-                        ),
-                        minimumSize: WidgetStatePropertyAll(Size(150, 150)),
-                      ),
-                      child: const Icon(Icons.check_circle, size: 30),
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'اختر صورة',
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final result = await FilePicker.platform.pickFiles(
-                          type: FileType.image,
-                        );
+                  ElevatedButton.icon(
+                    onPressed: image != null
+                        ? () async {
+                            if (loading) return;
 
-                        if (result != null) {
-                          final file = File(result.files.single.path!);
-                          setState(() {
-                            image = file;
-                          });
-                        } else {
-                          // User canceled the picker
-                        }
-                      },
-                      style: const ButtonStyle(
-                        shape: WidgetStatePropertyAll(
-                          StarBorder(pointRounding: 0.8),
+                            final repo = ShareRepository(
+                              context: context,
+                              verse: widget.verse,
+                              surahName: widget.surahName,
+                              image: image,
+                            );
+                            setState(() {
+                              loading = true;
+                            });
+
+                            await repo.exportImage().whenComplete(() {
+                              setState(() {
+                                loading = false;
+                              });
+                            });
+                          }
+                        : null,
+
+                    style: ButtonStyle(
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        minimumSize: WidgetStatePropertyAll(Size(150, 150)),
                       ),
-                      child: const Icon(Icons.image_rounded, size: 30),
+                      minimumSize: const WidgetStatePropertyAll(Size(50, 60)),
                     ),
+                    label: const Text('حفظ الصورة'),
+                    icon: loading
+                        ? SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimaryContainer,
+                            ),
+                          )
+                        : const Icon(Icons.check_circle, size: 30),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      final result = await FilePicker.platform.pickFiles(
+                        type: FileType.image,
+                      );
+
+                      if (result != null) {
+                        final file = File(result.files.single.path!);
+                        setState(() {
+                          image = file;
+                        });
+                      } else {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('لم يتم اختيار صورة')),
+                          );
+                        }
+                      }
+                    },
+                    label: const Text('اختر صورة'),
+                    style: ButtonStyle(
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      minimumSize: const WidgetStatePropertyAll(Size(50, 60)),
+                    ),
+                    icon: const Icon(Icons.image_rounded, size: 30),
                   ),
                 ],
               ),

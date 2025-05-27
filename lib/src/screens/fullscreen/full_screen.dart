@@ -48,165 +48,165 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
     return isbroadcast
         ? const BroadcastFullscreenWidget()
         : Stack(
-          children: [
-            if (connection == InternetConnectionStatus.connected &&
-                isProduction)
-              AsyncWidget(
-                value: randomImage,
-                data: (data) {
-                  return SizedBox.expand(
-                    child: Image.network(
-                      data,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child; // Image loaded
-                        } else {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value:
-                                  loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
+            children: [
+              if (connection == InternetConnectionStatus.connected &&
+                  isProduction)
+                AsyncWidget(
+                  value: randomImage,
+                  data: (data) {
+                    return SizedBox.expand(
+                      child: Image.network(
+                        data,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child; // Image loaded
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value:
+                                    loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
                                           loadingProgress.expectedTotalBytes!
-                                      : null,
+                                    : null,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    );
+                  },
+                )
+              else
+                SizedBox.expand(
+                  child: Image.asset('assets/img/kaaba.jpg', fit: BoxFit.cover),
+                ),
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.black,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0, 0.5, 0.3, 1],
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: isLyricsVisible,
+                child: Center(
+                  child: Container(
+                    height: MediaQuery.sizeOf(context).height,
+                    width: MediaQuery.sizeOf(context).width,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.8),
+                    ),
+                    child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(
+                        context,
+                      ).copyWith(scrollbars: false),
+                      child: AsyncWidget(
+                        value: lyrics,
+                        data: (data) {
+                          if (data == null) {
+                            return const Text(
+                              'عفوا, لا يوجد كلمات , سوف نضيفها مع الوقت',
+                              style: TextStyle(color: Colors.white),
+                            );
+                          }
+                          return Text(
+                            data,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.amiri(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 24,
+                              color: theme.colorScheme.primary,
                             ),
                           );
-                        }
-                      },
-                    ),
-                  );
-                },
-              )
-            else
-              SizedBox.expand(
-                child: Image.asset('assets/img/kaaba.jpg', fit: BoxFit.cover),
-              ),
-            Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.transparent,
-                    Colors.transparent,
-                    Colors.transparent,
-                    Colors.black,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0, 0.5, 0.3, 1],
-                ),
-              ),
-            ),
-            Visibility(
-              visible: isLyricsVisible,
-              child: Center(
-                child: Container(
-                  height: MediaQuery.sizeOf(context).height,
-                  width: MediaQuery.sizeOf(context).width,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.8),
-                  ),
-                  child: ScrollConfiguration(
-                    behavior: ScrollConfiguration.of(
-                      context,
-                    ).copyWith(scrollbars: false),
-                    child: AsyncWidget(
-                      value: lyrics,
-                      data: (data) {
-                        if (data == null) {
-                          return const Text(
-                            'عفوا, لا يوجد كلمات , سوف نضيفها مع الوقت',
-                            style: TextStyle(color: Colors.white),
-                          );
-                        }
-                        return Text(
-                          data,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.amiri(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 24,
-                            color: theme.colorScheme.primary,
-                          ),
-                        );
-                      },
+                        },
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 220, right: 50),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Container(
-                      width: 200,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(
-                            widget.player.surah.image ??
-                                'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
+              Padding(
+                padding: const EdgeInsets.only(bottom: 220, right: 50),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        width: MediaQuery.sizeOf(context).width / 10,
+                        height: MediaQuery.sizeOf(context).width / 10,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(
+                              widget.player.surah.image ??
+                                  'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.player.surah.arabicName,
-                          style: const TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          widget.player.reciter.arabicName,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white.withValues(alpha: 0.5),
-                          ),
-                        ),
-                        Visibility(
-                          visible: ref.watch(isLocalProvider),
-                          child: Text(
-                            'تشغيل اوفلاين',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: theme.colorScheme.tertiary,
+                      const SizedBox(width: 12),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.player.surah.arabicName,
+                            style: const TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: CircleAvatar(
-                  backgroundColor: theme.colorScheme.surface,
-                  child: ToolTipIconButton(
-                    message: 'تغير الصورة',
-                    onPressed: () {
-                      ref.invalidate(fetchRandomImageProvider);
-                    },
-                    icon: const Icon(Icons.arrow_forward_outlined),
+                          Text(
+                            widget.player.reciter.arabicName,
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white.withValues(alpha: 0.5),
+                            ),
+                          ),
+                          Visibility(
+                            visible: ref.watch(isLocalProvider),
+                            child: Text(
+                              'تشغيل اوفلاين',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: theme.colorScheme.tertiary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
-        );
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: CircleAvatar(
+                    backgroundColor: theme.colorScheme.surface,
+                    child: ToolTipIconButton(
+                      message: 'تغير الصورة',
+                      onPressed: () {
+                        ref.invalidate(fetchRandomImageProvider);
+                      },
+                      icon: const Icon(Icons.arrow_forward_outlined),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
   }
 }
