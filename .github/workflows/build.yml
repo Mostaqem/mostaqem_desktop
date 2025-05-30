@@ -20,7 +20,7 @@ jobs:
         run: |
           $envContent = @"
           BASE_API=${{ secrets.PRODAPI }}
-          mStore=false
+          MSTORE=false
           DISCORD=${{ secrets.DISCORD }}
           "@
           $envContent | Out-File -FilePath .env -Encoding ascii
@@ -76,7 +76,7 @@ jobs:
         run: |
           cat > .env <<EOF
           BASE_API= ${{ secrets.PRODAPI }}
-          mStore=false
+          MSTORE=false
           DISCORD=${{ secrets.DISCORD }}
           EOF
           
@@ -137,7 +137,7 @@ jobs:
         run: |
           cat > .env <<EOF
           BASE_API= ${{ secrets.PRODAPI }}
-          mStore=false
+          MSTORE=false
           DISCORD=${{ secrets.DISCORD }}
           EOF
           
