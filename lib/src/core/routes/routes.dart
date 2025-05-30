@@ -2,12 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/navigation.dart';
+import 'package:mostaqem/src/screens/occasions/occasions.dart';
 import 'package:mostaqem/src/screens/queue/presentation/queue_screen.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
 import 'package:mostaqem/src/screens/reciters/reciters_screen.dart';
 import 'package:mostaqem/src/screens/settings/settings_screen.dart';
 import 'package:mostaqem/src/screens/share/share_screen.dart';
-import 'package:mostaqem/src/screens/special/special.dart';
 import 'package:mostaqem/src/shared/widgets/custom_license_page.dart';
 
 class NavigationRepository {
@@ -57,7 +57,7 @@ class NavigationRepository {
       ),
       GoRoute(
         path: '/special',
-        builder: (context, state) => const SpecialScreen(),
+        builder: (context, state) => const OccasionsScreen(),
       ),
     ],
   );

@@ -6,8 +6,8 @@ import 'package:mostaqem/src/core/screens/screens.dart';
 import 'package:mostaqem/src/screens/fullscreen/full_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/special/domain/special_repository.dart';
-import 'package:mostaqem/src/screens/special/special.dart';
+import 'package:mostaqem/src/screens/occasions/domain/occasions_repository.dart';
+import 'package:mostaqem/src/screens/occasions/occasions.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
@@ -40,8 +40,8 @@ class _NavigationState extends ConsumerState<Navigation> {
   final specialPage = Screen(
     icon: const Icon(Icons.star_outline_rounded),
     selectedIcon: const Icon(Icons.star_rounded),
-    label: 'مثالي',
-    widget: const SpecialScreen(),
+    label: 'مناسبات',
+    widget: const OccasionsScreen(),
   );
 
   @override
@@ -52,7 +52,7 @@ class _NavigationState extends ConsumerState<Navigation> {
     );
     var children = ref.watch(childrenProvider);
     final screenIndex = ref.watch(indexScreenProvider);
-    final isTodaySpecial = ref.watch(specialRepoProvider).isTodaySpecial();
+    final isTodaySpecial = ref.watch(occasionsRepoProvider).isTodaySpecial();
     if (isTodaySpecial) {
       children = {...children, specialPage};
     }

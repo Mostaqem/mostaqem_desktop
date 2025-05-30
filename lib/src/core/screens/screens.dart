@@ -4,7 +4,6 @@ import 'package:mostaqem/src/screens/broadcast/broadcast.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 
 import 'package:mostaqem/src/screens/offline/offline.dart';
-import 'package:mostaqem/src/screens/special/special.dart';
 
 class Screen {
   Screen({
