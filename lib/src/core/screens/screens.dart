@@ -4,6 +4,7 @@ import 'package:mostaqem/src/screens/broadcast/broadcast.dart';
 import 'package:mostaqem/src/screens/home/home_screen.dart';
 
 import 'package:mostaqem/src/screens/offline/offline.dart';
+import 'package:mostaqem/src/screens/special/special.dart';
 
 class Screen {
   Screen({
@@ -18,13 +19,14 @@ class Screen {
   Widget widget;
 }
 
-final List<Screen> _childrenScreens = [
+final Set<Screen> _childrenScreens = {
   Screen(
     icon: const Icon(Icons.home_outlined),
     label: 'الرئيسية',
     selectedIcon: const Icon(Icons.home),
     widget: HomeScreen(),
   ),
+
   Screen(
     icon: const Icon(Icons.folder_outlined),
     selectedIcon: const Icon(Icons.folder),
@@ -37,8 +39,8 @@ final List<Screen> _childrenScreens = [
     label: 'الإذاعات',
     widget: const BroadcastScreen(),
   ),
-];
+};
 
-final childrenProvider = StateProvider<List<Screen>>((ref) => _childrenScreens);
+final childrenProvider = StateProvider<Set<Screen>>((ref) => _childrenScreens);
 
 final indexScreenProvider = StateProvider<int>((ref) => 0);

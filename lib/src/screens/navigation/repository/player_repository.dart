@@ -19,9 +19,9 @@ import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart'
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
-import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_focus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'player_repository.g.dart';
 
@@ -65,7 +65,8 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   void init() {
     player.stream.playlist.listen((data) async {
-      if (player.state.playlist.medias.length == 1) {
+      if (player.state.playlist.medias.length == 1 &&
+          state.broadcastName != null) {
         if (isLocalAudio()) {
           await addLocalQueue();
         } else {
@@ -85,6 +86,17 @@ class PlayerNotifier extends _$PlayerNotifier {
         );
       }
 
+      if (state.broadcastName != null) {
+        await ref.read(clearRPCDiscordProvider.future);
+      } else {
+        await ref.read(
+          updateRPCDiscordProvider(
+            surahName: state.album?.surah.simpleName ?? '',
+            reciter: state.album?.reciter.englishName ?? '',
+            url: state.album?.url ?? '',
+          ).future,
+        );
+      }
       state = state.copyWith(
         album: parseAlbum(data.index),
         nextAlbum: parseAlbum(data.index + 1),
@@ -123,14 +135,6 @@ class PlayerNotifier extends _$PlayerNotifier {
         );
         await player.seek(positionAlbum);
       }
-
-      await ref.read(
-        updateRPCDiscordProvider(
-          surahName: state.album?.surah.simpleName ?? '',
-          reciter: state.album?.reciter.englishName ?? '',
-          url: state.album?.url ?? '',
-        ).future,
-      );
     });
 
     player.stream.buffer.listen((buffering) {
@@ -343,6 +347,16 @@ class PlayerNotifier extends _$PlayerNotifier {
       ),
     );
     await cacheManager.downloadFile(album.url, key: mixID);
+  }
+
+  Future<void> playYoutube({required String url, required String title}) async {
+    final yt = YoutubeExplode();
+    final video = await yt.videos.get(url);
+    final manifest = await yt.videos.streams.getManifest(video.id);
+    final audio = manifest.audioOnly;
+    final audioURL = audio.first.url.toString();
+    await player.open(Media(audioURL));
+    state = state.copyWith(broadcastName: title);
   }
 
   void loop() {

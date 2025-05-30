@@ -18,12 +18,12 @@ part 'home_providers.g.dart';
 Future<List<Surah>> fetchAllChapters(
   Ref ref, {
   required int page,
+  int take = 30,
   String? query,
 }) async {
-  final url =
-      query == null
-          ? '/surah?page=$page&take=30'
-          : '/surah?page=$page&take=30&name=$query';
+  final url = query == null
+      ? '/surah?page=$page&take=$take'
+      : '/surah?page=$page&take=$take&name=$query';
   final response = await ref.read(dioHelperProvider).getHTTP(url);
 
   return response.data['data']['surah']
@@ -48,10 +48,9 @@ Future<({String url, int recitationID})> fetchAudioForChapter(
 }) async {
   final defaultReciterID = ref.watch(defaultReciterProvider).id;
   final playReciterId = reciterID ?? defaultReciterID;
-  final url =
-      recitationID == null
-          ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
-          : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
+  final url = recitationID == null
+      ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
+      : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
   final response = await ref.read(dioHelperProvider).getHTTP(url);
 
   final audioURL = response.data['data']['url'] as String;
@@ -69,10 +68,9 @@ Future<Album> fetchAlbum(
 }) async {
   final defaultReciterID = ref.watch(defaultReciterProvider).id;
   final playReciterId = reciterID ?? defaultReciterID;
-  final url =
-      recitationID == null
-          ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
-          : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
+  final url = recitationID == null
+      ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
+      : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
   final response = await ref.read(dioHelperProvider).getHTTP(url);
   final audioURL = response.data['data']['url'] as String;
   final audioRecitationID = response.data['data']['tilawa_id'] as int;
@@ -132,4 +130,19 @@ Future<String?> fetchSurahLyrics(
       .watch(dioHelperProvider)
       .getHTTP('/audio/lrc?surah_id=$surahID&tilawa_id=$recitationID');
   return request.data?['data']?['lrc_content'];
+}
+
+@riverpod
+Future<List<Surah>> fetchRandomSurahs(
+  Ref ref, {
+  required int limit,
+  int? reciterID,
+}) async {
+  final response = await ref
+      .read(dioHelperProvider)
+      .getHTTP('/audio/random?limit=$limit}');
+
+  return response.data['data']
+      .map<Surah>((e) => Surah.fromJson(e['surah'] as Map<String, Object?>))
+      .toList();
 }
