@@ -6,6 +6,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provid
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/nework_required_widget.dart';
+import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_focus.dart';
 
 class BroadcastScreen extends ConsumerWidget {
   const BroadcastScreen({super.key});
@@ -17,6 +18,7 @@ class BroadcastScreen extends ConsumerWidget {
     final currentBroadcast = ref.watch(currentBroadcastProvider);
     final isTyping =
         ref.watch(searchNotifierProvider('broadcast'))?.isEmpty ?? false;
+    final focusNode = ref.watch(textFieldFocusProvider);
 
     return NeworkRequiredWidget(
       child: Scaffold(
@@ -30,6 +32,15 @@ class BroadcastScreen extends ConsumerWidget {
             children: [
               Align(
                 child: SearchBar(
+                  focusNode: focusNode,
+                  onTapOutside: (_) {
+                    focusNode?.unfocus();
+                    ref.read(shortcutsEnabledProvider.notifier).state = true;
+                  },
+                  onTap:
+                      () => ref
+                          .read(shortcutsEnabledProvider.notifier)
+                          .update((state) => !state),
                   controller: queryController,
                   onChanged: (value) {
                     ref
@@ -45,21 +56,22 @@ class BroadcastScreen extends ConsumerWidget {
                   trailing: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: isTyping
-                          ? IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                ref
-                                    .read(
-                                      searchNotifierProvider(
-                                        'broadcast',
-                                      ).notifier,
-                                    )
-                                    .clear();
-                                queryController.clear();
-                              },
-                            )
-                          : const Icon(Icons.search),
+                      child:
+                          isTyping
+                              ? IconButton(
+                                icon: const Icon(Icons.close),
+                                onPressed: () {
+                                  ref
+                                      .read(
+                                        searchNotifierProvider(
+                                          'broadcast',
+                                        ).notifier,
+                                      )
+                                      .clear();
+                                  queryController.clear();
+                                },
+                              )
+                              : const Icon(Icons.search),
                     ),
                   ],
                   hintText: 'ماذا تريد ان تسمع؟',
@@ -73,8 +85,8 @@ class BroadcastScreen extends ConsumerWidget {
                     height: MediaQuery.sizeOf(context).height - 180,
                     child: ListView.separated(
                       itemCount: data.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 16),
+                      separatorBuilder:
+                          (context, index) => const SizedBox(height: 16),
                       itemBuilder: (context, index) {
                         return ListTile(
                           leading: Text(
@@ -82,12 +94,10 @@ class BroadcastScreen extends ConsumerWidget {
                             style: const TextStyle(fontSize: 16),
                           ),
                           selected: data[index].name == currentBroadcast,
-                          selectedTileColor: Theme.of(
-                            context,
-                          ).colorScheme.primaryContainer,
-                          selectedColor: Theme.of(
-                            context,
-                          ).colorScheme.onPrimaryContainer,
+                          selectedTileColor:
+                              Theme.of(context).colorScheme.primaryContainer,
+                          selectedColor:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
                           trailing: const Icon(Icons.play_arrow),
                           onTap: () {
                             ref
