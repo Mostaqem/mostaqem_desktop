@@ -74,7 +74,7 @@ msix_config:
   identity_name: MostaqemInc.Mostaqem
   publisher: "CN=5EE089E6-BF1D-4AF3-AD61-23B736E7D130"
   msix_version: 2.3.0.0
-  logo_path: 'D:\\Projects\\Mostaqem\\mostaqem\\assets\\img\\app_icon.png'
+  logo_path: 'E:\\Projects\\Mostaqem\\mostaqem\\assets\\img\\app_icon.png'
   capabilities: internetClient
   store: true
 

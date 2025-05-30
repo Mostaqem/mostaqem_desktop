@@ -19,7 +19,7 @@ jobs:
       - name: Create .env file
         run: |
           $envContent = @"
-          PROD_BASE_API=${{ secrets.PRODAPI }}
+          BASE_API=${{ secrets.PRODAPI }}
           mStore=false
           DISCORD=${{ secrets.DISCORD }}
           "@
@@ -75,7 +75,7 @@ jobs:
       - name: Create .env file
         run: |
           cat > .env <<EOF
-          PROD_BASE_API= ${{ secrets.PRODAPI }}
+          BASE_API= ${{ secrets.PRODAPI }}
           mStore=false
           DISCORD=${{ secrets.DISCORD }}
           EOF
@@ -136,7 +136,7 @@ jobs:
       - name: Create .env file
         run: |
           cat > .env <<EOF
-          PROD_BASE_API= ${{ secrets.PRODAPI }}
+          BASE_API= ${{ secrets.PRODAPI }}
           mStore=false
           DISCORD=${{ secrets.DISCORD }}
           EOF
@@ -146,7 +146,7 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-        
+
       - run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Create and unlock custom keychain
