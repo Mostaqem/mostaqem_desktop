@@ -6,7 +6,7 @@ part 'album.freezed.dart';
 part 'album.g.dart';
 
 @Freezed(copyWith: true, toJson: true)
-class Album with _$Album {
+abstract class Album with _$Album {
   const factory Album({
     required Surah surah,
     required Reciter reciter,

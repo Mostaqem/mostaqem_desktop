@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
@@ -19,8 +20,10 @@ class QueueScreen extends StatelessWidget {
             child: Consumer(
               builder: (context, ref, child) {
                 final queue = ref.watch(playerNotifierProvider).queue;
-                final playingSurah =
-                    ref.watch(playerNotifierProvider).queueIndex;
+                final playingSurah = ref
+                    .watch(playerNotifierProvider)
+                    .queueIndex;
+                final isLocal = ref.watch(isLocalProvider);
                 return ReorderableListView.builder(
                   itemCount: queue.length,
                   buildDefaultDragHandles: false,
@@ -35,8 +38,9 @@ class QueueScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSecondaryContainer,
                       ),
                     ),
                   ),
@@ -56,14 +60,12 @@ class QueueScreen extends StatelessWidget {
                             .playItem(index);
                       },
 
-                      tileColor:
-                          isSurahPlaying
-                              ? Theme.of(context).colorScheme.secondary
-                              : null,
-                      textColor:
-                          isSurahPlaying
-                              ? Theme.of(context).colorScheme.onSecondary
-                              : null,
+                      tileColor: isSurahPlaying
+                          ? Theme.of(context).colorScheme.secondary
+                          : null,
+                      textColor: isSurahPlaying
+                          ? Theme.of(context).colorScheme.onSecondary
+                          : null,
                       leading: Row(
                         spacing: 10,
                         mainAxisSize: MainAxisSize.min,
@@ -76,12 +78,11 @@ class QueueScreen extends StatelessWidget {
                                 index: index,
                                 child: Icon(
                                   Icons.drag_handle,
-                                  color:
-                                      isSurahPlaying
-                                          ? Theme.of(
-                                            context,
-                                          ).colorScheme.onSecondary
-                                          : null,
+                                  color: isSurahPlaying
+                                      ? Theme.of(
+                                          context,
+                                        ).colorScheme.onSecondary
+                                      : null,
                                 ),
                               ),
                             ),
@@ -89,18 +90,21 @@ class QueueScreen extends StatelessWidget {
 
                           Stack(
                             children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  image: DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                      queue[index].surah.image!,
+                              if (queue[index].surah.image != null)
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                        queue[index].surah.image!,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                )
+                              else
+                                const SizedBox.shrink(),
                               CircleAvatar(
                                 radius: 13,
                                 child: Text(
@@ -114,58 +118,54 @@ class QueueScreen extends StatelessWidget {
                       title: Text(queue[index].surah.arabicName),
                       subtitle: Text(queue[index].reciter.arabicName),
                       trailing: PopupMenuButton(
-                        iconColor:
-                            isSurahPlaying
-                                ? Theme.of(context).colorScheme.onSecondary
-                                : null,
+                        iconColor: isSurahPlaying
+                            ? Theme.of(context).colorScheme.onSecondary
+                            : null,
 
-                        itemBuilder:
-                            (context) => [
-                              PopupMenuItem<String>(
-                                child: Row(
-                                  spacing: 10,
-                                  children: [
-                                    Icon(
-                                      Icons.play_arrow,
-                                      color:
-                                          isSurahPlaying
-                                              ? Theme.of(
-                                                context,
-                                              ).colorScheme.onSecondary
-                                              : null,
-                                    ),
-                                    const Text('تشغيل السورة'),
-                                  ],
+                        itemBuilder: (context) => [
+                          PopupMenuItem<String>(
+                            child: Row(
+                              spacing: 10,
+                              children: [
+                                Icon(
+                                  Icons.play_arrow,
+                                  color: isSurahPlaying
+                                      ? Theme.of(
+                                          context,
+                                        ).colorScheme.onSecondary
+                                      : null,
                                 ),
-                                onTap: () {
-                                  ref
-                                      .read(playerNotifierProvider.notifier)
-                                      .playItem(index);
-                                },
-                              ),
-                              PopupMenuItem<String>(
-                                child: Row(
-                                  spacing: 10,
-                                  children: [
-                                    Icon(
-                                      Icons.delete,
-                                      color:
-                                          isSurahPlaying
-                                              ? Theme.of(
-                                                context,
-                                              ).colorScheme.onSecondary
-                                              : null,
-                                    ),
-                                    const Text('حذف السورة من قائمة التشغيل'),
-                                  ],
+                                const Text('تشغيل السورة'),
+                              ],
+                            ),
+                            onTap: () {
+                              ref
+                                  .read(playerNotifierProvider.notifier)
+                                  .playItem(index);
+                            },
+                          ),
+                          PopupMenuItem<String>(
+                            child: Row(
+                              spacing: 10,
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: isSurahPlaying
+                                      ? Theme.of(
+                                          context,
+                                        ).colorScheme.onSecondary
+                                      : null,
                                 ),
-                                onTap: () {
-                                  ref
-                                      .read(playerNotifierProvider.notifier)
-                                      .removeItem(index);
-                                },
-                              ),
-                            ],
+                                const Text('حذف السورة من قائمة التشغيل'),
+                              ],
+                            ),
+                            onTap: () {
+                              ref
+                                  .read(playerNotifierProvider.notifier)
+                                  .removeItem(index);
+                            },
+                          ),
+                        ],
                       ),
                     );
                   },

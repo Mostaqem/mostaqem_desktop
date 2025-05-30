@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 enum ShortcutsEnum {
   help(name: 'مساعدة', key: LogicalKeyboardKey.f1, hidden: true),
-  playPause(name: 'تشغيل/ايقاف', key: LogicalKeyboardKey.space, control: true),
+  playPause(name: 'تشغيل/ايقاف', key: LogicalKeyboardKey.space),
   mute(name: 'صامت/تشغيل', key: LogicalKeyboardKey.keyM, control: true),
   playNext(name: 'تشغيل التالي', key: LogicalKeyboardKey.arrowLeft),
   playPrevious(name: 'تشغيل القبل', key: LogicalKeyboardKey.arrowRight),

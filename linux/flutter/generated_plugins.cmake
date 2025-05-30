@@ -4,14 +4,13 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   media_kit_libs_linux
-  screen_retriever
+  screen_retriever_linux
   url_launcher_linux
   window_manager
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
   flutter_discord_rpc
-  media_kit_native_event_loop
   metadata_god
 )
 

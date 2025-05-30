@@ -5,7 +5,7 @@ part 'recitation.freezed.dart';
 part 'recitation.g.dart';
 
 @freezed
-class Recitation with _$Recitation {
+abstract class Recitation with _$Recitation {
   const factory Recitation({
     required int id,
     required String name,

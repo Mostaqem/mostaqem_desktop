@@ -24,9 +24,9 @@ final isTypingProvider = Provider.autoDispose((ref) {
       ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
   final reciterSearch =
       ref.watch(searchNotifierProvider('reciter'))?.isEmpty ?? false;
-  final verseSearch =
-      ref.watch(searchNotifierProvider('reciter'))?.isEmpty ?? false;
+  final broadcastSearch =
+      ref.watch(searchNotifierProvider('broadcast'))?.isEmpty ?? false;
 
-  final noTyping = surahSearch || reciterSearch || verseSearch;
+  final noTyping = surahSearch || reciterSearch || broadcastSearch;
   return noTyping;
 });

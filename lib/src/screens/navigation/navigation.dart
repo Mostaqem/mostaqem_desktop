@@ -6,6 +6,8 @@ import 'package:mostaqem/src/core/screens/screens.dart';
 import 'package:mostaqem/src/screens/fullscreen/full_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/special/domain/special_repository.dart';
+import 'package:mostaqem/src/screens/special/special.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
@@ -35,48 +37,42 @@ class _NavigationState extends ConsumerState<Navigation> {
     }
   }
 
+  final specialPage = Screen(
+    icon: const Icon(Icons.star_outline_rounded),
+    selectedIcon: const Icon(Icons.star_rounded),
+    label: 'مثالي',
+    widget: const SpecialScreen(),
+  );
+
   @override
   Widget build(BuildContext context) {
     final isFullScreen = ref.watch(isFullScreenProvider);
     final player = ref.watch(
       playerNotifierProvider.select((value) => value.album),
     );
-
+    var children = ref.watch(childrenProvider);
+    final screenIndex = ref.watch(indexScreenProvider);
+    final isTodaySpecial = ref.watch(specialRepoProvider).isTodaySpecial();
+    if (isTodaySpecial) {
+      children = {...children, specialPage};
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body:
-          isFullScreen
-              ? FullScreenWidget(player: player!)
-              : Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Column(
+      body: isFullScreen
+          ? FullScreenWidget(player: player!)
+          : Column(
+              children: [
+                const WindowButtons(),
+                Expanded(
+                  child: Row(
                     children: [
-                      const WindowButtons(),
-                      Expanded(
-                        child: Consumer(
-                          builder: (context, ref, child) {
-                            final children = ref.watch(childrenProvider);
-                            final screenIndex = ref.watch(indexScreenProvider);
-                            return Row(
-                              children: [
-                                RightSide(
-                                  children: children,
-                                  screenIndex: screenIndex,
-                                ),
-                                LeftSide(
-                                  children: children,
-                                  screenIndex: screenIndex,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
+                      RightSide(children: children, screenIndex: screenIndex),
+                      LeftSide(children: children, screenIndex: screenIndex),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
     );
   }
 }
@@ -87,7 +83,7 @@ class RightSide extends ConsumerWidget {
     required this.screenIndex,
     super.key,
   });
-  final List<Screen> children;
+  final Set<Screen> children;
   final int screenIndex;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -115,10 +111,9 @@ class RightSide extends ConsumerWidget {
             leading: ToolTipIconButton(
               message: ref.watch(isExtendedProvider) ? 'تصغير' : 'توسيع',
               icon: const Icon(Icons.menu),
-              onPressed:
-                  () => ref
-                      .read(isExtendedProvider.notifier)
-                      .update((state) => !state),
+              onPressed: () => ref
+                  .read(isExtendedProvider.notifier)
+                  .update((state) => !state),
             ),
             indicatorShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -133,8 +128,8 @@ class RightSide extends ConsumerWidget {
               ),
             ],
             selectedIndex: screenIndex,
-            onDestinationSelected:
-                (value) => ref.read(indexScreenProvider.notifier).state = value,
+            onDestinationSelected: (value) =>
+                ref.read(indexScreenProvider.notifier).state = value,
           ),
         ),
       ),
@@ -149,7 +144,7 @@ class LeftSide extends StatelessWidget {
     super.key,
   });
 
-  final List<Screen> children;
+  final Set<Screen> children;
   final int screenIndex;
 
   @override
@@ -157,7 +152,7 @@ class LeftSide extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        child: children[screenIndex].widget,
+        child: children.elementAt(screenIndex).widget,
       ),
     );
   }

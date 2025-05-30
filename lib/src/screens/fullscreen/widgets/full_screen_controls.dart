@@ -32,10 +32,9 @@ class FullScreenControl extends ConsumerWidget {
             ? Icons.close_fullscreen_outlined
             : Icons.open_in_full_outlined,
         size: 16,
-        color:
-            isFullScreen
-                ? Colors.white
-                : Theme.of(context).colorScheme.onSecondaryContainer,
+        color: isFullScreen
+            ? Colors.white
+            : Theme.of(context).colorScheme.onSecondaryContainer,
       ),
       message: isFullScreen ? 'تصغير الشاشة' : 'تكبير الشاشة',
     );

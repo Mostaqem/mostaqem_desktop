@@ -55,7 +55,7 @@ class OfflineRepository {
         final album = Album(
           recitationID: 0,
           surah: Surah(
-            id: 1,
+            id: metadata.discNumber ?? 0,
             simpleName: '',
             arabicName: metadata.title ?? '',
             revelationPlace: '',

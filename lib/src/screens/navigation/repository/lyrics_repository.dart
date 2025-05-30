@@ -77,6 +77,7 @@ Future<String?> syncLyrics(Ref ref) async {
     for (final lyric in current) {
       currentLyricsAveragedMap[lyric.time] = lyric.words;
     }
+    print(currentLyricsAveragedMap);
 
     ref.listen(playerNotifierProvider.select((player) => player.position), (
       previous,

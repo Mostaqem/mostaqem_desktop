@@ -75,6 +75,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                                       squiggleAmplitude: 3,
                                       squiggleWavelength: 5,
                                       squiggleSpeed: 0.2,
+                                      useLineThumb: true,
                                       activeColor: Colors.white,
                                       value: max(0, min(position, duration)),
                                       max: duration,
@@ -177,9 +178,23 @@ class FullScreenPlayControls extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  ToolTipIconButton(
+                    message: 'خلط',
+                    onPressed: () async {
+                      await ref.read(playerNotifierProvider.notifier).shuffle();
+                    },
+                    icon: Icon(
+                      Icons.shuffle,
+                      color:
+                          player.isShuffle
+                              ? Theme.of(context).colorScheme.tertiary
+                              : Colors.white,
+                    ),
+                    iconSize: 16,
+                  ),
                   Visibility(
                     visible:
-                        ref
+                        !ref
                             .watch(playerNotifierProvider.notifier)
                             .isFirstChapter(),
                     child: Tooltip(
@@ -223,7 +238,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                   ),
                   Visibility(
                     visible:
-                        ref
+                        !ref
                             .watch(playerNotifierProvider.notifier)
                             .isLastchapter(),
                     child: Tooltip(

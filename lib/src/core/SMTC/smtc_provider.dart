@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -9,6 +11,8 @@ class SMTCRepository {
   SMTCRepository(this.ref);
   final Ref ref;
   SMTCWindows? smtc;
+  static bool get isSupported => Platform.isWindows; 
+  
 
   void init({
     required String surah,
@@ -69,6 +73,7 @@ class SMTCRepository {
           break;
       }
     });
+    smtc?.enableSmtc();
   }
 
   void updateSMTC({

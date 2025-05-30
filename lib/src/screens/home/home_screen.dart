@@ -11,6 +11,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dar
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/nework_required_widget.dart';
+import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_focus.dart';
 import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -25,6 +26,7 @@ class HomeScreen extends ConsumerWidget {
     final surahImage = ref.watch(
       playerNotifierProvider.select((value) => value.album?.surah.image),
     );
+    final focusNode = ref.watch(textFieldFocusProvider);
 
     return NeworkRequiredWidget(
       child: Row(
@@ -45,7 +47,16 @@ class HomeScreen extends ConsumerWidget {
                   const SizedBox(height: 10),
                   Align(
                     child: SearchBar(
+                      focusNode: focusNode,
                       controller: queryController,
+                      onTapOutside: (_) {
+                        focusNode?.unfocus();
+                        ref.read(shortcutsEnabledProvider.notifier).state =
+                            true;
+                      },
+                      onTap: () => ref
+                          .read(shortcutsEnabledProvider.notifier)
+                          .update((state) => !state),
                       onChanged: (value) {
                         ref
                             .read(searchNotifierProvider('home').notifier)
@@ -60,22 +71,21 @@ class HomeScreen extends ConsumerWidget {
                       trailing: [
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
-                          child:
-                              isTyping
-                                  ? IconButton(
-                                    icon: const Icon(Icons.close),
-                                    onPressed: () {
-                                      ref
-                                          .read(
-                                            searchNotifierProvider(
-                                              'home',
-                                            ).notifier,
-                                          )
-                                          .clear();
-                                      queryController.clear();
-                                    },
-                                  )
-                                  : const Icon(Icons.search),
+                          child: isTyping
+                              ? IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () {
+                                    ref
+                                        .read(
+                                          searchNotifierProvider(
+                                            'home',
+                                          ).notifier,
+                                        )
+                                        .clear();
+                                    queryController.clear();
+                                  },
+                                )
+                              : const Icon(Icons.search),
                         ),
                       ],
                       hintText: 'ماذا تريد ان تسمع؟',
@@ -98,6 +108,7 @@ class HomeScreen extends ConsumerWidget {
                   Flexible(
                     flex: 2,
                     child: Container(
+                      height: MediaQuery.sizeOf(context).height * 0.54,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: Theme.of(context).colorScheme.surfaceContainer,
@@ -110,26 +121,23 @@ class HomeScreen extends ConsumerWidget {
                             Align(
                               alignment: Alignment.topLeft,
                               child: CloseButton(
-                                onPressed:
-                                    () => ref
-                                        .read(isCollapsedProvider.notifier)
-                                        .update((state) => !state),
+                                onPressed: () => ref
+                                    .read(isCollapsedProvider.notifier)
+                                    .update((state) => !state),
                               ),
                             ),
                             const SizedBox(height: 15),
                             Container(
                               width: double.infinity,
-                              height: 350,
+                              height: MediaQuery.sizeOf(context).height * 0.34,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
+                                shape: BoxShape.circle,
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: CachedNetworkImageProvider(
                                     surahImage ?? '',
-                                    errorListener:
-                                        (_) => const Icon(
-                                          Icons.broken_image_outlined,
-                                        ),
+                                    errorListener: (_) =>
+                                        const Icon(Icons.broken_image_outlined),
                                   ),
                                 ),
                               ),
@@ -144,10 +152,9 @@ class HomeScreen extends ConsumerWidget {
                               ),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onSecondaryContainer,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
                               ),
                             ),
                             TextHover(

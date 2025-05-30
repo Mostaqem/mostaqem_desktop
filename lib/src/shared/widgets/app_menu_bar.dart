@@ -4,13 +4,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/shared/device/device_repository.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vector_graphics/vector_graphics_compat.dart';
 
 class AppMenuBar extends ConsumerWidget {
   const AppMenuBar({super.key});
@@ -111,13 +111,15 @@ class AppMenuBar extends ConsumerWidget {
                                           log('[Couldnt Open Github URL]');
                                         }
                                       },
-                                      icon: SvgPicture.asset(
-                                        colorFilter: const ColorFilter.mode(
+                                      icon: const VectorGraphic(
+                                        colorFilter: ColorFilter.mode(
                                           Colors.white,
                                           BlendMode.srcIn,
                                         ),
                                         width: 30,
-                                        'assets/img/github.svg',
+                                        loader: AssetBytesLoader(
+                                          'assets/img/svg/github.svg',
+                                        ),
                                       ),
                                     ),
                                   ],

@@ -11,8 +11,11 @@ class AudioState {
     this.duration = Duration.zero,
     this.album,
     this.nextAlbum,
+    this.isShuffle = false,
     this.queue = const [],
     this.queueIndex,
+    this.broadcastName,
+
   });
   final bool isPlaying;
   final Duration position;
@@ -24,6 +27,8 @@ class AudioState {
   final int? queueIndex;
   final List<Album> queue;
   final Album? nextAlbum;
+  final bool isShuffle;
+  final String? broadcastName;
 
   AudioState copyWith({
     bool? isPlaying,
@@ -34,7 +39,9 @@ class AudioState {
     Duration? buffering,
     Duration? duration,
     Album? album,
+    String? broadcastName,
     double? volume,
+    bool? isShuffle,
     int? queueIndex,
   }) {
     return AudioState(
@@ -42,7 +49,9 @@ class AudioState {
       duration: duration ?? this.duration,
       volume: volume ?? this.volume,
       album: album ?? this.album,
+      isShuffle: isShuffle ?? this.isShuffle,
       queue: queue ?? this.queue,
+      broadcastName: broadcastName ?? this.broadcastName,
       queueIndex: queueIndex ?? this.queueIndex,
       nextAlbum: nextAlbum ?? this.nextAlbum,
       buffering: buffering ?? this.buffering,

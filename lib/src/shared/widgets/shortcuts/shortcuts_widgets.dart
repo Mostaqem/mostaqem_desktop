@@ -7,6 +7,7 @@ import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.d
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_enum.dart';
+import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_focus.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_label.dart';
 
 class AppShortcuts extends ConsumerWidget {
@@ -50,10 +51,9 @@ Dialog helpShortcuts(BuildContext context) {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:
-                      ShortcutsEnum.values
-                          .map((e) => ShortcutLabel(shortcut: e))
-                          .toList(),
+                  children: ShortcutsEnum.values
+                      .map((e) => ShortcutLabel(shortcut: e))
+                      .toList(),
                 ),
               ],
             ),
@@ -69,12 +69,20 @@ Map<ShortcutActivator, VoidCallback> shortcutsBindings(
   WidgetRef ref,
 ) {
   final bindings = <ShortcutActivator, VoidCallback>{};
+  final isShortcutsEnabled = ref.watch(shortcutsEnabledProvider);
 
   for (final shortcut in ShortcutsEnum.values) {
+    if (!isShortcutsEnabled) {
+      continue;
+    }
     switch (shortcut) {
       case ShortcutsEnum.playPause:
-        bindings[shortcut.activator] =
-            ref.read(playerNotifierProvider.notifier).handlePlayPause;
+        bindings[shortcut.activator] = () async {
+          if (ref.read(shortcutsEnabledProvider)) {
+            ref.read(focusManagerProvider).primaryFocus?.unfocus();
+            await ref.read(playerNotifierProvider.notifier).handlePlayPause();
+          }
+        };
 
       case ShortcutsEnum.mute:
         bindings[shortcut.activator] = () {
@@ -86,8 +94,8 @@ Map<ShortcutActivator, VoidCallback> shortcutsBindings(
           }
         };
       case ShortcutsEnum.settings:
-        bindings[shortcut.activator] =
-            () => ref.read(goRouterProvider).push('/settings');
+        bindings[shortcut.activator] = () =>
+            ref.read(goRouterProvider).push('/settings');
       case ShortcutsEnum.checkUpdate:
         bindings[shortcut.activator] = () => checkUpdateDialog(context, ref);
       case ShortcutsEnum.exitFullscreen:
@@ -103,14 +111,17 @@ Map<ShortcutActivator, VoidCallback> shortcutsBindings(
           showDialog<Dialog>(context: context, builder: helpShortcuts);
         };
       case ShortcutsEnum.playNext:
-        bindings[shortcut.activator] =
-            ref.read(playerNotifierProvider.notifier).playNext;
+        bindings[shortcut.activator] = ref
+            .read(playerNotifierProvider.notifier)
+            .playNext;
       case ShortcutsEnum.playPrevious:
-        bindings[shortcut.activator] =
-            ref.read(playerNotifierProvider.notifier).playPrevious;
+        bindings[shortcut.activator] = ref
+            .read(playerNotifierProvider.notifier)
+            .playPrevious;
       case ShortcutsEnum.repeat:
-        bindings[shortcut.activator] =
-            ref.read(playerNotifierProvider.notifier).loop;
+        bindings[shortcut.activator] = ref
+            .read(playerNotifierProvider.notifier)
+            .loop;
       case ShortcutsEnum.enterFullscreen:
         bindings[shortcut.activator] = () {
           if (!ref.read(isFullScreenProvider)) {

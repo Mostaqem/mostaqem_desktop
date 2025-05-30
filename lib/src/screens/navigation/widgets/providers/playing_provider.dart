@@ -26,3 +26,23 @@ final isLocalProvider = Provider.autoDispose((ref) {
     playerNotifierProvider.select((value) => value.album?.isLocal ?? false),
   );
 });
+
+final currentRecitationProvider = Provider.autoDispose((ref) {
+  return ref.watch(
+    playerNotifierProvider.select((value) => value.album?.recitationID),
+  );
+});
+
+final currentBroadcastProvider = Provider.autoDispose((ref) {
+  return ref.watch(
+    playerNotifierProvider.select((value) => value.broadcastName),
+  );
+});
+
+final isBroadcastProvider = Provider.autoDispose((ref) {
+  return ref.watch(
+    playerNotifierProvider.select(
+      (value) => value.broadcastName?.isNotEmpty ?? false,
+    ),
+  );
+});
