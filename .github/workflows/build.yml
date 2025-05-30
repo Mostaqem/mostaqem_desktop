@@ -28,6 +28,8 @@ jobs:
         
       - run: flutter pub get
 
+      - run: dart run build_runner build --delete-conflicting-outputs
+
       - run: flutter build windows --dart-define-from-file .env
 
       - name: Print all files in the directory
@@ -79,6 +81,8 @@ jobs:
           EOF
           
       - run: flutter pub get
+
+      - run: dart run build_runner build --delete-conflicting-outputs
 
       - run: flutter build linux --verbose --dart-define-from-file .env
 
@@ -142,6 +146,9 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+        
+      - run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Create and unlock custom keychain
         run: |
           security create-keychain -p "" build.keychain

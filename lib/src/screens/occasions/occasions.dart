@@ -5,18 +5,18 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/special/domain/special_repository.dart';
+import 'package:mostaqem/src/screens/occasions/domain/occasions_repository.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 
-class SpecialScreen extends StatefulWidget {
-  const SpecialScreen({super.key});
+class OccasionsScreen extends StatefulWidget {
+  const OccasionsScreen({super.key});
 
   @override
-  State<SpecialScreen> createState() => _SpecialScreenState();
+  State<OccasionsScreen> createState() => _OccasionsScreenState();
 }
 
-class _SpecialScreenState extends State<SpecialScreen> {
+class _OccasionsScreenState extends State<OccasionsScreen> {
   bool loading = false;
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class _SpecialScreenState extends State<SpecialScreen> {
                 Center(
                   child: Consumer(
                     builder: (context, ref, child) {
-                      final specialRepo = ref.watch(specialRepoProvider);
+                      final specialRepo = ref.watch(occasionsRepoProvider);
                       final name = specialRepo.todayDayName();
                       return Text(
                         name ?? 'لا يوجد يوم مميز اليوم',

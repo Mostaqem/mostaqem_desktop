@@ -4,7 +4,8 @@
 * **Download** the latest [Flutter](https://docs.flutter.dev/get-started/install) version, Mostaqem keeps up to date with latest dart and flutter version
 * **Fork** the Repository
 * **Install** Mostaqem dependencies using `flutter pub get`, Make sure `mpv` and `libmpv-dev` are installed for Linux platforms if you are going to program on Linux distros
-* Simply Run the app using `flutter run --dart-define-from-file dev.env`
+* Run the build runner `dart run build_runner watch -d` 
+* Run the app `flutter run --dart-define-from-file dev.env`
 
 **Note**: 
 - I've added `dev.env` as a development environment example to use so you can just get started
@@ -60,6 +61,14 @@
 │       │   │   ├── data                           
 │       │   │   │   └── loading_verse.dart         # random verses
 │       │   │   └── inital_loading.dart
+│       │   ├── occasions                            # occasions feature
+│       │   │   ├── domain                           
+│       │   │   │   └── occasions_repository.dart  # occasions logic repository
+│       │   │   └── occasions.dart                 # occasions Ui screen
+│       │   ├── share                            # Share ayah feature
+│       │   │   ├── domain                           
+│       │   │   │   └── share_repository.dart      # share logic repository( draw and paint )
+│       │   │   └── share.dart                     # Share Ui screen
 │       │   ├── navigation                         # navigation bar widget
 │       │   │   ├── data                           # freezed files
 │       │   │

@@ -31,14 +31,15 @@ For arch
 * Integrated with OS
     * Windows
         * Taskbar buttons
-        * [System Media Transport Controls][SMTC]
+        * [System Media Transport Controls][SMTC] (Soon)
     * Linux
-        * Mpris
+        * Mpris (Soon)
 * Offline Mode
     * Download manager
     * Custom download path
 * Recitations
 * Customization
+* Occasions (Ramadan - 15thOfShabaan - First10ZuAlHij - etc )
 
 
 

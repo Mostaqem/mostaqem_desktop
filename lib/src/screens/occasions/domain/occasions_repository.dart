@@ -6,10 +6,10 @@ import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'special_repository.g.dart';
+part 'occasions_repository.g.dart';
 
-class SpecialRepository {
-  SpecialRepository(this.ref);
+class OccasionsRepository {
+  OccasionsRepository(this.ref);
   Ref ref;
   bool isRamadan() {
     final today = HijriCalendar.now();
@@ -97,10 +97,10 @@ class SpecialRepository {
 }
 
 @riverpod
-SpecialRepository specialRepo(Ref ref) => SpecialRepository(ref);
+OccasionsRepository occasionsRepo(Ref ref) => OccasionsRepository(ref);
 
 @riverpod
 Future<List<Surah>> specialSurahs(Ref ref) async {
-  final repository = ref.watch(specialRepoProvider);
+  final repository = ref.watch(occasionsRepoProvider);
   return repository.getSpecialSurahs();
 }
