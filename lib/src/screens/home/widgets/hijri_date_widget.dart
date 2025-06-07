@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 
-class HijriDateWidget extends StatelessWidget {
+class HijriDateWidget extends ConsumerStatefulWidget {
   const HijriDateWidget({super.key});
+
+  @override
+  ConsumerState<HijriDateWidget> createState() => _HijriDateWidgetState();
+}
+
+class _HijriDateWidgetState extends ConsumerState<HijriDateWidget> {
+  @override
+  void initState() {
+    super.initState();
+    final language = ref.read(localeNotifierProvider).languageCode;
+    HijriCalendar.setLocal(language);
+  }
 
   @override
   Widget build(BuildContext context) {
