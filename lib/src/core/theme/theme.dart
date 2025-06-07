@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+  AppTheme({this.fontFamily = 'kufam'});
   static const _primaryColor = Color.fromARGB(255, 250, 210, 159);
 
   static final String? _fontFamily = GoogleFonts.kufam().fontFamily;
+  final String fontFamily;
 
   static ThemeData lightTheme = ThemeData(
     snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
