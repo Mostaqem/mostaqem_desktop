@@ -106,7 +106,7 @@ class InitialLoading extends ConsumerWidget {
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  '2.3.0',
+                  '2.3.1',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),

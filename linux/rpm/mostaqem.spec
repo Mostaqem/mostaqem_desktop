@@ -1,5 +1,5 @@
 Name:       mostaqem
-Version:    2.3.0
+Version:    2.3.1
 Release:    1
 Summary:    An Islamic app
 License:    MCL
