@@ -52,72 +52,26 @@ class _OccasionsScreenState extends State<OccasionsScreen> {
                     },
                   ),
                 ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Lottie.network(
-                    'https://lottie.host/a2a8fd85-faf8-4eae-9803-3f46d1133d5f/ZiTWkvGCtC.json',
-                    repeat: true,
-                    renderCache: RenderCache.raster,
-                    height: 250,
-                  ),
-                ),
               ],
             ),
 
             Center(
               child: SelectableText(
-                '" وَالْفَجْرِ، وَلَيَالٍ عَشْرٍ " ',
-                style: GoogleFonts.amiri(fontSize: 23),
-              ),
-            ),
-            Container(
-              width: MediaQuery.sizeOf(context).width - 400,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                'قال النبي عن فضل العشر الأوائل من شهر ذي الحجة: (ما من أيام العمل الصالح فيهن أحب إلى الله من هذه الأيام العشر، فقالوا: يا رسول الله، ولا الجهاد في سبيل الله؟ قال: ولا الجهاد في سبيل الله، إلا رجل خرج بنفسه وماله فلم يرجع من ذلك بشيء)، رواه الترمذي، وأصله في البخاري.',
-                style: TextStyle(
-                  fontSize: 16,
-                  height: 1.5,
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w500,
+                '" إِنَّ عِدَّةَ الشُّهُورِ عِندَ اللَّهِ اثْنَا عَشَرَ شَهْرًا فِي كِتَابِ اللَّهِ يَوْمَ خَلَقَ السَّمَاوَاتِ وَالْأَرْضَ مِنْهَا أَرْبَعَةٌ حُرُمٌ ۚ ذَٰلِكَ الدِّينُ الْقَيِّمُ ۚ فَلَا تَظْلِمُوا فِيهِنَّ أَنفُسَكُمْ ۚ وَقَاتِلُوا الْمُشْرِكِينَ كَافَّةً كَمَا يُقَاتِلُونَكُمْ كَافَّةً ۚ وَاعْلَمُوا أَنَّ اللَّهَ مَعَ الْمُتَّقِينَ" ',
+                textAlign: TextAlign.center,
+
+                style: GoogleFonts.amiri(
+                  fontSize: 23,
+                  letterSpacing: 0.8,
+                  height: 3,
                 ),
               ),
             ),
             Center(
-              child: Consumer(
-                builder: (context, ref, child) {
-                  if (loading) {
-                    return ElevatedButton.icon(
-                      onPressed: () {},
-                      label: const Text('لبيك اللهم لبيك'),
-                      icon: const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 1),
-                      ),
-                    );
-                  } else {
-                    return ElevatedButton(
-                      onPressed: () async {
-                        setState(() {
-                          loading = true;
-                        });
-                        const url =
-                            'https://www.youtube.com/watch?v=1I1u2Jw_W44&t=2s';
-                        await ref
-                            .read(playerNotifierProvider.notifier)
-                            .playYoutube(url: url, title: 'لبيك اللهم لبيك');
-                        setState(() {
-                          loading = false;
-                        });
-                      },
-                      child: const Text('لبيك اللهم لبيك'),
-                    );
-                  }
-                },
+              child: SelectableText(
+                '- التوبة (36) -',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.amiri(fontSize: 17),
               ),
             ),
             const Text(
