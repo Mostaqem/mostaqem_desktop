@@ -107,7 +107,7 @@ jobs:
           Exec=usr/bin/mostaqem
           Icon=mostaqem
           Type=Application
-          Categories=Multimedia;Utility;
+          Categories=Education;Spirituality;AudioVideo;Utility;
           EOF
 
           cat <<EOF > AppDir/AppRun
