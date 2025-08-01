@@ -117,7 +117,7 @@ jobs:
           chmod +x AppDir/AppRun
 
           appimagetool AppDir
-          mv Mostaqem*.AppImage build/linux/x64/release/mostaqem-linux.AppImage
+          mv Mostaqem*.AppImage mostaqem-linux-x86_64.AppImage
 
       - name: Build RPM Package
         run: |
