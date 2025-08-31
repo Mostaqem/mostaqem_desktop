@@ -69,7 +69,12 @@ jobs:
 
       - run: sudo apt-get update
 
-      - run: sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev mpv libmpv-dev dpkg-dev rpm tree
+      - run: |
+          sudo apt-get install -y ninja-build cmake clang mpv libgtk-3-dev libblkid-dev \
+            liblzma-dev pkg-config libmpv-dev webkit2gtk-4.1 fuse rpm dpkg-dev zip libfuse2
+          wget -O appimagetool "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+          chmod +x appimagetool
+          sudo mv appimagetool /usr/local/bin/
 
       - run: flutter config --enable-linux-desktop
       - name: Create .env file
@@ -84,7 +89,35 @@ jobs:
 
       - run: dart run build_runner build --delete-conflicting-outputs
 
-      - run: flutter build linux --verbose --dart-define-from-file .env
+      - name: Build Linux App
+        run: flutter build linux --release --verbose --dart-define-from-file .env
+
+      - name: Create AppImage
+        run: |
+          rm -rf AppDir
+          mkdir -p AppDir/usr/bin
+          mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+          cp -r build/linux/x64/release/bundle/* AppDir/usr/bin/
+          cp assets/img/logo.png AppDir/usr/share/icons/hicolor/256x256/apps/mostaqem.png
+          cp assets/img/logo.png AppDir/mostaqem.png
+
+          cat <<EOF > AppDir/mostaqem.desktop
+          [Desktop Entry]
+          Name=Mostaqem
+          Exec=usr/bin/mostaqem
+          Icon=mostaqem
+          Type=Application
+          Categories=Education;Spirituality;AudioVideo;Utility;
+          EOF
+
+          cat <<EOF > AppDir/AppRun
+          #!/bin/sh
+          exec "\$(dirname "\$0")/usr/bin/mostaqem" "\$@"
+          EOF
+          chmod +x AppDir/AppRun
+
+          appimagetool AppDir
+          mv Mostaqem*.AppImage mostaqem-linux-x86_64.AppImage
 
       - name: Build RPM Package
         run: |
