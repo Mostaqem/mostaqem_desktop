@@ -62,7 +62,7 @@ class SurahWidget extends ConsumerWidget {
     final surahID = ref.watch(currentSurahProvider)?.id ?? 0;
     final downlaodState = ref.watch(downloadAudioProvider)?.downloadState;
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height - 285,
+      height: MediaQuery.sizeOf(context).height - 255,
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 160,
