@@ -98,39 +98,31 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
               ),
               Visibility(
                 visible: isLyricsVisible,
-                child: Center(
-                  child: Container(
-                    height: MediaQuery.sizeOf(context).height,
-                    width: MediaQuery.sizeOf(context).width,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.8),
-                    ),
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(
-                        context,
-                      ).copyWith(scrollbars: false),
-                      child: AsyncWidget(
-                        value: lyrics,
-                        data: (data) {
-                          if (data == null) {
-                            return const Text(
-                              'عفوا, لا يوجد كلمات , سوف نضيفها مع الوقت',
-                              style: TextStyle(color: Colors.white),
-                            );
-                          }
-                          return Text(
-                            data,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.amiri(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 24,
-                              color: theme.colorScheme.primary,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                child: Container(
+                  height: MediaQuery.sizeOf(context).height,
+                  width: MediaQuery.sizeOf(context).width,
+                  alignment: Alignment.bottomCenter,
+                  padding: const EdgeInsets.symmetric(vertical: 150),
+
+                  child: AsyncWidget(
+                    value: lyrics,
+                    data: (data) {
+                      if (data == null) {
+                        return const Text(
+                          'عفوا, لا يوجد كلمات , سوف نضيفها مع الوقت',
+                          style: TextStyle(color: Colors.white),
+                        );
+                      }
+                      return Text(
+                        data,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.amiri(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 90,
+                          color: theme.colorScheme.secondary,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
