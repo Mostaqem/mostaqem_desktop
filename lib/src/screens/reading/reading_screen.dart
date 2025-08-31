@@ -159,56 +159,52 @@ class _VerseSpanState extends State<VerseSpan> {
               );
             },
             TextSpan(
-              children:
-                  widget.data
-                      .map(
-                        (e) => TextSpan(
-                          text: e.verse.replaceAll('￼', ''),
-                          style: GoogleFonts.amiri(
-                            fontSize: 30,
-                            height: 3.2,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
-                          recognizer:
-                              TapGestureRecognizer()
-                                ..onTap = () {
-                                  context.pushNamed(
-                                    'Share',
-                                    extra: e.verse.replaceAll('￼', ''),
-                                    pathParameters: {
-                                      'surahName': widget.surah.arabicName,
-                                    },
-                                  );
-                                },
+              children: widget.data
+                  .map(
+                    (e) => TextSpan(
+                      text: e.verse.replaceAll('￼', ''),
+                      style: GoogleFonts.amiri(
+                        fontSize: 30,
+                        height: 3.2,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context.pushNamed(
+                            'Share',
+                            extra: e.verse.replaceAll('￼', ''),
+                            pathParameters: {
+                              'surahName': widget.surah.arabicName,
+                            },
+                          );
+                        },
+                      children: [
+                        const WidgetSpan(child: SizedBox(width: 23)),
+                        TextSpan(
                           children: [
-                            const WidgetSpan(child: SizedBox(width: 23)),
                             TextSpan(
-                              children: [
-                                TextSpan(
-                                  text:
-                                      e.verseNumber.toString().toArabicNumbers,
-                                  style: GoogleFonts.amiri(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ],
-                              text: '۝',
+                              text: e.verseNumber.toString().toArabicNumbers,
                               style: GoogleFonts.amiri(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontSize: 30,
                                 fontWeight: FontWeight.w800,
                               ),
                             ),
-                            const WidgetSpan(
-                              child: SizedBox(width: 15, height: 50),
-                            ),
                           ],
+                          text: '۝',
+                          style: GoogleFonts.amiri(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
-                      )
-                      .toList(),
+                        const WidgetSpan(
+                          child: SizedBox(width: 15, height: 50),
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList(),
             ),
           );
         },
