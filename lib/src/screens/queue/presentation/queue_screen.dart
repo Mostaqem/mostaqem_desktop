@@ -1,17 +1,18 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
-class QueueScreen extends StatelessWidget {
+class QueueScreen extends ConsumerWidget {
   const QueueScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Stack(
         children: [
@@ -23,7 +24,6 @@ class QueueScreen extends StatelessWidget {
                 final playingSurah = ref
                     .watch(playerNotifierProvider)
                     .queueIndex;
-                final isLocal = ref.watch(isLocalProvider);
                 return ReorderableListView.builder(
                   itemCount: queue.length,
                   buildDefaultDragHandles: false,
