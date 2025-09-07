@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/Playing_broadcast.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/playing_broadcast.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/broadcast_controls.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
 

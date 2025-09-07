@@ -5,7 +5,7 @@ import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dar
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/Playing_broadcast.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/playing_broadcast.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/play_controls.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/playing_surah.dart';

@@ -1,5 +1,3 @@
-import 'dart:ui' show Locale;
-
 import 'package:flutter/material.dart';
 import 'package:mostaqem/src/core/translations/languages.dart';
 import 'package:mostaqem/src/shared/I10n/app_localizations.dart';

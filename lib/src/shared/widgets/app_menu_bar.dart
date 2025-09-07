@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/shared/device/device_repository.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_widgets.dart';
@@ -48,7 +49,7 @@ class AppMenuBar extends ConsumerWidget {
                             onPressed: () {
                               ref.read(goRouterProvider).push('/licenses');
                             },
-                            child: const Text('التراخيص'),
+                            child: Text(context.tr.licenses),
                           ),
                         ],
                         content: SizedBox(
@@ -63,9 +64,9 @@ class AppMenuBar extends ConsumerWidget {
                                   alignment: Alignment.topLeft,
                                   child: CloseButton(),
                                 ),
-                                const Text(
-                                  'مستقيم',
-                                  style: TextStyle(
+                                Text(
+                                  context.tr.about_mostaqem,
+                                  style: const TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -79,7 +80,7 @@ class AppMenuBar extends ConsumerWidget {
                                   children: [
                                     Text(currentVersion),
                                     Tooltip(
-                                      message: 'انسخ النسخة',
+                                      message: context.tr.copy_version,
                                       preferBelow: false,
                                       child: IconButton(
                                         onPressed: () async {
@@ -131,7 +132,7 @@ class AppMenuBar extends ConsumerWidget {
                       ),
                 );
               },
-              child: const Text('عن مستقيم'),
+              child: Text(context.tr.about_mostaqem),
             ),
             MenuItemButton(
               shortcut: const SingleActivator(LogicalKeyboardKey.f1),
@@ -140,7 +141,7 @@ class AppMenuBar extends ConsumerWidget {
                     context: context,
                     builder: helpShortcuts,
                   ),
-              child: const Text('الاختصارات'),
+              child: Text(context.tr.shortcuts),
             ),
             MenuItemButton(
               shortcut: const SingleActivator(
@@ -148,7 +149,7 @@ class AppMenuBar extends ConsumerWidget {
                 control: true,
               ),
               onPressed: () => context.push('/settings'),
-              child: const Text('الاعدادات'),
+              child: Text(context.tr.settings),
             ),
             Visibility(
               child: MenuItemButton(
@@ -159,7 +160,7 @@ class AppMenuBar extends ConsumerWidget {
                 onPressed: () async {
                   await checkUpdateDialog(context, ref);
                 },
-                child: const Text('تحديث؟'),
+                child: Text(context.tr.update_available),
               ),
             ),
             MenuItemButton(
@@ -168,7 +169,7 @@ class AppMenuBar extends ConsumerWidget {
                 control: true,
               ),
               onPressed: () => exit(0),
-              child: const Text('خروج'),
+              child: Text(context.tr.exit),
             ),
           ],
           child: const Icon(Icons.more_horiz_outlined),
@@ -189,18 +190,18 @@ Future<void> checkUpdateDialog(BuildContext context, WidgetRef ref) async {
         (context) => AlertDialog(
           content:
               updateAvailable
-                  ? const Text('نعم هناك تحديث')
-                  : const Text('لا يوجد تحديث'),
+                  ? Text(context.tr.yes_update_available)
+                  : Text(context.tr.no_update_available),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('الغاء'),
+              child: Text(context.tr.cancel),
             ),
             Visibility(
               visible: updateAvailable,
               child: TextButton(
                 onPressed: () => ref.read(downloadUpdateProvider),
-                child: const Text('تحديث'),
+                child: Text(context.tr.update),
               ),
             ),
           ],
