@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
@@ -65,6 +66,7 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   void init() {
     player.stream.playlist.listen((data) async {
+      log('Playlist: ${data.medias.length}');
       if (player.state.playlist.medias.length == 1 &&
           state.broadcastName != null) {
         if (isLocalAudio()) {
@@ -86,40 +88,36 @@ class PlayerNotifier extends _$PlayerNotifier {
         );
       }
 
-      if (state.broadcastName != null) {
-        await ref.read(clearRPCDiscordProvider.future);
-      } else {
-        await ref.read(
-          updateRPCDiscordProvider(
-            surahName: state.album?.surah.simpleName ?? '',
-            reciter: state.album?.reciter.englishName ?? '',
-            url: state.album?.url ?? '',
-          ).future,
-        );
-      }
       state = state.copyWith(
+        queueIndex: data.index,
         album: parseAlbum(data.index),
         nextAlbum: parseAlbum(data.index + 1),
-        queueIndex: data.index,
-        queue: data.medias
-            .map((media) {
-              final extras = media.extras;
-              return extras == null
-                  ? null
-                  : Album(
-                      surah: Surah.fromJson(
-                        extras['surah'] as Map<String, dynamic>,
-                      ),
-                      reciter: Reciter.fromJson(
-                        extras['reciter'] as Map<String, dynamic>,
-                      ),
-                      url: extras['url'] as String,
-                      recitationID: extras['recitationID'] as int,
-                    );
-            })
-            .whereType<Album>()
-            .toList(),
       );
+
+      final chapterFound = isChapterInQueue(state.album!.url);
+
+      if (state.queue.length != 20 || !chapterFound) {
+        state = state.copyWith(
+          queue: data.medias
+              .map((media) {
+                final extras = media.extras;
+                return extras == null
+                    ? null
+                    : Album(
+                        surah: Surah.fromJson(
+                          extras['surah'] as Map<String, dynamic>,
+                        ),
+                        reciter: Reciter.fromJson(
+                          extras['reciter'] as Map<String, dynamic>,
+                        ),
+                        url: extras['url'] as String,
+                        recitationID: extras['recitationID'] as int,
+                      );
+              })
+              .whereType<Album>()
+              .toList(),
+        );
+      }
     });
 
     player.stream.position.listen((position) {
@@ -163,39 +161,12 @@ class PlayerNotifier extends _$PlayerNotifier {
     return '$hoursStr$minutesStr:$secondsStr';
   }
 
-  bool isFirstChapter() {
-    if (isLocalAudio()) {
-      final audios = ref.read(getLocalAudioProvider).value;
-      if (audios == null) return false;
-
-      return player.state.playlist.index == 0;
-    }
-
-    final currentSurah = state.album?.surah;
-    if (currentSurah == null) {
-      return false;
-    }
-    return player.state.playlist.index == 0;
-  }
+  bool isFirstChapter() => state.queueIndex == 0;
 
   bool isLastchapter() {
-    if (isLocalAudio()) {
-      final audios = ref.read(getLocalAudioProvider).value;
-      if (audios == null) return false;
+    if (state.queue.length == 1) return true;
 
-      final currentIndex = player.state.playlist.index;
-      final lastIndex = audios.length - 1;
-      debugPrint(
-        'CurrentIndex: ${player.state.playlist.index}, Lastindex:$lastIndex',
-      );
-      return currentIndex <= lastIndex;
-    }
-    final currentSurah = state.album?.surah;
-
-    if (currentSurah == null) {
-      return false;
-    }
-    return player.state.playlist.index == 19;
+    return state.queueIndex == 19;
   }
 
   Future<void> handlePlayPause() async {
@@ -283,6 +254,11 @@ class PlayerNotifier extends _$PlayerNotifier {
     final cachedFile = await cacheManager.getFileFromCache(mixID);
     final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
 
+    if (state.queue.contains(cachedAlbum)) {
+      final index = state.queue.indexWhere((value) => value == cachedAlbum);
+      await player.jump(index);
+      return;
+    }
     if (cachedAlbum == null) {
       final album = await fetchAlbum(
         surahID: surahID,
@@ -333,6 +309,11 @@ class PlayerNotifier extends _$PlayerNotifier {
       reciterID: chosenReciter.id,
       recitationID: recitationID,
     );
+    if (state.queue.contains(album)) {
+      final index = state.queue.indexWhere((value) => value == album);
+      await player.jump(index);
+      return;
+    }
 
     state = state.copyWith(album: album);
     await player.open(
@@ -430,6 +411,7 @@ class PlayerNotifier extends _$PlayerNotifier {
             final album = await ref.read(
               fetchAlbumProvider(chapterNumber: i).future,
             );
+
             final url = album.url;
             await player.add(
               Media(
@@ -553,5 +535,9 @@ class PlayerNotifier extends _$PlayerNotifier {
     final currentTime = formatDuration(state.position);
     final durationTime = formatDuration(state.duration);
     return (currentTime: currentTime, durationTime: durationTime);
+  }
+
+  bool isChapterInQueue(String url) {
+    return state.queue.any((album) => album.url == url);
   }
 }

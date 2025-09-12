@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_single_instance/flutter_single_instance.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/app.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/screens/initial/inital_loading.dart';
@@ -39,7 +38,7 @@ void main() async {
     await DiscordRepository.initializeDiscord();
 
     MediaKit.ensureInitialized();
-    await MetadataGod.initialize();
+    // await MetadataGod.initialize();
 
     await windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
