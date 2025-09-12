@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
@@ -22,6 +23,7 @@ class QueueScreen extends StatelessWidget {
                 final playingSurah = ref
                     .watch(playerNotifierProvider)
                     .queueIndex;
+                final locale = ref.watch(localeNotifierProvider).languageCode;
                 return ReorderableListView.builder(
                   itemCount: queue.length,
                   buildDefaultDragHandles: false,
@@ -32,7 +34,7 @@ class QueueScreen extends StatelessWidget {
                       vertical: 16,
                     ),
                     child: Text(
-                      'تسمع التالي',
+                      context.tr.play_next_item,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -69,7 +71,7 @@ class QueueScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Tooltip(
-                            message: 'تغيير المكان',
+                            message: context.tr.move_item,
                             child: MouseRegion(
                               cursor: SystemMouseCursors.grab,
                               child: ReorderableDragStartListener(
@@ -113,8 +115,16 @@ class QueueScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      title: Text(queue[index].surah.arabicName),
-                      subtitle: Text(queue[index].reciter.arabicName),
+                      title: Text(
+                        locale == 'ar'
+                            ? queue[index].surah.arabicName
+                            : queue[index].surah.simpleName,
+                      ),
+                      subtitle: Text(
+                        locale == 'ar'
+                            ? queue[index].reciter.arabicName
+                            : queue[index].reciter.englishName,
+                      ),
                       trailing: PopupMenuButton(
                         iconColor: isSurahPlaying
                             ? Theme.of(context).colorScheme.onSecondary

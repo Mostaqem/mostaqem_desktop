@@ -135,11 +135,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get change_to_waves => 'تغير الشكل الي موجات';
 
   @override
-  String surah_title(Object surahName) {
-    return 'سورة $surahName';
-  }
-
-  @override
   String get select_verse_to_share => 'حدد الآية للمشاركة';
 
   @override
@@ -152,13 +147,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get change_location => 'تغيير المكان';
 
   @override
-  String get play_surah => 'تشغيل السورة';
-
-  @override
   String get remove_surah_from_queue => 'حذف السورة من قائمة التشغيل';
-
-  @override
-  String get read_surah => 'قراءة السورة';
 
   @override
   String get no_special_day_today => 'لا يوجد يوم مميز اليوم';
@@ -175,6 +164,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get play => 'تشغيل';
+
+  @override
+  String get read_surah => 'قراءة السورة';
 
   @override
   String get ramadan => 'رمضان';
@@ -289,6 +281,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get add_to_queue => 'اضافة في قائمة التشغيل';
+
+  @override
+  String get play_surah => 'تشغيل السورة';
 
   @override
   String get remove_from_queue => 'حذف من قائمة التشغيل';

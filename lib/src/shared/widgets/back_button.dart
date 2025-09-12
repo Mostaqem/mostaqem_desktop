@@ -12,7 +12,6 @@ class AppBackButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
         spacing: 10,
         children: [
           Consumer(
@@ -52,7 +51,7 @@ class AppBackButton extends StatelessWidget {
               message: context.tr.back,
               preferBelow: false,
               child: IconButton(
-                icon: const Icon(Icons.arrow_forward),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   if (context.mounted) {
                     if (context.canPop()) {

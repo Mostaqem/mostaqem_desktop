@@ -25,10 +25,10 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: router,
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        AppLocalizations.delegate,
       ],
       supportedLocales: I18nRepository.supportedLocales,
       locale: currentLang,
@@ -67,8 +67,6 @@ class Mostaqem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(home: ContextMenuOverlay(child: const MyApp())),
-    );
+    return ProviderScope(child: ContextMenuOverlay(child: const MyApp()));
   }
 }

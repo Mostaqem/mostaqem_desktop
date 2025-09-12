@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
@@ -21,7 +22,7 @@ class PlayingSurah extends StatelessWidget {
   Widget build(BuildContext context) {
     final surah = ref.watch(currentSurahProvider);
     final reciter = ref.watch(currentReciterProvider);
-
+    final locale = ref.watch(localeNotifierProvider).languageCode;
     return Visibility(
       visible: !isFullScreen,
       child: Row(
@@ -37,12 +38,15 @@ class PlayingSurah extends StatelessWidget {
                   SizedBox(
                     width: 100,
                     child: Text(
-                      surah?.arabicName ?? '',
+                      locale == 'ar'
+                          ? surah?.arabicName ?? ''
+                          : surah?.simpleName ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSecondaryContainer,
                       ),
                     ),
                   ),
@@ -51,21 +55,23 @@ class PlayingSurah extends StatelessWidget {
                         !ref.watch(isLocalProvider) &&
                         !ref.watch(isAlbumEmptyProvider),
                     child: IconButton(
-                      onPressed:
-                          () => ref
-                              .read(isCollapsedProvider.notifier)
-                              .update((state) => !state),
+                      onPressed: () => ref
+                          .read(isCollapsedProvider.notifier)
+                          .update((state) => !state),
                       icon: Icon(
                         Icons.arrow_drop_up_outlined,
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSecondaryContainer,
                       ),
                     ),
                   ),
                 ],
               ),
               TextHover(
-                text: reciter?.arabicName ?? '',
+                text: locale == 'ar'
+                    ? reciter?.arabicName ?? ''
+                    : reciter?.englishName ?? '',
                 onTap: () {
                   final isLocalAudio = ref.read(isLocalProvider);
 

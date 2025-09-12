@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
@@ -27,7 +28,7 @@ class _NavigationState extends ConsumerState<Navigation> {
   @override
   void initState() {
     super.initState();
-    if (Constants.mStore == false) {
+    if (Constants.mStore == false && isProduction) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final state = await ref.read(checkUpdateProvider.future);
         if (!mounted) return;
@@ -110,7 +111,9 @@ class RightSide extends ConsumerWidget {
               ),
             ),
             leading: ToolTipIconButton(
-              message: ref.watch(isExtendedProvider) ? context.tr.minimize_screen : context.tr.maximize_screen,
+              message: ref.watch(isExtendedProvider)
+                  ? context.tr.minimize_screen
+                  : context.tr.maximize_screen,
               icon: const Icon(Icons.menu),
               onPressed: () => ref
                   .read(isExtendedProvider.notifier)

@@ -350,12 +350,6 @@ abstract class AppLocalizations {
   /// **'Change Shape to Waves'**
   String get change_to_waves;
 
-  /// No description provided for @surah_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Surah {surahName}'**
-  String surah_title(Object surahName);
-
   /// No description provided for @select_verse_to_share.
   ///
   /// In en, this message translates to:
@@ -380,23 +374,11 @@ abstract class AppLocalizations {
   /// **'Change Location'**
   String get change_location;
 
-  /// No description provided for @play_surah.
-  ///
-  /// In en, this message translates to:
-  /// **'Play Surah'**
-  String get play_surah;
-
   /// No description provided for @remove_surah_from_queue.
   ///
   /// In en, this message translates to:
   /// **'Remove Surah from Playlist'**
   String get remove_surah_from_queue;
-
-  /// No description provided for @read_surah.
-  ///
-  /// In en, this message translates to:
-  /// **'Read Surah'**
-  String get read_surah;
 
   /// No description provided for @no_special_day_today.
   ///
@@ -427,6 +409,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Play'**
   String get play;
+
+  /// No description provided for @read_surah.
+  ///
+  /// In en, this message translates to:
+  /// **'Read Surah'**
+  String get read_surah;
 
   /// No description provided for @ramadan.
   ///
@@ -655,6 +643,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add to Queue'**
   String get add_to_queue;
+
+  /// No description provided for @play_surah.
+  ///
+  /// In en, this message translates to:
+  /// **'Play Surah'**
+  String get play_surah;
 
   /// No description provided for @remove_from_queue.
   ///

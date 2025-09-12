@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
@@ -26,6 +27,8 @@ class RecitersScreen extends ConsumerWidget {
     final searchedReciters = ref.watch(
       searchReciterProvider(query: searchQuery),
     );
+    final locale = ref.watch(localeNotifierProvider).languageCode;
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,9 +36,12 @@ class RecitersScreen extends ConsumerWidget {
           const WindowButtons(),
           const SizedBox(height: 10),
           const Align(alignment: Alignment.topLeft, child: AppBackButton()),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Text('الشيخ الافتراضي', style: TextStyle(fontSize: 19)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              context.tr.default_reciter,
+              style: const TextStyle(fontSize: 19),
+            ),
           ),
           const SizedBox(height: 8),
           Padding(
@@ -65,7 +71,9 @@ class RecitersScreen extends ConsumerWidget {
                   ),
                 ),
                 title: Text(
-                  defaultReciter.arabicName,
+                  locale == 'ar'
+                      ? defaultReciter.arabicName
+                      : defaultReciter.englishName,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
@@ -87,7 +95,7 @@ class RecitersScreen extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
                     ToolTipIconButton(
-                      message: 'اختيار الشيخ',
+                      message: context.tr.choose_reciter,
                       onPressed: () {
                         ref
                             .read(userReciterProvider.notifier)
@@ -105,9 +113,12 @@ class RecitersScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Text('اختيار الشيخ', style: TextStyle(fontSize: 22)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              context.tr.choose_reciter,
+              style: const TextStyle(fontSize: 22),
+            ),
           ),
           const SizedBox(height: 12),
           Row(
@@ -142,25 +153,24 @@ class RecitersScreen extends ConsumerWidget {
                   trailing: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child:
-                          isTyping
-                              ? IconButton(
-                                icon: const Icon(Icons.close),
-                                onPressed: () {
-                                  ref
-                                      .read(
-                                        searchNotifierProvider(
-                                          'reciter',
-                                        ).notifier,
-                                      )
-                                      .clear();
-                                  queryController.clear();
-                                },
-                              )
-                              : const Icon(Icons.search),
+                      child: isTyping
+                          ? IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                ref
+                                    .read(
+                                      searchNotifierProvider(
+                                        'reciter',
+                                      ).notifier,
+                                    )
+                                    .clear();
+                                queryController.clear();
+                              },
+                            )
+                          : const Icon(Icons.search),
                     ),
                   ],
-                  hintText: 'بحث عن الشيخ...',
+                  hintText: context.tr.search_reciter,
                 ),
               ),
             ],
@@ -173,7 +183,6 @@ class RecitersScreen extends ConsumerWidget {
                   final page = index ~/ pageSize + 1;
                   final indexInPage = index % pageSize;
                   final reciters = ref.watch(fetchRecitersProvider(page: page));
-
                   return reciters.when(
                     error: (e, _) {
                       return Padding(
@@ -228,7 +237,11 @@ class RecitersScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          title: Text(data[indexInPage].arabicName),
+                          title: Text(
+                            locale == 'ar'
+                                ? data[indexInPage].arabicName
+                                : data[indexInPage].englishName,
+                          ),
                           trailing: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,
@@ -253,7 +266,7 @@ class RecitersScreen extends ConsumerWidget {
                                 ),
                               ),
                               ToolTipIconButton(
-                                message: 'اختيار الشيخ للتالي',
+                                message: context.tr.choose_reciter,
                                 onPressed: () {
                                   ref
                                       .read(userReciterProvider.notifier)
@@ -314,7 +327,11 @@ class RecitersScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          title: Text(data[index].arabicName),
+                          title: Text(
+                            locale == 'ar'
+                                ? data[index].arabicName
+                                : data[index].englishName,
+                          ),
                           trailing: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,
@@ -351,7 +368,7 @@ class RecitersScreen extends ConsumerWidget {
                               ),
                               const VerticalDivider(),
                               ToolTipIconButton(
-                                message: 'اختيار الشيخ',
+                                message: context.tr.choose_reciter,
                                 onPressed: () {
                                   ref
                                       .read(userReciterProvider.notifier)

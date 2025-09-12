@@ -1,4 +1,5 @@
 {
+    "@@locale": "en",
     "today_hijri": "Today's date",
     "what_do_you_want_hear": "What do you want to hear?",
     
@@ -54,16 +55,13 @@
     "reset_color": "Reset Color",
     "change_to_waves": "Change Shape to Waves",
     
-    "surah_title": "Surah {surahName}",
     "select_verse_to_share": "Select verse to share",
     "share_verse": "Share Verse",
     
     "next_to_play": "Next to Play",
     "change_location": "Change Location",
-    "play_surah": "Play Surah",
     "remove_surah_from_queue": "Remove Surah from Playlist",
     
-    "read_surah": "Read Surah",
     
     "no_special_day_today": "No special day today",
     "hajj_hadith": "The Prophet said about the virtue of the first ten days of Dhul-Hijjah: (There are no days in which righteous deeds are more beloved to Allah than these ten days. They said: O Messenger of Allah, not even jihad in the way of Allah? He said: Not even jihad in the way of Allah, except a man who goes out with himself and his wealth and returns with nothing from that), narrated by al-Tirmidhi, and its origin is in al-Bukhari.",

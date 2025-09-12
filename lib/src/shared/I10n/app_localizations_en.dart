@@ -135,11 +135,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get change_to_waves => 'Change Shape to Waves';
 
   @override
-  String surah_title(Object surahName) {
-    return 'Surah $surahName';
-  }
-
-  @override
   String get select_verse_to_share => 'Select verse to share';
 
   @override
@@ -152,13 +147,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get change_location => 'Change Location';
 
   @override
-  String get play_surah => 'Play Surah';
-
-  @override
   String get remove_surah_from_queue => 'Remove Surah from Playlist';
-
-  @override
-  String get read_surah => 'Read Surah';
 
   @override
   String get no_special_day_today => 'No special day today';
@@ -175,6 +164,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get play => 'Play';
+
+  @override
+  String get read_surah => 'Read Surah';
 
   @override
   String get ramadan => 'Ramadan';
@@ -290,6 +282,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get add_to_queue => 'Add to Queue';
+
+  @override
+  String get play_surah => 'Play Surah';
 
   @override
   String get remove_from_queue => 'Remove from Queue';
