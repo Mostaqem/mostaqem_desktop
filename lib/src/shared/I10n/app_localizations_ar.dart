@@ -166,7 +166,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get play => 'تشغيل';
 
   @override
-  String get read_surah => 'قراءة السورة';
+  String get read_surah => 'اقرأ السورة';
 
   @override
   String get ramadan => 'رمضان';
@@ -269,12 +269,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get choose_location => 'اختيار مكان';
-
-  @override
-  String get arabic => 'العربية';
-
-  @override
-  String get english => 'English';
 
   @override
   String get add_next => 'اضافة التالي';
