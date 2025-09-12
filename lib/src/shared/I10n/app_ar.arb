@@ -47,13 +47,11 @@
     "reset_color": "اعادة اللون",
     "change_to_waves": "تغير الشكل الي موجات",
     
-    "surah_title": "سورة {surahName}",
     "select_verse_to_share": "حدد الآية للمشاركة",
     "share_verse": "نشر الآية",
     
     "next_to_play": "تسمع التالي",
     "change_location": "تغيير المكان",
-    "play_surah": "تشغيل السورة",
     "remove_surah_from_queue": "حذف السورة من قائمة التشغيل",
     
     "read_surah": "اقرأ السورة",
@@ -63,7 +61,6 @@
     "labbayk_allahumma_labbayk": "لبيك اللهم لبيك",
     "we_recommend_some_surahs": "نرشح لك بعض السور:",
     "play": "تشغيل",
-    "read_surah": "قراءة السورة",
     
     "ramadan": "رمضان",
     "eid_al_fitr": "عيد الفطر",
@@ -106,8 +103,7 @@
     "choose_download_location": "اختار مكان تنزيل القران",
     "choose_location": "اختيار مكان",
     
-    "arabic": "العربية",
-    "english": "English",
+   
     
     "add_next": "اضافة التالي",
     "add_to_queue": "اضافة في قائمة التشغيل",
