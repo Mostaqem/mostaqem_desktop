@@ -272,12 +272,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get choose_location => 'Choose Location';
 
   @override
-  String get arabic => 'Arabic';
-
-  @override
-  String get english => 'English';
-
-  @override
   String get add_next => 'Add Next';
 
   @override

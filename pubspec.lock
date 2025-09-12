@@ -401,7 +401,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.3.2"
-
   fixnum:
     dependency: transitive
     description:
@@ -550,7 +549,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "16.2.0"
-
   google_fonts:
     dependency: "direct main"
     description:

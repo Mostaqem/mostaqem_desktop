@@ -620,18 +620,6 @@ abstract class AppLocalizations {
   /// **'Choose Location'**
   String get choose_location;
 
-  /// No description provided for @arabic.
-  ///
-  /// In en, this message translates to:
-  /// **'Arabic'**
-  String get arabic;
-
-  /// No description provided for @english.
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get english;
-
   /// No description provided for @add_next.
   ///
   /// In en, this message translates to:
