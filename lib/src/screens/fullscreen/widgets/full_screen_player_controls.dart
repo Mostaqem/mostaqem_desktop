@@ -69,95 +69,83 @@ class FullScreenPlayControls extends ConsumerWidget {
                                 elevation: 0,
                               ),
                             ),
-                            child:
-                                isSquiggly
-                                    ? SquigglySlider(
-                                      squiggleAmplitude: 3,
-                                      squiggleWavelength: 5,
-                                      squiggleSpeed: 0.2,
-                                      useLineThumb: true,
-                                      activeColor: Colors.white,
-                                      value: max(0, min(position, duration)),
-                                      max: duration,
-                                      onChangeStart: (_) async {
-                                        final isPlaying = player.isPlaying;
-                                        if (isPlaying) {
-                                          await ref
-                                              .read(
-                                                playerNotifierProvider.notifier,
-                                              )
-                                              .player
-                                              .pause();
-                                        }
-                                      },
-                                      onChangeEnd: (value) async {
-                                        await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .handleSeek(
-                                              Duration(seconds: value.toInt()),
-                                            );
+                            child: isSquiggly
+                                ? SquigglySlider(
+                                    squiggleAmplitude: 3,
+                                    squiggleWavelength: 5,
+                                    squiggleSpeed: 0.2,
+                                    useLineThumb: true,
+                                    activeColor: Colors.white,
+                                    value: max(0, min(position, duration)),
+                                    max: duration,
+                                    onChangeStart: (_) async {
+                                      final isPlaying = player.isPlaying;
+                                      if (isPlaying) {
                                         await ref
                                             .read(
                                               playerNotifierProvider.notifier,
                                             )
                                             .player
-                                            .play();
-                                      },
-                                      onChanged: (value) {
-                                        ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .changePosition(
-                                              Duration(seconds: value.toInt()),
-                                            );
-                                      },
-                                    )
-                                    : Slider(
-                                      activeColor: Colors.white,
-                                      value: max(0, min(position, duration)),
-                                      max: duration,
-                                      onChangeStart: (_) async {
-                                        final isPlaying =
-                                            ref
-                                                .read(playerNotifierProvider)
-                                                .isPlaying;
-                                        if (isPlaying) {
-                                          await ref
-                                              .read(
-                                                playerNotifierProvider.notifier,
-                                              )
-                                              .player
-                                              .pause();
-                                        }
-                                      },
-                                      onChangeEnd: (value) async {
-                                        await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .handleSeek(
-                                              Duration(seconds: value.toInt()),
-                                            );
-                                        await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .player
-                                            .play();
-                                      },
-                                      onChanged: (value) {
-                                        ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .changePosition(
-                                              Duration(seconds: value.toInt()),
-                                            );
-                                      },
+                                            .pause();
+                                      }
+                                    },
+                                    onChangeEnd: (value) async {
+                                      await ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .handleSeek(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                      await ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .player
+                                          .play();
+                                    },
+                                    onChanged: (value) {
+                                      ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .changePosition(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                    },
+                                  )
+                                : Slider(
+                                    inactiveColor: Colors.white.withValues(
+                                      alpha: 0.1,
                                     ),
+                                    value: max(0, min(position, duration)),
+                                    max: duration,
+                                    onChangeStart: (_) async {
+                                      final isPlaying = ref
+                                          .read(playerNotifierProvider)
+                                          .isPlaying;
+                                      if (isPlaying) {
+                                        await ref
+                                            .read(
+                                              playerNotifierProvider.notifier,
+                                            )
+                                            .player
+                                            .pause();
+                                      }
+                                    },
+                                    onChangeEnd: (value) async {
+                                      await ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .handleSeek(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                      await ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .player
+                                          .play();
+                                    },
+                                    onChanged: (value) {
+                                      ref
+                                          .read(playerNotifierProvider.notifier)
+                                          .changePosition(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                    },
+                                  ),
                           );
                         },
                       );
@@ -185,18 +173,16 @@ class FullScreenPlayControls extends ConsumerWidget {
                     },
                     icon: Icon(
                       Icons.shuffle,
-                      color:
-                          player.isShuffle
-                              ? Theme.of(context).colorScheme.tertiary
-                              : Colors.white,
+                      color: player.isShuffle
+                          ? Theme.of(context).colorScheme.tertiary
+                          : Colors.white,
                     ),
                     iconSize: 16,
                   ),
                   Visibility(
-                    visible:
-                        !ref
-                            .watch(playerNotifierProvider.notifier)
-                            .isFirstChapter(),
+                    visible: !ref
+                        .watch(playerNotifierProvider.notifier)
+                        .isFirstChapter(),
                     child: Tooltip(
                       message: 'قبل',
                       preferBelow: false,
@@ -223,24 +209,22 @@ class FullScreenPlayControls extends ConsumerWidget {
                             .read(playerNotifierProvider.notifier)
                             .handlePlayPause();
                       },
-                      icon:
-                          player.isPlaying
-                              ? const Icon(
-                                Icons.pause_circle_filled_outlined,
-                                color: Colors.white,
-                              )
-                              : const Icon(
-                                Icons.play_circle_fill_outlined,
-                                color: Colors.white,
-                              ),
+                      icon: player.isPlaying
+                          ? const Icon(
+                              Icons.pause_circle_filled_outlined,
+                              color: Colors.white,
+                            )
+                          : const Icon(
+                              Icons.play_circle_fill_outlined,
+                              color: Colors.white,
+                            ),
                       iconSize: 25,
                     ),
                   ),
                   Visibility(
-                    visible:
-                        !ref
-                            .watch(playerNotifierProvider.notifier)
-                            .isLastchapter(),
+                    visible: !ref
+                        .watch(playerNotifierProvider.notifier)
+                        .isLastchapter(),
                     child: Tooltip(
                       message: 'بعد',
                       preferBelow: false,
@@ -290,10 +274,9 @@ class FullScreenPlayControls extends ConsumerWidget {
                       },
                       icon: Icon(
                         Icons.lyrics_outlined,
-                        color:
-                            lyricsState
-                                ? Theme.of(context).colorScheme.tertiary
-                                : Colors.white,
+                        color: lyricsState
+                            ? Theme.of(context).colorScheme.tertiary
+                            : Colors.white,
                       ),
                     ),
                   ),

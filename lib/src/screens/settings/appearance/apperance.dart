@@ -128,6 +128,9 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
                       content: SingleChildScrollView(
                         child: ColorPicker(
                           pickerColor: pickerColor,
+                          displayThumbColor: true,
+                          
+                          hexInputBar: true,
                           onColorChanged: (color) {
                             setState(() {
                               pickerColor = color;

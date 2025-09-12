@@ -9,4 +9,3 @@ final getConnectionProvider =
           ? InternetConnectionStatus.connected
           : InternetConnectionStatus.disconnected;
     });
- 

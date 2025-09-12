@@ -64,6 +64,7 @@ class SurahWidget extends ConsumerWidget {
     return SizedBox(
       height: MediaQuery.sizeOf(context).height - 255,
       child: GridView.builder(
+        cacheExtent: 100,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 160,
         ),

@@ -151,6 +151,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         width: MediaQuery.sizeOf(context).width / 10,
                         height: MediaQuery.sizeOf(context).width / 10,
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(
