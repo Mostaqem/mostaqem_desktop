@@ -67,8 +67,7 @@ class PlayerNotifier extends _$PlayerNotifier {
   void init() {
     player.stream.playlist.listen((data) async {
       log('Playlist: ${data.medias.length}');
-      if (player.state.playlist.medias.length == 1 &&
-          state.broadcastName != null) {
+      if (data.medias.length == 1 && state.broadcastName != null) {
         if (isLocalAudio()) {
           await addLocalQueue();
         } else {
@@ -94,7 +93,7 @@ class PlayerNotifier extends _$PlayerNotifier {
         nextAlbum: parseAlbum(data.index + 1),
       );
 
-      final chapterFound = isChapterInQueue(state.album!.url);
+      final chapterFound = isChapterInQueue(state.album!.surah.id);
 
       if (state.queue.length != 20 || !chapterFound) {
         state = state.copyWith(
@@ -250,7 +249,6 @@ class PlayerNotifier extends _$PlayerNotifier {
     final chosenReciter = ref.read(userReciterProvider);
 
     final mixID = createShortHash(surahID, recitationID, chosenReciter.id);
-    debugPrint(mixID);
     final cachedFile = await cacheManager.getFileFromCache(mixID);
     final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
 
@@ -259,37 +257,18 @@ class PlayerNotifier extends _$PlayerNotifier {
       await player.jump(index);
       return;
     }
-    if (cachedAlbum == null) {
-      final album = await fetchAlbum(
-        surahID: surahID,
-        reciterID: chosenReciter.id,
-        recitationID: recitationID,
-      );
-      await player.open(
-        Media(
-          album.url,
-          extras: {
-            'surah': album.surah.toJson(),
-            'reciter': album.reciter.toJson(),
-            'recitationID': album.recitationID,
-            'url': album.url,
-          },
-        ),
-      );
-      await cacheManager.downloadFile(album.url, key: mixID);
-      debugPrint('Cached');
-      return;
-    }
+
     debugPrint(cachedFile.toString());
     if (cachedFile != null) {
       debugPrint('Loading from cache');
 
       final album = Album(
-        surah: cachedAlbum.surah,
+        surah: cachedAlbum!.surah,
         reciter: cachedAlbum.reciter,
         url: cachedFile.file.path,
         recitationID: cachedAlbum.recitationID,
       );
+
       state = state.copyWith(album: album);
       await player.open(
         Media(
@@ -537,7 +516,7 @@ class PlayerNotifier extends _$PlayerNotifier {
     return (currentTime: currentTime, durationTime: durationTime);
   }
 
-  bool isChapterInQueue(String url) {
-    return state.queue.any((album) => album.url == url);
+  bool isChapterInQueue(int id) {
+    return state.queue.any((album) => album.surah.id == id);
   }
 }
