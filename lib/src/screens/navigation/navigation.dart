@@ -110,10 +110,7 @@ class RightSide extends ConsumerWidget {
                 ),
               ),
             ),
-            leading: ToolTipIconButton(
-              message: ref.watch(isExtendedProvider)
-                  ? context.tr.minimize_screen
-                  : context.tr.maximize_screen,
+            leading: IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () => ref
                   .read(isExtendedProvider.notifier)

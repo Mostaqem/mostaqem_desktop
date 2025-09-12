@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/recitation_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
@@ -23,7 +24,7 @@ class RecitationWidget extends StatelessWidget {
       child: Consumer(
         builder: (context, ref, child) {
           final album = ref.watch(currentAlbumProvider);
-
+          final locale = ref.watch(localeNotifierProvider).languageCode;
           final recitations = ref.watch(
             fetchReciterRecitationProvider(reciterID: album?.reciter.id ?? 1),
           );
@@ -44,11 +45,14 @@ class RecitationWidget extends StatelessWidget {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     return RadioListTile(
-                      title: Text(data[index].name),
+                      title: Text(
+                        locale == 'ar'
+                            ? data[index].name
+                            : data[index].englishName!,
+                      ),
                       value: ref.watch(recitationProvider),
                       groupValue: data[index].id,
                       onChanged: (v) {
-                        // ignore: invalid_use_of_visible_for_testing_member
                         ref
                             .read(playerNotifierProvider.notifier)
                             .play(

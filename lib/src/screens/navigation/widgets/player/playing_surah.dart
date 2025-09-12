@@ -95,7 +95,7 @@ class PlayingSurah extends StatelessWidget {
           ),
           const SizedBox(width: 50),
           ToolTipIconButton(
-            message: 'قائمة التشغيل',
+            message: context.tr.playlist,
             iconSize: 20,
             onPressed: () {
               final canPop = ref
@@ -113,7 +113,7 @@ class PlayingSurah extends StatelessWidget {
           Visibility(
             visible: !ref.read(isLocalProvider),
             child: ToolTipIconButton(
-              message: 'تلاوات',
+              message: context.tr.recitations,
               iconSize: 16,
               onPressed: () {
                 final height = ref.read(recitationHeight);

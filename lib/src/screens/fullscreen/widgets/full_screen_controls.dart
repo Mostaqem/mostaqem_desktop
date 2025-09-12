@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
@@ -36,7 +37,9 @@ class FullScreenControl extends ConsumerWidget {
             ? Colors.white
             : Theme.of(context).colorScheme.onSecondaryContainer,
       ),
-      message: isFullScreen ? 'تصغير الشاشة' : 'تكبير الشاشة',
+      message: isFullScreen
+          ? context.tr.minimize_screen
+          : context.tr.maximize_screen,
     );
   }
 }

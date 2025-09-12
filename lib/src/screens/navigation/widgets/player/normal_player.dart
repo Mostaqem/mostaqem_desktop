@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
@@ -62,7 +63,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
               Visibility(
                 visible: isBtnVisible(album),
                 child: ToolTipIconButton(
-                  message: 'تحميل',
+                  message: context.tr.download,
                   iconSize: 16,
                   onPressed: () async {
                     final height = ref.read(downloadHeightProvider);
@@ -91,7 +92,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
                     !widget.isFullScreen &&
                     ref.watch(downloadHeightProvider) == 0,
                 child: ToolTipIconButton(
-                  message: 'اقرأ',
+                  message: context.tr.read,
                   onPressed: () async {
                     final surah = ref.read(currentSurahProvider);
                     final canPop = ref

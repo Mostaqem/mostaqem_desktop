@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/providers/lyrics_notifier.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -45,6 +46,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
     final lyrics = ref.watch(currentLyricsNotifierProvider);
     final theme = Theme.of(context);
     final isbroadcast = ref.watch(isBroadcastProvider);
+    final locale = ref.watch(localeNotifierProvider).languageCode;
     return isbroadcast
         ? const BroadcastFullscreenWidget()
         : Stack(
@@ -114,9 +116,9 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         value: lyrics,
                         data: (data) {
                           if (data == null) {
-                            return const Text(
-                              'عفوا, لا يوجد كلمات , سوف نضيفها مع الوقت',
-                              style: TextStyle(color: Colors.white),
+                            return Text(
+                              context.tr.sorry_no_lyrics,
+                              style: const TextStyle(color: Colors.white),
                             );
                           }
                           return Text(
@@ -135,7 +137,11 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 220, right: 50),
+                padding: const EdgeInsets.only(
+                  bottom: 220,
+                  right: 50,
+                  left: 50,
+                ),
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Row(
@@ -160,14 +166,18 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.player.surah.arabicName,
+                            locale == 'ar'
+                                ? widget.player.surah.arabicName
+                                : widget.player.surah.simpleName,
                             style: const TextStyle(
                               fontSize: 30,
                               color: Colors.white,
                             ),
                           ),
                           Text(
-                            widget.player.reciter.arabicName,
+                            locale == 'ar'
+                                ? widget.player.reciter.arabicName
+                                : widget.player.reciter.englishName,
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.white.withValues(alpha: 0.5),
@@ -176,7 +186,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                           Visibility(
                             visible: ref.watch(isLocalProvider),
                             child: Text(
-                              'تشغيل اوفلاين',
+                              context.tr.offline_playback,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -193,11 +203,13 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: locale == 'ar'
+                      ? Alignment.centerLeft
+                      : Alignment.centerRight,
                   child: CircleAvatar(
                     backgroundColor: theme.colorScheme.surface,
                     child: ToolTipIconButton(
-                      message: 'تغير الصورة',
+                      message: context.tr.change_image,
                       onPressed: () {
                         ref.invalidate(fetchRandomImageProvider);
                       },

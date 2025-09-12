@@ -22,9 +22,10 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             const WindowButtons(),
             const SizedBox(height: 10),
-            const Align(alignment: Alignment.topLeft, child: AppBackButton()),
+            const AppBackButton(),
+
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
