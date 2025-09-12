@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 enum Language implements Comparable<Language> {
   arabic(name: 'العربية', code: 'ar'),

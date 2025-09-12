@@ -17,7 +17,7 @@ class UserSeedColor extends _$UserSeedColor {
 
   void setColor(Color color) {
     state = color;
-    CacheHelper.setInt('color', color.value);
+    CacheHelper.setInt('color', color.toARGB32());
   }
 
   void clear() {

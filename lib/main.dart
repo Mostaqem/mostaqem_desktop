@@ -28,7 +28,7 @@ void main() async {
         : TitleBarStyle.normal,
   );
   if (await FlutterSingleInstance().isFirstInstance()) {
-    runApp(ProviderScope(child: InitialLoading()));
+    // runApp(ProviderScope(child: InitialLoading()));
     HttpOverrides.global = MyHttpOverrides();
 
     launchAtStartup.setup(

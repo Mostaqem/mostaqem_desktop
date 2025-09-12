@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
@@ -17,14 +18,14 @@ class DownloadOptions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'التحميلات',
+            context.tr.downloads,
             style: TextStyle(
               fontSize: 16,
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           const SizedBox(height: 8),
-          const Text('اختار مكان تنزيل القران'),
+          Text(context.tr.choose_download_location),
           const SizedBox(height: 4),
           Consumer(
             builder: (context, ref, child) {
@@ -70,8 +71,8 @@ class DownloadOptions extends StatelessWidget {
                   elevation: const WidgetStatePropertyAll<double>(0),
                 ),
                 onPressed: () async {
-                  final selectedDirectory =
-                      await FilePicker.platform.getDirectoryPath();
+                  final selectedDirectory = await FilePicker.platform
+                      .getDirectoryPath();
                   if (!context.mounted) return;
                   if (selectedDirectory != null) {
                     await ref
@@ -79,7 +80,7 @@ class DownloadOptions extends StatelessWidget {
                         .changePath(path: selectedDirectory);
                   }
                 },
-                child: const Text('اختيار مكان'),
+                child: Text(context.tr.choose_download_location),
               );
             },
           ),

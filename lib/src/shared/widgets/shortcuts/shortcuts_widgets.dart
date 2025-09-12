@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
@@ -39,9 +40,9 @@ Dialog helpShortcuts(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 const Align(alignment: Alignment.topLeft, child: CloseButton()),
-                const Text(
-                  'الاختصارات',
-                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                Text(
+                  context.tr.shortcuts,
+                  style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 50),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/full_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
@@ -26,7 +28,7 @@ class _NavigationState extends ConsumerState<Navigation> {
   @override
   void initState() {
     super.initState();
-    if (Constants.mStore == false) {
+    if (Constants.mStore == false && isProduction) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final state = await ref.read(checkUpdateProvider.future);
         if (!mounted) return;
@@ -37,10 +39,10 @@ class _NavigationState extends ConsumerState<Navigation> {
     }
   }
 
-  final specialPage = Screen(
+  Screen getSpecialPage(BuildContext context) => Screen(
     icon: const Icon(Icons.star_outline_rounded),
     selectedIcon: const Icon(Icons.star_rounded),
-    label: 'مناسبات',
+    label: context.tr.occasions,
     widget: const OccasionsScreen(),
   );
 
@@ -50,11 +52,11 @@ class _NavigationState extends ConsumerState<Navigation> {
     final player = ref.watch(
       playerNotifierProvider.select((value) => value.album),
     );
-    var children = ref.watch(childrenProvider);
+    var children = getChildrenScreens(context);
     final screenIndex = ref.watch(indexScreenProvider);
     final isTodaySpecial = ref.watch(occasionsRepoProvider).isTodaySpecial();
     if (isTodaySpecial) {
-      children = {...children, specialPage};
+      children = {...children, getSpecialPage(context)};
     }
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -101,15 +103,14 @@ class RightSide extends ConsumerWidget {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: ToolTipIconButton(
-                    message: 'اعدادات',
+                    message: context.tr.settings,
                     onPressed: () => context.go('/settings'),
                     icon: const Icon(Icons.settings_outlined),
                   ),
                 ),
               ),
             ),
-            leading: ToolTipIconButton(
-              message: ref.watch(isExtendedProvider) ? 'تصغير' : 'توسيع',
+            leading: IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () => ref
                   .read(isExtendedProvider.notifier)

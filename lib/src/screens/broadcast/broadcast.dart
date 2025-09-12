@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/broadcast/repository/broadcast_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
@@ -37,10 +38,9 @@ class BroadcastScreen extends ConsumerWidget {
                     focusNode?.unfocus();
                     ref.read(shortcutsEnabledProvider.notifier).state = true;
                   },
-                  onTap:
-                      () => ref
-                          .read(shortcutsEnabledProvider.notifier)
-                          .update((state) => !state),
+                  onTap: () => ref
+                      .read(shortcutsEnabledProvider.notifier)
+                      .update((state) => !state),
                   controller: queryController,
                   onChanged: (value) {
                     ref
@@ -56,25 +56,24 @@ class BroadcastScreen extends ConsumerWidget {
                   trailing: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child:
-                          isTyping
-                              ? IconButton(
-                                icon: const Icon(Icons.close),
-                                onPressed: () {
-                                  ref
-                                      .read(
-                                        searchNotifierProvider(
-                                          'broadcast',
-                                        ).notifier,
-                                      )
-                                      .clear();
-                                  queryController.clear();
-                                },
-                              )
-                              : const Icon(Icons.search),
+                      child: isTyping
+                          ? IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                ref
+                                    .read(
+                                      searchNotifierProvider(
+                                        'broadcast',
+                                      ).notifier,
+                                    )
+                                    .clear();
+                                queryController.clear();
+                              },
+                            )
+                          : const Icon(Icons.search),
                     ),
                   ],
-                  hintText: 'ماذا تريد ان تسمع؟',
+                  hintText: context.tr.what_do_you_want_hear,
                 ),
               ),
               const SizedBox(height: 20),
@@ -85,8 +84,8 @@ class BroadcastScreen extends ConsumerWidget {
                     height: MediaQuery.sizeOf(context).height - 180,
                     child: ListView.separated(
                       itemCount: data.length,
-                      separatorBuilder:
-                          (context, index) => const SizedBox(height: 16),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 16),
                       itemBuilder: (context, index) {
                         return ListTile(
                           leading: Text(
@@ -94,10 +93,12 @@ class BroadcastScreen extends ConsumerWidget {
                             style: const TextStyle(fontSize: 16),
                           ),
                           selected: data[index].name == currentBroadcast,
-                          selectedTileColor:
-                              Theme.of(context).colorScheme.primaryContainer,
-                          selectedColor:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
+                          selectedTileColor: Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer,
+                          selectedColor: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
                           trailing: const Icon(Icons.play_arrow),
                           onTap: () {
                             ref

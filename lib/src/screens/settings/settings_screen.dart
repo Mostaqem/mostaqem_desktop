@@ -22,15 +22,19 @@ class SettingsScreen extends ConsumerWidget {
           children: [
             const WindowButtons(),
             const SizedBox(height: 10),
-            const Align(alignment: Alignment.topLeft, child: AppBackButton()),
+            const AppBackButton(),
+
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'الاعدادات',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  Text(
+                    context.tr.settings,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 52),
                   const LanguageSetting(),
@@ -42,7 +46,7 @@ class SettingsScreen extends ConsumerWidget {
                   const DownloadOptions(),
                   const SizedBox(height: 30),
                   Text(
-                    'مظهر',
+                    context.tr.appearance,
                     style: TextStyle(
                       fontSize: 16,
                       color: Theme.of(context).colorScheme.secondary,
@@ -52,7 +56,7 @@ class SettingsScreen extends ConsumerWidget {
                   const ApperanceSettings(),
                   const SizedBox(height: 30),
                   Text(
-                    'ملفات المؤقتة',
+                    context.tr.temp_files,
                     style: TextStyle(
                       fontSize: 16,
                       color: Theme.of(context).colorScheme.secondary,
@@ -62,9 +66,12 @@ class SettingsScreen extends ConsumerWidget {
                     onPressed: () {
                       CacheHelper.clear();
                       DefaultCacheManager().emptyCache();
-                      appSnackBar(context, message: 'تم حدف الملفات بنجاح');
+                      appSnackBar(
+                        context,
+                        message: context.tr.delete_files_successfully,
+                      );
                     },
-                    child: const Text('حذف الملفات'),
+                    child: Text(context.tr.delete_files),
                   ),
                   const SizedBox(height: 8),
                 ],
@@ -86,7 +93,7 @@ class LanguageSetting extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'اللغة',
+          context.tr.language,
           style: TextStyle(
             fontSize: 16,
             color: Theme.of(context).colorScheme.secondary,

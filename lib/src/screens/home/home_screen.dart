@@ -21,7 +21,6 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    HijriCalendar.setLocal('ar');
     final isTyping =
         ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
     final surahImage = ref.watch(

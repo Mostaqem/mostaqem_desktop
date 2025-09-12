@@ -52,7 +52,7 @@ class ShortcutLabel extends StatelessWidget {
               ),
             ],
           ),
-          Text(shortcut.name),
+          Text(shortcut.getName(context)),
         ],
       ),
     );
