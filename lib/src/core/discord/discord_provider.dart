@@ -18,20 +18,6 @@ class DiscordRepository {
     required String url,
   }) async {
     final isconnected = FlutterDiscordRPC.instance.isConnected;
-    if (!isconnected) {
-      await FlutterDiscordRPC.instance.connect();
-    }
-    if (isconnected) {
-      await FlutterDiscordRPC.instance.setActivity(
-        activity: RPCActivity(
-          activityType: ActivityType.listening,
-          state: reciter,
-          buttons: [RPCButton(label: 'Listen', url: url)],
-          details: surahName,
-          assets: RPCAssets(largeImage: largeImage),
-        ),
-      );
-    }
   }
 
   Future<void> clearDiscordPresence() async {

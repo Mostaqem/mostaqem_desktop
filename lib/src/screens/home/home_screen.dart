@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/queue_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
@@ -20,7 +21,6 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    HijriCalendar.setLocal('ar');
     final isTyping =
         ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
     final surahImage = ref.watch(
@@ -42,7 +42,7 @@ class HomeScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('تاريخ اليوم'),
+                  Text(context.tr.today_hijri),
                   const HijriDateWidget(),
                   const SizedBox(height: 10),
                   Align(
@@ -88,7 +88,7 @@ class HomeScreen extends ConsumerWidget {
                               : const Icon(Icons.search),
                         ),
                       ],
-                      hintText: 'ماذا تريد ان تسمع؟',
+                      hintText: context.tr.what_do_you_want_hear,
                     ),
                   ),
                   const SizedBox(height: 18),

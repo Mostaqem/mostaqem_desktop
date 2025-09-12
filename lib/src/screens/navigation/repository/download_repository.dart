@@ -94,10 +94,14 @@ class DownloadAudio extends _$DownloadAudio {
             log('[Error Writing metadata]', error: e);
           }
         })
-        .catchError((e) {
+        .catchError((Object e) {
           log('[Error Downloading]', error: e);
           state = state!.copyWith(downloadState: DownloadState.cancelled);
           cancelToken.cancel();
+          return Response<dynamic>(
+            requestOptions: RequestOptions(path: ''),
+            statusCode: 500,
+          );
         });
     state = null;
   }

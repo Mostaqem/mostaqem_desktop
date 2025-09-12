@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 
 class AppBackButton extends StatelessWidget {
   const AppBackButton({super.key});
@@ -11,7 +12,6 @@ class AppBackButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
         spacing: 10,
         children: [
           Consumer(
@@ -26,7 +26,7 @@ class AppBackButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18),
                   ),
                   child: Tooltip(
-                    message: 'رجوع',
+                    message: context.tr.back,
                     preferBelow: false,
                     child: IconButton(
                       icon: const Icon(Icons.home_outlined),
@@ -48,10 +48,10 @@ class AppBackButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
             ),
             child: Tooltip(
-              message: 'رجوع',
+              message: context.tr.back,
               preferBelow: false,
               child: IconButton(
-                icon: const Icon(Icons.arrow_forward),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   if (context.mounted) {
                     if (context.canPop()) {

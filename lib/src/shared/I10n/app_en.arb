@@ -1,0 +1,123 @@
+{
+    "@@locale": "en",
+    "today_hijri": "Today's date",
+    "what_do_you_want_hear": "What do you want to hear?",
+    
+    "@today_hijri": {
+        "description": "Label for today's Hijri date"
+    },
+    "@what_do_you_want_hear": {
+        "description": "Search placeholder text"
+    },
+    
+    "shortcuts": "Shortcuts",
+    "help": "Help",
+    "play_pause": "Play/Pause",
+    "mute_unmute": "Mute/Unmute",
+    "play_next": "Play Next",
+    "play_previous": "Play Previous",
+    "settings": "Settings",
+    "check_update": "Check Update",
+    "fullscreen": "Fullscreen",
+    "exit_fullscreen": "Exit Fullscreen",
+    
+    "licenses": "Licenses",
+    "about_mostaqem": "About Mostaqem",
+    "exit": "Exit",
+    "update_available": "Update Available?",
+    "yes_update_available": "Yes, there is an update",
+    "no_update_available": "No update available",
+    "cancel": "Cancel",
+    "update": "Update",
+    "copy_version": "Copy Version",
+    
+    "back": "Back",
+    "home": "Home",
+    "downloads": "Downloads",
+    "broadcasts": "Broadcasts",
+    "occasions": "Occasions",
+    
+    "save_image": "Save Image",
+    "choose_image": "Choose Image",
+    "no_image_selected": "No image selected",
+    "image_saved_successfully": "Image saved successfully",
+    "demo": "Demo",
+    
+    "appearance": "Appearance",
+    "temp_files": "Temporary Files",
+    "delete_files_successfully": "Files deleted successfully",
+    "delete_files": "Delete Files",
+    "language": "Language",
+    "system": "System",
+    "change_color": "Change Color",
+    "choose_color": "Choose Color",
+    "change_appearance": "Change Appearance",
+    "reset_color": "Reset Color",
+    "change_to_waves": "Change Shape to Waves",
+    
+    "select_verse_to_share": "Select verse to share",
+    "share_verse": "Share Verse",
+    
+    "next_to_play": "Next to Play",
+    "change_location": "Change Location",
+    "remove_surah_from_queue": "Remove Surah from Playlist",
+    
+    
+    "no_special_day_today": "No special day today",
+    "hajj_hadith": "The Prophet said about the virtue of the first ten days of Dhul-Hijjah: (There are no days in which righteous deeds are more beloved to Allah than these ten days. They said: O Messenger of Allah, not even jihad in the way of Allah? He said: Not even jihad in the way of Allah, except a man who goes out with himself and his wealth and returns with nothing from that), narrated by al-Tirmidhi, and its origin is in al-Bukhari.",
+    "labbayk_allahumma_labbayk": "Labbayk Allahumma Labbayk",
+    "we_recommend_some_surahs": "We recommend some surahs:",
+    "play": "Play",
+    "read_surah": "Read Surah",
+    
+    "ramadan": "Ramadan",
+    "eid_al_fitr": "Eid al-Fitr",
+    "eid_al_adha": "Eid al-Adha",
+    "ashura": "Ashura",
+    "arafah": "Day of Arafah",
+    "first_10_days_zul_hijjah": "First 10 days of Dhul-Hijjah",
+    "sacred_months": "Sacred Months",
+    "fifteenth_shaaban": "15th of Sha'ban",
+    "islamic_new_year": "Islamic New Year",
+    
+    "playlist": "Playlist",
+    "recitations": "Recitations",
+    "shuffle": "Shuffle",
+    "previous": "Previous",
+    "next": "Next",
+    "repeat": "Repeat",
+    "download": "Download",
+    "read": "Read",
+    "change_image": "Change Image",
+    
+    "play_next_item": "Play Next",
+    "add_to_playlist": "Add to Playlist",
+    "download_surah": "Download Surah",
+    "retry": "Retry",
+    
+    "lyrics": "Lyrics",
+    "sorry_no_lyrics": "Sorry, no lyrics available, we will add them over time",
+    "offline_playback": "Offline Playback",
+    "minimize_screen": "Minimize Screen",
+    "maximize_screen": "Maximize Screen",
+    
+    "search_reciter": "Search for reciter...",
+    "default_reciter": "Default Reciter",
+    "choose_reciter": "Choose Reciter",
+    
+    "sorry_no_internet": "Sorry, no internet connection",
+    "something_went_wrong": "Something went wrong!",
+    
+    "choose_download_location": "Choose Quran download location",
+    "choose_location": "Choose Location",
+
+    
+    "add_next": "Add Next",
+    "add_to_queue": "Add to Queue",
+    "play_surah": "Play Surah",
+    "remove_from_queue": "Remove from Queue",
+    "move_item": "Move Item",
+    "play_item": "Play Item",
+    "stop": "Stop",
+    "pause": "Pause"
+}

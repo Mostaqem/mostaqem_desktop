@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
@@ -11,14 +12,14 @@ class VolumeControls extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playerNotifierProvider);
     final isFullScreen = ref.watch(isFullScreenProvider);
-
+    final locale = ref.watch(localeNotifierProvider).languageCode;
     return Row(
       children: [
         Tooltip(
           message: player.volume > 0 ? 'صامت' : 'تشغيل',
           preferBelow: false,
           child: RotatedBox(
-            quarterTurns: 2,
+            quarterTurns: locale == 'ar' ? 2 : 0,
             child: IconButton(
               onPressed: () {
                 if (player.volume > 0) {
@@ -27,28 +28,21 @@ class VolumeControls extends ConsumerWidget {
                   ref.read(playerNotifierProvider.notifier).handleVolume(1);
                 }
               },
-              icon:
-                  player.volume == 0
-                      ? Icon(
-                        Icons.volume_mute_outlined,
-                        size: 16,
-                        color:
-                            isFullScreen
-                                ? Colors.white
-                                : Theme.of(
-                                  context,
-                                ).colorScheme.onSecondaryContainer,
-                      )
-                      : Icon(
-                        Icons.volume_up_outlined,
-                        size: 16,
-                        color:
-                            isFullScreen
-                                ? Colors.white
-                                : Theme.of(
-                                  context,
-                                ).colorScheme.onSecondaryContainer,
-                      ),
+              icon: player.volume == 0
+                  ? Icon(
+                      Icons.volume_mute_outlined,
+                      size: 16,
+                      color: isFullScreen
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSecondaryContainer,
+                    )
+                  : Icon(
+                      Icons.volume_up_outlined,
+                      size: 16,
+                      color: isFullScreen
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSecondaryContainer,
+                    ),
             ),
           ),
         ),
@@ -67,10 +61,8 @@ class VolumeControls extends ConsumerWidget {
                   key: const Key('volume'),
                   activeColor: isFullScreen ? Colors.white : null,
                   value: ref.watch(playerNotifierProvider).volume,
-                  onChanged:
-                      (v) => ref
-                          .read(playerNotifierProvider.notifier)
-                          .handleVolume(v),
+                  onChanged: (v) =>
+                      ref.read(playerNotifierProvider.notifier).handleVolume(v),
                 ),
               ),
             );

@@ -81,6 +81,7 @@ msix_config:
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/img/
     - path: assets/img/svg/

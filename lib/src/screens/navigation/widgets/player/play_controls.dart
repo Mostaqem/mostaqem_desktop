@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_notifier.dart';
@@ -60,201 +61,188 @@ class _PlayControlsState extends ConsumerState<PlayControls>
     } else {
       controller.forward();
     }
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Transform.scale(
-        scale: 1,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ToolTipIconButton(
-                  message: 'خلط',
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ToolTipIconButton(
+                message: context.tr.shuffle,
+                onPressed: () async {
+                  await ref.read(playerNotifierProvider.notifier).shuffle();
+                },
+                icon: Icon(
+                  Icons.shuffle,
+                  color: player.isShuffle
+                      ? Theme.of(context).colorScheme.onSecondaryContainer
+                      : Theme.of(context).colorScheme.onSecondaryContainer
+                            .withValues(alpha: 0.4),
+                ),
+                iconSize: 16,
+              ),
+
+              Tooltip(
+                message: context.tr.previous,
+                preferBelow: false,
+                child: IconButton(
                   onPressed: () async {
-                    await ref.read(playerNotifierProvider.notifier).shuffle();
+                    await ref
+                        .read(playerNotifierProvider.notifier)
+                        .playPrevious();
                   },
-                  icon: Icon(
-                    Icons.shuffle,
-                    color:
-                        player.isShuffle
-                            ? Theme.of(context).colorScheme.onSecondaryContainer
-                            : Theme.of(context).colorScheme.onSecondaryContainer
-                                .withValues(alpha: 0.4),
-                  ),
-                  iconSize: 16,
-                ),
 
-                Tooltip(
-                  message: 'قبل',
-                  preferBelow: false,
-                  child: IconButton(
-                    onPressed: () async {
-                      await ref
-                          .read(playerNotifierProvider.notifier)
-                          .playPrevious();
-                    },
-
-                    icon: Icon(
-                      Icons.skip_next_outlined,
-                      color:
-                          ref
-                                  .watch(playerNotifierProvider.notifier)
-                                  .isFirstChapter()
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer
-                                  .withValues(alpha: 0.5)
-                              : Theme.of(
-                                context,
-                              ).colorScheme.onSecondaryContainer,
-                    ),
-                    iconSize: 25,
-                  ),
-                ),
-                Tooltip(
-                  message: 'تشغيل',
-                  preferBelow: false,
-                  child: IconButton(
-                    color: Theme.of(context).colorScheme.onPrimary,
-
-                    onPressed: () async {
-                      await ref
-                          .read(playerNotifierProvider.notifier)
-                          .handlePlayPause();
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(
-                        Theme.of(context).colorScheme.primary,
-                      ),
-                      shape: WidgetStatePropertyAll(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    icon: AnimatedIcon(
-                      icon: AnimatedIcons.pause_play,
-                      progress: animation,
-                    ),
-
-                    iconSize: 30,
-                  ),
-                ),
-                ToolTipIconButton(
-                  message: 'بعد',
-
-                  onPressed: () async {
-                    await ref.read(playerNotifierProvider.notifier).playNext();
-                  },
                   icon: Icon(
                     Icons.skip_previous_outlined,
                     color:
                         ref
-                                .watch(playerNotifierProvider.notifier)
-                                .isLastchapter()
-                            ? Theme.of(context).colorScheme.onSecondaryContainer
-                                .withValues(alpha: 0.5)
-                            : Theme.of(
-                              context,
-                            ).colorScheme.onSecondaryContainer,
+                            .watch(playerNotifierProvider.notifier)
+                            .isFirstChapter()
+                        ? Theme.of(context).colorScheme.onSecondaryContainer
+                              .withValues(alpha: 0.5)
+                        : Theme.of(context).colorScheme.onSecondaryContainer,
                   ),
                   iconSize: 25,
                 ),
-                ToolTipIconButton(
-                  message: 'اعادة',
+              ),
+              Tooltip(
+                message: context.tr.play,
+                preferBelow: false,
+                child: IconButton(
+                  color: Theme.of(context).colorScheme.onPrimary,
+
                   onPressed: () async {
-                    ref.read(playerNotifierProvider.notifier).loop();
+                    await ref
+                        .read(playerNotifierProvider.notifier)
+                        .handlePlayPause();
                   },
-                  icon: loopIcon(
-                    player.loop,
-                    player.loop == PlaylistMode.none
-                        ? Theme.of(context).colorScheme.onSecondaryContainer
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(
+                      Theme.of(context).colorScheme.primary,
+                    ),
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  icon: AnimatedIcon(
+                    icon: AnimatedIcons.pause_play,
+                    progress: animation,
+                  ),
+
+                  iconSize: 30,
+                ),
+              ),
+              ToolTipIconButton(
+                message: context.tr.next,
+
+                onPressed: () async {
+                  await ref.read(playerNotifierProvider.notifier).playNext();
+                },
+                icon: Icon(
+                  Icons.skip_next_outlined,
+                  color:
+                      ref.watch(playerNotifierProvider.notifier).isLastchapter()
+                      ? Theme.of(context).colorScheme.onSecondaryContainer
                             .withValues(alpha: 0.5)
-                        : Theme.of(context).colorScheme.onSecondaryContainer,
-                  ),
-                  iconSize: 16,
+                      : Theme.of(context).colorScheme.onSecondaryContainer,
                 ),
-              ],
+                iconSize: 25,
+              ),
+              ToolTipIconButton(
+                message: context.tr.repeat,
+                onPressed: () async {
+                  ref.read(playerNotifierProvider.notifier).loop();
+                },
+                icon: loopIcon(
+                  player.loop,
+                  player.loop == PlaylistMode.none
+                      ? Theme.of(context).colorScheme.onSecondaryContainer
+                            .withValues(alpha: 0.5)
+                      : Theme.of(context).colorScheme.onSecondaryContainer,
+                ),
+                iconSize: 16,
+              ),
+            ],
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              ref
+                  .watch(playerNotifierProvider.notifier)
+                  .playerTime()
+                  .currentTime,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  ref
-                      .watch(playerNotifierProvider.notifier)
-                      .playerTime()
-                      .currentTime,
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.sizeOf(context).width / 2.5,
-                    maxHeight: 10,
-                  ),
-                  child: Consumer(
-                    builder: (context, ref, child) {
-                      final position = player.position.inSeconds.toDouble();
-                      final duration = player.duration.inSeconds.toDouble();
-                      return Stack(
-                        children: [
-                          Visibility(
-                            visible: false,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 4,
-                                left: 25,
-                                right: 25,
-                              ),
-                              child: LinearProgressIndicator(
-                                value: player.buffering.inSeconds.toDouble(),
-                                borderRadius: BorderRadius.circular(12),
-                                valueColor: AlwaysStoppedAnimation(
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.primary.withValues(alpha: 0.2),
-                                ),
-                              ),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.sizeOf(context).width / 2.5,
+                maxHeight: 10,
+              ),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final position = player.position.inSeconds.toDouble();
+                  final duration = player.duration.inSeconds.toDouble();
+                  return Stack(
+                    children: [
+                      Visibility(
+                        visible: false,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 4,
+                            left: 25,
+                            right: 25,
+                          ),
+                          child: LinearProgressIndicator(
+                            value: player.buffering.inSeconds.toDouble(),
+                            borderRadius: BorderRadius.circular(12),
+                            valueColor: AlwaysStoppedAnimation(
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.2),
                             ),
                           ),
-                          HoverBuilder(
-                            builder: (isHovered) {
-                              return SliderTheme(
-                                data: SliderThemeData(
-                                  thumbShape: RoundSliderThumbShape(
-                                    enabledThumbRadius: isHovered ? 7 : 3,
-                                    elevation: 0,
+                        ),
+                      ),
+                      HoverBuilder(
+                        builder: (isHovered) {
+                          return SliderTheme(
+                            data: SliderThemeData(
+                              thumbShape: RoundSliderThumbShape(
+                                enabledThumbRadius: isHovered ? 7 : 3,
+                                elevation: 0,
+                              ),
+                            ),
+                            child: isSquiggly
+                                ? SquigglyPlayerSlider(
+                                    position: position,
+                                    duration: duration,
+                                  )
+                                : NormalPlayerSlider(
+                                    position: position,
+                                    duration: duration,
                                   ),
-                                ),
-                                child:
-                                    isSquiggly
-                                        ? SquigglyPlayerSlider(
-                                          position: position,
-                                          duration: duration,
-                                        )
-                                        : NormalPlayerSlider(
-                                          position: position,
-                                          duration: duration,
-                                        ),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                Text(
-                  ref
-                      .watch(playerNotifierProvider.notifier)
-                      .playerTime()
-                      .durationTime,
-                ),
-              ],
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            Text(
+              ref
+                  .watch(playerNotifierProvider.notifier)
+                  .playerTime()
+                  .durationTime,
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }

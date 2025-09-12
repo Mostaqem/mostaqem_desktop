@@ -4,11 +4,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/core/theme/theme.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
+import 'package:mostaqem/src/shared/I10n/app_localizations.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_widgets.dart';
 
 class MyApp extends ConsumerWidget {
@@ -19,15 +21,17 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(goRouterProvider);
     final userSeedColor = ref.watch(userSeedColorProvider);
     final userTheme = ref.watch(themeNotifierProvider);
+    final currentLang = ref.watch(localeNotifierProvider);
     return MaterialApp.router(
       routerConfig: router,
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: const [Locale('ar', 'SA'), Locale('en', 'US')],
-      locale: const Locale('ar', 'SA'),
+      supportedLocales: I18nRepository.supportedLocales,
+      locale: currentLang,
       builder: (context, child) {
         return Material(
           child: AppShortcuts(
@@ -63,8 +67,6 @@ class Mostaqem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(home: ContextMenuOverlay(child: const MyApp())),
-    );
+    return ProviderScope(child: ContextMenuOverlay(child: const MyApp()));
   }
 }
