@@ -6,6 +6,7 @@ import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
+import 'package:mostaqem/src/screens/offline/repository/metadata_repository.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -99,7 +100,7 @@ class DownloadAudio extends _$DownloadAudio {
           state = state!.copyWith(downloadState: DownloadState.cancelled);
           cancelToken.cancel();
           return Response<dynamic>(
-            requestOptions: RequestOptions(path: ''),
+            requestOptions: RequestOptions(),
             statusCode: 500,
           );
         });
@@ -151,14 +152,16 @@ class DownloadAudio extends _$DownloadAudio {
   }
 
   Future<void> writeMetaData(String filePath, Album album) async {
-    // await MetadataGod.writeMetadata(
-    //   file: filePath,
-    //   metadata: Metadata(
-    //     genre: 'Quran',
-    //     discNumber: album.surah.id,
-    //     title: album.surah.arabicName,
-    //     artist: album.reciter.arabicName,
-    //   ),
-    // );
+    final metadataRepository = FfiMetadataRepository();
+
+    await metadataRepository.setMetadata(
+      filePath: filePath,
+      genre: album.surah.id.toString(),
+      title: album.surah.arabicName,
+      artist: album.reciter.arabicName,
+      album: '',
+      track: 0,
+      year: 0,
+    );
   }
 }

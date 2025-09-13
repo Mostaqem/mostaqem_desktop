@@ -34,23 +34,24 @@ class MyApp extends ConsumerWidget {
       locale: currentLang,
       builder: (context, child) {
         return Material(
-          child: AppShortcuts(
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                child!,
-                SizedBox(
-                  height: 100,
-                  child: Overlay(
-                    initialEntries: [
-                      OverlayEntry(builder: (context) => const PlayerWidget()),
-                    ],
-                  ),
-                ),
-                const DownloadManagerWidget(),
-                const RecitationWidget(),
-              ],
-            ),
+          child: Overlay(
+            initialEntries: [
+              OverlayEntry(
+                builder: (context) {
+                  return AppShortcuts(
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        child!,
+                        const SizedBox(height: 100, child: PlayerWidget()),
+                        const DownloadManagerWidget(),
+                        const RecitationWidget(),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         );
       },
