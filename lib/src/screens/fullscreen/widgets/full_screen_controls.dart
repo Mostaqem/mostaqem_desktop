@@ -23,6 +23,7 @@ class FullScreenControl extends ConsumerWidget {
           ref.read(isFullScreenProvider.notifier).toggle(value: true);
           ref.read(recitationHeight.notifier).state = 0;
           ref.read(downloadHeightProvider.notifier).state = 0;
+
           if (!context.mounted) return;
 
           ref.read(goRouterProvider).go('/');
