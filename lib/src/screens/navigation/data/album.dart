@@ -18,4 +18,13 @@ abstract class Album with _$Album {
   }) = _Album;
 
   factory Album.fromJson(Map<String, dynamic> json) => _$AlbumFromJson(json);
+
+  factory Album.fromExtras(Map<String, dynamic> extras) {
+    return Album(
+      surah: Surah.fromJson(extras['surah'] as Map<String, dynamic>),
+      reciter: Reciter.fromJson(extras['reciter'] as Map<String, dynamic>),
+      url: extras['url'] as String,
+      recitationID: extras['recitationID'] as int,
+    );
+  }
 }

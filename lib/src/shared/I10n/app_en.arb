@@ -44,7 +44,7 @@
     "demo": "Demo",
     
     "appearance": "Appearance",
-    "temp_files": "Temporary Files",
+    "temp_files": "Cached Files",
     "delete_files_successfully": "Files deleted successfully",
     "delete_files": "Delete Files",
     "language": "Language",
@@ -68,17 +68,7 @@
     "labbayk_allahumma_labbayk": "Labbayk Allahumma Labbayk",
     "we_recommend_some_surahs": "We recommend some surahs:",
     "play": "Play",
-    "read_surah": "Read Surah",
     
-    "ramadan": "Ramadan",
-    "eid_al_fitr": "Eid al-Fitr",
-    "eid_al_adha": "Eid al-Adha",
-    "ashura": "Ashura",
-    "arafah": "Day of Arafah",
-    "first_10_days_zul_hijjah": "First 10 days of Dhul-Hijjah",
-    "sacred_months": "Sacred Months",
-    "fifteenth_shaaban": "15th of Sha'ban",
-    "islamic_new_year": "Islamic New Year",
     
     "playlist": "Playlist",
     "recitations": "Recitations",
@@ -98,8 +88,8 @@
     "lyrics": "Lyrics",
     "sorry_no_lyrics": "Sorry, no lyrics available, we will add them over time",
     "offline_playback": "Offline Playback",
-    "minimize_screen": "Minimize Screen",
-    "maximize_screen": "Maximize Screen",
+    "minimize_screen": "Exit Fullscreen",
+    "maximize_screen": "Fullscreen",
     
     "search_reciter": "Search for reciter...",
     "default_reciter": "Default Reciter",

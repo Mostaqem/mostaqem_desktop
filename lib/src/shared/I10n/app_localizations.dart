@@ -293,7 +293,7 @@ abstract class AppLocalizations {
   /// No description provided for @temp_files.
   ///
   /// In en, this message translates to:
-  /// **'Temporary Files'**
+  /// **'Cached Files'**
   String get temp_files;
 
   /// No description provided for @delete_files_successfully.
@@ -410,66 +410,6 @@ abstract class AppLocalizations {
   /// **'Play'**
   String get play;
 
-  /// No description provided for @read_surah.
-  ///
-  /// In en, this message translates to:
-  /// **'Read Surah'**
-  String get read_surah;
-
-  /// No description provided for @ramadan.
-  ///
-  /// In en, this message translates to:
-  /// **'Ramadan'**
-  String get ramadan;
-
-  /// No description provided for @eid_al_fitr.
-  ///
-  /// In en, this message translates to:
-  /// **'Eid al-Fitr'**
-  String get eid_al_fitr;
-
-  /// No description provided for @eid_al_adha.
-  ///
-  /// In en, this message translates to:
-  /// **'Eid al-Adha'**
-  String get eid_al_adha;
-
-  /// No description provided for @ashura.
-  ///
-  /// In en, this message translates to:
-  /// **'Ashura'**
-  String get ashura;
-
-  /// No description provided for @arafah.
-  ///
-  /// In en, this message translates to:
-  /// **'Day of Arafah'**
-  String get arafah;
-
-  /// No description provided for @first_10_days_zul_hijjah.
-  ///
-  /// In en, this message translates to:
-  /// **'First 10 days of Dhul-Hijjah'**
-  String get first_10_days_zul_hijjah;
-
-  /// No description provided for @sacred_months.
-  ///
-  /// In en, this message translates to:
-  /// **'Sacred Months'**
-  String get sacred_months;
-
-  /// No description provided for @fifteenth_shaaban.
-  ///
-  /// In en, this message translates to:
-  /// **'15th of Sha\'ban'**
-  String get fifteenth_shaaban;
-
-  /// No description provided for @islamic_new_year.
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic New Year'**
-  String get islamic_new_year;
-
   /// No description provided for @playlist.
   ///
   /// In en, this message translates to:
@@ -569,13 +509,13 @@ abstract class AppLocalizations {
   /// No description provided for @minimize_screen.
   ///
   /// In en, this message translates to:
-  /// **'Minimize Screen'**
+  /// **'Exit Fullscreen'**
   String get minimize_screen;
 
   /// No description provided for @maximize_screen.
   ///
   /// In en, this message translates to:
-  /// **'Maximize Screen'**
+  /// **'Fullscreen'**
   String get maximize_screen;
 
   /// No description provided for @search_reciter.

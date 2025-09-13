@@ -166,36 +166,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get play => 'تشغيل';
 
   @override
-  String get read_surah => 'اقرأ السورة';
-
-  @override
-  String get ramadan => 'رمضان';
-
-  @override
-  String get eid_al_fitr => 'عيد الفطر';
-
-  @override
-  String get eid_al_adha => 'عيد الأضحى';
-
-  @override
-  String get ashura => 'عاشوراء';
-
-  @override
-  String get arafah => 'يوم عرفة';
-
-  @override
-  String get first_10_days_zul_hijjah => 'العشر الأوائل من ذي الحجة';
-
-  @override
-  String get sacred_months => 'الأشهر الحرم';
-
-  @override
-  String get fifteenth_shaaban => 'ليلة النصف من شعبان';
-
-  @override
-  String get islamic_new_year => 'رأس السنة الهجرية';
-
-  @override
   String get playlist => 'قائمة التشغيل';
 
   @override

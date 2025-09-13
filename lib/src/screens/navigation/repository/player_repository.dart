@@ -1,11 +1,9 @@
 // ignore_for_file: inference_failure_on_instance_creation
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -14,7 +12,9 @@ import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
+import 'package:mostaqem/src/screens/navigation/data/album_utils.dart';
 import 'package:mostaqem/src/screens/navigation/data/player.dart';
+import 'package:mostaqem/src/screens/navigation/repository/album_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
@@ -74,23 +74,11 @@ class PlayerNotifier extends _$PlayerNotifier {
           await addToQueue();
         }
       }
-      Album? parseAlbum(int index) {
-        if (index < 0 || index >= data.medias.length) return null;
-        final extras = data.medias[index].extras;
-        if (extras == null) return null;
-
-        return Album(
-          surah: Surah.fromJson(extras['surah'] as Map<String, dynamic>),
-          reciter: Reciter.fromJson(extras['reciter'] as Map<String, dynamic>),
-          url: extras['url'] as String,
-          recitationID: extras['recitationID'] as int,
-        );
-      }
 
       state = state.copyWith(
         queueIndex: data.index,
-        album: parseAlbum(data.index),
-        nextAlbum: parseAlbum(data.index + 1),
+        album: AlbumUtils.parseAlbum(data.index, data),
+        nextAlbum: AlbumUtils.parseAlbum(data.index + 1, data),
       );
 
       final chapterFound = isChapterInQueue(state.album!.surah.id);
@@ -143,6 +131,19 @@ class PlayerNotifier extends _$PlayerNotifier {
       if (Platform.isWindows) {
         windowThumbnailBar();
       }
+      if (state.album != null) {
+        if (playing) {
+          ref.read(
+            updateRPCDiscordProvider(
+              url: state.album!.url,
+              surahName: state.album!.surah.simpleName,
+              reciter: state.album!.reciter.englishName,
+            ),
+          );
+        } else {
+          ref.read(clearRPCDiscordProvider);
+        }
+      }
     });
   }
 
@@ -181,18 +182,7 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> localPlay({required Album album}) async {
-    state = state.copyWith(album: album, broadcastName: '');
-    await player.open(
-      Media(
-        album.url,
-        extras: {
-          'surah': album.surah.toJson(),
-          'reciter': album.reciter.toJson(),
-          'recitationID': album.recitationID,
-          'url': album.url,
-        },
-      ),
-    );
+    await _openAlbum(album, broadcast: '');
   }
 
   Future<void> playNext() async {
@@ -207,48 +197,15 @@ class PlayerNotifier extends _$PlayerNotifier {
     await player.previous();
   }
 
-  Future<Album> fetchAlbum({
-    required int surahID,
-    required int reciterID,
-    int? recitationID,
-  }) async {
-    final surah = await ref.read(fetchChapterByIdProvider(id: surahID).future);
-    final reciter = await ref.read(fetchReciterProvider(id: reciterID).future);
-    final mixID = createShortHash(surahID, recitationID, reciter.id);
-
-    final audio = await ref.read(
-      fetchAudioForChapterProvider(
-        chapterNumber: surahID,
-        reciterID: reciterID,
-        recitationID: recitationID,
-      ).future,
-    );
-    final album = Album(
-      surah: surah,
-      reciter: reciter,
-      url: audio.url,
-      recitationID: audio.recitationID,
-    );
-    await ref
-        .read(playerCacheProvider(key: mixID).notifier)
-        .setAlbum(album, key: mixID);
-
-    return album;
-  }
-
-  String createShortHash(int surahID, int? recitationID, int reciterID) {
-    final uniqueData = 'surahID_${surahID}_${recitationID ?? 0},$reciterID';
-    final hash = sha256.convert(utf8.encode(uniqueData)).toString();
-    return hash.substring(0, 8);
-  }
-
   Future<void> play({required int surahID, int? recitationID}) async {
     state = state.copyWith(broadcastName: '');
 
     final cacheManager = DefaultCacheManager();
     final chosenReciter = ref.read(userReciterProvider);
 
-    final mixID = createShortHash(surahID, recitationID, chosenReciter.id);
+    final mixID = ref
+        .read(albumRepositoryProvider)
+        .createShortHash(surahID, recitationID, chosenReciter.id);
     final cachedFile = await cacheManager.getFileFromCache(mixID);
     final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
 
@@ -268,45 +225,30 @@ class PlayerNotifier extends _$PlayerNotifier {
         url: cachedFile.file.path,
         recitationID: cachedAlbum.recitationID,
       );
+      await _openAlbum(album);
 
-      state = state.copyWith(album: album);
-      await player.open(
-        Media(
-          album.url,
-          extras: {
-            'surah': album.surah.toJson(),
-            'reciter': album.reciter.toJson(),
-            'recitationID': album.recitationID,
-            'url': album.url,
-          },
-        ),
-      );
       return;
     }
-    final album = await fetchAlbum(
-      surahID: surahID,
-      reciterID: chosenReciter.id,
-      recitationID: recitationID,
-    );
-    if (state.queue.contains(album)) {
-      final index = state.queue.indexWhere((value) => value == album);
-      await player.jump(index);
-      return;
-    }
+    final networkState = ref.watch(getConnectionProvider).value;
+    if (networkState == InternetConnectionStatus.connected) {
+      final album = await ref
+          .read(albumRepositoryProvider)
+          .fetchPlayerAlbum(
+            surahID: surahID,
+            reciterID: chosenReciter.id,
+            recitationID: recitationID,
+          );
+      await _openAlbum(album);
 
-    state = state.copyWith(album: album);
-    await player.open(
-      Media(
-        album.url,
-        extras: {
-          'surah': album.surah.toJson(),
-          'reciter': album.reciter.toJson(),
-          'recitationID': album.recitationID,
-          'url': album.url,
-        },
-      ),
-    );
-    await cacheManager.downloadFile(album.url, key: mixID);
+      if (state.queue.contains(album)) {
+        final index = state.queue.indexWhere((value) => value == album);
+        await player.jump(index);
+        return;
+      }
+
+      await _openAlbum(album);
+      await cacheManager.downloadFile(album.url, key: mixID);
+    }
   }
 
   Future<void> playYoutube({required String url, required String title}) async {
@@ -381,6 +323,9 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> addToQueue({int? surahID}) async {
+    final networkState = ref.watch(getConnectionProvider).value;
+    if (networkState != InternetConnectionStatus.connected) return;
+
     if (surahID == null) {
       if (state.album != null) {
         final currentID = state.album!.surah.id;
@@ -469,6 +414,25 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   Future<void> removeItem(int index) async {
     await player.remove(index);
+  }
+
+  Future<void> _openAlbum(Album album, {String? broadcast}) async {
+    if (broadcast != null) {
+      state = state.copyWith(album: album, broadcastName: broadcast);
+    } else {
+      state = state.copyWith(album: album);
+    }
+    await player.open(
+      Media(
+        album.url,
+        extras: {
+          'surah': album.surah.toJson(),
+          'reciter': album.reciter.toJson(),
+          'recitationID': album.recitationID,
+          'url': album.url,
+        },
+      ),
+    );
   }
 
   void windowThumbnailBar() {

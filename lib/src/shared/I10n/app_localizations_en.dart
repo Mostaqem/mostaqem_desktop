@@ -105,7 +105,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appearance => 'Appearance';
 
   @override
-  String get temp_files => 'Temporary Files';
+  String get temp_files => 'Cached Files';
 
   @override
   String get delete_files_successfully => 'Files deleted successfully';
@@ -166,36 +166,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get play => 'Play';
 
   @override
-  String get read_surah => 'Read Surah';
-
-  @override
-  String get ramadan => 'Ramadan';
-
-  @override
-  String get eid_al_fitr => 'Eid al-Fitr';
-
-  @override
-  String get eid_al_adha => 'Eid al-Adha';
-
-  @override
-  String get ashura => 'Ashura';
-
-  @override
-  String get arafah => 'Day of Arafah';
-
-  @override
-  String get first_10_days_zul_hijjah => 'First 10 days of Dhul-Hijjah';
-
-  @override
-  String get sacred_months => 'Sacred Months';
-
-  @override
-  String get fifteenth_shaaban => '15th of Sha\'ban';
-
-  @override
-  String get islamic_new_year => 'Islamic New Year';
-
-  @override
   String get playlist => 'Playlist';
 
   @override
@@ -245,10 +215,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offline_playback => 'Offline Playback';
 
   @override
-  String get minimize_screen => 'Minimize Screen';
+  String get minimize_screen => 'Exit Fullscreen';
 
   @override
-  String get maximize_screen => 'Maximize Screen';
+  String get maximize_screen => 'Fullscreen';
 
   @override
   String get search_reciter => 'Search for reciter...';
