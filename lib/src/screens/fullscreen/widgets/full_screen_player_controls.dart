@@ -7,6 +7,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/core/routes/routes.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/providers/lyrics_notifier.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
@@ -14,8 +16,10 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.da
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_notifier.dart';
+import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class FullScreenPlayControls extends ConsumerWidget {
   const FullScreenPlayControls({super.key});
@@ -167,7 +171,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ToolTipIconButton(
-                    message: 'خلط',
+                    message: context.tr.shuffle,
                     onPressed: () async {
                       await ref.read(playerNotifierProvider.notifier).shuffle();
                     },
@@ -184,7 +188,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                         .watch(playerNotifierProvider.notifier)
                         .isFirstChapter(),
                     child: Tooltip(
-                      message: 'قبل',
+                      message: context.tr.previous,
                       preferBelow: false,
                       child: IconButton(
                         onPressed: () async {
@@ -201,7 +205,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                     ),
                   ),
                   Tooltip(
-                    message: 'تشغيل',
+                    message: context.tr.next,
                     preferBelow: false,
                     child: IconButton(
                       onPressed: () async {
@@ -243,7 +247,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                     ),
                   ),
                   Tooltip(
-                    message: 'اعادة',
+                    message: context.tr.repeat,
                     preferBelow: false,
                     child: IconButton(
                       onPressed: () async {
@@ -262,7 +266,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                     visible: !ref.watch(isLocalProvider),
                     child: ToolTipIconButton(
                       iconSize: 16,
-                      message: 'كلمات',
+                      message: context.tr.lyrics,
                       onPressed: () {
                         if (lyricsState == true) {
                           ref.read(lyricsNotifierProvider.notifier).state =
@@ -277,6 +281,31 @@ class FullScreenPlayControls extends ConsumerWidget {
                         color: lyricsState
                             ? Theme.of(context).colorScheme.tertiary
                             : Colors.white,
+                      ),
+                    ),
+                  ),
+                  ToolTipIconButton(
+                    message: context.tr.read,
+                    onPressed: () async {
+                      final surah = ref.read(currentSurahProvider);
+                      final canPop = ref
+                          .read(navigationProvider)
+                          .canPop(expectedPath: '/reading');
+                      if (canPop) {
+                        ref.read(goRouterProvider).pop();
+                        return;
+                      }
+
+                      ref
+                          .read(goRouterProvider)
+                          .goNamed('Reading', extra: surah);
+                    },
+                    icon: const VectorGraphic(
+                      loader: AssetBytesLoader('assets/img/svg/read.svg'),
+                      width: 16,
+                      colorFilter: ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
                       ),
                     ),
                   ),
