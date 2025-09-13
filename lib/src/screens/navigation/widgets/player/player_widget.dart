@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_player_controls.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
@@ -31,7 +32,6 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
   @override
   void dispose() {
     windowManager.removeListener(this);
-
     super.dispose();
   }
 
@@ -59,6 +59,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
             duration: duration.inMilliseconds,
           ),
         );
+    ref.read(clearRPCDiscordProvider);
     super.onWindowClose();
   }
 
@@ -67,7 +68,6 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
     final isFullScreen = ref.watch(isFullScreenProvider);
     final isBroadcast = ref.watch(isBroadcastProvider);
     return Stack(
-      
       children: [
         Container(
           height: 100,
@@ -77,27 +77,25 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
               topLeft: Radius.circular(12),
               topRight: Radius.circular(12),
             ),
-            color:
-                isFullScreen
-                    ? Colors.transparent
-                    : Theme.of(context).colorScheme.secondaryContainer,
+            color: isFullScreen
+                ? Colors.transparent
+                : Theme.of(context).colorScheme.secondaryContainer,
           ),
-          child:
-              isFullScreen
-                  ? isBroadcast
-                      ? const BroadcastFullscreenControls()
-                      : const FullScreenPlayControls()
-                  : LayoutBuilder(
-                    builder: (context, constraints) {
-                      return constraints.minWidth < 1285 && isBroadcast == false
-                          ? FittedBox(
+          child: isFullScreen
+              ? isBroadcast
+                    ? const BroadcastFullscreenControls()
+                    : const FullScreenPlayControls()
+              : LayoutBuilder(
+                  builder: (context, constraints) {
+                    return constraints.minWidth < 1285 && isBroadcast == false
+                        ? FittedBox(
                             child: NormalPlayer(isFullScreen: isFullScreen),
                           )
-                          : isBroadcast
-                          ? BroadcastPlayer(isFullScreen: isFullScreen)
-                          : NormalPlayer(isFullScreen: isFullScreen);
-                    },
-                  ),
+                        : isBroadcast
+                        ? BroadcastPlayer(isFullScreen: isFullScreen)
+                        : NormalPlayer(isFullScreen: isFullScreen);
+                  },
+                ),
         ),
         Visibility(
           visible:

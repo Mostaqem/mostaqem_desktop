@@ -44,7 +44,6 @@ void main() async {
       await windowManager.show();
       await windowManager.focus();
     });
-    await Future<void>.delayed(const Duration(seconds: 1));
     runApp(const Mostaqem());
   } else {
     final err = await FlutterSingleInstance().focus();

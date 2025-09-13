@@ -6,7 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'discord_provider.g.dart';
 
 class DiscordRepository {
-  String largeImage = 'discord_im';
+  final _largeImage = 'discord_im';
+  final _instance = FlutterDiscordRPC.instance;
 
   static Future<void> initializeDiscord() async {
     await FlutterDiscordRPC.initialize(Constants.discordAPPID);
@@ -17,16 +18,26 @@ class DiscordRepository {
     required String reciter,
     required String url,
   }) async {
-    final isconnected = FlutterDiscordRPC.instance.isConnected;
+    await _instance.connect();
+
+    await _instance.setActivity(
+      activity: RPCActivity(
+        activityType: ActivityType.listening,
+        assets: RPCAssets(largeImage: _largeImage),
+        state: reciter,
+        details: surahName,
+        buttons: [RPCButton(label: 'Listen', url: url)],
+      ),
+    );
   }
 
   Future<void> clearDiscordPresence() async {
-    final isconnected = FlutterDiscordRPC.instance.isConnected;
+    final isconnected = _instance.isConnected;
     if (!isconnected) {
-      await FlutterDiscordRPC.instance.connect();
+      await _instance.connect();
     }
     if (isconnected) {
-      await FlutterDiscordRPC.instance.clearActivity();
+      await _instance.clearActivity();
     }
   }
 }

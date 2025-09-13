@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 
 class AsyncWidget<T> extends StatelessWidget {
   const AsyncWidget({
@@ -25,7 +26,7 @@ class AsyncWidget<T> extends StatelessWidget {
           error ??
           (e, st) {
             log('[ERROR]', error: e, stackTrace: st);
-            return const Center(child: Text('حدث خطأ ما!'));
+            return Center(child: Text(context.tr.something_went_wrong));
           },
       loading:
           loading ??

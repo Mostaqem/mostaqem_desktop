@@ -196,7 +196,7 @@ class RecitersScreen extends ConsumerWidget {
                             ).colorScheme.error.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Text('حدث خطا ما'),
+                          child: Text(context.tr.something_went_wrong),
                         ),
                       );
                     },

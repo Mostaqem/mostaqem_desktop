@@ -17,7 +17,7 @@ void main() {
         ProviderScope(
           overrides: [
             getConnectionProvider.overrideWith(
-              (ref) => Stream.value(InternetConnectionStatus.connected),
+              (ref) => Future.value(InternetConnectionStatus.connected),
             ),
             fetchAllChaptersProvider(page: 1).overrideWith(
               (ref) => [
@@ -49,9 +49,6 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            getConnectionProvider.overrideWith(
-              (ref) => Stream.value(InternetConnectionStatus.connected),
-            ),
             fetchAllChaptersProvider(page: 1).overrideWith((ref) {
               return [
                 const Surah(
