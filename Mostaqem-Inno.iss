@@ -33,7 +33,6 @@ DisableProgramGroupPage=yes
 OutputBaseFilename=mostaqem-windows-setup
 SetupIconFile=windows\runner\resources\app_icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
-LicenseFile=LICENSE
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
