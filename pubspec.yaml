@@ -53,11 +53,8 @@ dependencies:
   flutter_single_instance: ^1.5.0
   lottie: ^3.3.1
   youtube_explode_dart: ^2.4.2
-  taglib:
-    git:
-      url: git@github.com:Mostaqem/Daglib.git
-      ref: main
-
+  metadata_god: ^1.1.0
+  
 dev_dependencies:
   build_runner: "^2.4.14"
   custom_lint: ^0.7.5
