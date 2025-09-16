@@ -16,70 +16,77 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const WindowButtons(),
-            const SizedBox(height: 10),
-            const AppBackButton(),
-
-            Padding(
-              padding: const EdgeInsets.all(16),
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 100),
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    context.tr.settings,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 52),
-                  const LanguageSetting(),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          context.tr.settings,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 52),
+                        const LanguageSetting(),
 
-                  const SizedBox(height: 52),
+                        const SizedBox(height: 52),
 
-                  const StartupOptions(),
-                  const SizedBox(height: 30),
-                  const DownloadOptions(),
-                  const SizedBox(height: 30),
-                  Text(
-                    context.tr.appearance,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondary,
+                        const StartupOptions(),
+                        const SizedBox(height: 30),
+                        const DownloadOptions(),
+                        const SizedBox(height: 30),
+                        Text(
+                          context.tr.appearance,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const ApperanceSettings(),
+                        const SizedBox(height: 30),
+                        Text(
+                          context.tr.temp_files,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            CacheHelper.clear();
+                            DefaultCacheManager().emptyCache();
+                            appSnackBar(
+                              context,
+                              message: context.tr.delete_files_successfully,
+                            );
+                          },
+                          child: Text(context.tr.delete_files),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const ApperanceSettings(),
-                  const SizedBox(height: 30),
-                  Text(
-                    context.tr.temp_files,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      CacheHelper.clear();
-                      DefaultCacheManager().emptyCache();
-                      appSnackBar(
-                        context,
-                        message: context.tr.delete_files_successfully,
-                      );
-                    },
-                    child: Text(context.tr.delete_files),
-                  ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
-            const SizedBox(height: 100),
-          ],
-        ),
+          ),
+          const Column(
+            children: [WindowButtons(), SizedBox(height: 10), AppBackButton()],
+          ),
+        ],
       ),
     );
   }

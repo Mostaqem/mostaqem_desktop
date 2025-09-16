@@ -607,6 +607,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pause'**
   String get pause;
+
+  /// No description provided for @startup_behavior.
+  ///
+  /// In en, this message translates to:
+  /// **'Startup Behavior'**
+  String get startup_behavior;
+
+  /// No description provided for @startup_play.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Mostaqem after you log into computer'**
+  String get startup_play;
+
+  /// No description provided for @never.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get never;
+
+  /// No description provided for @always.
+  ///
+  /// In en, this message translates to:
+  /// **'Always'**
+  String get always;
 }
 
 class _AppLocalizationsDelegate

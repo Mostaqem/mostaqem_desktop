@@ -109,5 +109,11 @@
     "move_item": "Move Item",
     "play_item": "Play Item",
     "stop": "Stop",
-    "pause": "Pause"
+    "pause": "Pause",
+
+    "pause": "Pause",
+    "startup_behavior": "Startup Behavior",
+    "startup_play": "Open Mostaqem after you log into computer",
+    "never": "Never",
+    "always": "Always"
 }

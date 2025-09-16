@@ -10,6 +10,7 @@ import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/screens/reciters/providers/showhide_image.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
+import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_focus.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
@@ -28,6 +29,7 @@ class RecitersScreen extends ConsumerWidget {
       searchReciterProvider(query: searchQuery),
     );
     final locale = ref.watch(localeNotifierProvider).languageCode;
+    final focusNode = ref.watch(textFieldFocusProvider);
 
     return Scaffold(
       body: Column(
@@ -139,6 +141,14 @@ class RecitersScreen extends ConsumerWidget {
               Align(
                 child: SearchBar(
                   controller: queryController,
+                  // focusNode: focusNode,
+                  onTapOutside: (_) {
+                    focusNode?.unfocus();
+                    ref.read(shortcutsEnabledProvider.notifier).state = true;
+                  },
+                  onTap: () => ref
+                      .read(shortcutsEnabledProvider.notifier)
+                      .update((state) => !state),
                   onChanged: (value) async {
                     ref
                         .read(searchNotifierProvider('reciter').notifier)
