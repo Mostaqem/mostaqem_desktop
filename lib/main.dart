@@ -11,6 +11,7 @@ import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/screens/initial/inital_loading.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:mostaqem/src/shared/http_override/http_override.dart';
+import 'package:taglib/taglib.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {

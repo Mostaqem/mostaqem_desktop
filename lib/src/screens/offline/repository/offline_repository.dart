@@ -5,14 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
-import 'package:mostaqem/src/screens/offline/repository/metadata_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
+import 'package:taglib/taglib.dart';
 
 class OfflineRepository {
   OfflineRepository(this.ref);
   final Ref ref;
-  final metadataRepository = FfiMetadataRepository();
 
   Stream<FileSystemEntity> getLocalAudio() async* {
     final downloadPath = await ref.watch(downloadDestinationProvider.future);
@@ -50,21 +49,19 @@ class OfflineRepository {
   Stream<List<Album>> loadAudioAsAlbum() async* {
     final albums = <Album>[];
     final localAudios = getLocalAudio();
+    final taglib = TagLib.ensureInitalized();
+
     await for (final audio in localAudios) {
-      final metadata = await metadataRepository.getMetadata(audio.path);
+      final metadata = taglib.getMetadata(audio.path);
       final album = Album(
         recitationID: 0,
         surah: Surah(
-          id: int.tryParse(metadata.getGenre() ?? '0') ?? 0,
+          id: int.tryParse(metadata.genre) ?? 0,
           simpleName: '',
-          arabicName: metadata.getTitle() ?? '',
+          arabicName: metadata.title,
           revelationPlace: '',
         ),
-        reciter: Reciter(
-          id: 1,
-          englishName: '',
-          arabicName: metadata.getArtist() ?? '',
-        ),
+        reciter: Reciter(id: 1, englishName: '', arabicName: metadata.artist),
         url: audio.path,
         isLocal: true,
       );

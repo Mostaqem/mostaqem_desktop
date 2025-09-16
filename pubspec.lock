@@ -1347,6 +1347,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0+1"
+  taglib:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "974d1291d955e21c6ef149fb20e48efde498ac48"
+      url: "git@github.com:Mostaqem/Daglib.git"
+    source: git
+    version: "0.0.1"
   term_glyph:
     dependency: transitive
     description:

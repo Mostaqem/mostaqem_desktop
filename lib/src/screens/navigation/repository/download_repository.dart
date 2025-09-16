@@ -6,9 +6,9 @@ import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
-import 'package:mostaqem/src/screens/offline/repository/metadata_repository.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:taglib/taglib.dart';
 
 part 'download_repository.g.dart';
 
@@ -89,7 +89,7 @@ class DownloadAudio extends _$DownloadAudio {
         .whenComplete(() async {
           ref.watch(downloadHeightProvider.notifier).state = 0;
           try {
-            await writeMetaData(savePath, album);
+            writeMetaData(savePath, album);
             ref.watch(cancelTokenProvider.notifier).state = CancelToken();
           } catch (e) {
             log('[Error Writing metadata]', error: e);
@@ -143,7 +143,7 @@ class DownloadAudio extends _$DownloadAudio {
         .whenComplete(() async {
           ref.watch(downloadHeightProvider.notifier).state = 0;
           try {
-            await writeMetaData(savePath, album);
+            writeMetaData(savePath, album);
           } catch (e) {
             log('[Error Writing metadata]', error: e);
           }
@@ -151,16 +151,15 @@ class DownloadAudio extends _$DownloadAudio {
     state = null;
   }
 
-  Future<void> writeMetaData(String filePath, Album album) async {
-    final metadataRepository = FfiMetadataRepository();
+  final taglib = TagLib.ensureInitalized();
 
-    await metadataRepository.setMetadata(
-      filePath: filePath,
+  void writeMetaData(String filePath, Album album) {
+    taglib.setMetadata(
+      filePath,
       genre: album.surah.id.toString(),
       title: album.surah.arabicName,
       artist: album.reciter.arabicName,
       album: '',
-      track: 0,
       year: 0,
     );
   }
