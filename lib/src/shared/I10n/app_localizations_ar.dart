@@ -263,4 +263,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pause => 'ايقاف مؤقت';
+
+  @override
+  String get startup_behavior => 'سلوك التشغيل';
+
+  @override
+  String get startup_play =>
+      'تشغيل مستقيم تلقائيا بعد تسجيل الدخول الي الكمبيوتر';
+
+  @override
+  String get never => 'ابدا';
+
+  @override
+  String get always => 'دائما';
 }

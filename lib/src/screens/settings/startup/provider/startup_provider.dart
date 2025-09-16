@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:launch_at_startup/launch_at_startup.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'startup_provider.g.dart';
@@ -22,4 +24,11 @@ class StartupNotifier extends _$StartupNotifier {
       await launchAtStartup.disable();
     }
   }
+}
+
+String getStartupValue(BuildContext context, String value) {
+  if (value == 'دائما') {
+    return context.tr.always;
+  }
+  return context.tr.never;
 }

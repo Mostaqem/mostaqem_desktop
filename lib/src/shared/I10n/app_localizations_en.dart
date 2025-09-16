@@ -264,4 +264,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pause => 'Pause';
+
+  @override
+  String get startup_behavior => 'Startup Behavior';
+
+  @override
+  String get startup_play => 'Open Mostaqem after you log into computer';
+
+  @override
+  String get never => 'Never';
+
+  @override
+  String get always => 'Always';
 }

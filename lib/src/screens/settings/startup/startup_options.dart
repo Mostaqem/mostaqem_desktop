@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/settings/startup/provider/startup_provider.dart';
 import 'package:mostaqem/src/screens/settings/startup/startup_state.dart';
 
@@ -12,7 +13,7 @@ class StartupOptions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'سلوك بدء التشغيل',
+          context.tr.startup_behavior,
           style: TextStyle(
             fontSize: 16,
             color: Theme.of(context).colorScheme.secondary,
@@ -20,27 +21,24 @@ class StartupOptions extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         ListTile(
-          title: const Text(
-            'تشغيل مستقيم تلقائيا بعد تسجيل الدخول إلى جهاز الكمبيوتر',
-          ),
+          title: Text(context.tr.startup_play),
           trailing: Consumer(
             builder: (context, ref, child) {
-              final startup =
+              final initValue =
                   ref.watch(startupNotifierProvider).value ?? 'ابدا';
-
               return DropdownMenu(
-                initialSelection: startup,
-                onSelected:
-                    (value) => ref
-                        .read(startupNotifierProvider.notifier)
-                        .toggle(value: value!),
-                dropdownMenuEntries:
-                    StartupState.values
-                        .map(
-                          (e) =>
-                              DropdownMenuEntry(value: e.text, label: e.text),
-                        )
-                        .toList(),
+                initialSelection: initValue,
+                onSelected: (value) => ref
+                    .read(startupNotifierProvider.notifier)
+                    .toggle(value: value!),
+                dropdownMenuEntries: StartupState.values
+                    .map(
+                      (e) => DropdownMenuEntry(
+                        value: e.text,
+                        label: getStartupValue(context, e.text),
+                      ),
+                    )
+                    .toList(),
               );
             },
           ),
