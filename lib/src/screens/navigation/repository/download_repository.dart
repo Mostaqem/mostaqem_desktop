@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/download_manager.dart';
@@ -88,7 +89,7 @@ class DownloadAudio extends _$DownloadAudio {
         .whenComplete(() async {
           ref.watch(downloadHeightProvider.notifier).state = 0;
           try {
-            await writeMetaData(savePath, album);
+            writeMetaData(savePath, album);
             ref.watch(cancelTokenProvider.notifier).state = CancelToken();
           } catch (e) {
             log('[Error Writing metadata]', error: e);
@@ -99,7 +100,7 @@ class DownloadAudio extends _$DownloadAudio {
           state = state!.copyWith(downloadState: DownloadState.cancelled);
           cancelToken.cancel();
           return Response<dynamic>(
-            requestOptions: RequestOptions(path: ''),
+            requestOptions: RequestOptions(),
             statusCode: 500,
           );
         });
@@ -151,14 +152,14 @@ class DownloadAudio extends _$DownloadAudio {
   }
 
   Future<void> writeMetaData(String filePath, Album album) async {
-    // await MetadataGod.writeMetadata(
-    //   file: filePath,
-    //   metadata: Metadata(
-    //     genre: 'Quran',
-    //     discNumber: album.surah.id,
-    //     title: album.surah.arabicName,
-    //     artist: album.reciter.arabicName,
-    //   ),
-    // );
+    await MetadataGod.writeMetadata(
+      file: filePath,
+      metadata: Metadata(
+        genre: 'Quran',
+        discNumber: album.surah.id,
+        title: album.surah.arabicName,
+        artist: album.reciter.arabicName,
+      ),
+    );
   }
 }
