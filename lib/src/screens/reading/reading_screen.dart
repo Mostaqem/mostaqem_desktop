@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,9 +11,7 @@ import 'package:mostaqem/src/screens/reading/data/script.dart';
 import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
-import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 import 'package:vector_graphics/vector_graphics.dart';
-import 'package:window_manager/window_manager.dart';
 
 class ReadingScreen extends ConsumerWidget {
   const ReadingScreen({required this.surah, super.key});
@@ -21,6 +20,7 @@ class ReadingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print(surah.id);
     final scripts = ref.watch(fetchQuranProvider(surahID: surah.id));
     final isFullscreen = ref.watch(isFullScreenProvider);
     return Scaffold(
@@ -64,7 +64,10 @@ class ReadingScreen extends ConsumerWidget {
                   AsyncWidget(
                     value: scripts,
                     error: (e, s) {
-                      return Text('Error: $e| ST: $s');
+                      if (kDebugMode) {
+                        return Text('Error: $e| ST: $s');
+                      }
+                      return const Center(child: Text('Error'));
                     },
                     data: (data) {
                       return VerseSpan(surah: surah, data: data);

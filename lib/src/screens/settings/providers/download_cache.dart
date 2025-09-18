@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'download_cache.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<String> downloadDestination(Ref ref) async {
+Future<String?> downloadDestination(Ref ref) async {
   final cache = ref.watch(downloadCacheProvider);
 
   if (cache != null) {
@@ -15,7 +15,7 @@ Future<String> downloadDestination(Ref ref) async {
 
   final downloadPath = await getDownloadsDirectory();
 
-  return downloadPath!.path;
+  return downloadPath?.path;
 }
 
 @Riverpod(keepAlive: true)

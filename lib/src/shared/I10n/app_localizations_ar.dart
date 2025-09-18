@@ -253,10 +253,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get remove_from_queue => 'حذف من قائمة التشغيل';
 
   @override
-  String get move_item => 'نقل العنصر';
-
-  @override
-  String get play_item => 'تشغيل العنصر';
+  String get move_item => 'نقل السورة';
 
   @override
   String get stop => 'ايقاف';

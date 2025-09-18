@@ -11,12 +11,12 @@ import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/providers/lyrics_notifier.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_controls.dart';
+import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/squiggly/squiggly_slider.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/squiggly_notifier.dart';
-import 'package:mostaqem/src/shared/widgets/back_button.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:vector_graphics/vector_graphics.dart';
@@ -39,7 +39,7 @@ class FullScreenPlayControls extends ConsumerWidget {
     final player = ref.watch(playerNotifierProvider);
     final isSquiggly = ref.watch(squigglyNotifierProvider);
     final lyricsState = ref.watch(lyricsNotifierProvider);
-
+    final imageColor = ref.watch(getImageColorProvider);
     return Column(
       children: [
         Column(
@@ -79,7 +79,9 @@ class FullScreenPlayControls extends ConsumerWidget {
                                     squiggleWavelength: 5,
                                     squiggleSpeed: 0.2,
                                     useLineThumb: true,
-                                    activeColor: Colors.white,
+                                    activeColor:
+                                        imageColor.asData?.value ??
+                                        Theme.of(context).colorScheme.primary,
                                     value: max(0, min(position, duration)),
                                     max: duration,
                                     onChangeStart: (_) async {
@@ -93,6 +95,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                                             .pause();
                                       }
                                     },
+
                                     onChangeEnd: (value) async {
                                       await ref
                                           .read(playerNotifierProvider.notifier)
@@ -118,6 +121,9 @@ class FullScreenPlayControls extends ConsumerWidget {
                                     ),
                                     value: max(0, min(position, duration)),
                                     max: duration,
+                                    activeColor:
+                                        imageColor.asData?.value ??
+                                        Theme.of(context).colorScheme.primary,
                                     onChangeStart: (_) async {
                                       final isPlaying = ref
                                           .read(playerNotifierProvider)

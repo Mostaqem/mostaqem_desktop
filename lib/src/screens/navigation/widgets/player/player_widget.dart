@@ -98,8 +98,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
                 ),
         ),
         Visibility(
-          visible:
-              ref.watch(playerNotifierProvider.select((v) => v.album)) == null,
+          visible: ref.watch(currentAlbumProvider) == null,
           child: MouseRegion(
             cursor: SystemMouseCursors.forbidden,
             child: Container(

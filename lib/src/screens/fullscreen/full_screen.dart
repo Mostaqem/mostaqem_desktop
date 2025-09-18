@@ -51,8 +51,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
         ? const BroadcastFullscreenWidget()
         : Stack(
             children: [
-              if (connection == InternetConnectionStatus.connected &&
-                  isProduction)
+              if (connection == InternetConnectionStatus.connected)
                 AsyncWidget(
                   value: randomImage,
                   data: (data) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
@@ -8,6 +9,7 @@ import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
+import 'package:path_provider/path_provider.dart';
 
 class OfflineRepository {
   OfflineRepository(this.ref);
@@ -16,7 +18,7 @@ class OfflineRepository {
   Stream<FileSystemEntity> getLocalAudio() async* {
     final downloadPath = await ref.watch(downloadDestinationProvider.future);
     final audioFiles = <FileSystemEntity>[];
-    final path = downloadPath;
+    final path = downloadPath!;
     final dir = Directory(path);
     final files = dir.list(recursive: true);
     await for (final file in files) {
@@ -32,17 +34,31 @@ class OfflineRepository {
     final filenames = <int>[];
     final downloadPath = await ref.watch(downloadDestinationProvider.future);
 
-    final directory = Directory(downloadPath);
-    final files = directory.listSync();
-    for (final file in files) {
-      if (Platform.isWindows) {
-        final filename = file.path.split(r'\').last.split('.').first;
-        if (int.tryParse(filename) != null) filenames.add(int.parse(filename));
-      } else if (Platform.isLinux) {
-        final filename = file.path.split('/').last.split('.').first;
-        if (int.tryParse(filename) != null) filenames.add(int.parse(filename));
-      }
+    final directory = Directory(downloadPath!);
+
+    // ✅ Check if directory exists
+    if (!await directory.exists()) {
+      // Option A: return empty list
+
+      // Option B: reset to default folder
+      return [];
     }
+
+    try {
+      final files = directory.listSync();
+      for (final file in files) {
+        final filename = Platform.isWindows
+            ? file.path.split(r'\').last.split('.').first
+            : file.path.split('/').last.split('.').first;
+
+        final id = int.tryParse(filename);
+        if (id != null) filenames.add(id);
+      }
+    } catch (e) {
+      // fallback if something unexpected goes wrong
+      debugPrint('Error reading downloads folder: $e');
+    }
+
     return filenames;
   }
 
