@@ -51,7 +51,8 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
         ? const BroadcastFullscreenWidget()
         : Stack(
             children: [
-              if (connection == InternetConnectionStatus.connected)
+              if (connection == InternetConnectionStatus.connected &&
+                  isProduction)
                 AsyncWidget(
                   value: randomImage,
                   data: (data) {
@@ -61,7 +62,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         fit: BoxFit.cover,
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) {
-                            return child; // Image loaded
+                            return child; 
                           } else {
                             return Center(
                               child: CircularProgressIndicator(
