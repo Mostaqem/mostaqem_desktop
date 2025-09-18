@@ -254,10 +254,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get remove_from_queue => 'Remove from Queue';
 
   @override
-  String get move_item => 'Move Item';
-
-  @override
-  String get play_item => 'Play Item';
+  String get move_item => 'Move Surah';
 
   @override
   String get stop => 'Stop';

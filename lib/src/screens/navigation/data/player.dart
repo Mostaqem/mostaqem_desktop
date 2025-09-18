@@ -15,7 +15,6 @@ class AudioState {
     this.queue = const [],
     this.queueIndex,
     this.broadcastName,
-
   });
   final bool isPlaying;
   final Duration position;
@@ -59,4 +58,5 @@ class AudioState {
       isPlaying: isPlaying ?? this.isPlaying,
     );
   }
+
 }

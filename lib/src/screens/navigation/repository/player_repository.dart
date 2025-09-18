@@ -29,6 +29,7 @@ part 'player_repository.g.dart';
 @riverpod
 class PlayerNotifier extends _$PlayerNotifier {
   final player = Player();
+  int bufferSize = 3;
 
   @override
   AudioState build() {
@@ -54,7 +55,6 @@ class PlayerNotifier extends _$PlayerNotifier {
           ),
           play: false,
         );
-
         return audioState.copyWith(
           album: cachedSurah,
           duration: Duration(seconds: cachedSurah.duration),
@@ -65,46 +65,40 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   void init() {
-    player.stream.playlist.listen((data) async {
-      log('Playlist: ${data.medias.length}');
+    player.stream.playlist.listen((data) {
       if (data.medias.length == 1 && state.broadcastName != null) {
         if (isLocalAudio()) {
-          await addLocalQueue();
+          addLocalQueue();
         } else {
-          await addToQueue();
+          _checkAndPreload(data.index, medias: data.medias);
         }
       }
 
       state = state.copyWith(
         queueIndex: data.index,
         album: AlbumUtils.parseAlbum(data.index, data),
-        nextAlbum: AlbumUtils.parseAlbum(data.index + 1, data),
+        nextAlbum: state.album?.surah.id == 114
+            ? null
+            : AlbumUtils.parseAlbum(data.index + 1, data),
+        queue: data.medias
+            .map((media) {
+              final extras = media.extras;
+              return extras == null
+                  ? null
+                  : Album(
+                      surah: Surah.fromJson(
+                        extras['surah'] as Map<String, dynamic>,
+                      ),
+                      reciter: Reciter.fromJson(
+                        extras['reciter'] as Map<String, dynamic>,
+                      ),
+                      url: extras['url'] as String,
+                      recitationID: extras['recitationID'] as int,
+                    );
+            })
+            .whereType<Album>()
+            .toList(),
       );
-
-      final chapterFound = isChapterInQueue(state.album!.surah.id);
-
-      if (state.queue.length != 20 || !chapterFound) {
-        state = state.copyWith(
-          queue: data.medias
-              .map((media) {
-                final extras = media.extras;
-                return extras == null
-                    ? null
-                    : Album(
-                        surah: Surah.fromJson(
-                          extras['surah'] as Map<String, dynamic>,
-                        ),
-                        reciter: Reciter.fromJson(
-                          extras['reciter'] as Map<String, dynamic>,
-                        ),
-                        url: extras['url'] as String,
-                        recitationID: extras['recitationID'] as int,
-                      );
-              })
-              .whereType<Album>()
-              .toList(),
-        );
-      }
     });
 
     player.stream.position.listen((position) {
@@ -163,11 +157,7 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   bool isFirstChapter() => state.queueIndex == 0;
 
-  bool isLastchapter() {
-    if (state.queue.length == 1) return true;
-
-    return state.queueIndex == 19;
-  }
+  bool isLastchapter() => state.nextAlbum == null;
 
   Future<void> handlePlayPause() async {
     if (state.isPlaying) {
@@ -198,7 +188,9 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> play({required int surahID, int? recitationID}) async {
-    state = state.copyWith(broadcastName: '');
+    if (state.broadcastName != '') {
+      state = state.copyWith(broadcastName: '');
+    }
 
     final cacheManager = DefaultCacheManager();
     final chosenReciter = ref.read(userReciterProvider);
@@ -206,29 +198,30 @@ class PlayerNotifier extends _$PlayerNotifier {
     final mixID = ref
         .read(albumRepositoryProvider)
         .createShortHash(surahID, recitationID, chosenReciter.id);
-    final cachedFile = await cacheManager.getFileFromCache(mixID);
-    final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
 
-    if (state.queue.contains(cachedAlbum)) {
-      final index = state.queue.indexWhere((value) => value == cachedAlbum);
-      await player.jump(index);
-      return;
-    }
+    // final cachedFile = await cacheManager.getFileFromCache(mixID);
+    // final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
 
-    debugPrint(cachedFile.toString());
-    if (cachedFile != null) {
-      debugPrint('Loading from cache');
+    // if (state.queue.contains(cachedAlbum)) {
+    //   final index = state.queue.indexWhere((value) => value == cachedAlbum);
+    //   await player.jump(index);
+    //   return;
+    // }
 
-      final album = Album(
-        surah: cachedAlbum!.surah,
-        reciter: cachedAlbum.reciter,
-        url: cachedFile.file.path,
-        recitationID: cachedAlbum.recitationID,
-      );
-      await _openAlbum(album);
+    // debugPrint(cachedFile.toString());
+    // if (cachedFile != null) {
+    //   debugPrint('Loading from cache');
 
-      return;
-    }
+    //   final album = Album(
+    //     surah: cachedAlbum!.surah,
+    //     reciter: cachedAlbum.reciter,
+    //     url: cachedFile.file.path,
+    //     recitationID: cachedAlbum.recitationID,
+    //   );
+    //   await _openAlbum(album);
+
+    //   return;
+    // }
     final networkState = ref.watch(getConnectionProvider).value;
     if (networkState == InternetConnectionStatus.connected) {
       final album = await ref
@@ -247,7 +240,7 @@ class PlayerNotifier extends _$PlayerNotifier {
       }
 
       await _openAlbum(album);
-      await cacheManager.downloadFile(album.url, key: mixID);
+      // await cacheManager.downloadFile(album.url, key: mixID);
     }
   }
 
@@ -322,37 +315,7 @@ class PlayerNotifier extends _$PlayerNotifier {
     }
   }
 
-  Future<void> addToQueue({int? surahID}) async {
-    final networkState = ref.watch(getConnectionProvider).value;
-    if (networkState != InternetConnectionStatus.connected) return;
-
-    if (surahID == null) {
-      if (state.album != null) {
-        final currentID = state.album!.surah.id;
-        final queueIDs = currentID + 20;
-        if (queueIDs < 114) {
-          for (var i = currentID + 1; i < queueIDs; i++) {
-            final album = await ref.read(
-              fetchAlbumProvider(chapterNumber: i).future,
-            );
-
-            final url = album.url;
-            await player.add(
-              Media(
-                url,
-                extras: {
-                  'surah': album.surah.toJson(),
-                  'reciter': album.reciter.toJson(),
-                  'recitationID': album.recitationID,
-                  'url': url,
-                },
-              ),
-            );
-          }
-        }
-      }
-      return;
-    }
+  Future<void> addToQueue({required int surahID}) async {
     final album = await ref.read(
       fetchAlbumProvider(chapterNumber: surahID).future,
     );
@@ -482,5 +445,52 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   bool isChapterInQueue(int id) {
     return state.queue.any((album) => album.surah.id == id);
+  }
+
+  Future<void> _checkAndPreload(
+    int currentIndex, {
+    required List<Media> medias,
+  }) async {
+    final remaining = medias.length - (currentIndex + 1);
+    log('Remaining: $remaining');
+    if (remaining < bufferSize) {
+      // Find last loaded surah
+      final lastSurahId = medias.last.extras?['surah']['id'] as int;
+      log('lastSurahId: $lastSurahId');
+
+      if (lastSurahId < 114) {
+        await _addNextAlbumsBatched(
+          bufferSize - remaining,
+          startId: lastSurahId + 1,
+        );
+      }
+    }
+  }
+
+  Future<void> _addNextAlbumsBatched(int count, {required int startId}) async {
+    final maxID = (startId + count).clamp(0, 114);
+
+    final albums = await Future.wait([
+      for (var i = startId; i <= maxID; i++)
+        ref.read(fetchAlbumProvider(chapterNumber: i).future),
+    ]);
+
+    for (final album in albums) {
+      await _addAlbumToQueue(album);
+    }
+  }
+
+  Future<void> _addAlbumToQueue(Album album) async {
+    await player.add(
+      Media(
+        album.url,
+        extras: {
+          'surah': album.surah.toJson(),
+          'reciter': album.reciter.toJson(),
+          'recitationID': album.recitationID,
+          'url': album.url,
+        },
+      ),
+    );
   }
 }

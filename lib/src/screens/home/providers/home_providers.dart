@@ -59,7 +59,7 @@ Future<({String url, int recitationID})> fetchAudioForChapter(
   return (url: audioURL, recitationID: audioRecitationID);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<Album> fetchAlbum(
   Ref ref, {
   required int chapterNumber,
@@ -125,7 +125,6 @@ Future<String?> fetchSurahLyrics(
   required int surahID,
   required int recitationID,
 }) async {
-  debugPrint('SurahID: $surahID');
   final request = await ref
       .watch(dioHelperProvider)
       .getHTTP('/audio/lrc?surah_id=$surahID&tilawa_id=$recitationID');
@@ -145,4 +144,13 @@ Future<List<Surah>> fetchRandomSurahs(
   return response.data['data']
       .map<Surah>((e) => Surah.fromJson(e['surah'] as Map<String, Object?>))
       .toList();
+}
+
+@riverpod
+Future<Color> getImageColor(Ref ref) async {
+  final imageUrl = await ref.watch(fetchRandomImageProvider.future);
+  final scheme = await ColorScheme.fromImageProvider(
+    provider: NetworkImage(imageUrl),
+  );
+  return scheme.primary;
 }

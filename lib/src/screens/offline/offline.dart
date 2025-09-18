@@ -1,6 +1,8 @@
 // ignore_for_file: invalid_use_of_protected_member,
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +26,26 @@ class DownloadsScreen extends ConsumerWidget {
 
               return AsyncWidget(
                 value: localAudio,
+                error: (e, s) {
+                  if (e is PathNotFoundException) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 16,
+                        children: [
+                          const Text(
+                            'Download folder may be deleted or moved somewhere, You can change it in settings',
+                          ),
+                          ElevatedButton(
+                            onPressed: () => context.push('/settings'),
+                            child: const Text('Settings'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return const Center(child: Text('Error'));
+                },
                 data: (data) {
                   if (data.isEmpty) {
                     return Center(

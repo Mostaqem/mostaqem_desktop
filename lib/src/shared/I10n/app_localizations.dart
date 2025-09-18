@@ -587,14 +587,8 @@ abstract class AppLocalizations {
   /// No description provided for @move_item.
   ///
   /// In en, this message translates to:
-  /// **'Move Item'**
+  /// **'Move Surah'**
   String get move_item;
-
-  /// No description provided for @play_item.
-  ///
-  /// In en, this message translates to:
-  /// **'Play Item'**
-  String get play_item;
 
   /// No description provided for @stop.
   ///
