@@ -274,6 +274,12 @@ class FullScreenPlayControls extends ConsumerWidget {
                       iconSize: 16,
                       message: context.tr.lyrics,
                       onPressed: () {
+                        final canPop = ref
+                            .read(navigationProvider)
+                            .canPop(expectedPath: '/reading');
+                        if (canPop) {
+                          ref.read(goRouterProvider).pop();
+                        }
                         if (lyricsState == true) {
                           ref.read(lyricsNotifierProvider.notifier).state =
                               false;
