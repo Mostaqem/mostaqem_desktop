@@ -64,7 +64,7 @@ Future<Reciter> fetchReciter(Ref ref, {required int id}) {
   return ref.watch(reciterRepositoryProvider).fetchReciter(id: id);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Reciter>> fetchReciters(Ref ref, {required int page}) {
   return ref.watch(reciterRepositoryProvider).fetchReciters(page: page);
 }

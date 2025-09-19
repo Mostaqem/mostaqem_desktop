@@ -147,7 +147,8 @@ Future<List<Surah>> fetchRandomSurahs(
 }
 
 @riverpod
-Future<Color> getImageColor(Ref ref) async {
+Future<Color?> getImageColor(Ref ref) async {
+  if (!isProduction) return null;
   final imageUrl = await ref.watch(fetchRandomImageProvider.future);
   final scheme = await ColorScheme.fromImageProvider(
     provider: NetworkImage(imageUrl),

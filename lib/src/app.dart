@@ -1,4 +1,5 @@
 import 'package:context_menus/context_menus.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,43 +23,58 @@ class MyApp extends ConsumerWidget {
     final userSeedColor = ref.watch(userSeedColorProvider);
     final userTheme = ref.watch(themeNotifierProvider);
     final currentLang = ref.watch(localeNotifierProvider);
-    return MaterialApp.router(
-      routerConfig: router,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: I18nRepository.supportedLocales,
-      locale: currentLang,
-      builder: (context, child) {
-        return Material(
-          child: Overlay(
-            initialEntries: [
-              OverlayEntry(
-                builder: (context) {
-                  return AppShortcuts(
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        child!,
-                        const SizedBox(height: 100, child: PlayerWidget()),
-                        const DownloadManagerWidget(),
-                        const RecitationWidget(),
-                      ],
-                    ),
-                  );
-                },
+    final isDynamic = ref.watch(isDynamicProvider);
+    return DynamicColorBuilder(
+      builder: (dynamicLight, dynamicDark) {
+        return MaterialApp.router(
+          routerConfig: router,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: I18nRepository.supportedLocales,
+          locale: currentLang,
+          builder: (context, child) {
+            return Material(
+              child: Overlay(
+                initialEntries: [
+                  OverlayEntry(
+                    builder: (context) {
+                      return AppShortcuts(
+                        child: Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            child!,
+                            const SizedBox(height: 100, child: PlayerWidget()),
+                            const DownloadManagerWidget(),
+                            const RecitationWidget(),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
+          title: 'Mostaqem',
+          themeMode: userTheme,
+          theme: dynamicDark != null && isDynamic
+              ? ThemeData(
+                  colorScheme: dynamicLight,
+                  fontFamily: AppTheme.fontFamily,
+                )
+              : AppTheme.userLightTheme(userSeedColor),
+          darkTheme: dynamicDark != null && isDynamic
+              ? ThemeData(
+                  colorScheme: dynamicDark,
+                  fontFamily: AppTheme.fontFamily,
+                )
+              : AppTheme.userDarkTheme(userSeedColor),
         );
       },
-      title: 'Mostaqem',
-      themeMode: userTheme,
-      theme: AppTheme.userLightTheme(userSeedColor),
-      darkTheme: AppTheme.userDarkTheme(userSeedColor),
     );
   }
 }

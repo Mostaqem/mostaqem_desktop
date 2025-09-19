@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:mostaqem/src/core/theme/theme.dart';
+import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/initial/data/loading_verse.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/theme_notifier.dart';
@@ -70,6 +71,7 @@ class InitialLoading extends ConsumerWidget {
     final randomVerse = (randomVerses..shuffle()).first;
     final userColor = ref.watch(userSeedColorProvider);
     final userTheme = ref.watch(themeNotifierProvider);
+
     return MaterialApp(
       themeMode: userTheme,
       theme: AppTheme.userLightTheme(userColor),

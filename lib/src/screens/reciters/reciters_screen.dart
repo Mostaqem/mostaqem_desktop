@@ -38,6 +38,8 @@ class RecitersScreen extends ConsumerWidget {
           const WindowButtons(),
           const SizedBox(height: 10),
           const Align(alignment: Alignment.topLeft, child: AppBackButton()),
+          const SizedBox(height: 10),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
@@ -47,69 +49,56 @@ class RecitersScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Visibility(
-                  visible: !isImageHidden,
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                          defaultReciter.image ?? '',
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Tooltip(
+              message: context.tr.choose_reciter,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListTile(
+                  onTap: () {
+                    final surah = ref.read(currentSurahProvider);
+                    ref
+                        .read(playerNotifierProvider.notifier)
+                        .play(surahID: surah!.id);
+                  },
+                  contentPadding: EdgeInsets.zero,
+                  leading: Visibility(
+                    visible: !isImageHidden,
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(
+                            defaultReciter.image ?? '',
+                          ),
                         ),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                ),
-                title: Text(
-                  locale == 'ar'
-                      ? defaultReciter.arabicName
-                      : defaultReciter.englishName,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                ),
-                trailing: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ToolTipIconButton(
-                      message: 'اختيار الشيخ للتالي',
-                      onPressed: () {
-                        ref
-                            .read(userReciterProvider.notifier)
-                            .setReciter(defaultReciter);
-                      },
-                      icon: const Icon(Icons.queue_play_next_outlined),
-                    ),
-                    VerticalDivider(
+                  title: Text(
+                    locale == 'ar'
+                        ? defaultReciter.arabicName
+                        : defaultReciter.englishName,
+                    style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
-                    ToolTipIconButton(
-                      message: context.tr.choose_reciter,
-                      onPressed: () {
-                        ref
-                            .read(userReciterProvider.notifier)
-                            .setReciter(defaultReciter);
-                        final surah = ref.read(currentSurahProvider);
-                        ref
-                            .read(playerNotifierProvider.notifier)
-                            .play(surahID: surah!.id);
-                      },
-                      icon: const Icon(Icons.play_arrow),
-                    ),
-                  ],
+                  ),
+                  trailing: ToolTipIconButton(
+                    message: 'اختيار الشيخ للتالي',
+                    onPressed: () {
+                      ref
+                          .read(userReciterProvider.notifier)
+                          .setReciter(defaultReciter);
+                    },
+                    icon: const Icon(Icons.queue_play_next_outlined),
+                  ),
                 ),
               ),
             ),

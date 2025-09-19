@@ -1,19 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hijri/hijri_calendar.dart';
-import 'package:mostaqem/src/core/routes/routes.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/home/widgets/hijri_date_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/queue_widget.dart';
 import 'package:mostaqem/src/screens/home/widgets/surah_widget.dart';
-import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
-import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/providers/search_notifier.dart';
 import 'package:mostaqem/src/shared/widgets/nework_required_widget.dart';
 import 'package:mostaqem/src/shared/widgets/shortcuts/shortcuts_focus.dart';
-import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -23,9 +17,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isTyping =
         ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
-    final surahImage = ref.watch(
-      playerNotifierProvider.select((value) => value.album?.surah.image),
-    );
+
     final focusNode = ref.watch(textFieldFocusProvider);
 
     return NeworkRequiredWidget(
@@ -98,7 +90,11 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(width: 10),
-          const QueueWidget(),
+          Visibility(
+            visible: ref.watch(isCollapsedProvider),
+
+            child: const QueueWidget(),
+          ),
         ],
       ),
     );

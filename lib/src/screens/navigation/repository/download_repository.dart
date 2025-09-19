@@ -89,7 +89,7 @@ class DownloadAudio extends _$DownloadAudio {
         .whenComplete(() async {
           ref.watch(downloadHeightProvider.notifier).state = 0;
           try {
-            writeMetaData(savePath, album);
+            await writeMetaData(savePath, album);
             ref.watch(cancelTokenProvider.notifier).state = CancelToken();
           } catch (e) {
             log('[Error Writing metadata]', error: e);

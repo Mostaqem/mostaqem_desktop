@@ -12,6 +12,7 @@ dependencies:
   crypto: ^3.0.6
   device_info_plus: ^11.5.0
   dio: ^5.9.0
+  dynamic_color: ^1.8.1
   ffi: ^2.1.4
   file_picker: ^10.3.2
   flutter:
@@ -30,6 +31,7 @@ dependencies:
   google_fonts: ^6.3.1
   hijri: ^3.0.0
   internet_connection_checker: ^3.0.1
+  intl: any
   json_annotation: ^4.9.0
   launch_at_startup: ^0.5.1
   lottie: ^3.3.1
@@ -44,6 +46,7 @@ dependencies:
   path_provider: ^2.1.5
   riverpod_annotation: ^2.6.1
   rxdart: ^0.28.0
+  share_plus: ^12.0.0
   shared_preferences: ^2.5.3
   url_launcher: ^6.3.1
   vector_graphics: ^1.1.18
@@ -63,7 +66,7 @@ dev_dependencies:
   riverpod_generator: "^2.6.5"
   riverpod_lint: "^2.6.5"
   vector_graphics_compiler: ^1.1.19
-  very_good_analysis: "^9.0.0"
+  very_good_analysis: "^10.0.0"
 
 msix_config:
   display_name: Mostaqem

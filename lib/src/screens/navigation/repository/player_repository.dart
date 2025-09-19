@@ -1,10 +1,9 @@
 // ignore_for_file: inference_failure_on_instance_creation
 
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:media_kit/media_kit.dart';
@@ -55,9 +54,10 @@ class PlayerNotifier extends _$PlayerNotifier {
           ),
           play: false,
         );
+        debugPrint(cachedSurah.position.toString());
         return audioState.copyWith(
           album: cachedSurah,
-          duration: Duration(seconds: cachedSurah.duration),
+          position: Duration(milliseconds: cachedSurah.position),
         );
       }
     }
@@ -103,25 +103,32 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     player.stream.position.listen((position) {
       state = state.copyWith(position: position);
+      ref
+          .read(playerCacheProvider().notifier)
+          .setAlbum(
+            Album(
+              surah: state.album!.surah,
+              reciter: state.album!.reciter,
+              url: state.album!.url,
+              position: position.inMilliseconds,
+              recitationID: state.album!.recitationID,
+            ),
+          );
     });
 
     player.stream.duration.listen((duration) async {
       state = state.copyWith(duration: duration);
-
-      if (state.album?.position != 0) {
-        final positionAlbum = Duration(
-          milliseconds: state.album?.position ?? 0,
-        );
+      final cachedAlbum = ref.read(playerCacheProvider());
+      if (cachedAlbum != null) {
+        final positionAlbum = Duration(milliseconds: cachedAlbum.position);
+        debugPrint(positionAlbum.toString());
         await player.seek(positionAlbum);
       }
     });
 
-    player.stream.buffer.listen((buffering) {
-      state = state.copyWith(buffering: buffering);
-    });
-
     player.stream.playing.listen((playing) async {
       state = state.copyWith(isPlaying: playing);
+
       if (Platform.isWindows) {
         windowThumbnailBar();
       }
@@ -452,11 +459,8 @@ class PlayerNotifier extends _$PlayerNotifier {
     required List<Media> medias,
   }) async {
     final remaining = medias.length - (currentIndex + 1);
-    log('Remaining: $remaining');
     if (remaining < bufferSize) {
-      // Find last loaded surah
       final lastSurahId = medias.last.extras?['surah']['id'] as int;
-      log('lastSurahId: $lastSurahId');
 
       if (lastSurahId < 114) {
         await _addNextAlbumsBatched(
@@ -472,7 +476,12 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     final albums = await Future.wait([
       for (var i = startId; i <= maxID; i++)
-        ref.read(fetchAlbumProvider(chapterNumber: i).future),
+        ref.read(
+          fetchAlbumProvider(
+            chapterNumber: i,
+            recitationID: state.album?.recitationID,
+          ).future,
+        ),
     ]);
 
     for (final album in albums) {

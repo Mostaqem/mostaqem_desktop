@@ -131,19 +131,12 @@ class _SquigglySliderState extends State<SquigglySlider>
       phaseController = AnimationController(vsync: this);
       phaseController.value = 0.5;
     } else {
-      phaseController =
-          AnimationController(
-              duration: Duration(
-                milliseconds: (1000.0 / widget.squiggleSpeed.abs()).round(),
-              ),
-              vsync: this,
-            )
-            ..repeat(min: 0, max: 1)
-            ..addListener(() {
-              setState(() {
-                // The state that has changed here is the animation object’s value.
-              });
-            });
+      phaseController = AnimationController(
+        duration: Duration(
+          milliseconds: (1000.0 / widget.squiggleSpeed.abs()).round(),
+        ),
+        vsync: this,
+      )..repeat(min: 0, max: 1);
     }
   }
 
@@ -154,38 +147,42 @@ class _SquigglySliderState extends State<SquigglySlider>
   }
 
   @override
-  Widget build(BuildContext context) => SliderTheme(
-    data: SliderTheme.of(context).copyWith(
-      trackShape: SquigglySliderTrackShape(
-        squiggleAmplitude: widget.squiggleAmplitude,
-        squiggleWavelength: widget.squiggleWavelength,
-        squigglePhaseFactor:
-            widget.squiggleSpeed < 0
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: phaseController,
+    builder: (context, child) {
+      return SliderTheme(
+        data: SliderTheme.of(context).copyWith(
+          trackShape: SquigglySliderTrackShape(
+            squiggleAmplitude: widget.squiggleAmplitude,
+            squiggleWavelength: widget.squiggleWavelength,
+            squigglePhaseFactor: widget.squiggleSpeed < 0
                 ? 1 - phaseController.value
                 : phaseController.value,
-      ),
-      thumbShape: widget.useLineThumb ? const LineThumbShape() : null,
-    ),
-    child: Slider(
-      key: widget.key,
-      value: widget.value,
-      secondaryTrackValue: widget.secondaryTrackValue,
-      onChanged: widget.onChanged,
-      onChangeStart: widget.onChangeStart,
-      onChangeEnd: widget.onChangeEnd,
-      min: widget.min,
-      max: widget.max,
-      divisions: widget.divisions,
-      label: widget.label,
-      activeColor: widget.activeColor,
-      inactiveColor: widget.inactiveColor,
-      secondaryActiveColor: widget.secondaryActiveColor,
-      thumbColor: widget.thumbColor,
-      overlayColor: widget.overlayColor,
-      mouseCursor: widget.mouseCursor,
-      semanticFormatterCallback: widget.semanticFormatterCallback,
-      focusNode: widget.focusNode,
-      autofocus: widget.autofocus,
-    ),
+          ),
+          thumbShape: widget.useLineThumb ? const LineThumbShape() : null,
+        ),
+        child: Slider(
+          key: widget.key,
+          value: widget.value,
+          secondaryTrackValue: widget.secondaryTrackValue,
+          onChanged: widget.onChanged,
+          onChangeStart: widget.onChangeStart,
+          onChangeEnd: widget.onChangeEnd,
+          min: widget.min,
+          max: widget.max,
+          divisions: widget.divisions,
+          label: widget.label,
+          activeColor: widget.activeColor,
+          inactiveColor: widget.inactiveColor,
+          secondaryActiveColor: widget.secondaryActiveColor,
+          thumbColor: widget.thumbColor,
+          overlayColor: widget.overlayColor,
+          mouseCursor: widget.mouseCursor,
+          semanticFormatterCallback: widget.semanticFormatterCallback,
+          focusNode: widget.focusNode,
+          autofocus: widget.autofocus,
+        ),
+      );
+    },
   );
 }
