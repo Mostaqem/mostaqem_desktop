@@ -37,28 +37,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   @override
   void onWindowClose() {
-    final player = ref.read(currentAlbumProvider);
-    if (player == null) return;
-
-    final position = ref.watch(
-      playerNotifierProvider.select((value) => value.position),
-    );
-    final duration = ref.watch(
-      playerNotifierProvider.select((value) => value.duration),
-    );
-
-    ref
-        .read(playerCacheProvider().notifier)
-        .setAlbum(
-          Album(
-            surah: player.surah,
-            reciter: player.reciter,
-            url: player.url,
-            position: position.inMilliseconds,
-            recitationID: player.recitationID,
-            duration: duration.inMilliseconds,
-          ),
-        );
+    
     ref.read(clearRPCDiscordProvider);
     super.onWindowClose();
   }

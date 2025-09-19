@@ -25,3 +25,20 @@ class UserSeedColor extends _$UserSeedColor {
     CacheHelper.remove('color');
   }
 }
+
+@riverpod
+class IsDynamic extends _$IsDynamic {
+  @override
+  bool build() {
+    final isCached = CacheHelper.getBool('isDynamic');
+    if (isCached != null) {
+      return isCached;
+    }
+    return true;
+  }
+
+  void toggle({required bool value}) {
+    state = value;
+    CacheHelper.setBool('isDynamic', value: state);
+  }
+}

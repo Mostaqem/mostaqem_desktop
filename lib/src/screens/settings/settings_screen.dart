@@ -40,7 +40,7 @@ class SettingsScreen extends ConsumerWidget {
                         const SizedBox(height: 52),
                         const LanguageSetting(),
 
-                        const SizedBox(height: 52),
+                        const SizedBox(height: 30),
 
                         const StartupOptions(),
                         const SizedBox(height: 30),
@@ -63,6 +63,8 @@ class SettingsScreen extends ConsumerWidget {
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                         ),
+                        const SizedBox(height: 8),
+
                         ElevatedButton(
                           onPressed: () {
                             CacheHelper.clear();

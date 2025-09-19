@@ -19,8 +19,8 @@ class StartupOptions extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        const SizedBox(height: 30),
         ListTile(
+          contentPadding: EdgeInsets.zero,
           title: Text(context.tr.startup_play),
           trailing: Consumer(
             builder: (context, ref, child) {

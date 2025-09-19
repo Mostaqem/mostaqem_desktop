@@ -26,6 +26,7 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
   Color pickerColor = const Color(0xff443a49);
   @override
   Widget build(BuildContext context) {
+    final isDynamic = ref.watch(isDynamicProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -101,6 +102,24 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
           ),
         ),
         const SizedBox(height: 12),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          value: isDynamic,
+          title: const Text('Use System color'),
+          onChanged: (value) {
+            ref.read(isDynamicProvider.notifier).toggle(value: value);
+          },
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Choose custom color',
+          style: TextStyle(
+            fontSize: 16,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        const SizedBox(height: 16),
+
         Wrap(
           children: [
             Wrap(
@@ -115,6 +134,7 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
                   .toList(),
             ),
             const SizedBox(width: 12),
+
             InkWell(
               onTap: () {
                 showDialog<AlertDialog>(
@@ -129,7 +149,6 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
                         child: ColorPicker(
                           pickerColor: pickerColor,
                           displayThumbColor: true,
-                          
                           hexInputBar: true,
                           onColorChanged: (color) {
                             setState(() {
@@ -186,14 +205,12 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
           ],
         ),
         const SizedBox(height: 12),
-        ListTile(
-          trailing: Switch(
-            value: ref.watch(squigglyNotifierProvider),
-            onChanged: (value) => ref
-                .read(squigglyNotifierProvider.notifier)
-                .toggle(value: value),
-          ),
+        SwitchListTile(
+          value: ref.watch(squigglyNotifierProvider),
           title: Text(context.tr.change_to_waves),
+          contentPadding: EdgeInsets.zero,
+          onChanged: (value) =>
+              ref.read(squigglyNotifierProvider.notifier).toggle(value: value),
         ),
       ],
     );

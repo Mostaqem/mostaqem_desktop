@@ -33,40 +33,20 @@ class PlayingSurah extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Text(
-                      locale == 'ar'
-                          ? surah?.arabicName ?? ''
-                          : surah?.simpleName ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSecondaryContainer,
-                      ),
-                    ),
+              SizedBox(
+                width: 100,
+                child: Text(
+                  locale == 'ar'
+                      ? surah?.arabicName ?? ''
+                      : surah?.simpleName ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
                   ),
-                  Visibility(
-                    visible:
-                        !ref.watch(isLocalProvider) &&
-                        !ref.watch(isAlbumEmptyProvider),
-                    child: IconButton(
-                      onPressed: () => ref
-                          .read(isCollapsedProvider.notifier)
-                          .update((state) => !state),
-                      icon: Icon(
-                        Icons.arrow_drop_up_outlined,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSecondaryContainer,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               TextHover(
                 text: locale == 'ar'
@@ -98,14 +78,7 @@ class PlayingSurah extends StatelessWidget {
             message: context.tr.playlist,
             iconSize: 20,
             onPressed: () {
-              final canPop = ref
-                  .read(navigationProvider)
-                  .canPop(expectedPath: '/queue');
-              if (canPop) {
-                ref.read(goRouterProvider).pop();
-                return;
-              }
-              ref.read(goRouterProvider).push('/queue');
+              ref.read(isCollapsedProvider.notifier).update((state) => !state);
             },
             icon: const Icon(Icons.playlist_play),
           ),

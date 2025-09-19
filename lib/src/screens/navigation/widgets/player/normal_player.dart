@@ -14,6 +14,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.da
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vector_graphics/vector_graphics_compat.dart';
 
 class NormalPlayer extends ConsumerStatefulWidget {
@@ -60,61 +61,76 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
           const PlayControls(),
           Row(
             children: [
-              Visibility(
-                visible: isBtnVisible(album),
-                child: ToolTipIconButton(
-                  message: context.tr.download,
-                  iconSize: 16,
-                  onPressed: () async {
-                    final height = ref.read(downloadHeightProvider);
-                    if (height == 100) {
-                      ref.read(downloadHeightProvider.notifier).state = 0;
-                    } else {
-                      ref.read(downloadHeightProvider.notifier).state = 100;
-                    }
-                    ref.read(downloadSurahProvider.notifier).state =
-                        album!.surah;
-                    final downloadState = ref
-                        .read(downloadAudioProvider)
-                        ?.downloadState;
-                    if (downloadState != DownloadState.downloading) {
-                      await ref.read(downloadAudioProvider.notifier).download();
-                    }
-                    setState(() {
-                      downloadedAlbums.add(album);
-                    });
-                  },
-                  icon: const Icon(Icons.download_for_offline),
-                ),
-              ),
-              Visibility(
-                visible:
-                    !widget.isFullScreen &&
-                    ref.watch(downloadHeightProvider) == 0,
-                child: ToolTipIconButton(
-                  message: context.tr.read,
-                  onPressed: () async {
-                    final surah = ref.read(currentSurahProvider);
-                    final canPop = ref
-                        .read(navigationProvider)
-                        .canPop(expectedPath: '/reading');
-                    if (canPop) {
-                      ref.read(goRouterProvider).pop();
-                      return;
-                    }
-
-                    ref.read(goRouterProvider).goNamed('Reading', extra: surah);
-                  },
-                  icon: VectorGraphic(
-                    loader: const AssetBytesLoader('assets/img/svg/read.svg'),
-                    width: 16,
-                    colorFilter: ColorFilter.mode(
-                      Theme.of(context).colorScheme.onSecondaryContainer,
-                      BlendMode.srcIn,
-                    ),
+              MenuAnchor(
+                alignmentOffset: const Offset(-25, 60), // small spacing above
+                menuChildren: [
+                  MenuItemButton(
+                    leadingIcon: const Icon(Icons.share_outlined),
+                    child: const Text('Share'),
+                    onPressed: () {
+                      if (album != null) {
+                        final uri = Uri.parse(album.url);
+                        final params = ShareParams(uri: uri, title: 'Share');
+                        SharePlus.instance.share(params);
+                      }
+                    },
                   ),
-                ),
+                  MenuItemButton(
+                    leadingIcon: VectorGraphic(
+                      loader: const AssetBytesLoader('assets/img/svg/read.svg'),
+                      width: 16,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.onSecondaryContainer,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    child: Text(context.tr.read),
+                    onPressed: () {
+                      final surah = ref.read(currentSurahProvider);
+
+                      ref
+                          .read(goRouterProvider)
+                          .goNamed('Reading', extra: surah);
+                    },
+                  ),
+                  MenuItemButton(
+                    leadingIcon: const Icon(Icons.download_outlined),
+                    child: Text(context.tr.download),
+                    onPressed: () async {
+                      final height = ref.read(downloadHeightProvider);
+                      if (height == 100) {
+                        ref.read(downloadHeightProvider.notifier).state = 0;
+                      } else {
+                        ref.read(downloadHeightProvider.notifier).state = 100;
+                      }
+                      ref.read(downloadSurahProvider.notifier).state =
+                          album!.surah;
+                      final downloadState = ref
+                          .read(downloadAudioProvider)
+                          ?.downloadState;
+                      if (downloadState != DownloadState.downloading) {
+                        await ref
+                            .read(downloadAudioProvider.notifier)
+                            .download();
+                      }
+                      setState(() {
+                        downloadedAlbums.add(album);
+                      });
+                    },
+                  ),
+                ],
+                builder: (context, controller, child) {
+                  return IconButton(
+                    onPressed: () {
+                      controller.isOpen
+                          ? controller.close()
+                          : controller.open();
+                    },
+                    icon: const Icon(Icons.more_horiz),
+                  );
+                },
               ),
+
               const VolumeControls(),
               FullScreenControl(isFullScreen: widget.isFullScreen),
             ],

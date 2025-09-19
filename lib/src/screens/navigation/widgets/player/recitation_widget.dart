@@ -8,7 +8,7 @@ import 'package:mostaqem/src/screens/navigation/repository/recitation_repository
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
-final recitationProvider = Provider.autoDispose((ref) {
+final recitationProvider = Provider((ref) {
   return ref.watch(currentAlbumProvider)?.recitationID;
 });
 final recitationHeight = StateProvider<double>((ref) => 0);

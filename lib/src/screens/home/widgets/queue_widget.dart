@@ -26,24 +26,13 @@ class QueueWidget extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'تسمع التالي',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                    ),
-                  ),
-                  TextHover(
-                    text: 'المزيد',
-                    onTap: () {
-                      context.push('/queue');
-                    },
-                  ),
-                ],
+              Text(
+                'تسمع التالي',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                ),
               ),
               const SizedBox(height: 10),
               Expanded(
@@ -105,7 +94,10 @@ class QueueWidget extends ConsumerWidget {
                       ),
                       contentPadding: EdgeInsets.zero,
                       selected: isSurahPlaying,
-                      title: Text(queue[index].surah.arabicName),
+                      title: Text(
+                        queue[index].surah.arabicName,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       subtitle: Text(queue[index].reciter.arabicName),
                       trailing: ToolTipIconButton(
                         message: context.tr.remove_from_queue,

@@ -9,7 +9,6 @@ import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/settings/providers/download_cache.dart';
-import 'package:path_provider/path_provider.dart';
 
 class OfflineRepository {
   OfflineRepository(this.ref);
