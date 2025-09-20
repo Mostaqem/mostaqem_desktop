@@ -86,5 +86,8 @@
     "startup_behavior": "سلوك التشغيل",
     "startup_play": "تشغيل مستقيم تلقائيا بعد تسجيل الدخول الي الكمبيوتر",
     "never": "ابدا",
-    "always": "دائما"
+    "always": "دائما",
+    "share": "نشر السورة",
+    "choose_custom_color": "اختيار لون خاص",
+    "use_system_color": "اختيار لون النظام"
 }

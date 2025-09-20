@@ -273,4 +273,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get always => 'دائما';
+
+  @override
+  String get share => 'نشر السورة';
+
+  @override
+  String get choose_custom_color => 'اختيار لون خاص';
+
+  @override
+  String get use_system_color => 'اختيار لون النظام';
 }
