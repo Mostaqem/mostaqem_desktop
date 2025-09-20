@@ -50,7 +50,7 @@
     "change_to_waves": "Change Shape to Waves",
     "select_verse_to_share": "Select verse to share",
     "share_verse": "Share Verse",
-    "next_to_play": "Next to Play",
+    "next_to_play": "Listening Next",
     "change_location": "Change Location",
     "remove_surah_from_queue": "Remove Surah from Playlist",
     "no_special_day_today": "No special day today",
@@ -93,5 +93,8 @@
     "startup_behavior": "Startup Behavior",
     "startup_play": "Open Mostaqem after you log into computer",
     "never": "Never",
-    "always": "Always"
+    "always": "Always",
+    "share": "Share",
+    "choose_custom_color": "Choose custom color",
+    "use_system_color": "Use system color"
 }

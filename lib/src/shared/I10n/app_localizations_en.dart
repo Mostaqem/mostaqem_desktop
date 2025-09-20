@@ -141,7 +141,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get share_verse => 'Share Verse';
 
   @override
-  String get next_to_play => 'Next to Play';
+  String get next_to_play => 'Listening Next';
 
   @override
   String get change_location => 'Change Location';
@@ -273,4 +273,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get always => 'Always';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get choose_custom_color => 'Choose custom color';
+
+  @override
+  String get use_system_color => 'Use system color';
 }

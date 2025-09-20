@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @next_to_play.
   ///
   /// In en, this message translates to:
-  /// **'Next to Play'**
+  /// **'Listening Next'**
   String get next_to_play;
 
   /// No description provided for @change_location.
@@ -625,6 +625,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Always'**
   String get always;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @choose_custom_color.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose custom color'**
+  String get choose_custom_color;
+
+  /// No description provided for @use_system_color.
+  ///
+  /// In en, this message translates to:
+  /// **'Use system color'**
+  String get use_system_color;
 }
 
 class _AppLocalizationsDelegate

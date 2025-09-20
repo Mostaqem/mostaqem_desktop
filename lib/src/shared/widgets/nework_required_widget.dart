@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 
 class NeworkRequiredWidget extends ConsumerWidget {
@@ -15,6 +16,19 @@ class NeworkRequiredWidget extends ConsumerWidget {
 
     return networkState == InternetConnectionStatus.connected
         ? child
-        : const Center(child: Text('عفوا لا يوجد أنترنت'));
+        : Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(context.tr.sorry_no_internet),
+                IconButton.filledTonal(
+                  onPressed: () {
+                    ref.invalidate(getConnectionProvider);
+                  },
+                  icon: const Icon(Icons.refresh_outlined),
+                ),
+              ],
+            ),
+          );
   }
 }

@@ -14,6 +14,7 @@ class QueueWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final queue = ref.watch(playerNotifierProvider).queue;
     final playingSurah = ref.watch(playerNotifierProvider).queueIndex;
+    final locale = ref.watch(localeNotifierProvider);
     return Expanded(
       child: Container(
         width: double.infinity,
@@ -27,7 +28,7 @@ class QueueWidget extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'تسمع التالي',
+                context.tr.next_to_play,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -95,10 +96,16 @@ class QueueWidget extends ConsumerWidget {
                       contentPadding: EdgeInsets.zero,
                       selected: isSurahPlaying,
                       title: Text(
-                        queue[index].surah.arabicName,
+                        locale == 'ar'
+                            ? queue[index].surah.arabicName
+                            : queue[index].surah.simpleName,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text(queue[index].reciter.arabicName),
+                      subtitle: Text(
+                        locale == 'ar'
+                            ? queue[index].reciter.arabicName
+                            : queue[index].reciter.englishName,
+                      ),
                       trailing: ToolTipIconButton(
                         message: context.tr.remove_from_queue,
                         onPressed: () {

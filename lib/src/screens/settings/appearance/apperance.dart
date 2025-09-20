@@ -105,14 +105,14 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           value: isDynamic,
-          title: const Text('Use System color'),
+          title: Text(context.tr.use_system_color),
           onChanged: (value) {
             ref.read(isDynamicProvider.notifier).toggle(value: value);
           },
         ),
         const SizedBox(height: 16),
         Text(
-          'Choose custom color',
+          context.tr.choose_custom_color,
           style: TextStyle(
             fontSize: 16,
             color: Theme.of(context).colorScheme.secondary,
