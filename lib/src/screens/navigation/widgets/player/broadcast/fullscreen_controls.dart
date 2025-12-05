@@ -16,11 +16,10 @@ import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 class BroadcastFullscreenControls extends ConsumerWidget {
   const BroadcastFullscreenControls({super.key});
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final player = ref.watch(playerNotifierProvider);
-    final isSquiggly = ref.watch(squigglyNotifierProvider);
+    final player = ref.watch(playerProvider);
+    final isSquiggly = ref.watch(squigglyProvider);
 
     return Column(
       children: [
@@ -31,10 +30,7 @@ class BroadcastFullscreenControls extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  ref
-                      .watch(playerNotifierProvider.notifier)
-                      .playerTime()
-                      .currentTime,
+                  ref.watch(playerProvider.notifier).playerTime().currentTime,
                   style: const TextStyle(color: Colors.white),
                 ),
                 ConstrainedBox(
@@ -55,95 +51,77 @@ class BroadcastFullscreenControls extends ConsumerWidget {
                                 elevation: 0,
                               ),
                             ),
-                            child:
-                                isSquiggly
-                                    ? SquigglySlider(
-                                      squiggleAmplitude: 3,
-                                      squiggleWavelength: 5,
-                                      squiggleSpeed: 0.2,
-                                      useLineThumb: true,
-                                      activeColor: Colors.white,
-                                      value: max(0, min(position, duration)),
-                                      max: duration,
-                                      onChangeStart: (_) async {
-                                        final isPlaying = player.isPlaying;
-                                        if (isPlaying) {
-                                          await ref
-                                              .read(
-                                                playerNotifierProvider.notifier,
-                                              )
-                                              .player
-                                              .pause();
-                                        }
-                                      },
-                                      onChangeEnd: (value) async {
+                            child: isSquiggly
+                                ? SquigglySlider(
+                                    squiggleAmplitude: 3,
+                                    squiggleWavelength: 5,
+                                    squiggleSpeed: 0.2,
+                                    useLineThumb: true,
+                                    activeColor: Colors.white,
+                                    value: max(0, min(position, duration)),
+                                    max: duration,
+                                    onChangeStart: (_) async {
+                                      final isPlaying = player.isPlaying;
+                                      if (isPlaying) {
                                         await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .handleSeek(
-                                              Duration(seconds: value.toInt()),
-                                            );
-                                        await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
+                                            .read(playerProvider.notifier)
                                             .player
-                                            .play();
-                                      },
-                                      onChanged: (value) {
-                                        ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .changePosition(
-                                              Duration(seconds: value.toInt()),
-                                            );
-                                      },
-                                    )
-                                    : Slider(
-                                      activeColor: Colors.white,
-                                      value: max(0, min(position, duration)),
-                                      max: duration,
-                                      onChangeStart: (_) async {
-                                        final isPlaying =
-                                            ref
-                                                .read(playerNotifierProvider)
-                                                .isPlaying;
-                                        if (isPlaying) {
-                                          await ref
-                                              .read(
-                                                playerNotifierProvider.notifier,
-                                              )
-                                              .player
-                                              .pause();
-                                        }
-                                      },
-                                      onChangeEnd: (value) async {
+                                            .pause();
+                                      }
+                                    },
+                                    onChangeEnd: (value) async {
+                                      await ref
+                                          .read(playerProvider.notifier)
+                                          .handleSeek(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                      await ref
+                                          .read(playerProvider.notifier)
+                                          .player
+                                          .play();
+                                    },
+                                    onChanged: (value) {
+                                      ref
+                                          .read(playerProvider.notifier)
+                                          .changePosition(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                    },
+                                  )
+                                : Slider(
+                                    activeColor: Colors.white,
+                                    value: max(0, min(position, duration)),
+                                    max: duration,
+                                    onChangeStart: (_) async {
+                                      final isPlaying = ref
+                                          .read(playerProvider)
+                                          .isPlaying;
+                                      if (isPlaying) {
                                         await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .handleSeek(
-                                              Duration(seconds: value.toInt()),
-                                            );
-                                        await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
+                                            .read(playerProvider.notifier)
                                             .player
-                                            .play();
-                                      },
-                                      onChanged: (value) {
-                                        ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
-                                            .changePosition(
-                                              Duration(seconds: value.toInt()),
-                                            );
-                                      },
-                                    ),
+                                            .pause();
+                                      }
+                                    },
+                                    onChangeEnd: (value) async {
+                                      await ref
+                                          .read(playerProvider.notifier)
+                                          .handleSeek(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                      await ref
+                                          .read(playerProvider.notifier)
+                                          .player
+                                          .play();
+                                    },
+                                    onChanged: (value) {
+                                      ref
+                                          .read(playerProvider.notifier)
+                                          .changePosition(
+                                            Duration(seconds: value.toInt()),
+                                          );
+                                    },
+                                  ),
                           );
                         },
                       );
@@ -151,10 +129,7 @@ class BroadcastFullscreenControls extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  ref
-                      .watch(playerNotifierProvider.notifier)
-                      .playerTime()
-                      .durationTime,
+                  ref.watch(playerProvider.notifier).playerTime().durationTime,
                   style: const TextStyle(color: Colors.white),
                 ),
               ],
@@ -164,32 +139,28 @@ class BroadcastFullscreenControls extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-               
-             
                   Tooltip(
                     message: 'تشغيل',
                     preferBelow: false,
                     child: IconButton(
                       onPressed: () async {
                         await ref
-                            .read(playerNotifierProvider.notifier)
+                            .read(playerProvider.notifier)
                             .handlePlayPause();
                       },
-                      icon:
-                          player.isPlaying
-                              ? const Icon(
-                                Icons.pause_circle_filled_outlined,
-                                color: Colors.white,
-                              )
-                              : const Icon(
-                                Icons.play_circle_fill_outlined,
-                                color: Colors.white,
-                              ),
+                      icon: player.isPlaying
+                          ? const Icon(
+                              Icons.pause_circle_filled_outlined,
+                              color: Colors.white,
+                            )
+                          : const Icon(
+                              Icons.play_circle_fill_outlined,
+                              color: Colors.white,
+                            ),
                       iconSize: 25,
                     ),
                   ),
-               
-            
+
                   const FullScreenControl(isFullScreen: true),
                 ],
               ),

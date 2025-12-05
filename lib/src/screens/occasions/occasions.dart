@@ -94,7 +94,7 @@ class _OccasionsScreenState extends State<OccasionsScreen> {
                                 'تشغيل',
                                 onPressed: () async {
                                   await ref
-                                      .read(playerNotifierProvider.notifier)
+                                      .read(playerProvider.notifier)
                                       .play(surahID: surah.id);
                                 },
                               ),
@@ -108,7 +108,7 @@ class _OccasionsScreenState extends State<OccasionsScreen> {
                           child: InkWell(
                             onTap: () async {
                               await ref
-                                  .read(playerNotifierProvider.notifier)
+                                  .read(playerProvider.notifier)
                                   .play(surahID: surah.id);
                             },
                             child: HoverBuilder(

@@ -15,8 +15,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isTyping =
-        ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
+    final isTyping = ref.watch(searchProvider('home'))?.isEmpty ?? false;
 
     final focusNode = ref.watch(textFieldFocusProvider);
 
@@ -51,7 +50,7 @@ class HomeScreen extends ConsumerWidget {
                           .update((state) => !state),
                       onChanged: (value) {
                         ref
-                            .read(searchNotifierProvider('home').notifier)
+                            .read(searchProvider('home').notifier)
                             .setQuery(value);
                       },
                       elevation: const WidgetStatePropertyAll<double>(0),
@@ -68,11 +67,7 @@ class HomeScreen extends ConsumerWidget {
                                   icon: const Icon(Icons.close),
                                   onPressed: () {
                                     ref
-                                        .read(
-                                          searchNotifierProvider(
-                                            'home',
-                                          ).notifier,
-                                        )
+                                        .read(searchProvider('home').notifier)
                                         .clear();
                                     queryController.clear();
                                   },

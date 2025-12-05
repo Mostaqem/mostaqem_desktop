@@ -14,7 +14,7 @@ class _HijriDateWidgetState extends ConsumerState<HijriDateWidget> {
   @override
   void initState() {
     super.initState();
-    final language = ref.read(localeNotifierProvider).languageCode;
+    final language = ref.read(localeProvider).languageCode;
     HijriCalendar.setLocal(language);
   }
 

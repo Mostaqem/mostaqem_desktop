@@ -21,8 +21,8 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
     final userSeedColor = ref.watch(userSeedColorProvider);
-    final userTheme = ref.watch(themeNotifierProvider);
-    final currentLang = ref.watch(localeNotifierProvider);
+    final userTheme = ref.watch(themeProvider);
+    final currentLang = ref.watch(localeProvider);
     final isDynamic = ref.watch(isDynamicProvider);
     return DynamicColorBuilder(
       builder: (dynamicLight, dynamicDark) {

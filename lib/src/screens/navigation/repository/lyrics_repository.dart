@@ -78,15 +78,12 @@ Future<String?> syncLyrics(Ref ref) async {
       currentLyricsAveragedMap[lyric.time] = lyric.words;
     }
 
-    ref.listen(playerNotifierProvider.select((player) => player.position), (
-      _,
-      next,
-    ) {
+    ref.listen(playerProvider.select((player) => player.position), (_, next) {
       for (var i = 0; i < currentLyricsAveragedMap.entries.length; i++) {
         final lyric = currentLyricsAveragedMap.entries.elementAt(i);
         if (lyric.key <= next.inMilliseconds) {
           ref
-              .read(currentLyricsNotifierProvider.notifier)
+              .read(currentLyricsProvider.notifier)
               .updateLyrics(value: lyric.value);
         }
       }

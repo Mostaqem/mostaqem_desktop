@@ -36,9 +36,9 @@ class FullScreenPlayControls extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final player = ref.watch(playerNotifierProvider);
-    final isSquiggly = ref.watch(squigglyNotifierProvider);
-    final lyricsState = ref.watch(lyricsNotifierProvider);
+    final player = ref.watch(playerProvider);
+    final isSquiggly = ref.watch(squigglyProvider);
+    final lyricsState = ref.watch(lyricsProvider);
     final imageColor = ref.watch(getImageColorProvider);
     return Column(
       children: [
@@ -49,10 +49,7 @@ class FullScreenPlayControls extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  ref
-                      .watch(playerNotifierProvider.notifier)
-                      .playerTime()
-                      .currentTime,
+                  ref.watch(playerProvider.notifier).playerTime().currentTime,
                   style: const TextStyle(color: Colors.white),
                 ),
                 ConstrainedBox(
@@ -88,9 +85,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                                       final isPlaying = player.isPlaying;
                                       if (isPlaying) {
                                         await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
+                                            .read(playerProvider.notifier)
                                             .player
                                             .pause();
                                       }
@@ -98,18 +93,18 @@ class FullScreenPlayControls extends ConsumerWidget {
 
                                     onChangeEnd: (value) async {
                                       await ref
-                                          .read(playerNotifierProvider.notifier)
+                                          .read(playerProvider.notifier)
                                           .handleSeek(
                                             Duration(seconds: value.toInt()),
                                           );
                                       await ref
-                                          .read(playerNotifierProvider.notifier)
+                                          .read(playerProvider.notifier)
                                           .player
                                           .play();
                                     },
                                     onChanged: (value) {
                                       ref
-                                          .read(playerNotifierProvider.notifier)
+                                          .read(playerProvider.notifier)
                                           .changePosition(
                                             Duration(seconds: value.toInt()),
                                           );
@@ -126,31 +121,29 @@ class FullScreenPlayControls extends ConsumerWidget {
                                         Theme.of(context).colorScheme.primary,
                                     onChangeStart: (_) async {
                                       final isPlaying = ref
-                                          .read(playerNotifierProvider)
+                                          .read(playerProvider)
                                           .isPlaying;
                                       if (isPlaying) {
                                         await ref
-                                            .read(
-                                              playerNotifierProvider.notifier,
-                                            )
+                                            .read(playerProvider.notifier)
                                             .player
                                             .pause();
                                       }
                                     },
                                     onChangeEnd: (value) async {
                                       await ref
-                                          .read(playerNotifierProvider.notifier)
+                                          .read(playerProvider.notifier)
                                           .handleSeek(
                                             Duration(seconds: value.toInt()),
                                           );
                                       await ref
-                                          .read(playerNotifierProvider.notifier)
+                                          .read(playerProvider.notifier)
                                           .player
                                           .play();
                                     },
                                     onChanged: (value) {
                                       ref
-                                          .read(playerNotifierProvider.notifier)
+                                          .read(playerProvider.notifier)
                                           .changePosition(
                                             Duration(seconds: value.toInt()),
                                           );
@@ -163,10 +156,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  ref
-                      .watch(playerNotifierProvider.notifier)
-                      .playerTime()
-                      .durationTime,
+                  ref.watch(playerProvider.notifier).playerTime().durationTime,
                   style: const TextStyle(color: Colors.white),
                 ),
               ],
@@ -179,7 +169,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                   ToolTipIconButton(
                     message: context.tr.shuffle,
                     onPressed: () async {
-                      await ref.read(playerNotifierProvider.notifier).shuffle();
+                      await ref.read(playerProvider.notifier).shuffle();
                     },
                     icon: Icon(
                       Icons.shuffle,
@@ -191,7 +181,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                   ),
                   Visibility(
                     visible: !ref
-                        .watch(playerNotifierProvider.notifier)
+                        .watch(playerProvider.notifier)
                         .isFirstChapter(),
                     child: Tooltip(
                       message: context.tr.previous,
@@ -199,7 +189,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                       child: IconButton(
                         onPressed: () async {
                           await ref
-                              .read(playerNotifierProvider.notifier)
+                              .read(playerProvider.notifier)
                               .playPrevious();
                         },
                         icon: const Icon(
@@ -216,7 +206,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                     child: IconButton(
                       onPressed: () async {
                         await ref
-                            .read(playerNotifierProvider.notifier)
+                            .read(playerProvider.notifier)
                             .handlePlayPause();
                       },
                       icon: player.isPlaying
@@ -233,16 +223,14 @@ class FullScreenPlayControls extends ConsumerWidget {
                   ),
                   Visibility(
                     visible: !ref
-                        .watch(playerNotifierProvider.notifier)
+                        .watch(playerProvider.notifier)
                         .isLastchapter(),
                     child: Tooltip(
                       message: 'بعد',
                       preferBelow: false,
                       child: IconButton(
                         onPressed: () async {
-                          await ref
-                              .read(playerNotifierProvider.notifier)
-                              .playNext();
+                          await ref.read(playerProvider.notifier).playNext();
                         },
                         icon: const Icon(
                           Icons.skip_previous_outlined,
@@ -257,7 +245,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                     preferBelow: false,
                     child: IconButton(
                       onPressed: () async {
-                        ref.read(playerNotifierProvider.notifier).loop();
+                        ref.read(playerProvider.notifier).loop();
                       },
                       icon: loopIcon(
                         player.loop,
@@ -281,10 +269,10 @@ class FullScreenPlayControls extends ConsumerWidget {
                           ref.read(goRouterProvider).pop();
                         }
                         if (lyricsState == true) {
-                          ref.read(lyricsNotifierProvider.notifier).state =
+                          ref.read(lyricsProvider.notifier).state =
                               false;
                         } else {
-                          ref.read(lyricsNotifierProvider.notifier).state =
+                          ref.read(lyricsProvider.notifier).state =
                               true;
                         }
                       },

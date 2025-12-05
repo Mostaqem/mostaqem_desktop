@@ -1,7 +1,6 @@
 // ignore_for_file: inference_failure_on_function_invocation
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

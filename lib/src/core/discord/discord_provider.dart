@@ -1,5 +1,4 @@
 import 'package:flutter_discord_rpc/flutter_discord_rpc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/env/env.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

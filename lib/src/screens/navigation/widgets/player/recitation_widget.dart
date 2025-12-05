@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/recitation_repository.dart';
@@ -24,7 +25,7 @@ class RecitationWidget extends StatelessWidget {
       child: Consumer(
         builder: (context, ref, child) {
           final album = ref.watch(currentAlbumProvider);
-          final locale = ref.watch(localeNotifierProvider).languageCode;
+          final locale = ref.watch(localeProvider).languageCode;
           final recitations = ref.watch(
             fetchReciterRecitationProvider(reciterID: album?.reciter.id ?? 1),
           );
@@ -54,7 +55,7 @@ class RecitationWidget extends StatelessWidget {
                       groupValue: data[index].id,
                       onChanged: (v) {
                         ref
-                            .read(playerNotifierProvider.notifier)
+                            .read(playerProvider.notifier)
                             .play(
                               surahID: album?.surah.id ?? 1,
                               recitationID: data[index].id,

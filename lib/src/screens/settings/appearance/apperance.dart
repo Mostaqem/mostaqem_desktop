@@ -34,9 +34,7 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
           children: [
             InkWell(
               onTap: () {
-                ref
-                    .read(themeNotifierProvider.notifier)
-                    .setTheme(ThemeMode.system);
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.system);
               },
               child: Container(
                 height: 80,
@@ -55,9 +53,7 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
             const SizedBox(width: 12),
             InkWell(
               onTap: () {
-                ref
-                    .read(themeNotifierProvider.notifier)
-                    .setTheme(ThemeMode.light);
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.light);
               },
               child: Container(
                 height: 80,
@@ -73,9 +69,7 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
             const SizedBox(width: 12),
             InkWell(
               onTap: () {
-                ref
-                    .read(themeNotifierProvider.notifier)
-                    .setTheme(ThemeMode.dark);
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.dark);
               },
               child: Container(
                 height: 80,
@@ -206,11 +200,11 @@ class _ApperanceSettingsState extends ConsumerState<ApperanceSettings> {
         ),
         const SizedBox(height: 12),
         SwitchListTile(
-          value: ref.watch(squigglyNotifierProvider),
+          value: ref.watch(squigglyProvider),
           title: Text(context.tr.change_to_waves),
           contentPadding: EdgeInsets.zero,
           onChanged: (value) =>
-              ref.read(squigglyNotifierProvider.notifier).toggle(value: value),
+              ref.read(squigglyProvider.notifier).toggle(value: value),
         ),
       ],
     );

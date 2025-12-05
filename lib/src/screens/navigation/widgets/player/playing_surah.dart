@@ -22,7 +22,7 @@ class PlayingSurah extends StatelessWidget {
   Widget build(BuildContext context) {
     final surah = ref.watch(currentSurahProvider);
     final reciter = ref.watch(currentReciterProvider);
-    final locale = ref.watch(localeNotifierProvider).languageCode;
+    final locale = ref.watch(localeProvider).languageCode;
     return Visibility(
       visible: !isFullScreen,
       child: Row(

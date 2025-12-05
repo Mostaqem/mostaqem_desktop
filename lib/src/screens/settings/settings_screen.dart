@@ -110,14 +110,14 @@ class LanguageSetting extends StatelessWidget {
         ),
         Consumer(
           builder: (context, ref, child) {
-            final language = ref.watch(localeNotifierProvider).languageCode;
+            final language = ref.watch(localeProvider).languageCode;
 
             return DropdownButton(
               value: language,
               items: Language.values.toItems(),
               onChanged: (String? language) {
                 ref
-                    .read(localeNotifierProvider.notifier)
+                    .read(localeProvider.notifier)
                     .setLocale(Locale(language!));
               },
             );

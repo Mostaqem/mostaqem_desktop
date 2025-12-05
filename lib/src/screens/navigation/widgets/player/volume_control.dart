@@ -10,9 +10,9 @@ class VolumeControls extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final player = ref.watch(playerNotifierProvider);
+    final player = ref.watch(playerProvider);
     final isFullScreen = ref.watch(isFullScreenProvider);
-    final locale = ref.watch(localeNotifierProvider).languageCode;
+    final locale = ref.watch(localeProvider).languageCode;
     return Row(
       children: [
         Tooltip(
@@ -23,9 +23,9 @@ class VolumeControls extends ConsumerWidget {
             child: IconButton(
               onPressed: () {
                 if (player.volume > 0) {
-                  ref.read(playerNotifierProvider.notifier).handleVolume(0);
+                  ref.read(playerProvider.notifier).handleVolume(0);
                 } else {
-                  ref.read(playerNotifierProvider.notifier).handleVolume(1);
+                  ref.read(playerProvider.notifier).handleVolume(1);
                 }
               },
               icon: player.volume == 0
@@ -60,9 +60,9 @@ class VolumeControls extends ConsumerWidget {
                 child: Slider(
                   key: const Key('volume'),
                   activeColor: isFullScreen ? Colors.white : null,
-                  value: ref.watch(playerNotifierProvider).volume,
+                  value: ref.watch(playerProvider).volume,
                   onChanged: (v) =>
-                      ref.read(playerNotifierProvider.notifier).handleVolume(v),
+                      ref.read(playerProvider.notifier).handleVolume(v),
                 ),
               ),
             );

@@ -75,7 +75,7 @@ class DownloadsScreen extends ConsumerWidget {
                         subtitle: Text(data[index].reciter.arabicName),
                         onTap: () {
                           ref
-                              .read(playerNotifierProvider.notifier)
+                              .read(playerProvider.notifier)
                               .localPlay(
                                 album: data[index].copyWith(isLocal: true),
                               );

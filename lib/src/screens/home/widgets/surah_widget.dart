@@ -1,6 +1,7 @@
 import 'package:context_menus/context_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/repository/download_repository.dart';
@@ -58,7 +59,7 @@ class SurahWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchQuery = ref.watch(searchNotifierProvider('home'));
+    final searchQuery = ref.watch(searchProvider('home'));
     final surahID = ref.watch(currentSurahProvider)?.id ?? 0;
     final downlaodState = ref.watch(downloadAudioProvider)?.downloadState;
     return SizedBox(
@@ -88,7 +89,7 @@ class SurahWidget extends ConsumerWidget {
                       'تشغيل التالي',
                       onPressed: () async {
                         await ref
-                            .read(playerNotifierProvider.notifier)
+                            .read(playerProvider.notifier)
                             .addItemNext(data[indexInPage].id);
                       },
                     ),
@@ -96,7 +97,7 @@ class SurahWidget extends ConsumerWidget {
                       'اضافة في القائمة التشغيل',
                       onPressed: () async {
                         await ref
-                            .read(playerNotifierProvider.notifier)
+                            .read(playerProvider.notifier)
                             .addToQueue(surahID: data[indexInPage].id);
                       },
                     ),
@@ -109,7 +110,7 @@ class SurahWidget extends ConsumerWidget {
                       return InkWell(
                         onTap: () async {
                           await ref
-                              .read(playerNotifierProvider.notifier)
+                              .read(playerProvider.notifier)
                               .play(surahID: data[indexInPage].id);
                         },
                         child: ClipRRect(
@@ -231,9 +232,7 @@ class SurahWidget extends ConsumerWidget {
                                         child: const Text('اضافة التالي'),
                                         onTap: () {
                                           ref
-                                              .read(
-                                                playerNotifierProvider.notifier,
-                                              )
+                                              .read(playerProvider.notifier)
                                               .addItemNext(
                                                 data[indexInPage].id,
                                               );
@@ -245,9 +244,7 @@ class SurahWidget extends ConsumerWidget {
                                         ),
                                         onTap: () {
                                           ref
-                                              .read(
-                                                playerNotifierProvider.notifier,
-                                              )
+                                              .read(playerProvider.notifier)
                                               .addToQueue(
                                                 surahID: data[indexInPage].id,
                                               );

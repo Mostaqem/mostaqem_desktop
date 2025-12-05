@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/core/env/env.dart';
@@ -49,9 +50,7 @@ class _NavigationState extends ConsumerState<Navigation> {
   @override
   Widget build(BuildContext context) {
     final isFullScreen = ref.watch(isFullScreenProvider);
-    final player = ref.watch(
-      playerNotifierProvider.select((value) => value.album),
-    );
+    final player = ref.watch(playerProvider.select((value) => value.album));
     var children = getChildrenScreens(context);
     final screenIndex = ref.watch(indexScreenProvider);
     final isTodaySpecial = ref.watch(occasionsRepoProvider).isTodaySpecial();

@@ -42,11 +42,11 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
   Widget build(BuildContext context) {
     final connection = ref.watch(getConnectionProvider).value;
     final randomImage = ref.watch(fetchRandomImageProvider);
-    final isLyricsVisible = ref.watch(lyricsNotifierProvider);
-    final lyrics = ref.watch(currentLyricsNotifierProvider);
+    final isLyricsVisible = ref.watch(lyricsProvider);
+    final lyrics = ref.watch(currentLyricsProvider);
     final theme = Theme.of(context);
     final isbroadcast = ref.watch(isBroadcastProvider);
-    final locale = ref.watch(localeNotifierProvider).languageCode;
+    final locale = ref.watch(localeProvider).languageCode;
     return isbroadcast
         ? const BroadcastFullscreenWidget()
         : Stack(
@@ -62,7 +62,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         fit: BoxFit.cover,
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) {
-                            return child; 
+                            return child;
                           } else {
                             return Center(
                               child: CircularProgressIndicator(
