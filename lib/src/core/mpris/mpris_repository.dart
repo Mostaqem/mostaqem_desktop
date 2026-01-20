@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mpris_service/mpris_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -37,13 +36,13 @@ class MPRISRepository {
       ..setEventHandler(
         MPRISEventHandler(
           seek: (offset) async {
-            await ref.read(playerNotifierProvider.notifier).handleSeek(offset);
+            await ref.read(playerProvider.notifier).handleSeek(offset);
           },
           volume: (value) async {
-            await ref.read(playerNotifierProvider.notifier).handleVolume(value);
+            await ref.read(playerProvider.notifier).handleVolume(value);
           },
           playPause: () async {
-            if (ref.read(playerNotifierProvider).isPlaying) {
+            if (ref.read(playerProvider).isPlaying) {
               instance.playbackStatus = MPRISPlaybackStatus.playing;
             } else {
               instance.playbackStatus = MPRISPlaybackStatus.paused;
@@ -51,18 +50,18 @@ class MPRISRepository {
           },
           play: () async {
             instance.playbackStatus = MPRISPlaybackStatus.playing;
-            await ref.read(playerNotifierProvider.notifier).player.play();
+            await ref.read(playerProvider.notifier).player.play();
           },
           pause: () async {
             instance.playbackStatus = MPRISPlaybackStatus.paused;
 
-            await ref.read(playerNotifierProvider.notifier).player.pause();
+            await ref.read(playerProvider.notifier).player.pause();
           },
           next: () async {
-            await ref.read(playerNotifierProvider.notifier).playNext();
+            await ref.read(playerProvider.notifier).playNext();
           },
           previous: () async {
-            await ref.read(playerNotifierProvider.notifier).playPrevious();
+            await ref.read(playerProvider.notifier).playPrevious();
           },
         ),
       );
@@ -95,13 +94,13 @@ Future<void> createMetadata(
     ..setEventHandler(
       MPRISEventHandler(
         seek: (offset) async {
-          await ref.read(playerNotifierProvider.notifier).handleSeek(offset);
+          await ref.read(playerProvider.notifier).handleSeek(offset);
         },
         volume: (value) async {
-          await ref.read(playerNotifierProvider.notifier).handleVolume(value);
+          await ref.read(playerProvider.notifier).handleVolume(value);
         },
         playPause: () async {
-          if (ref.read(playerNotifierProvider).isPlaying) {
+          if (ref.read(playerProvider).isPlaying) {
             instance.playbackStatus = MPRISPlaybackStatus.playing;
           } else {
             instance.playbackStatus = MPRISPlaybackStatus.paused;
@@ -109,18 +108,18 @@ Future<void> createMetadata(
         },
         play: () async {
           instance.playbackStatus = MPRISPlaybackStatus.playing;
-          await ref.read(playerNotifierProvider.notifier).player.play();
+          await ref.read(playerProvider.notifier).player.play();
         },
         pause: () async {
           instance.playbackStatus = MPRISPlaybackStatus.paused;
 
-          await ref.read(playerNotifierProvider.notifier).player.pause();
+          await ref.read(playerProvider.notifier).player.pause();
         },
         next: () async {
-          await ref.read(playerNotifierProvider.notifier).playNext();
+          await ref.read(playerProvider.notifier).playNext();
         },
         previous: () async {
-          await ref.read(playerNotifierProvider.notifier).playPrevious();
+          await ref.read(playerProvider.notifier).playPrevious();
         },
       ),
     );

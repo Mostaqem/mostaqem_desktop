@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/screens/fullscreen/widgets/full_screen_player_controls.dart';
-import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
-import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
-import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/broadcast_player.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/fullscreen_controls.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/normal_player.dart';
@@ -37,7 +35,6 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   @override
   void onWindowClose() {
-    
     ref.read(clearRPCDiscordProvider);
     super.onWindowClose();
   }
@@ -58,7 +55,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
             ),
             color: isFullScreen
                 ? Colors.transparent
-                : Theme.of(context).colorScheme.secondaryContainer,
+                : Theme.of(context).colorScheme.surface,
           ),
           child: isFullScreen
               ? isBroadcast

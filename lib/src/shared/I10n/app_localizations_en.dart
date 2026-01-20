@@ -282,4 +282,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get use_system_color => 'Use system color';
+
+  @override
+  String get who_want_to_hear => 'Who do you want to hear?';
 }

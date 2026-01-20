@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
@@ -12,7 +12,6 @@ import 'package:mostaqem/src/screens/occasions/domain/occasions_repository.dart'
 import 'package:mostaqem/src/screens/occasions/occasions.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
-import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
 final isExtendedProvider = StateProvider<bool>((ref) => false);
@@ -49,9 +48,7 @@ class _NavigationState extends ConsumerState<Navigation> {
   @override
   Widget build(BuildContext context) {
     final isFullScreen = ref.watch(isFullScreenProvider);
-    final player = ref.watch(
-      playerNotifierProvider.select((value) => value.album),
-    );
+    final player = ref.watch(playerProvider.select((value) => value.album));
     var children = getChildrenScreens(context);
     final screenIndex = ref.watch(indexScreenProvider);
     final isTodaySpecial = ref.watch(occasionsRepoProvider).isTodaySpecial();
@@ -73,6 +70,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 100, ),
               ],
             ),
     );
@@ -95,35 +93,27 @@ class RightSide extends ConsumerWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: NavigationRail(
+            groupAlignment: 0,
             backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-            extended: ref.watch(isExtendedProvider),
-            trailing: Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 100),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ToolTipIconButton(
-                    message: context.tr.settings,
-                    onPressed: () => context.go('/settings'),
-                    icon: const Icon(Icons.settings_outlined),
-                  ),
-                ),
-              ),
-            ),
-            leading: IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => ref
-                  .read(isExtendedProvider.notifier)
-                  .update((state) => !state),
-            ),
-            indicatorShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+
+            // trailing: Expanded(
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(bottom: 100),
+            //     child: Align(
+            //       alignment: Alignment.bottomCenter,
+            //       child: ToolTipIconButton(
+            //         message: context.tr.settings,
+            //         onPressed: () => context.go('/settings'),
+            //         icon: const Icon(Icons.settings_outlined),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             destinations: [
               ...children.map(
                 (child) => NavigationRailDestination(
                   icon: child.icon,
-                  label: Text(child.label),
+                  label: Text(child.label, textAlign: .center),
                   selectedIcon: child.selectedIcon,
                 ),
               ),

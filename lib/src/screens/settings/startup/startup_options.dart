@@ -24,13 +24,11 @@ class StartupOptions extends StatelessWidget {
           title: Text(context.tr.startup_play),
           trailing: Consumer(
             builder: (context, ref, child) {
-              final initValue =
-                  ref.watch(startupNotifierProvider).value ?? 'ابدا';
+              final initValue = ref.watch(startupProvider).value ?? 'ابدا';
               return DropdownMenu(
                 initialSelection: initValue,
-                onSelected: (value) => ref
-                    .read(startupNotifierProvider.notifier)
-                    .toggle(value: value!),
+                onSelected: (value) =>
+                    ref.read(startupProvider.notifier).toggle(value: value!),
                 dropdownMenuEntries: StartupState.values
                     .map(
                       (e) => DropdownMenuEntry(

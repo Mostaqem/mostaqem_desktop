@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_dynamic_calls, public_member_api_docs, prefer_const_constructors
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/broadcast/data/broadcast_data.dart';
@@ -22,7 +21,7 @@ class BroadcastRepository {
   );
 
   Future<List<Broadcast>> fetchBroadcasts() async {
-    final query = ref.watch(searchNotifierProvider('broadcast'));
+    final query = ref.watch(searchProvider('broadcast'));
     final response = await ref
         .watch(dioHelperProvider)
         .getHTTP('/radios', baseAPI: baseAPI);

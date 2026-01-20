@@ -36,8 +36,8 @@ class _BroadcastControlsState extends ConsumerState<BroadcastControls>
 
   @override
   Widget build(BuildContext context) {
-    final player = ref.watch(playerNotifierProvider);
-    final isSquiggly = ref.watch(squigglyNotifierProvider);
+    final player = ref.watch(playerProvider);
+    final isSquiggly = ref.watch(squigglyProvider);
 
     if (player.isPlaying) {
       controller.reverse();
@@ -54,7 +54,7 @@ class _BroadcastControlsState extends ConsumerState<BroadcastControls>
             color: Theme.of(context).colorScheme.onPrimary,
 
             onPressed: () async {
-              await ref.read(playerNotifierProvider.notifier).handlePlayPause();
+              await ref.read(playerProvider.notifier).handlePlayPause();
             },
             style: ButtonStyle(
               backgroundColor: WidgetStatePropertyAll(
@@ -75,12 +75,7 @@ class _BroadcastControlsState extends ConsumerState<BroadcastControls>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              ref
-                  .watch(playerNotifierProvider.notifier)
-                  .playerTime()
-                  .currentTime,
-            ),
+            Text(ref.watch(playerProvider.notifier).playerTime().currentTime),
             ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.sizeOf(context).width / 2.5,
@@ -120,16 +115,15 @@ class _BroadcastControlsState extends ConsumerState<BroadcastControls>
                                 elevation: 0,
                               ),
                             ),
-                            child:
-                                isSquiggly
-                                    ? SquigglyPlayerSlider(
-                                      position: position,
-                                      duration: duration,
-                                    )
-                                    : NormalPlayerSlider(
-                                      position: position,
-                                      duration: duration,
-                                    ),
+                            child: isSquiggly
+                                ? SquigglyPlayerSlider(
+                                    position: position,
+                                    duration: duration,
+                                  )
+                                : NormalPlayerSlider(
+                                    position: position,
+                                    duration: duration,
+                                  ),
                           );
                         },
                       ),
@@ -138,12 +132,7 @@ class _BroadcastControlsState extends ConsumerState<BroadcastControls>
                 },
               ),
             ),
-            Text(
-              ref
-                  .watch(playerNotifierProvider.notifier)
-                  .playerTime()
-                  .durationTime,
-            ),
+            Text(ref.watch(playerProvider.notifier).playerTime().durationTime),
           ],
         ),
       ],

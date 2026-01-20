@@ -1,19 +1,18 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:mostaqem/src/core/dio/dio_helper.dart';
+import 'package:mostaqem/src/core/theme/theme.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/providers/lyrics_notifier.dart';
+import 'package:mostaqem/src/screens/fullscreen/widgets/scrollable_lyrics_view.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
-import 'package:mostaqem/src/screens/navigation/repository/lyrics_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/broadcast/broadcast_fullscreen.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
+import 'package:soft_edge_blur/soft_edge_blur.dart';
 
 class FullScreenWidget extends ConsumerStatefulWidget {
   const FullScreenWidget({required this.player, super.key});
@@ -42,184 +41,210 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
   Widget build(BuildContext context) {
     final connection = ref.watch(getConnectionProvider).value;
     final randomImage = ref.watch(fetchRandomImageProvider);
-    final isLyricsVisible = ref.watch(lyricsNotifierProvider);
-    final lyrics = ref.watch(currentLyricsNotifierProvider);
+    final isLyricsVisible = ref.watch(lyricsProvider);
     final theme = Theme.of(context);
     final isbroadcast = ref.watch(isBroadcastProvider);
-    final locale = ref.watch(localeNotifierProvider).languageCode;
+    final locale = ref.watch(localeProvider).languageCode;
+    final showControls = ref.watch(showControlsProvider);
+
     return isbroadcast
         ? const BroadcastFullscreenWidget()
-        : Stack(
-            children: [
-              if (connection == InternetConnectionStatus.connected &&
-                  isProduction)
-                AsyncWidget(
-                  value: randomImage,
-                  data: (data) {
-                    return SizedBox.expand(
-                      child: Image.network(
-                        data,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child; 
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value:
-                                    loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                    : null,
+        : MouseRegion(
+            onHover: (_) {
+              ref.read(showControlsProvider.notifier).show();
+            },
+            child: Stack(
+              children: [
+                if (connection == InternetConnectionStatus.connected)
+                  SoftEdgeBlur(
+                    edges: showControls
+                        ? [
+                            EdgeBlur(
+                              type: EdgeType.bottomEdge,
+                              size: 200,
+                              sigma: 55,
+                              tintColor: theme.colorScheme.surface.withValues(
+                                alpha: 0.5,
                               ),
-                            );
-                          }
-                        },
-                      ),
-                    );
-                  },
-                )
-              else
-                SizedBox.expand(
-                  child: Image.asset('assets/img/kaaba.jpg', fit: BoxFit.cover),
-                ),
-              Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.transparent,
-                      Colors.transparent,
-                      Colors.transparent,
-                      Colors.black,
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0, 0.5, 0.3, 1],
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: isLyricsVisible,
-                child: Center(
-                  child: Container(
-                    height: MediaQuery.sizeOf(context).height,
-                    width: MediaQuery.sizeOf(context).width,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.8),
-                    ),
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(
-                        context,
-                      ).copyWith(scrollbars: false),
-                      child: AsyncWidget(
-                        value: lyrics,
-                        data: (data) {
-                          if (data == null) {
-                            return Text(
-                              context.tr.sorry_no_lyrics,
-                              style: const TextStyle(color: Colors.white),
-                            );
-                          }
-                          return Text(
+                              controlPoints: [
+                                ControlPoint(
+                                  position: 0.5,
+                                  type: ControlPointType.visible,
+                                ),
+                                ControlPoint(
+                                  position: 1,
+                                  type: ControlPointType.transparent,
+                                ),
+                              ],
+                            ),
+                          ]
+                        : [],
+                    child: AsyncWidget(
+                      value: randomImage,
+                      data: (data) {
+                        return SizedBox.expand(
+                          child: Image.network(
                             data,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.amiri(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 24,
-                              color: theme.colorScheme.primary,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value:
+                                        loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                              loadingProgress
+                                                  .expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                else
+                  SoftEdgeBlur(
+                    edges: showControls
+                        ? [
+                            EdgeBlur(
+                              type: EdgeType.bottomEdge,
+                              size: 200,
+                              sigma: 30,
+                              tintColor: theme.colorScheme.surface.withValues(
+                                alpha: 0.6,
+                              ),
+                              controlPoints: [
+                                ControlPoint(
+                                  position: 0.5,
+                                  type: ControlPointType.visible,
+                                ),
+                                ControlPoint(
+                                  position: 1,
+                                  type: ControlPointType.transparent,
+                                ),
+                              ],
                             ),
-                          );
-                        },
+                          ]
+                        : [],
+                    child: SizedBox.expand(
+                      child: Image.asset(
+                        'assets/img/kaaba.jpg',
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 220,
-                  right: 50,
-                  left: 50,
-                ),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        width: MediaQuery.sizeOf(context).width / 10,
-                        height: MediaQuery.sizeOf(context).width / 10,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(
-                              widget.player.surah.image ??
-                                  'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
-                            ),
+                Visibility(
+                  visible: isLyricsVisible,
+                  child: SoftEdgeBlur(
+                    edges: [
+                      EdgeBlur(
+                        type: EdgeType.bottomEdge,
+                        size: 200,
+                        sigma: 55,
+
+                        controlPoints: [
+                          ControlPoint(
+                            position: 0.5,
+                            type: ControlPointType.visible,
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            locale == 'ar'
-                                ? widget.player.surah.arabicName
-                                : widget.player.surah.simpleName,
-                            style: const TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            locale == 'ar'
-                                ? widget.player.reciter.arabicName
-                                : widget.player.reciter.englishName,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white.withValues(alpha: 0.5),
-                            ),
-                          ),
-                          Visibility(
-                            visible: ref.watch(isLocalProvider),
-                            child: Text(
-                              context.tr.offline_playback,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: theme.colorScheme.tertiary,
-                              ),
-                            ),
+                          ControlPoint(
+                            position: 1,
+                            type: ControlPointType.transparent,
                           ),
                         ],
                       ),
                     ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: locale == 'ar'
-                      ? Alignment.centerLeft
-                      : Alignment.centerRight,
-                  child: CircleAvatar(
-                    backgroundColor: theme.colorScheme.surface,
-                    child: ToolTipIconButton(
-                      message: context.tr.change_image,
-                      onPressed: () {
-                        ref.invalidate(fetchRandomImageProvider);
-                      },
-                      icon: const Icon(Icons.arrow_forward_outlined),
+                    child: Center(
+                      child: Container(
+                        height: MediaQuery.sizeOf(context).height,
+                        width: MediaQuery.sizeOf(context).width,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                        child: const ScrollableLyricsView(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 120,
+                    right: 35,
+                    left: 35,
+                  ),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Column(
+                      mainAxisAlignment: .end,
+                      children: [
+                        Text(
+                          locale == 'ar'
+                              ? widget.player.surah.arabicName
+                              : widget.player.surah.simpleName,
+                          style: const TextStyle(
+                            fontSize: 120,
+                            fontFamily: AppTheme.thirdFontFamily,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          locale == 'ar'
+                              ? widget.player.reciter.arabicName
+                              : widget.player.reciter.englishName,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white.withValues(alpha: 0.5),
+                          ),
+                        ),
+                        Visibility(
+                          visible: ref.watch(isLocalProvider),
+                          child: Text(
+                            context.tr.offline_playback,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.tertiary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                AnimatedOpacity(
+                  opacity: showControls ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 300),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Align(
+                      alignment: locale == 'ar'
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                      child: CircleAvatar(
+                        backgroundColor: theme.colorScheme.surface,
+                        child: ToolTipIconButton(
+                          message: context.tr.change_image,
+                          onPressed: () {
+                            ref.invalidate(fetchRandomImageProvider);
+                          },
+                          icon: const Icon(Icons.arrow_forward_outlined),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
   }
 }

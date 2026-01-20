@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_dynamic_calls, inference_failure_on_untyped_parameter
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -113,7 +112,7 @@ Future<Surah?> fetchNextSurah(Ref ref) async {
 }
 
 /// Fetches random image from Unsplash API
-@riverpod
+@Riverpod(keepAlive: true)
 Future<String> fetchRandomImage(Ref ref) async {
   final request = await ref.watch(dioHelperProvider).getHTTP('/image/random');
   return request.data['data'];
@@ -152,6 +151,18 @@ Future<Color?> getImageColor(Ref ref) async {
   final imageUrl = await ref.watch(fetchRandomImageProvider.future);
   final scheme = await ColorScheme.fromImageProvider(
     provider: NetworkImage(imageUrl),
+    brightness: Brightness.dark,
   );
   return scheme.primary;
+}
+
+@riverpod
+class ShowControls extends _$ShowControls {
+  @override
+  bool build() {
+    return true;
+  }
+
+  void show() => state = true;
+  void hide() => state = false;
 }

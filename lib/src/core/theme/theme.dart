@@ -6,6 +6,10 @@ class AppTheme {
 
   static final String? fontFamily = GoogleFonts.kufam().fontFamily;
 
+  static final String? secondFontFamily = GoogleFonts.alexandria().fontFamily;
+
+  static const String thirdFontFamily = 'Daken';
+
   static ThemeData lightTheme = ThemeData(
     snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
     colorScheme: ColorScheme.fromSeed(seedColor: _primaryColor),

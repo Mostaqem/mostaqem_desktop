@@ -13,7 +13,6 @@ import 'package:mostaqem/src/screens/navigation/widgets/player/playing_surah.dar
 import 'package:mostaqem/src/screens/navigation/widgets/player/volume_control.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
-import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vector_graphics/vector_graphics_compat.dart';
 
@@ -44,9 +43,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    final album = ref.watch(
-      playerNotifierProvider.select((value) => value.album),
-    );
+    final album = ref.watch(playerProvider.select((value) => value.album));
     final isBroadcast = ref.watch(isBroadcastProvider);
 
     return Padding(

@@ -53,8 +53,8 @@ class _PlayControlsState extends ConsumerState<PlayControls>
 
   @override
   Widget build(BuildContext context) {
-    final player = ref.watch(playerNotifierProvider);
-    final isSquiggly = ref.watch(squigglyNotifierProvider);
+    final player = ref.watch(playerProvider);
+    final isSquiggly = ref.watch(squigglyProvider);
 
     if (player.isPlaying) {
       controller.reverse();
@@ -72,7 +72,7 @@ class _PlayControlsState extends ConsumerState<PlayControls>
               ToolTipIconButton(
                 message: context.tr.shuffle,
                 onPressed: () async {
-                  await ref.read(playerNotifierProvider.notifier).shuffle();
+                  await ref.read(playerProvider.notifier).shuffle();
                 },
                 icon: Icon(
                   Icons.shuffle,
@@ -89,17 +89,12 @@ class _PlayControlsState extends ConsumerState<PlayControls>
                 preferBelow: false,
                 child: IconButton(
                   onPressed: () async {
-                    await ref
-                        .read(playerNotifierProvider.notifier)
-                        .playPrevious();
+                    await ref.read(playerProvider.notifier).playPrevious();
                   },
 
                   icon: Icon(
                     Icons.skip_previous_outlined,
-                    color:
-                        ref
-                            .watch(playerNotifierProvider.notifier)
-                            .isFirstChapter()
+                    color: ref.watch(playerProvider.notifier).isFirstChapter()
                         ? Theme.of(context).colorScheme.onSecondaryContainer
                               .withValues(alpha: 0.5)
                         : Theme.of(context).colorScheme.onSecondaryContainer,
@@ -114,9 +109,7 @@ class _PlayControlsState extends ConsumerState<PlayControls>
                   color: Theme.of(context).colorScheme.onPrimary,
 
                   onPressed: () async {
-                    await ref
-                        .read(playerNotifierProvider.notifier)
-                        .handlePlayPause();
+                    await ref.read(playerProvider.notifier).handlePlayPause();
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(
@@ -140,12 +133,11 @@ class _PlayControlsState extends ConsumerState<PlayControls>
                 message: context.tr.next,
 
                 onPressed: () async {
-                  await ref.read(playerNotifierProvider.notifier).playNext();
+                  await ref.read(playerProvider.notifier).playNext();
                 },
                 icon: Icon(
                   Icons.skip_next_outlined,
-                  color:
-                      ref.watch(playerNotifierProvider.notifier).isLastchapter()
+                  color: ref.watch(playerProvider.notifier).isLastchapter()
                       ? Theme.of(context).colorScheme.onSecondaryContainer
                             .withValues(alpha: 0.5)
                       : Theme.of(context).colorScheme.onSecondaryContainer,
@@ -155,7 +147,7 @@ class _PlayControlsState extends ConsumerState<PlayControls>
               ToolTipIconButton(
                 message: context.tr.repeat,
                 onPressed: () async {
-                  ref.read(playerNotifierProvider.notifier).loop();
+                  ref.read(playerProvider.notifier).loop();
                 },
                 icon: loopIcon(
                   player.loop,
@@ -172,12 +164,7 @@ class _PlayControlsState extends ConsumerState<PlayControls>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              ref
-                  .watch(playerNotifierProvider.notifier)
-                  .playerTime()
-                  .currentTime,
-            ),
+            Text(ref.watch(playerProvider.notifier).playerTime().currentTime),
             ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.sizeOf(context).width / 2.5,
@@ -234,12 +221,7 @@ class _PlayControlsState extends ConsumerState<PlayControls>
                 },
               ),
             ),
-            Text(
-              ref
-                  .watch(playerNotifierProvider.notifier)
-                  .playerTime()
-                  .durationTime,
-            ),
+            Text(ref.watch(playerProvider.notifier).playerTime().durationTime),
           ],
         ),
       ],
@@ -263,20 +245,20 @@ class NormalPlayerSlider extends ConsumerWidget {
       value: max(0, min(position, duration)),
       max: duration,
       onChangeStart: (_) async {
-        final isPlaying = ref.read(playerNotifierProvider).isPlaying;
+        final isPlaying = ref.read(playerProvider).isPlaying;
         if (isPlaying) {
-          await ref.read(playerNotifierProvider.notifier).player.pause();
+          await ref.read(playerProvider.notifier).player.pause();
         }
       },
       onChangeEnd: (value) async {
         await ref
-            .read(playerNotifierProvider.notifier)
+            .read(playerProvider.notifier)
             .handleSeek(Duration(seconds: value.toInt()));
-        await ref.read(playerNotifierProvider.notifier).player.play();
+        await ref.read(playerProvider.notifier).player.play();
       },
       onChanged: (value) {
         ref
-            .read(playerNotifierProvider.notifier)
+            .read(playerProvider.notifier)
             .changePosition(Duration(seconds: value.toInt()));
       },
     );
@@ -304,20 +286,20 @@ class SquigglyPlayerSlider extends ConsumerWidget {
       value: max(0, min(position, duration)),
       max: duration,
       onChangeStart: (_) async {
-        final isPlaying = ref.read(playerNotifierProvider).isPlaying;
+        final isPlaying = ref.read(playerProvider).isPlaying;
         if (isPlaying) {
-          await ref.read(playerNotifierProvider.notifier).player.pause();
+          await ref.read(playerProvider.notifier).player.pause();
         }
       },
       onChangeEnd: (value) async {
         await ref
-            .read(playerNotifierProvider.notifier)
+            .read(playerProvider.notifier)
             .handleSeek(Duration(seconds: value.toInt()));
-        await ref.read(playerNotifierProvider.notifier).player.play();
+        await ref.read(playerProvider.notifier).player.play();
       },
       onChanged: (value) {
         ref
-            .read(playerNotifierProvider.notifier)
+            .read(playerProvider.notifier)
             .changePosition(Duration(seconds: value.toInt()));
       },
     );

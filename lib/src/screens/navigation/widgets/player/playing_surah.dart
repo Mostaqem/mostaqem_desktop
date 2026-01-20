@@ -5,7 +5,7 @@ import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/player_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/player/recitation_widget.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
-import 'package:mostaqem/src/shared/widgets/text_hover.dart';
+import 'package:mostaqem/src/shared/widgets/scrolling_text.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 class PlayingSurah extends StatelessWidget {
@@ -22,7 +22,7 @@ class PlayingSurah extends StatelessWidget {
   Widget build(BuildContext context) {
     final surah = ref.watch(currentSurahProvider);
     final reciter = ref.watch(currentReciterProvider);
-    final locale = ref.watch(localeNotifierProvider).languageCode;
+    final locale = ref.watch(localeProvider).languageCode;
     return Visibility(
       visible: !isFullScreen,
       child: Row(
@@ -48,10 +48,7 @@ class PlayingSurah extends StatelessWidget {
                   ),
                 ),
               ),
-              TextHover(
-                text: locale == 'ar'
-                    ? reciter?.arabicName ?? ''
-                    : reciter?.englishName ?? '',
+              GestureDetector(
                 onTap: () {
                   final isLocalAudio = ref.read(isLocalProvider);
 
@@ -70,6 +67,21 @@ class PlayingSurah extends StatelessWidget {
 
                   return;
                 },
+                child: MouseRegion(
+                  cursor: !ref.watch(isLocalProvider)
+                      ? SystemMouseCursors.click
+                      : SystemMouseCursors.basic,
+                  child: ScrollingText(
+                    text: locale == 'ar'
+                        ? reciter?.arabicName ?? ''
+                        : reciter?.englishName ?? '',
+                    style: TextStyle(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSecondaryContainer.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 // ignore_for_file: use_setters_to_change_properties
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'search_notifier.g.dart';
 
@@ -20,12 +21,10 @@ class SearchNotifier extends _$SearchNotifier {
 }
 
 final isTypingProvider = Provider.autoDispose((ref) {
-  final surahSearch =
-      ref.watch(searchNotifierProvider('home'))?.isEmpty ?? false;
-  final reciterSearch =
-      ref.watch(searchNotifierProvider('reciter'))?.isEmpty ?? false;
+  final surahSearch = ref.watch(searchProvider('home'))?.isEmpty ?? false;
+  final reciterSearch = ref.watch(searchProvider('reciter'))?.isEmpty ?? false;
   final broadcastSearch =
-      ref.watch(searchNotifierProvider('broadcast'))?.isEmpty ?? false;
+      ref.watch(searchProvider('broadcast'))?.isEmpty ?? false;
 
   final noTyping = surahSearch || reciterSearch || broadcastSearch;
   return noTyping;

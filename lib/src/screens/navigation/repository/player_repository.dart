@@ -25,7 +25,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'player_repository.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class PlayerNotifier extends _$PlayerNotifier {
   final player = Player();
   int bufferSize = 3;

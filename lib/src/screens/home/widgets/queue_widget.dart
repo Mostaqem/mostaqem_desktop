@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/reading/reading_screen.dart';
-import 'package:mostaqem/src/shared/widgets/text_hover.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 class QueueWidget extends ConsumerWidget {
@@ -12,9 +10,9 @@ class QueueWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final queue = ref.watch(playerNotifierProvider).queue;
-    final playingSurah = ref.watch(playerNotifierProvider).queueIndex;
-    final locale = ref.watch(localeNotifierProvider);
+    final queue = ref.watch(playerProvider).queue;
+    final playingSurah = ref.watch(playerProvider).queueIndex;
+    final locale = ref.watch(localeProvider);
     return Expanded(
       child: Container(
         width: double.infinity,
@@ -46,7 +44,7 @@ class QueueWidget extends ConsumerWidget {
                   ),
                   onReorder: (oldIndex, newIndex) async {
                     await ref
-                        .read(playerNotifierProvider.notifier)
+                        .read(playerProvider.notifier)
                         .moveItem(oldIndex, newIndex);
                   },
 
@@ -57,9 +55,7 @@ class QueueWidget extends ConsumerWidget {
                       key: ValueKey('$index-${queue[index].hashCode}'),
 
                       onTap: () {
-                        ref
-                            .read(playerNotifierProvider.notifier)
-                            .playItem(index);
+                        ref.read(playerProvider.notifier).playItem(index);
                       },
                       leading: Row(
                         spacing: 10,
@@ -96,22 +92,20 @@ class QueueWidget extends ConsumerWidget {
                       contentPadding: EdgeInsets.zero,
                       selected: isSurahPlaying,
                       title: Text(
-                        locale == 'ar'
+                        locale.languageCode == 'ar'
                             ? queue[index].surah.arabicName
                             : queue[index].surah.simpleName,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
-                        locale == 'ar'
+                        locale.languageCode == 'ar'
                             ? queue[index].reciter.arabicName
                             : queue[index].reciter.englishName,
                       ),
                       trailing: ToolTipIconButton(
                         message: context.tr.remove_from_queue,
                         onPressed: () {
-                          ref
-                              .read(playerNotifierProvider.notifier)
-                              .removeItem(index);
+                          ref.read(playerProvider.notifier).removeItem(index);
                         },
                         icon: Icon(
                           Icons.delete,

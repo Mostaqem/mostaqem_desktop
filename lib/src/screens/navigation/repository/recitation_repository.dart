@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/navigation/data/recitation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

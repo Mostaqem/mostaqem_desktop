@@ -643,6 +643,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use system color'**
   String get use_system_color;
+
+  /// No description provided for @who_want_to_hear.
+  ///
+  /// In en, this message translates to:
+  /// **'Who do you want to hear?'**
+  String get who_want_to_hear;
 }
 
 class _AppLocalizationsDelegate

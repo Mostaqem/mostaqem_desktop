@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,11 +19,9 @@ class QueueScreen extends ConsumerWidget {
             padding: const EdgeInsets.only(bottom: 100, top: 100),
             child: Consumer(
               builder: (context, ref, child) {
-                final queue = ref.watch(playerNotifierProvider).queue;
-                final playingSurah = ref
-                    .watch(playerNotifierProvider)
-                    .queueIndex;
-                final locale = ref.watch(localeNotifierProvider).languageCode;
+                final queue = ref.watch(playerProvider).queue;
+                final playingSurah = ref.watch(playerProvider).queueIndex;
+                final locale = ref.watch(localeProvider).languageCode;
                 return ReorderableListView.builder(
                   itemCount: queue.length,
                   buildDefaultDragHandles: false,
@@ -47,7 +44,7 @@ class QueueScreen extends ConsumerWidget {
                   ),
                   onReorder: (oldIndex, newIndex) async {
                     await ref
-                        .read(playerNotifierProvider.notifier)
+                        .read(playerProvider.notifier)
                         .moveItem(oldIndex, newIndex);
                   },
                   itemBuilder: (context, index) {
@@ -56,9 +53,7 @@ class QueueScreen extends ConsumerWidget {
                       key: ValueKey('$index-${queue[index].hashCode}'),
 
                       onTap: () {
-                        ref
-                            .read(playerNotifierProvider.notifier)
-                            .playItem(index);
+                        ref.read(playerProvider.notifier).playItem(index);
                       },
 
                       tileColor: isSurahPlaying
@@ -148,9 +143,7 @@ class QueueScreen extends ConsumerWidget {
                               ],
                             ),
                             onTap: () {
-                              ref
-                                  .read(playerNotifierProvider.notifier)
-                                  .playItem(index);
+                              ref.read(playerProvider.notifier).playItem(index);
                             },
                           ),
                           PopupMenuItem<String>(
@@ -170,7 +163,7 @@ class QueueScreen extends ConsumerWidget {
                             ),
                             onTap: () {
                               ref
-                                  .read(playerNotifierProvider.notifier)
+                                  .read(playerProvider.notifier)
                                   .removeItem(index);
                             },
                           ),

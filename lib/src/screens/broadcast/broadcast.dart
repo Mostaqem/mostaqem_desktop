@@ -17,8 +17,7 @@ class BroadcastScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final broadcasts = ref.watch(fetchBroadcastsProvider);
     final currentBroadcast = ref.watch(currentBroadcastProvider);
-    final isTyping =
-        ref.watch(searchNotifierProvider('broadcast'))?.isEmpty ?? false;
+    final isTyping = ref.watch(searchProvider('broadcast'))?.isEmpty ?? false;
     final focusNode = ref.watch(textFieldFocusProvider);
 
     return NeworkRequiredWidget(
@@ -44,7 +43,7 @@ class BroadcastScreen extends ConsumerWidget {
                   controller: queryController,
                   onChanged: (value) {
                     ref
-                        .read(searchNotifierProvider('broadcast').notifier)
+                        .read(searchProvider('broadcast').notifier)
                         .setQuery(value);
                   },
                   elevation: const WidgetStatePropertyAll<double>(0),
@@ -61,11 +60,7 @@ class BroadcastScreen extends ConsumerWidget {
                               icon: const Icon(Icons.close),
                               onPressed: () {
                                 ref
-                                    .read(
-                                      searchNotifierProvider(
-                                        'broadcast',
-                                      ).notifier,
-                                    )
+                                    .read(searchProvider('broadcast').notifier)
                                     .clear();
                                 queryController.clear();
                               },
@@ -102,7 +97,7 @@ class BroadcastScreen extends ConsumerWidget {
                           trailing: const Icon(Icons.play_arrow),
                           onTap: () {
                             ref
-                                .read(playerNotifierProvider.notifier)
+                                .read(playerProvider.notifier)
                                 .playBroadcast(
                                   data[index].url,
                                   data[index].name,

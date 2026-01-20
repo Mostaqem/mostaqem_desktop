@@ -11,8 +11,7 @@
 //   SMTCRepository(this.ref);
 //   final Ref ref;
 //   SMTCWindows? smtc;
-//   static bool get isSupported => Platform.isWindows; 
-  
+//   static bool get isSupported => Platform.isWindows;
 
 //   void init({
 //     required String surah,
@@ -48,16 +47,16 @@
 //     smtc!.buttonPressStream.listen((event) {
 //       switch (event) {
 //         case PressedButton.play:
-//           ref.read(playerNotifierProvider.notifier).player.play();
+//           ref.read(playerProvider.notifier).player.play();
 //           smtc!.setPlaybackStatus(PlaybackStatus.playing);
 //         case PressedButton.pause:
-//           ref.read(playerNotifierProvider.notifier).player.pause();
+//           ref.read(playerProvider.notifier).player.pause();
 
 //           smtc!.setPlaybackStatus(PlaybackStatus.paused);
 //         case PressedButton.next:
-//           ref.read(playerNotifierProvider.notifier).playNext();
+//           ref.read(playerProvider.notifier).playNext();
 //         case PressedButton.previous:
-//           ref.read(playerNotifierProvider.notifier).playPrevious();
+//           ref.read(playerProvider.notifier).playPrevious();
 
 //         case PressedButton.stop:
 //           smtc!.setPlaybackStatus(PlaybackStatus.stopped);

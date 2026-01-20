@@ -42,7 +42,10 @@ Dialog helpShortcuts(BuildContext context) {
                 const Align(alignment: Alignment.topLeft, child: CloseButton()),
                 Text(
                   context.tr.shortcuts,
-                  style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 50),
@@ -81,17 +84,17 @@ Map<ShortcutActivator, VoidCallback> shortcutsBindings(
         bindings[shortcut.activator] = () async {
           if (ref.read(shortcutsEnabledProvider)) {
             ref.read(focusManagerProvider).primaryFocus?.unfocus();
-            await ref.read(playerNotifierProvider.notifier).handlePlayPause();
+            await ref.read(playerProvider.notifier).handlePlayPause();
           }
         };
 
       case ShortcutsEnum.mute:
         bindings[shortcut.activator] = () {
-          final volume = ref.read(playerNotifierProvider).volume;
+          final volume = ref.read(playerProvider).volume;
           if (volume > 0) {
-            ref.read(playerNotifierProvider.notifier).handleVolume(0);
+            ref.read(playerProvider.notifier).handleVolume(0);
           } else {
-            ref.read(playerNotifierProvider.notifier).handleVolume(1);
+            ref.read(playerProvider.notifier).handleVolume(1);
           }
         };
       case ShortcutsEnum.settings:
@@ -113,16 +116,14 @@ Map<ShortcutActivator, VoidCallback> shortcutsBindings(
         };
       case ShortcutsEnum.playNext:
         bindings[shortcut.activator] = ref
-            .read(playerNotifierProvider.notifier)
+            .read(playerProvider.notifier)
             .playNext;
       case ShortcutsEnum.playPrevious:
         bindings[shortcut.activator] = ref
-            .read(playerNotifierProvider.notifier)
+            .read(playerProvider.notifier)
             .playPrevious;
       case ShortcutsEnum.repeat:
-        bindings[shortcut.activator] = ref
-            .read(playerNotifierProvider.notifier)
-            .loop;
+        bindings[shortcut.activator] = ref.read(playerProvider.notifier).loop;
       case ShortcutsEnum.enterFullscreen:
         bindings[shortcut.activator] = () {
           if (!ref.read(isFullScreenProvider)) {
