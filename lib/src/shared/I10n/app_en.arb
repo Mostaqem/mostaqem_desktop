@@ -96,5 +96,6 @@
     "always": "Always",
     "share": "Share",
     "choose_custom_color": "Choose custom color",
-    "use_system_color": "Use system color"
+    "use_system_color": "Use system color",
+    "who_want_to_hear": "Who do you want to hear?"
 }

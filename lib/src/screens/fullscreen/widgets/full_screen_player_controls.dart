@@ -117,7 +117,7 @@ class FullScreenPlayControls extends ConsumerWidget {
                                     value: max(0, min(position, duration)),
                                     max: duration,
                                     activeColor:
-                                        imageColor.asData?.value ??
+                                        imageColor.value ??
                                         Theme.of(context).colorScheme.primary,
                                     onChangeStart: (_) async {
                                       final isPlaying = ref
@@ -269,11 +269,9 @@ class FullScreenPlayControls extends ConsumerWidget {
                           ref.read(goRouterProvider).pop();
                         }
                         if (lyricsState == true) {
-                          ref.read(lyricsProvider.notifier).state =
-                              false;
+                          ref.read(lyricsProvider.notifier).state = false;
                         } else {
-                          ref.read(lyricsProvider.notifier).state =
-                              true;
+                          ref.read(lyricsProvider.notifier).state = true;
                         }
                       },
                       icon: Icon(

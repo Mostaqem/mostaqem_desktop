@@ -18,6 +18,8 @@ part 'lyrics_repository.g.dart';
 Future<String?> getLyrics(Ref ref, {required String filename}) async {
   final directory = await getTemporaryDirectory();
   final cacheDir = directory.path;
+  print('cacheDir: $cacheDir');
+
   final file = File('$cacheDir/$filename.lrc');
   if (file.existsSync() && file.lengthSync() > 0) {
     debugPrint('File: $file');
@@ -31,14 +33,14 @@ Future<String?> getLyrics(Ref ref, {required String filename}) async {
       recitationID: player.recitationID,
     ).future,
   );
+  print('lyrics1: $lyrics');
 
   if (lyrics == null || lyrics.isEmpty) {
     return null;
   }
   final adjustedLyrics = lyrics.replaceAll('/', '\n');
-  await ref.read(
-    cacheLyricsProvider(filename: filename, content: adjustedLyrics).future,
-  );
+
+  print('lyrics1.5: $lyrics');
 
   return adjustedLyrics;
 }
@@ -56,50 +58,83 @@ Future<File> cacheLyrics(
   return file.writeAsString(content);
 }
 
-@riverpod
-Future<String?> syncLyrics(Ref ref) async {
+/// Provides parsed lyrics for the current album
+@Riverpod(keepAlive: true)
+Future<List<Lyrics>?> parsedLyrics(Ref ref) async {
   final currentAlbum = ref.watch(currentAlbumProvider);
+  if (currentAlbum == null) return null;
+
   final fileName =
-      'surah_${currentAlbum?.surah.id}_recitation_${currentAlbum?.recitationID}';
-  final lyrics = await ref.read(getLyricsProvider(filename: fileName).future);
-  if (lyrics == null) {
+      'surah_${currentAlbum.surah.id}_recitation_${currentAlbum.recitationID}';
+
+  final lyricsString = await ref.watch(
+    getLyricsProvider(filename: fileName).future,
+  );
+
+  if (lyricsString == null || !Lrc.isValid(lyricsString)) {
     return null;
   }
 
-  final current = <Lyrics>[];
-  final currentLyricsAveragedMap = <int, String>{};
-  if (Lrc.isValid(lyrics)) {
-    current.addAll(
-      Lrc.parse(lyrics).lyrics.map(
-        (e) => Lyrics(time: e.timestamp.inMilliseconds, words: e.lyrics),
-      ),
-    );
-    for (final lyric in current) {
-      currentLyricsAveragedMap[lyric.time] = lyric.words;
-    }
+  debugPrint('Parsed lyrics for: $fileName');
 
-    ref.listen(playerProvider.select((player) => player.position), (_, next) {
-      for (var i = 0; i < currentLyricsAveragedMap.entries.length; i++) {
-        final lyric = currentLyricsAveragedMap.entries.elementAt(i);
-        if (lyric.key <= next.inMilliseconds) {
-          ref
-              .read(currentLyricsProvider.notifier)
-              .updateLyrics(value: lyric.value);
-        }
-      }
-    });
-  }
-  return null;
+  return Lrc.parse(lyricsString).lyrics
+      .map((e) => Lyrics(time: e.timestamp.inMilliseconds, words: e.lyrics))
+      .toList();
 }
 
-@riverpod
-class CurrentLyricsNotifier extends _$CurrentLyricsNotifier {
-  @override
-  Future<String?> build() async {
-    return ref.watch(syncLyricsProvider.future);
+/// Finds the current lyric based on playback position using binary search
+int _findCurrentLyricIndex(List<Lyrics> lyrics, int positionMs) {
+  if (lyrics.isEmpty) return -1;
+
+  // Binary search for efficiency O(log n)
+  var left = 0;
+  var right = lyrics.length - 1;
+  var result = -1;
+
+  while (left <= right) {
+    final mid = left + (right - left) ~/ 2;
+
+    if (lyrics[mid].time <= positionMs) {
+      result = mid;
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
   }
 
-  void updateLyrics({required String value}) {
-    state = AsyncData(value);
+  return result;
+}
+
+/// Provides the current lyric text based on playback position
+@riverpod
+class CurrentLyric extends _$CurrentLyric {
+  @override
+  String? build() {
+    final lyrics = ref.watch(parsedLyricsProvider).value;
+    if (lyrics == null || lyrics.isEmpty) return null;
+
+    final position = ref.watch(playerProvider.select((p) => p.position));
+    final positionMs = position.inMilliseconds;
+
+    final currentIndex = _findCurrentLyricIndex(lyrics, positionMs);
+
+    if (currentIndex == -1) return null;
+
+    return lyrics[currentIndex].words;
+  }
+}
+
+/// Provides the index of the current lyric line
+@Riverpod(keepAlive: true)
+class CurrentLyricIndex extends _$CurrentLyricIndex {
+  @override
+  int build() {
+    final lyrics = ref.watch(parsedLyricsProvider).value;
+    if (lyrics == null || lyrics.isEmpty) return -1;
+
+    final position = ref.watch(playerProvider.select((p) => p.position));
+    final positionMs = position.inMilliseconds;
+
+    return _findCurrentLyricIndex(lyrics, positionMs);
   }
 }

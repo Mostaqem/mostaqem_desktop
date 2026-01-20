@@ -92,13 +92,13 @@ class QueueWidget extends ConsumerWidget {
                       contentPadding: EdgeInsets.zero,
                       selected: isSurahPlaying,
                       title: Text(
-                        locale == 'ar'
+                        locale.languageCode == 'ar'
                             ? queue[index].surah.arabicName
                             : queue[index].surah.simpleName,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
-                        locale == 'ar'
+                        locale.languageCode == 'ar'
                             ? queue[index].reciter.arabicName
                             : queue[index].reciter.englishName,
                       ),

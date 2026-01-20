@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_use_of_protected_member,
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class DownloadsScreen extends ConsumerWidget {
               return AsyncWidget(
                 value: localAudio,
                 error: (e, s) {
+                  log('Offline Error', error: e, stackTrace: s);
                   if (e is PathNotFoundException) {
                     return Center(
                       child: Column(

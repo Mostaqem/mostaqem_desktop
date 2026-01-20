@@ -28,7 +28,7 @@ class DioHelper {
 
   Future<Response<dynamic>> postHTTP(
     String url,
-    dynamic data,
+    Map<String,dynamic> data,
     String? baseAPI,
   ) async {
     final uri = baseAPI ?? APIs.baseAPIURL;

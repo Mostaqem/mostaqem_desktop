@@ -112,7 +112,7 @@ Future<Surah?> fetchNextSurah(Ref ref) async {
 }
 
 /// Fetches random image from Unsplash API
-@riverpod
+@Riverpod(keepAlive: true)
 Future<String> fetchRandomImage(Ref ref) async {
   final request = await ref.watch(dioHelperProvider).getHTTP('/image/random');
   return request.data['data'];
@@ -151,6 +151,18 @@ Future<Color?> getImageColor(Ref ref) async {
   final imageUrl = await ref.watch(fetchRandomImageProvider.future);
   final scheme = await ColorScheme.fromImageProvider(
     provider: NetworkImage(imageUrl),
+    brightness: Brightness.dark,
   );
   return scheme.primary;
+}
+
+@riverpod
+class ShowControls extends _$ShowControls {
+  @override
+  bool build() {
+    return true;
+  }
+
+  void show() => state = true;
+  void hide() => state = false;
 }

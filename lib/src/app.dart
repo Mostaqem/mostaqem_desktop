@@ -28,6 +28,7 @@ class MyApp extends ConsumerWidget {
       builder: (dynamicLight, dynamicDark) {
         return MaterialApp.router(
           routerConfig: router,
+          debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,

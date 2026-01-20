@@ -35,7 +35,6 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
 
   @override
   void onWindowClose() {
-    
     ref.read(clearRPCDiscordProvider);
     super.onWindowClose();
   }
@@ -56,7 +55,7 @@ class _PlayerWidgetState extends ConsumerState<PlayerWidget>
             ),
             color: isFullScreen
                 ? Colors.transparent
-                : Theme.of(context).colorScheme.secondaryContainer,
+                : Theme.of(context).colorScheme.surface,
           ),
           child: isFullScreen
               ? isBroadcast
