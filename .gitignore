@@ -12,7 +12,6 @@
 dist/
 migrate_working_dir/
 .env
-assets/fonts/Daken.ttf
 
 # IntelliJ related
 *.iml
