@@ -29,6 +29,7 @@ part 'player_repository.g.dart';
 class PlayerNotifier extends _$PlayerNotifier {
   final player = Player();
   int bufferSize = 3;
+  bool _hasRestoredPosition = false;
 
   @override
   AudioState build() {
@@ -118,11 +119,14 @@ class PlayerNotifier extends _$PlayerNotifier {
 
     player.stream.duration.listen((duration) async {
       state = state.copyWith(duration: duration);
-      final cachedAlbum = ref.read(playerCacheProvider());
-      if (cachedAlbum != null) {
-        final positionAlbum = Duration(milliseconds: cachedAlbum.position);
-        debugPrint(positionAlbum.toString());
-        await player.seek(positionAlbum);
+      if (!_hasRestoredPosition) {
+        final cachedAlbum = ref.read(playerCacheProvider());
+        if (cachedAlbum != null) {
+          final positionAlbum = Duration(milliseconds: cachedAlbum.position);
+          debugPrint(positionAlbum.toString());
+          await player.seek(positionAlbum);
+        }
+        _hasRestoredPosition = true;
       }
     });
 
@@ -137,8 +141,8 @@ class PlayerNotifier extends _$PlayerNotifier {
           ref.read(
             updateRPCDiscordProvider(
               url: state.album!.url,
-              surahName: state.album!.surah.simpleName,
-              reciter: state.album!.reciter.englishName,
+              surahName: state.album!.surah.name,
+              reciter: state.album!.reciter.name,
             ),
           );
         } else {

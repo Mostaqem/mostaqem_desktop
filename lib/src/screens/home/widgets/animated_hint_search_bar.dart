@@ -112,10 +112,10 @@ class _AnimatedHintSearchBarState extends ConsumerState<AnimatedHintSearchBar> {
                         .read(playerProvider.notifier)
                         .play(surahID: item.itemId);
                   } else {
-                    final reciter = await ref.read(
-                      fetchReciterProvider(id: item.itemId).future,
-                    );
-                    ref.read(userReciterProvider.notifier).setReciter(reciter);
+                    // final reciter = await ref.read(
+                    //   fetchReciterProvider(id: item.itemId).future,
+                    // );
+                    // ref.read(userReciterProvider.notifier).setReciter(reciter);
                     final surah = ref.read(currentSurahProvider);
                     if (surah != null) {
                       await ref

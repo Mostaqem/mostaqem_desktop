@@ -46,7 +46,7 @@ class ReadingScreen extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        'سورة ${surah.arabicName}',
+                        'سورة ${surah.name}',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.amiri(fontSize: 40),
                       ),
@@ -123,7 +123,7 @@ class _VerseSpanState extends State<VerseSpan> {
                             'Share',
                             extra: selectedText.replaceAll('￼', ''),
                             pathParameters: {
-                              'surahName': widget.surah.arabicName,
+                              'surahName': widget.surah.name,
                             },
                           );
                     }
@@ -152,7 +152,7 @@ class _VerseSpanState extends State<VerseSpan> {
                             'Share',
                             extra: e.verse.replaceAll('￼', ''),
                             pathParameters: {
-                              'surahName': widget.surah.arabicName,
+                              'surahName': widget.surah.name,
                             },
                           );
                         },

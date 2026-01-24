@@ -73,8 +73,8 @@ class DownloadsScreen extends ConsumerWidget {
                     separatorBuilder: (context, _) => const Divider(),
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(data[index].surah.arabicName),
-                        subtitle: Text(data[index].reciter.arabicName),
+                        title: Text(data[index].surah.name),
+                        subtitle: Text(data[index].reciter.name),
                         onTap: () {
                           ref
                               .read(playerProvider.notifier)

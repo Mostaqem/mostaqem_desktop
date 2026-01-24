@@ -71,7 +71,7 @@ class SurahWidget extends ConsumerWidget {
           final page = index ~/ pageSize + 1;
           final indexInPage = index % pageSize;
 
-          final surahs = ref.watch(fetchAllChaptersProvider(page: page));
+          final surahs = ref.watch(fetchAllChaptersProvider);
 
           return surahs.when(
             data: (data) {
@@ -161,7 +161,7 @@ class SurahWidget extends ConsumerWidget {
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
-                                            data[indexInPage].arabicName,
+                                            data[indexInPage].name,
                                             style: TextStyle(
                                               color: getCardForeground(
                                                 isHovered: isHovered,
@@ -185,7 +185,7 @@ class SurahWidget extends ConsumerWidget {
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text(
-                                            data[indexInPage].simpleName,
+                                            data[indexInPage].name,
                                             style: TextStyle(
                                               color: getCardForeground(
                                                 isHovered: isHovered,

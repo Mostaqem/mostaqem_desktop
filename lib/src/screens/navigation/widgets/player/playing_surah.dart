@@ -36,9 +36,7 @@ class PlayingSurah extends StatelessWidget {
               SizedBox(
                 width: 100,
                 child: Text(
-                  locale == 'ar'
-                      ? surah?.arabicName ?? ''
-                      : surah?.simpleName ?? '',
+                  surah?.name ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -72,9 +70,7 @@ class PlayingSurah extends StatelessWidget {
                       ? SystemMouseCursors.click
                       : SystemMouseCursors.basic,
                   child: ScrollingText(
-                    text: locale == 'ar'
-                        ? reciter?.arabicName ?? ''
-                        : reciter?.englishName ?? '',
+                    text: reciter?.name ?? '',
                     style: TextStyle(
                       color: Theme.of(
                         context,

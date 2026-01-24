@@ -4,6 +4,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
@@ -27,18 +28,23 @@ class RecitersImpl implements RecitersRepository {
   Future<Reciter> fetchReciter({required int id}) async {
     final request = await ref
         .watch(dioHelperProvider)
-        .getHTTP('/reciter/$id', options: options);
-    return Reciter.fromJson(request.data['data'] as Map<String, dynamic>);
+        .getHTTP(
+          '/reciters?reciter=$id',
+          options: options,
+          baseAPI: APIs.mp3QuranAPI,
+        );
+    final reciters = request.data['reciters'];
+    return Reciter.fromJson(reciters[0] as Map<String, Object?>);
   }
 
   @override
   Future<List<Reciter>> fetchReciters({required int page}) async {
-    final url = '/reciter?page=$page&take=20';
+    const url = '/reciters';
 
     final request = await ref
         .watch(dioHelperProvider)
-        .getHTTP(url, options: options);
-    return request.data['data']['reciters']
+        .getHTTP(url, options: options, baseAPI: APIs.mp3QuranAPI);
+    return request.data['reciters']
         .map<Reciter>((e) => Reciter.fromJson(e as Map<String, Object?>))
         .toList();
   }
@@ -46,20 +52,17 @@ class RecitersImpl implements RecitersRepository {
   @override
   Future<List<Reciter>> searchReciter({String? query}) async {
     if (query == null || query.isEmpty) return [];
-    final url = '/reciter/search?name=$query';
-
-    final request = await ref
-        .watch(dioHelperProvider)
-        .getHTTP(url, options: options);
-    return request.data['data']['reciters']
-        .map<Reciter>((e) => Reciter.fromJson(e as Map<String, Object?>))
+    final reciters = await fetchReciters(page: 1);
+    final lowerQuery = query.toLowerCase();
+    return reciters
+        .where((reciter) => reciter.name.toLowerCase().contains(lowerQuery))
         .toList();
   }
 }
 
 final reciterRepositoryProvider = Provider<RecitersImpl>(RecitersImpl.new);
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<Reciter> fetchReciter(Ref ref, {required int id}) {
   return ref.watch(reciterRepositoryProvider).fetchReciter(id: id);
 }
@@ -69,7 +72,7 @@ Future<List<Reciter>> fetchReciters(Ref ref, {required int page}) {
   return ref.watch(reciterRepositoryProvider).fetchReciters(page: page);
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Reciter>> searchReciter(Ref ref, {String? query}) {
   return ref.watch(reciterRepositoryProvider).searchReciter(query: query);
 }

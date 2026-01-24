@@ -85,11 +85,10 @@ class OccasionsRepository {
   }
 
   Future<List<Surah>> getSpecialSurahs() async {
-    final surahs = await ref.watch(
-      fetchAllChaptersProvider(page: 1, take: 20).future,
-    );
-    surahs.shuffle();
-    return surahs;
+    final surahs = await ref.watch(fetchAllChaptersProvider.future);
+    final surahsSpecial = surahs.getRange(0, 20).toList();
+    surahsSpecial.shuffle();
+    return surahsSpecial;
   }
 }
 

@@ -11,7 +11,7 @@ part 'broadcast_repository.g.dart';
 class BroadcastRepository {
   BroadcastRepository(this.ref);
   final Ref ref;
-  final baseAPI = APIs.radioAPIURL;
+  final baseAPI = APIs.mp3QuranAPI;
 
   final cairoBroadcast = Broadcast(
     id: 0,
@@ -26,12 +26,13 @@ class BroadcastRepository {
         .watch(dioHelperProvider)
         .getHTTP('/radios', baseAPI: baseAPI);
     final radios = response.data['radios'] as List;
-    final broadcasts = radios
+    final broadcasts =
+        radios
             .map<Broadcast>(
               (e) => Broadcast.fromJson(e as Map<String, Object?>),
             )
             .toList()
-          ..insert(0,cairoBroadcast);
+          ..insert(0, cairoBroadcast);
 
     if (query != null) {
       return broadcasts.where((e) => e.name.contains(query)).toList();

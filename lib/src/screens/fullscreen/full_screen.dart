@@ -186,9 +186,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                       mainAxisAlignment: .end,
                       children: [
                         Text(
-                          locale == 'ar'
-                              ? widget.player.surah.arabicName
-                              : widget.player.surah.simpleName,
+                          widget.player.surah.name,
                           style: const TextStyle(
                             fontSize: 120,
                             fontFamily: AppTheme.thirdFontFamily,
@@ -198,9 +196,7 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          locale == 'ar'
-                              ? widget.player.reciter.arabicName
-                              : widget.player.reciter.englishName,
+                          widget.player.reciter.name,
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.white.withValues(alpha: 0.5),

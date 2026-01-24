@@ -51,8 +51,7 @@ class DownloadManagerWidget extends ConsumerWidget {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(
-                      surah?.image! ??
-                          'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
+                      'https://img.freepik.com/premium-photo/illustration-mosque-with-crescent-moon-stars-simple-shapes-minimalist-flat-design_217051-15556.jpg',
                       errorListener: (_) {},
                     ),
                   ),
@@ -66,26 +65,23 @@ class DownloadManagerWidget extends ConsumerWidget {
               ),
               Visibility(
                 visible: height != 0,
-                child:
-                    isCancelled
-                        ? ToolTipIconButton(
-                          message: 'تحميل',
-                          onPressed: () {
-                            ref.invalidate(cancelTokenProvider);
+                child: isCancelled
+                    ? ToolTipIconButton(
+                        message: 'تحميل',
+                        onPressed: () {
+                          ref.invalidate(cancelTokenProvider);
 
-                            ref
-                                .read(downloadAudioProvider.notifier)
-                                .download();
-                          },
-                          icon: const Icon(Icons.download_rounded),
-                        )
-                        : CloseButton(
-                          onPressed: () {
-                            ref.read(cancelTokenProvider).cancel();
-                            ref.invalidate(downloadAudioProvider);
-                            ref.read(downloadHeightProvider.notifier).state = 0;
-                          },
-                        ),
+                          ref.read(downloadAudioProvider.notifier).download();
+                        },
+                        icon: const Icon(Icons.download_rounded),
+                      )
+                    : CloseButton(
+                        onPressed: () {
+                          ref.read(cancelTokenProvider).cancel();
+                          ref.invalidate(downloadAudioProvider);
+                          ref.read(downloadHeightProvider.notifier).state = 0;
+                        },
+                      ),
               ),
             ],
           ),

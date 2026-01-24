@@ -129,7 +129,7 @@ class _OccasionsScreenState extends State<OccasionsScreen> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
-                                    surah.arabicName,
+                                    surah.name,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize: 16,

@@ -72,10 +72,10 @@ class _RecentSearchItem extends ConsumerWidget {
         if (item.type == SearchType.surah) {
           await ref.read(playerProvider.notifier).play(surahID: item.itemId);
         } else {
-          final reciter = await ref.read(
-            fetchReciterProvider(id: item.itemId).future,
-          );
-          ref.read(userReciterProvider.notifier).setReciter(reciter);
+          // final reciter = await ref.read(
+          //   fetchReciterProvider(id: item.itemId).future,
+          // );
+          // ref.read(userReciterProvider.notifier).setReciter(reciter);
           final surah = ref.read(currentSurahProvider);
           if (surah != null) {
             await ref.read(playerProvider.notifier).play(surahID: surah.id);

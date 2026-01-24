@@ -14,11 +14,9 @@ class DefaultReciter extends _$DefaultReciter {
     if (cachedReciter == null) {
       return const Reciter(
         id: 1,
-        englishName: 'AbdelBaset',
-        arabicName: 'عبدالباسط عبدالصمد',
+        name: 'عبدالباسط عبدالصمد',
         isDefault: true,
-        image:
-            'https://upload.wikimedia.org/wikipedia/commons/5/55/Abdelbasset-abdessamad-27.jpg',
+        moshaf: [],
       );
     }
     return Reciter.fromJson(jsonDecode(cachedReciter) as Map<String, dynamic>);

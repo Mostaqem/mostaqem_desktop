@@ -92,15 +92,11 @@ class QueueWidget extends ConsumerWidget {
                       contentPadding: EdgeInsets.zero,
                       selected: isSurahPlaying,
                       title: Text(
-                        locale.languageCode == 'ar'
-                            ? queue[index].surah.arabicName
-                            : queue[index].surah.simpleName,
+                        queue[index].surah.name,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
-                        locale.languageCode == 'ar'
-                            ? queue[index].reciter.arabicName
-                            : queue[index].reciter.englishName,
+                       queue[index].reciter.name
                       ),
                       trailing: ToolTipIconButton(
                         message: context.tr.remove_from_queue,

@@ -65,7 +65,7 @@ class _SearchResultsState extends State<SearchResults> {
             builder: (context, ref, child) {
               final searchQuery = ref.watch(searchProvider('home'));
               final surahs = ref.watch(
-                fetchAllChaptersProvider(page: 1, query: searchQuery),
+                searchChaptersProvider(query: searchQuery),
               );
               final currentSurah = ref.watch(currentSurahProvider);
               return AsyncWidget(
@@ -132,7 +132,7 @@ class _SearchResultsState extends State<SearchResults> {
                                         .read(searchHistoryProvider.notifier)
                                         .add(
                                           data[index].id,
-                                          data[index].arabicName,
+                                          data[index].name,
                                           SearchType.surah,
                                         );
                                     ref
@@ -224,7 +224,7 @@ class _SearchResultsState extends State<SearchResults> {
                                               crossAxisAlignment: .start,
                                               children: [
                                                 Text(
-                                                  data[index].arabicName,
+                                                  data[index].name,
                                                   style: const TextStyle(
                                                     fontWeight: .w600,
                                                     fontSize: 16,
@@ -234,7 +234,7 @@ class _SearchResultsState extends State<SearchResults> {
                                                   child: Row(
                                                     children: [
                                                       Text(
-                                                        '${data[index].versesCount.toString().toArabicNumbers} ${pluralVerses(data[index].versesCount!)}',
+                                                        '',
                                                         style: TextStyle(
                                                           color: Theme.of(
                                                             context,
@@ -249,9 +249,8 @@ class _SearchResultsState extends State<SearchResults> {
                                                         ).colorScheme.primary,
                                                       ),
                                                       Text(
-                                                        data[index].revelationPlace
-                                                                    .toLowerCase() ==
-                                                                'makkah'
+                                                        data[index].revelationPlace ==
+                                                                1
                                                             ? 'مكية'
                                                             : 'مدنية',
                                                         style: TextStyle(
@@ -338,7 +337,7 @@ class _SearchResultsState extends State<SearchResults> {
                                   .read(searchHistoryProvider.notifier)
                                   .add(
                                     data[index].id,
-                                    data[index].arabicName,
+                                    data[index].name,
                                     SearchType.reciter,
                                   );
                               ref
@@ -374,7 +373,7 @@ class _SearchResultsState extends State<SearchResults> {
                                           child: const SizedBox.shrink(),
                                         ),
                                         const SizedBox(width: 16),
-                                        Text(data[index].arabicName),
+                                        Text(data[index].name),
                                       ],
                                     ),
                                   ),

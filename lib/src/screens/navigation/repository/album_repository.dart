@@ -29,8 +29,8 @@ class AlbumRepository {
     final audio = await ref.read(
       fetchAudioForChapterProvider(
         chapterNumber: surahID,
-        reciterID: reciterID,
-        recitationID: recitationID,
+        reciter: reciter,
+        recitationID: recitationID
       ).future,
     );
     final album = Album(

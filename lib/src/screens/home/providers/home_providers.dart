@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_dynamic_calls, inference_failure_on_untyped_parameter
 
 import 'package:flutter/material.dart';
+import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -14,27 +15,38 @@ part 'home_providers.g.dart';
 
 /// Fetches all the chapters
 @Riverpod(keepAlive: true)
-Future<List<Surah>> fetchAllChapters(
-  Ref ref, {
-  required int page,
-  int take = 30,
-  String? query,
-}) async {
-  final url = query == null
-      ? '/surah?page=$page&take=$take'
-      : '/surah?page=$page&take=$take&name=$query';
-  final response = await ref.read(dioHelperProvider).getHTTP(url);
+Future<List<Surah>> fetchAllChapters(Ref ref) async {
+  final response = await ref
+      .read(dioHelperProvider)
+      .getHTTP('/suwar', baseAPI: APIs.mp3QuranAPI);
 
-  return response.data['data']['surah']
+  final surahs = response.data['suwar']
       .map<Surah>((e) => Surah.fromJson(e as Map<String, Object?>))
       .toList();
+
+  return surahs;
+}
+
+@riverpod
+Future<List<Surah>> searchChapters(Ref ref, {String? query}) async {
+  final surahs = await ref.read(fetchAllChaptersProvider.future);
+  if (query == null || query.isEmpty) {
+    return surahs;
+  }
+  final existingSurahs = surahs
+      .where((surah) => surah.name.toLowerCase().contains(query.toLowerCase()))
+      .toList();
+
+  return existingSurahs;
 }
 
 /// Fetches chapter by [id]
 @riverpod
 Future<Surah> fetchChapterById(Ref ref, {required int id}) async {
-  final response = await ref.read(dioHelperProvider).getHTTP('/surah/$id');
-  return Surah.fromJson(response.data['data'] as Map<String, dynamic>);
+  final surahs = await ref.read(fetchAllChaptersProvider.future);
+  final existingSurah = surahs.where((surah) => surah.id == id).single;
+
+  return existingSurah;
 }
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
@@ -42,20 +54,21 @@ Future<Surah> fetchChapterById(Ref ref, {required int id}) async {
 Future<({String url, int recitationID})> fetchAudioForChapter(
   Ref ref, {
   required int chapterNumber,
+  Reciter? reciter,
   int? recitationID,
-  int? reciterID,
 }) async {
-  final defaultReciterID = ref.watch(defaultReciterProvider).id;
-  final playReciterId = reciterID ?? defaultReciterID;
-  final url = recitationID == null
-      ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
-      : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
-  final response = await ref.read(dioHelperProvider).getHTTP(url);
+  final defaultReciter = ref.watch(defaultReciterProvider);
+  reciter ??= defaultReciter;
+  final surahNumber = surahIdTo3Digits(chapterNumber);
 
-  final audioURL = response.data['data']['url'] as String;
-  final audioRecitationID = response.data['data']['tilawa_id'] as int;
-  debugPrint('audioURL: $audioURL');
-  return (url: audioURL, recitationID: audioRecitationID);
+  final moshaf = reciter.moshaf.firstWhere(
+    (m) => m.id == recitationID,
+    orElse: () => reciter!.moshaf.first,
+  );
+
+  final url = '${moshaf.server}/$surahNumber.mp3';
+
+  return (url: url, recitationID: moshaf.id);
 }
 
 @Riverpod(keepAlive: true)
@@ -165,4 +178,8 @@ class ShowControls extends _$ShowControls {
 
   void show() => state = true;
   void hide() => state = false;
+}
+
+String surahIdTo3Digits(int id) {
+  return id.toString().padLeft(3, '0');
 }
