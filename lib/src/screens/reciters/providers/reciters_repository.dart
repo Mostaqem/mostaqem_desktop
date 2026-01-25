@@ -2,12 +2,12 @@
 // ignore_for_file: inference_failure_on_untyped_parameter,
 // ignore_for_file: use_setters_to_change_properties
 
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
+import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'reciters_repository.g.dart';
@@ -23,27 +23,21 @@ abstract class RecitersRepository {
 class RecitersImpl implements RecitersRepository {
   RecitersImpl(this.ref);
   final Ref ref;
-  final options = Options(headers: {'Accept-Language': 'ar'});
+
   @override
   Future<Reciter> fetchReciter({required int id}) async {
     final request = await ref
         .watch(dioHelperProvider)
-        .getHTTP(
-          '/reciters?reciter=$id',
-          options: options,
-          baseAPI: APIs.mp3QuranAPI,
-        );
-    final reciters = request.data['reciters'];
-    return Reciter.fromJson(reciters[0] as Map<String, Object?>);
+        .getHTTP('/reciters?reciter=$id', baseAPI: APIs.mp3QuranAPI);
+    final reciters = request.data['reciters'] as List;
+    return Reciter.fromJson(reciters.first as Map<String, Object?>);
   }
 
   @override
   Future<List<Reciter>> fetchReciters({required int page}) async {
-    const url = '/reciters';
-
     final request = await ref
         .watch(dioHelperProvider)
-        .getHTTP(url, options: options, baseAPI: APIs.mp3QuranAPI);
+        .getHTTP('/reciters', baseAPI: APIs.mp3QuranAPI);
     return request.data['reciters']
         .map<Reciter>((e) => Reciter.fromJson(e as Map<String, Object?>))
         .toList();

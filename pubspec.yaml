@@ -37,8 +37,8 @@ dependencies:
   lottie: ^3.3.1
   lrc: ^1.0.2
   material_color_utilities: ^0.11.1
-  media_kit: ^1.2.0
-  media_kit_libs_audio: ^1.0.6
+  media_kit: ^1.2.6
+  media_kit_libs_audio: ^1.0.7
   metadata_god: ^1.1.0
   mpris_service:
     git: https://github.com/alexmercerind/mpris_service
@@ -63,6 +63,7 @@ dev_dependencies:
   flutter_lints: "^6.0.0"
   flutter_test:
     sdk: flutter
+  mocktail: ^1.0.4
   json_serializable: "^6.9.5"
   msix: "^3.16.9"
   pubspec_dependency_sorter: "^1.0.5"
@@ -70,6 +71,8 @@ dev_dependencies:
   riverpod_lint: "^3.0.3"
   vector_graphics_compiler: ^1.1.19
   very_good_analysis: "^10.0.0"
+  integration_test:
+    sdk: flutter
 
 msix_config:
   display_name: Mostaqem

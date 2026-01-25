@@ -86,7 +86,7 @@ class _ScrollableLyricsViewState extends ConsumerState<ScrollableLyricsView> {
                 child: AnimatedDefaultTextStyle(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
-                  style: TextStyle(fontFamily:"Uthmani",
+                  style: TextStyle(fontFamily:'Uthmani',
                                       fontWeight: isActive ? FontWeight.w900 : FontWeight.w600,
                     fontSize: isActive ? 64 : 24,
                     color: isActive

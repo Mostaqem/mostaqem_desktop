@@ -11,7 +11,6 @@ import 'package:mostaqem/src/screens/reading/data/script.dart';
 import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
-import 'package:vector_graphics/vector_graphics.dart';
 
 class ReadingScreen extends ConsumerWidget {
   const ReadingScreen({required this.surah, super.key});
@@ -29,30 +28,17 @@ class ReadingScreen extends ConsumerWidget {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            SingleChildScrollView(
+            Container(
+              height: double.infinity,
+              margin: const .only(top: 70, left: 16, right: 16, bottom: 100),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+                borderRadius: .circular(12),
+              ),
               child: Column(
                 children: [
                   const SizedBox(height: 100),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      VectorGraphic(
-                        loader: const AssetBytesLoader(
-                          'assets/img/svg/border.svg',
-                        ),
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).colorScheme.primary,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      Text(
-                        'سورة ${surah.name}',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.amiri(fontSize: 40),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
+
                   Image.asset(
                     surah.id != 9
                         ? 'assets/img/basmalah.png'
@@ -122,9 +108,7 @@ class _VerseSpanState extends State<VerseSpan> {
                           .pushNamed(
                             'Share',
                             extra: selectedText.replaceAll('￼', ''),
-                            pathParameters: {
-                              'surahName': widget.surah.name,
-                            },
+                            pathParameters: {'surahName': widget.surah.name},
                           );
                     }
                     editableTextState.hideToolbar();
@@ -151,9 +135,7 @@ class _VerseSpanState extends State<VerseSpan> {
                           context.pushNamed(
                             'Share',
                             extra: e.verse.replaceAll('￼', ''),
-                            pathParameters: {
-                              'surahName': widget.surah.name,
-                            },
+                            pathParameters: {'surahName': widget.surah.name},
                           );
                         },
                       children: [

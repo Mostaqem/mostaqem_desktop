@@ -9,6 +9,7 @@ import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provid
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
+import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_providers.g.dart';
@@ -58,15 +59,23 @@ Future<({String url, int recitationID})> fetchAudioForChapter(
   int? recitationID,
 }) async {
   final defaultReciter = ref.watch(defaultReciterProvider);
-  reciter ??= defaultReciter;
+  var effectiveReciter = reciter ?? defaultReciter;
+
+  // If moshaf is empty, fetch full reciter data from API
+  if (effectiveReciter.moshaf.isEmpty) {
+    effectiveReciter = await ref.read(
+      fetchReciterProvider(id: effectiveReciter.id).future,
+    );
+  }
+
   final surahNumber = surahIdTo3Digits(chapterNumber);
 
-  final moshaf = reciter.moshaf.firstWhere(
+  final moshaf = effectiveReciter.moshaf.firstWhere(
     (m) => m.id == recitationID,
-    orElse: () => reciter!.moshaf.first,
+    orElse: () => effectiveReciter.moshaf.first,
   );
 
-  final url = '${moshaf.server}/$surahNumber.mp3';
+  final url = '${moshaf.server}$surahNumber.mp3';
 
   return (url: url, recitationID: moshaf.id);
 }
@@ -76,29 +85,27 @@ Future<Album> fetchAlbum(
   Ref ref, {
   required int chapterNumber,
   int? recitationID,
-  int? reciterID,
+  Reciter? reciter,
 }) async {
-  final defaultReciterID = ref.watch(defaultReciterProvider).id;
-  final playReciterId = reciterID ?? defaultReciterID;
-  final url = recitationID == null
-      ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
-      : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
-  final response = await ref.read(dioHelperProvider).getHTTP(url);
-  final audioURL = response.data['data']['url'] as String;
-  final audioRecitationID = response.data['data']['tilawa_id'] as int;
-  final reciter = Reciter.fromJson(
-    response.data['data']['tilawa']['reciter'] as Map<String, dynamic>,
+  final Reciter effectiveReciter = reciter ?? ref.watch(defaultReciterProvider);
+
+  final audio = await ref.read(
+    fetchAudioForChapterProvider(
+      chapterNumber: chapterNumber,
+      reciter: effectiveReciter,
+      recitationID: recitationID,
+    ).future,
   );
-  final surah = Surah.fromJson(
-    Map<String, dynamic>.from(
-      response.data['data']['surah'] as Map<String, dynamic>,
-    ),
+
+  final surah = await ref.read(
+    fetchChapterByIdProvider(id: chapterNumber).future,
   );
+
   return Album(
     surah: surah,
-    reciter: reciter,
-    url: audioURL,
-    recitationID: audioRecitationID,
+    reciter: effectiveReciter,
+    url: audio.url,
+    recitationID: audio.recitationID,
   );
 }
 

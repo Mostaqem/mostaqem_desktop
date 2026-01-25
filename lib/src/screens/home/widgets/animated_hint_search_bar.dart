@@ -6,7 +6,6 @@ import 'package:mostaqem/src/screens/home/data/search_history_item.dart';
 import 'package:mostaqem/src/screens/home/providers/search_history_provider.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
-import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 
 class AnimatedHintSearchBar extends ConsumerStatefulWidget {
   const AnimatedHintSearchBar({

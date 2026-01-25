@@ -60,6 +60,8 @@ class SurahWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final surahID = ref.watch(currentSurahProvider)?.id ?? 0;
     final downlaodState = ref.watch(downloadAudioProvider)?.downloadState;
+    final surahs = ref.watch(fetchAllChaptersProvider);
+
     return SizedBox(
       height: MediaQuery.sizeOf(context).height,
       child: GridView.builder(
@@ -68,16 +70,8 @@ class SurahWidget extends ConsumerWidget {
           maxCrossAxisExtent: 160,
         ),
         itemBuilder: (context, index) {
-          final page = index ~/ pageSize + 1;
-          final indexInPage = index % pageSize;
-
-          final surahs = ref.watch(fetchAllChaptersProvider);
-
           return surahs.when(
             data: (data) {
-              if (indexInPage >= data.length) {
-                return null;
-              }
               return ContextMenuRegion(
                 contextMenu: GenericContextMenu(
                   buttonConfigs: [
@@ -86,7 +80,7 @@ class SurahWidget extends ConsumerWidget {
                       onPressed: () async {
                         await ref
                             .read(playerProvider.notifier)
-                            .addItemNext(data[indexInPage].id);
+                            .addItemNext(data[index].id);
                       },
                     ),
                     ContextMenuButtonConfig(
@@ -94,7 +88,7 @@ class SurahWidget extends ConsumerWidget {
                       onPressed: () async {
                         await ref
                             .read(playerProvider.notifier)
-                            .addToQueue(surahID: data[indexInPage].id);
+                            .addToQueue(surahID: data[index].id);
                       },
                     ),
                   ],
@@ -107,7 +101,7 @@ class SurahWidget extends ConsumerWidget {
                         onTap: () async {
                           await ref
                               .read(playerProvider.notifier)
-                              .play(surahID: data[indexInPage].id);
+                              .play(surahID: data[index].id);
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
@@ -161,7 +155,7 @@ class SurahWidget extends ConsumerWidget {
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
-                                            data[indexInPage].name,
+                                            data[index].name,
                                             style: TextStyle(
                                               color: getCardForeground(
                                                 isHovered: isHovered,
@@ -185,7 +179,7 @@ class SurahWidget extends ConsumerWidget {
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text(
-                                            data[indexInPage].name,
+                                            data[index].name,
                                             style: TextStyle(
                                               color: getCardForeground(
                                                 isHovered: isHovered,
@@ -229,9 +223,7 @@ class SurahWidget extends ConsumerWidget {
                                         onTap: () {
                                           ref
                                               .read(playerProvider.notifier)
-                                              .addItemNext(
-                                                data[indexInPage].id,
-                                              );
+                                              .addItemNext(data[index].id);
                                         },
                                       ),
                                       PopupMenuItem<String>(
@@ -242,7 +234,7 @@ class SurahWidget extends ConsumerWidget {
                                           ref
                                               .read(playerProvider.notifier)
                                               .addToQueue(
-                                                surahID: data[indexInPage].id,
+                                                surahID: data[index].id,
                                               );
                                         },
                                       ),
@@ -252,7 +244,7 @@ class SurahWidget extends ConsumerWidget {
                                           final height = ref.read(
                                             downloadHeightProvider,
                                           );
-                                          final surah = data[indexInPage];
+                                          final surah = data[index];
                                           if (height == 100) {
                                             ref
                                                     .read(
@@ -298,7 +290,7 @@ class SurahWidget extends ConsumerWidget {
                                         onTap: () {
                                           context.pushNamed(
                                             'Reading',
-                                            extra: data[indexInPage],
+                                            extra: data[index],
                                           );
                                         },
                                       ),

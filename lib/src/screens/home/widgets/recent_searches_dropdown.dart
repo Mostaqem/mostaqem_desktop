@@ -5,7 +5,6 @@ import 'package:mostaqem/src/screens/home/providers/dropdown_visibility_provider
 import 'package:mostaqem/src/screens/home/providers/search_history_provider.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
-import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 
 class RecentSearchesDropdown extends ConsumerWidget {

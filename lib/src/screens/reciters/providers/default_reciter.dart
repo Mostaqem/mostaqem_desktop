@@ -14,7 +14,7 @@ class DefaultReciter extends _$DefaultReciter {
     if (cachedReciter == null) {
       return const Reciter(
         id: 1,
-        name: 'عبدالباسط عبدالصمد',
+        name: 'إبراهيم الاخضر',
         isDefault: true,
         moshaf: [],
       );

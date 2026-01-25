@@ -35,7 +35,7 @@ class MyApp extends ConsumerWidget {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
-          supportedLocales: I18nRepository.supportedLocales,
+          supportedLocales: AppLocalizations.supportedLocales,
           locale: currentLang,
           builder: (context, child) {
             return Material(

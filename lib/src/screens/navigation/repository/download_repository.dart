@@ -57,7 +57,7 @@ class DownloadAudio extends _$DownloadAudio {
       fetchAlbumProvider(
         chapterNumber: surahID,
         recitationID: recitationID,
-        reciterID: currentReciter.id,
+        reciter: currentReciter,
       ).future,
     );
     final mixIDs = recitationID + surahID;

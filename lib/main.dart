@@ -16,14 +16,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   await windowManager.ensureInitialized();
-  final windowOptions = WindowOptions(
-    minimumSize: const Size(1024, 600),
+  const windowOptions = WindowOptions(
+    minimumSize: Size(1024, 600),
     center: true,
     title: 'Mostaqem',
     backgroundColor: Colors.transparent,
-    titleBarStyle: Platform.isWindows
-        ? TitleBarStyle.hidden
-        : TitleBarStyle.normal,
+    titleBarStyle: .hidden,
   );
   if (await FlutterSingleInstance().isFirstInstance()) {
     // runApp(ProviderScope(child: InitialLoading()));

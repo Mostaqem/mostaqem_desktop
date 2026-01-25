@@ -4,7 +4,7 @@ part 'reciters_data.freezed.dart';
 
 part 'reciters_data.g.dart';
 
-@freezed
+@Freezed(toJson: true)
 abstract class Reciter with _$Reciter {
   const factory Reciter({
     required int id,
@@ -17,7 +17,7 @@ abstract class Reciter with _$Reciter {
       _$ReciterFromJson(json);
 }
 
-@freezed
+@Freezed(toJson: true)
 abstract class MoshafData with _$MoshafData {
   const factory MoshafData({
     required int id,

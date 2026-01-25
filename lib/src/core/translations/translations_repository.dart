@@ -6,10 +6,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'translations_repository.g.dart';
 
-class I18nRepository {
-  static List<Locale> supportedLocales = Language.values.toLocales();
-}
-
 @riverpod
 class LocaleNotifier extends _$LocaleNotifier {
   @override

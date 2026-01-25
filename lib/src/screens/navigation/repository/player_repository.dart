@@ -25,7 +25,16 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'player_repository.g.dart';
 
-@Riverpod(keepAlive: true)
+/// Extension to properly serialize Reciter with nested moshaf list
+extension ReciterJsonExtension on Reciter {
+  Map<String, dynamic> toJsonDeep() {
+    final json = toJson();
+    json['moshaf'] = moshaf.map((m) => m.toJson()).toList();
+    return json;
+  }
+}
+
+@riverpod
 class PlayerNotifier extends _$PlayerNotifier {
   final player = Player();
   int bufferSize = 3;
@@ -48,7 +57,7 @@ class PlayerNotifier extends _$PlayerNotifier {
             cachedSurah.url,
             extras: {
               'surah': cachedSurah.surah.toJson(),
-              'reciter': cachedSurah.reciter.toJson(),
+              'reciter': cachedSurah.reciter.toJsonDeep(),
               'recitationID': cachedSurah.recitationID,
               'url': cachedSurah.url,
             },
@@ -67,7 +76,10 @@ class PlayerNotifier extends _$PlayerNotifier {
 
   void init() {
     player.stream.playlist.listen((data) {
-      if (data.medias.length == 1 && state.broadcastName != null) {
+      print(
+        'Playlist changed: index=${data.index}, medias=${data.medias.length}',
+      );
+      if (data.medias.length == 1) {
         if (isLocalAudio()) {
           addLocalQueue();
         } else {
@@ -75,12 +87,13 @@ class PlayerNotifier extends _$PlayerNotifier {
         }
       }
 
+      final currentAlbum = AlbumUtils.parseAlbum(data.index, data);
+      final nextAlbum = AlbumUtils.parseAlbum(data.index + 1, data);
+
       state = state.copyWith(
         queueIndex: data.index,
-        album: AlbumUtils.parseAlbum(data.index, data),
-        nextAlbum: state.album?.surah.id == 114
-            ? null
-            : AlbumUtils.parseAlbum(data.index + 1, data),
+        album: currentAlbum,
+        nextAlbum: currentAlbum?.surah.id == 114 ? null : nextAlbum,
         queue: data.medias
             .map((media) {
               final extras = media.extras;
@@ -316,7 +329,7 @@ class PlayerNotifier extends _$PlayerNotifier {
             album.url,
             extras: {
               'surah': album.surah.toJson(),
-              'reciter': album.reciter.toJson(),
+              'reciter': album.reciter.toJsonDeep(),
               'recitationID': album.recitationID,
               'url': album.url,
             },
@@ -335,7 +348,7 @@ class PlayerNotifier extends _$PlayerNotifier {
         album.url,
         extras: {
           'surah': album.surah.toJson(),
-          'reciter': album.reciter.toJson(),
+          'reciter': album.reciter.toJsonDeep(),
           'recitationID': album.recitationID,
           'url': album.url,
         },
@@ -368,7 +381,7 @@ class PlayerNotifier extends _$PlayerNotifier {
         album.url,
         extras: {
           'surah': album.surah.toJson(),
-          'reciter': album.reciter.toJson(),
+          'reciter': album.reciter.toJsonDeep(),
           'recitationID': album.recitationID,
           'url': album.url,
         },
@@ -401,7 +414,7 @@ class PlayerNotifier extends _$PlayerNotifier {
         album.url,
         extras: {
           'surah': album.surah.toJson(),
-          'reciter': album.reciter.toJson(),
+          'reciter': album.reciter.toJsonDeep(),
           'recitationID': album.recitationID,
           'url': album.url,
         },
@@ -464,6 +477,7 @@ class PlayerNotifier extends _$PlayerNotifier {
   }) async {
     final remaining = medias.length - (currentIndex + 1);
     if (remaining < bufferSize) {
+      print('Medias: $medias');
       final lastSurahId = medias.last.extras?['surah']['id'] as int;
 
       if (lastSurahId < 114) {
@@ -478,18 +492,24 @@ class PlayerNotifier extends _$PlayerNotifier {
   Future<void> _addNextAlbumsBatched(int count, {required int startId}) async {
     final maxID = (startId + count).clamp(0, 114);
 
-    final albums = await Future.wait([
-      for (var i = startId; i <= maxID; i++)
-        ref.read(
-          fetchAlbumProvider(
-            chapterNumber: i,
-            recitationID: state.album?.recitationID,
-          ).future,
-        ),
-    ]);
+    try {
+      final albums = await Future.wait([
+        for (var i = startId; i <= maxID; i++)
+          ref.read(
+            fetchAlbumProvider(
+              chapterNumber: i,
+              recitationID: state.album?.recitationID,
+            ).future,
+          ),
+      ]);
+      print('NextMedias: $albums');
 
-    for (final album in albums) {
-      await _addAlbumToQueue(album);
+      for (final album in albums) {
+        await _addAlbumToQueue(album);
+      }
+    } catch (e, stack) {
+      print('Error in _addNextAlbumsBatched: $e');
+      print('Stack: $stack');
     }
   }
 
@@ -499,7 +519,7 @@ class PlayerNotifier extends _$PlayerNotifier {
         album.url,
         extras: {
           'surah': album.surah.toJson(),
-          'reciter': album.reciter.toJson(),
+          'reciter': album.reciter.toJsonDeep(),
           'recitationID': album.recitationID,
           'url': album.url,
         },
