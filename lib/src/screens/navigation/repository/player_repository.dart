@@ -8,6 +8,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
+import 'package:mostaqem/src/core/mpris/mpris_repository.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -75,6 +76,11 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   void init() {
+    // Initialize MPRIS on Linux
+    if (Platform.isLinux) {
+      MprisManager.instance.init(ref);
+    }
+
     player.stream.playlist.listen((data) {
       print(
         'Playlist changed: index=${data.index}, medias=${data.medias.length}',
@@ -113,25 +119,46 @@ class PlayerNotifier extends _$PlayerNotifier {
             .whereType<Album>()
             .toList(),
       );
+
+      // Update MPRIS metadata when track changes (Linux only)
+      if (Platform.isLinux && currentAlbum != null) {
+        MprisManager.instance.updateMetadata(
+          reciterName: currentAlbum.reciter.name,
+          surah: currentAlbum.surah.name,
+          url: currentAlbum.url,
+          length: state.duration,
+        );
+      }
     });
 
     player.stream.position.listen((position) {
       state = state.copyWith(position: position);
-      ref
-          .read(playerCacheProvider().notifier)
-          .setAlbum(
-            Album(
-              surah: state.album!.surah,
-              reciter: state.album!.reciter,
-              url: state.album!.url,
-              position: position.inMilliseconds,
-              recitationID: state.album!.recitationID,
-            ),
-          );
+      if (state.album != null) {
+        ref.read(playerCacheProvider().notifier).setAlbum(
+              Album(
+                surah: state.album!.surah,
+                reciter: state.album!.reciter,
+                url: state.album!.url,
+                position: position.inMilliseconds,
+                recitationID: state.album!.recitationID,
+              ),
+            );
+      }
     });
 
     player.stream.duration.listen((duration) async {
       state = state.copyWith(duration: duration);
+
+      // Update MPRIS metadata with correct duration when it's known
+      if (Platform.isLinux && state.album != null && duration > Duration.zero) {
+        MprisManager.instance.updateMetadata(
+          reciterName: state.album!.reciter.name,
+          surah: state.album!.surah.name,
+          url: state.album!.url,
+          length: duration,
+        );
+      }
+
       if (!_hasRestoredPosition) {
         final cachedAlbum = ref.read(playerCacheProvider());
         if (cachedAlbum != null) {
@@ -149,6 +176,12 @@ class PlayerNotifier extends _$PlayerNotifier {
       if (Platform.isWindows) {
         windowThumbnailBar();
       }
+
+      // Update MPRIS playback status (Linux only)
+      if (Platform.isLinux) {
+        MprisManager.instance.updatePlaybackStatus(isPlaying: playing);
+      }
+
       if (state.album != null) {
         if (playing) {
           ref.read(

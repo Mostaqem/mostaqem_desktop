@@ -8,8 +8,10 @@ import 'package:media_kit/media_kit.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/app.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
+import 'package:mostaqem/src/core/mpris/mpris_repository.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:mostaqem/src/shared/http_override/http_override.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -23,6 +25,7 @@ void main() async {
     backgroundColor: Colors.transparent,
     titleBarStyle: .hidden,
   );
+
   if (await FlutterSingleInstance().isFirstInstance()) {
     // runApp(ProviderScope(child: InitialLoading()));
     HttpOverrides.global = MyHttpOverrides();
@@ -41,7 +44,7 @@ void main() async {
       await windowManager.show();
       await windowManager.focus();
     });
-    runApp(const Mostaqem());
+    runApp(Mostaqem());
   } else {
     final err = await FlutterSingleInstance().focus();
     if (err != null) {
