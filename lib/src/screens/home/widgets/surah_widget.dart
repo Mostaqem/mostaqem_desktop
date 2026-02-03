@@ -64,14 +64,16 @@ class SurahWidget extends ConsumerWidget {
 
     return SizedBox(
       height: MediaQuery.sizeOf(context).height,
-      child: GridView.builder(
-        cacheExtent: 100,
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 160,
-        ),
-        itemBuilder: (context, index) {
-          return surahs.when(
-            data: (data) {
+      child: surahs.when(
+        data: (data) {
+          return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            cacheExtent: 100,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 160,
+            ),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
               return ContextMenuRegion(
                 contextMenu: GenericContextMenu(
                   buttonConfigs: [
@@ -118,6 +120,8 @@ class SurahWidget extends ConsumerWidget {
                               ),
                             ),
                             child: Stack(
+
+                              
                               alignment: Alignment.centerLeft,
                               children: [
                                 Positioned(
@@ -307,41 +311,41 @@ class SurahWidget extends ConsumerWidget {
                 ),
               );
             },
-            error: (e, __) {
-              debugPrint('Error: $e');
-              return Padding(
-                padding: const EdgeInsets.all(8),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primaryContainer.withValues(alpha: 0.3),
-                  ),
-                  child: ToolTipIconButton(
-                    message: 'اعادة المحاولة',
-                    onPressed: () {
-                      ref.invalidate(fetchAllChaptersProvider);
-                    },
-                    icon: const Icon(Icons.refresh_outlined),
-                  ),
-                ),
-              );
-            },
-            loading: () {
-              return Padding(
-                padding: const EdgeInsets.all(8),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primaryContainer.withValues(alpha: 0.3),
-                  ),
-                ),
-              );
-            },
+          );
+        },
+        error: (e, __) {
+          debugPrint('Error: $e');
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withValues(alpha: 0.3),
+              ),
+              child: ToolTipIconButton(
+                message: 'اعادة المحاولة',
+                onPressed: () {
+                  ref.invalidate(fetchAllChaptersProvider);
+                },
+                icon: const Icon(Icons.refresh_outlined),
+              ),
+            ),
+          );
+        },
+        loading: () {
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withValues(alpha: 0.3),
+              ),
+            ),
           );
         },
       ),

@@ -25,7 +25,7 @@ Set<Screen> getChildrenScreens(BuildContext context) {
       icon: const Icon(Icons.home_outlined),
       label: context.tr.home,
       selectedIcon: const Icon(Icons.home),
-      widget: const HomeScreen(),
+      widget: HomeScreen(),
     ),
     Screen(
       icon: const Icon(Icons.favorite_border_outlined),

@@ -8,6 +8,7 @@ import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/full_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/portrait_player.dart';
 import 'package:mostaqem/src/screens/occasions/domain/occasions_repository.dart';
 import 'package:mostaqem/src/screens/occasions/occasions.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
@@ -59,19 +60,37 @@ class _NavigationState extends ConsumerState<Navigation> {
       resizeToAvoidBottomInset: false,
       body: isFullScreen
           ? FullScreenWidget(player: player!)
-          : Column(
-              children: [
-                const WindowButtons(),
-                Expanded(
-                  child: Row(
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                final wideScreen = constraints.maxWidth > 620;
+                if (wideScreen) {
+                  return Column(
                     children: [
-                      RightSide(children: children, screenIndex: screenIndex),
-                      LeftSide(children: children, screenIndex: screenIndex),
+                      const WindowButtons(),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            RightSide(
+                              children: children,
+                              screenIndex: screenIndex,
+                            ),
+                            LeftSide(
+                              children: children,
+                              screenIndex: screenIndex,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 100),
                     ],
-                  ),
-                ),
-                const SizedBox(height: 100, ),
-              ],
+                  );
+                }
+                return PortraitPlayer(
+                  album: player,
+                  width: constraints.maxWidth,
+                  height: constraints.maxHeight,
+                );
+              },
             ),
     );
   }

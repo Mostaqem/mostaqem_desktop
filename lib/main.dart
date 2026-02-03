@@ -19,7 +19,7 @@ void main() async {
   await CacheHelper.init();
   await windowManager.ensureInitialized();
   const windowOptions = WindowOptions(
-    minimumSize: Size(1024, 600),
+    // minimumSize: Size(1024, 600),
     center: true,
     title: 'Mostaqem',
     backgroundColor: Colors.transparent,
@@ -44,7 +44,7 @@ void main() async {
       await windowManager.show();
       await windowManager.focus();
     });
-    runApp(Mostaqem());
+    runApp(const Mostaqem());
   } else {
     final err = await FlutterSingleInstance().focus();
     if (err != null) {

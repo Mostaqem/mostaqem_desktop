@@ -35,32 +35,34 @@ class ReadingScreen extends ConsumerWidget {
                 color: Theme.of(context).colorScheme.surfaceContainer,
                 borderRadius: .circular(12),
               ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 100),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 100),
 
-                  Image.asset(
-                    surah.id != 9
-                        ? 'assets/img/basmalah.png'
-                        : 'assets/img/a3ooz.png',
-                    width: 300,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(height: 20),
-                  AsyncWidget(
-                    value: scripts,
-                    error: (e, s) {
-                      if (kDebugMode) {
-                        return Text('Error: $e| ST: $s');
-                      }
-                      return const Center(child: Text('Error'));
-                    },
-                    data: (data) {
-                      return VerseSpan(surah: surah, data: data);
-                    },
-                  ),
-                  const SizedBox(height: 100),
-                ],
+                    Image.asset(
+                      surah.id != 9
+                          ? 'assets/img/basmalah.png'
+                          : 'assets/img/a3ooz.png',
+                      width: 300,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(height: 20),
+                    AsyncWidget(
+                      value: scripts,
+                      error: (e, s) {
+                        if (kDebugMode) {
+                          return Text('Error: $e| ST: $s');
+                        }
+                        return const Center(child: Text('Error'));
+                      },
+                      data: (data) {
+                        return VerseSpan(surah: surah, data: data);
+                      },
+                    ),
+                    const SizedBox(height: 100),
+                  ],
+                ),
               ),
             ),
             const Padding(padding: EdgeInsets.all(16), child: AppBackButton()),
