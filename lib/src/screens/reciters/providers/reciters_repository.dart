@@ -5,6 +5,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
+import 'package:mostaqem/src/core/utils/arabic_normalizer.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
 import 'package:mostaqem/src/screens/settings/appearance/providers/apperance_providers.dart';
@@ -47,9 +48,11 @@ class RecitersImpl implements RecitersRepository {
   Future<List<Reciter>> searchReciter({String? query}) async {
     if (query == null || query.isEmpty) return [];
     final reciters = await fetchReciters(page: 1);
-    final lowerQuery = query.toLowerCase();
+    final normalizedQuery = normalizeArabic(query.toLowerCase());
     return reciters
-        .where((reciter) => reciter.name.toLowerCase().contains(lowerQuery))
+        .where((reciter) =>
+            normalizeArabic(reciter.name.toLowerCase())
+                .contains(normalizedQuery))
         .toList();
   }
 }
@@ -81,7 +84,7 @@ Future<List<Reciter>> searchReciter(Ref ref, {String? query}) {
 /// ```dart
 /// ref.read(userReciterProvider.notifier).setReciter(newReciter);
 /// ```
-@Riverpod(keepAlive: true)
+@riverpod
 class UserReciter extends _$UserReciter {
   /// Builds and returns the default [Reciter] by watching the
   /// [defaultReciterProvider].

@@ -23,34 +23,39 @@ class RecitationWidget extends StatelessWidget {
       child: Consumer(
         builder: (context, ref, child) {
           final album = ref.watch(currentAlbumProvider);
-          final locale = ref.watch(localeProvider).languageCode;
           final recitations = album?.reciter.moshaf ?? [];
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.all(8),
-            width: 400,
-            height: recitations.length * ref.watch(recitationHeight),
-            child: ListView.builder(
-              itemCount: recitations.length,
-              itemBuilder: (context, index) {
-                return RadioListTile(
-                  title: Text(recitations[index].name),
-                  value: ref.watch(recitationProvider),
-                  groupValue: recitations[index].id,
-                  onChanged: (v) {
-                    ref
-                        .read(playerProvider.notifier)
-                        .play(
-                          surahID: album?.surah.id ?? 1,
-                          recitationID: recitations[index].id,
-                        );
-                  },
-                );
-              },
+          final height = recitations.length.toDouble() * ref.watch(recitationHeight);
+          return TapRegion(
+            onTapOutside: height > 0
+                ? (_) => ref.read(recitationHeight.notifier).state = 0
+                : null,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.all(8),
+              width: 400,
+              height: height,
+              child: ListView.builder(
+                itemCount: recitations.length,
+                itemBuilder: (context, index) {
+                  return RadioListTile(
+                    title: Text(recitations[index].name),
+                    value: ref.watch(recitationProvider),
+                    groupValue: recitations[index].id,
+                    onChanged: (v) {
+                      ref
+                          .read(playerProvider.notifier)
+                          .play(
+                            surahID: album?.surah.id ?? 1,
+                            recitationID: recitations[index].id,
+                          );
+                    },
+                  );
+                },
+              ),
             ),
           );
         },

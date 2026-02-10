@@ -5,8 +5,9 @@
 
 ![Example](screenshots/1.png)
 ![Example](screenshots/2.png)
+![Example](screenshots/3.png)
 ![Example](screenshots/4.png)
-![Example](screenshots/9.png)
+![Example](screenshots/5.png)
 ![Example](screenshots/6.png)
 
 # Getting Started
@@ -31,7 +32,7 @@ For arch
 * Integrated with OS
     * Windows
         * Taskbar buttons
-        * [System Media Transport Controls][SMTC] (Soon)
+        * [System Media Transport Controls][SMTC]
     * Linux
         * Mpris (Soon)
 * Offline Mode

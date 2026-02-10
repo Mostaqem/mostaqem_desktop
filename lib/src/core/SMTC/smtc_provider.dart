@@ -1,122 +1,116 @@
-// import 'dart:io';
+import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:smtc_windows/smtc_windows.dart';
 
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-// import 'package:riverpod_annotation/riverpod_annotation.dart';
-// import 'package:smtc_windows/smtc_windows.dart';
+/// Singleton class to manage SMTC instance
+class SmtcManager {
+  SmtcManager._();
+  static final SmtcManager _instance = SmtcManager._();
+  static SmtcManager get instance => _instance;
 
-// part 'smtc_provider.g.dart';
+  SMTCWindows? _smtc;
+  bool _initialized = false;
+  PlayerNotifier? _playerNotifier;
 
-// class SMTCRepository {
-//   SMTCRepository(this.ref);
-//   final Ref ref;
-//   SMTCWindows? smtc;
-//   static bool get isSupported => Platform.isWindows;
+  Future<void> init(PlayerNotifier playerNotifier) async {
+    if (_initialized && _smtc != null) {
+      return;
+    }
 
-//   void init({
-//     required String surah,
-//     required String reciter,
-//     required String image,
-//     required int position,
-//     required int duration,
-//   }) {
-//     smtc = SMTCWindows(
-//       metadata: MusicMetadata(
-//         title: surah,
-//         albumArtist: reciter,
-//         artist: reciter,
-//         thumbnail: image,
-//       ),
-//       timeline: PlaybackTimeline(
-//         startTimeMs: 0,
-//         endTimeMs: duration,
-//         positionMs: position,
-//         minSeekTimeMs: 0,
-//         maxSeekTimeMs: duration,
-//       ),
-//       config: const SMTCConfig(
-//         fastForwardEnabled: false,
-//         nextEnabled: true,
-//         pauseEnabled: true,
-//         playEnabled: true,
-//         rewindEnabled: false,
-//         prevEnabled: true,
-//         stopEnabled: true,
-//       ),
-//     );
-//     smtc!.buttonPressStream.listen((event) {
-//       switch (event) {
-//         case PressedButton.play:
-//           ref.read(playerProvider.notifier).player.play();
-//           smtc!.setPlaybackStatus(PlaybackStatus.playing);
-//         case PressedButton.pause:
-//           ref.read(playerProvider.notifier).player.pause();
+    _playerNotifier = playerNotifier;
 
-//           smtc!.setPlaybackStatus(PlaybackStatus.paused);
-//         case PressedButton.next:
-//           ref.read(playerProvider.notifier).playNext();
-//         case PressedButton.previous:
-//           ref.read(playerProvider.notifier).playPrevious();
+    _smtc = SMTCWindows(
+      metadata: const MusicMetadata(
+        title: 'Mostaqem',
+        artist: 'Mostaqem',
+        albumArtist: 'Mostaqem',
+      ),
+      timeline: const PlaybackTimeline(
+        startTimeMs: 0,
+        endTimeMs: 0,
+        positionMs: 0,
+        minSeekTimeMs: 0,
+        maxSeekTimeMs: 0,
+      ),
+      config: const SMTCConfig(
+        fastForwardEnabled: false,
+        nextEnabled: true,
+        pauseEnabled: true,
+        playEnabled: true,
+        rewindEnabled: false,
+        prevEnabled: true,
+        stopEnabled: true,
+      ),
+    );
 
-//         case PressedButton.stop:
-//           smtc!.setPlaybackStatus(PlaybackStatus.stopped);
-//         case PressedButton.fastForward:
-//           break;
-//         case PressedButton.rewind:
-//           break;
-//         case PressedButton.record:
-//           break;
-//         case PressedButton.channelUp:
-//           break;
-//         case PressedButton.channelDown:
-//           break;
-//       }
-//     });
-//     smtc?.enableSmtc();
-//   }
+    _smtc!.buttonPressStream.listen((event) {
+      switch (event) {
+        case PressedButton.play:
+          _playerNotifier?.player.play();
+        case PressedButton.pause:
+          _playerNotifier?.player.pause();
+        case PressedButton.next:
+          _playerNotifier?.playNext();
+        case PressedButton.previous:
+          _playerNotifier?.playPrevious();
+        case PressedButton.stop:
+          _playerNotifier?.player.pause();
+        case PressedButton.fastForward:
+        case PressedButton.rewind:
+        case PressedButton.record:
+        case PressedButton.channelUp:
+        case PressedButton.channelDown:
+          break;
+      }
+    });
 
-//   void updateSMTC({
-//     required String surah,
-//     required String reciter,
-//     required String image,
-//   }) {
-//     smtc!.updateMetadata(
-//       MusicMetadata(title: surah, albumArtist: reciter, thumbnail: image),
-//     );
-//   }
-// }
+    await _smtc!.enableSmtc();
+    _initialized = true;
+  }
 
-// @riverpod
-// SMTCRepository smtcRepo(Ref ref) {
-//   return SMTCRepository(ref);
-// }
+  void updateMetadata({
+    required String reciterName,
+    required String surah,
+    String? thumbnail,
+  }) {
+    if (_smtc == null) return;
+    _smtc!.updateMetadata(
+      MusicMetadata(
+        title: surah,
+        artist: reciterName,
+        albumArtist: reciterName,
+        thumbnail: thumbnail,
+      ),
+    );
+  }
 
-// @riverpod
-// void updateSMTC(
-//   Ref ref, {
-//   required String surah,
-//   required String reciter,
-//   required String image,
-// }) {
-//   final repo = ref.watch(smtcRepoProvider);
-//   return repo.updateSMTC(surah: surah, reciter: reciter, image: image);
-// }
+  void updateTimeline({
+    required Duration position,
+    required Duration duration,
+  }) {
+    if (_smtc == null) return;
+    _smtc!.updateTimeline(
+      PlaybackTimeline(
+        startTimeMs: 0,
+        endTimeMs: duration.inMilliseconds,
+        positionMs: position.inMilliseconds,
+        minSeekTimeMs: 0,
+        maxSeekTimeMs: duration.inMilliseconds,
+      ),
+    );
+  }
 
-// @riverpod
-// void initSMTC(
-//   Ref ref, {
-//   required String surah,
-//   required String reciter,
-//   required String image,
-//   required int position,
-//   required int duration,
-// }) {
-//   final repo = ref.watch(smtcRepoProvider);
-//   return repo.init(
-//     surah: surah,
-//     reciter: reciter,
-//     image: image,
-//     position: position,
-//     duration: duration,
-//   );
-// }
+  void updatePlaybackStatus({required bool isPlaying}) {
+    if (_smtc == null) return;
+    _smtc!.setPlaybackStatus(
+      isPlaying ? PlaybackStatus.playing : PlaybackStatus.paused,
+    );
+  }
+
+  void dispose() {
+    _smtc?.disableSmtc();
+    _smtc?.dispose();
+    _smtc = null;
+    _initialized = false;
+    _playerNotifier = null;
+  }
+}

@@ -6,6 +6,7 @@ import 'package:mostaqem/src/screens/home/data/search_history_item.dart';
 import 'package:mostaqem/src/screens/home/providers/search_history_provider.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
+import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 
 class AnimatedHintSearchBar extends ConsumerStatefulWidget {
   const AnimatedHintSearchBar({
@@ -111,10 +112,10 @@ class _AnimatedHintSearchBarState extends ConsumerState<AnimatedHintSearchBar> {
                         .read(playerProvider.notifier)
                         .play(surahID: item.itemId);
                   } else {
-                    // final reciter = await ref.read(
-                    //   fetchReciterProvider(id: item.itemId).future,
-                    // );
-                    // ref.read(userReciterProvider.notifier).setReciter(reciter);
+                    final reciter = await ref.read(
+                      fetchReciterProvider(id: item.itemId).future,
+                    );
+                    ref.read(userReciterProvider.notifier).setReciter(reciter);
                     final surah = ref.read(currentSurahProvider);
                     if (surah != null) {
                       await ref

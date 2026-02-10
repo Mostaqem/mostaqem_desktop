@@ -20,7 +20,7 @@ class BroadcastFullscreenControls extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final player = ref.watch(playerProvider);
     final isSquiggly = ref.watch(squigglyProvider);
-
+    final theme = Theme.of(context).colorScheme;
     return Column(
       children: [
         Column(
@@ -31,7 +31,7 @@ class BroadcastFullscreenControls extends ConsumerWidget {
               children: [
                 Text(
                   ref.watch(playerProvider.notifier).playerTime().currentTime,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: theme.onSurface),
                 ),
                 ConstrainedBox(
                   constraints: BoxConstraints(
@@ -57,7 +57,7 @@ class BroadcastFullscreenControls extends ConsumerWidget {
                                     squiggleWavelength: 5,
                                     squiggleSpeed: 0.2,
                                     useLineThumb: true,
-                                    activeColor: Colors.white,
+                                    activeColor: theme.onSurface,
                                     value: max(0, min(position, duration)),
                                     max: duration,
                                     onChangeStart: (_) async {
@@ -89,7 +89,7 @@ class BroadcastFullscreenControls extends ConsumerWidget {
                                     },
                                   )
                                 : Slider(
-                                    activeColor: Colors.white,
+                                    activeColor: theme.onSurface,
                                     value: max(0, min(position, duration)),
                                     max: duration,
                                     onChangeStart: (_) async {
@@ -130,7 +130,7 @@ class BroadcastFullscreenControls extends ConsumerWidget {
                 ),
                 Text(
                   ref.watch(playerProvider.notifier).playerTime().durationTime,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: theme.onSurface),
                 ),
               ],
             ),

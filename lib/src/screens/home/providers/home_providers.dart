@@ -3,8 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
+import 'package:mostaqem/src/core/utils/arabic_normalizer.dart';
+import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
+import 'package:mostaqem/src/screens/navigation/repository/lyrics.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
@@ -34,8 +37,10 @@ Future<List<Surah>> searchChapters(Ref ref, {String? query}) async {
   if (query == null || query.isEmpty) {
     return surahs;
   }
+  final normalizedQuery = normalizeArabic(query.toLowerCase());
   final existingSurahs = surahs
-      .where((surah) => surah.name.toLowerCase().contains(query.toLowerCase()))
+      .where((surah) =>
+          normalizeArabic(surah.name.toLowerCase()).contains(normalizedQuery))
       .toList();
 
   return existingSurahs;
@@ -87,7 +92,7 @@ Future<Album> fetchAlbum(
   int? recitationID,
   Reciter? reciter,
 }) async {
-  final Reciter effectiveReciter = reciter ?? ref.watch(defaultReciterProvider);
+  final effectiveReciter = reciter ?? ref.watch(defaultReciterProvider);
 
   final audio = await ref.read(
     fetchAudioForChapterProvider(
@@ -103,7 +108,7 @@ Future<Album> fetchAlbum(
 
   return Album(
     surah: surah,
-    reciter: effectiveReciter,
+    reciter: effectiveReciter!,
     url: audio.url,
     recitationID: audio.recitationID,
   );
@@ -148,6 +153,32 @@ Future<String?> fetchSurahLyrics(
       .watch(dioHelperProvider)
       .getHTTP('/audio/lrc?surah_id=$surahID&tilawa_id=$recitationID');
   return request.data?['data']?['lrc_content'];
+}
+
+@riverpod
+Future<List<AyahTiming>> fetchAyahTiming(
+  Ref ref, {
+  required int surahID,
+  required int reciterID,
+}) async {
+  final request = await ref
+      .watch(dioHelperProvider)
+      .getHTTP(
+        '/ayat_timing?surah=$surahID&read=$reciterID',
+        baseAPI: APIs.mp3QuranAPI,
+      );
+  final data = request.data as List;
+
+  final timings = data
+      .map(
+        (e) => AyahTiming(
+          ayah: e['ayah'] as int,
+          startTime: e['start_time'] as int,
+          endTime: e['end_time'] as int,
+        ),
+      )
+      .toList();
+  return timings;
 }
 
 @riverpod

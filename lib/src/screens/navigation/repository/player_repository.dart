@@ -4,9 +4,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:mostaqem/src/core/SMTC/smtc_provider.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/core/mpris/mpris_repository.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
@@ -14,26 +14,19 @@ import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
 import 'package:mostaqem/src/screens/navigation/data/album_utils.dart';
 import 'package:mostaqem/src/screens/navigation/data/player.dart';
+import 'package:mostaqem/src/screens/navigation/data/queue_utils.dart';
 import 'package:mostaqem/src/screens/navigation/repository/album_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_cache.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
-import 'package:mostaqem/src/shared/internet_checker/network_checker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:windows_taskbar/windows_taskbar.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'player_repository.g.dart';
 
-/// Extension to properly serialize Reciter with nested moshaf list
-extension ReciterJsonExtension on Reciter {
-  Map<String, dynamic> toJsonDeep() {
-    final json = toJson();
-    json['moshaf'] = moshaf.map((m) => m.toJson()).toList();
-    return json;
-  }
-}
+
 
 @riverpod
 class PlayerNotifier extends _$PlayerNotifier {
@@ -44,47 +37,43 @@ class PlayerNotifier extends _$PlayerNotifier {
   @override
   AudioState build() {
     final audioState = AudioState();
-    final networkState = ref.watch(getConnectionProvider).value;
-    if (networkState == InternetConnectionStatus.disconnected ||
-        networkState == null) {
-      player.pause();
-    } else {
-      init();
 
-      final cachedSurah = ref.read(playerCacheProvider());
-      if (cachedSurah != null) {
-        player.open(
-          Media(
-            cachedSurah.url,
-            extras: {
-              'surah': cachedSurah.surah.toJson(),
-              'reciter': cachedSurah.reciter.toJsonDeep(),
-              'recitationID': cachedSurah.recitationID,
-              'url': cachedSurah.url,
-            },
-          ),
-          play: false,
-        );
-        debugPrint(cachedSurah.position.toString());
-        return audioState.copyWith(
-          album: cachedSurah,
-          position: Duration(milliseconds: cachedSurah.position),
-        );
-      }
+    init();
+
+    final cachedSurah = ref.read(playerCacheProvider());
+    if (cachedSurah != null) {
+      player.open(
+        Media(
+          cachedSurah.url,
+          extras: {
+            'surah': cachedSurah.surah.toJson(),
+            'reciter': cachedSurah.reciter.toJsonDeep(),
+            'recitationID': cachedSurah.recitationID,
+            'url': cachedSurah.url,
+          },
+        ),
+        play: false,
+      );
+      debugPrint(cachedSurah.position.toString());
+      return audioState.copyWith(
+        album: cachedSurah,
+        position: Duration(milliseconds: cachedSurah.position),
+      );
     }
+
     return audioState;
   }
 
   void init() {
-    // Initialize MPRIS on Linux
     if (Platform.isLinux) {
       MprisManager.instance.init(ref);
     }
+    if (Platform.isWindows) {
+      SmtcManager.instance.init(this);
+    }
+
 
     player.stream.playlist.listen((data) {
-      print(
-        'Playlist changed: index=${data.index}, medias=${data.medias.length}',
-      );
       if (data.medias.length == 1) {
         if (isLocalAudio()) {
           addLocalQueue();
@@ -120,7 +109,6 @@ class PlayerNotifier extends _$PlayerNotifier {
             .toList(),
       );
 
-      // Update MPRIS metadata when track changes (Linux only)
       if (Platform.isLinux && currentAlbum != null) {
         MprisManager.instance.updateMetadata(
           reciterName: currentAlbum.reciter.name,
@@ -129,12 +117,27 @@ class PlayerNotifier extends _$PlayerNotifier {
           length: state.duration,
         );
       }
+
+      if (Platform.isWindows && currentAlbum != null) {
+        SmtcManager.instance.updateMetadata(
+          reciterName: currentAlbum.reciter.name,
+          surah: currentAlbum.surah.name,
+        );
+        if (state.duration > Duration.zero) {
+          SmtcManager.instance.updateTimeline(
+            position: state.position,
+            duration: state.duration,
+          );
+        }
+      }
     });
 
     player.stream.position.listen((position) {
       state = state.copyWith(position: position);
       if (state.album != null) {
-        ref.read(playerCacheProvider().notifier).setAlbum(
+        ref
+            .read(playerCacheProvider().notifier)
+            .setAlbum(
               Album(
                 surah: state.album!.surah,
                 reciter: state.album!.reciter,
@@ -143,6 +146,12 @@ class PlayerNotifier extends _$PlayerNotifier {
                 recitationID: state.album!.recitationID,
               ),
             );
+      }
+       if (Platform.isWindows && state.duration > Duration.zero) {
+        SmtcManager.instance.updateTimeline(
+          position: position,
+          duration: state.duration,
+        );
       }
     });
 
@@ -156,6 +165,14 @@ class PlayerNotifier extends _$PlayerNotifier {
           surah: state.album!.surah.name,
           url: state.album!.url,
           length: duration,
+        );
+      }
+         if (Platform.isWindows &&
+          state.album != null &&
+          duration > Duration.zero) {
+        SmtcManager.instance.updateTimeline(
+          position: state.position,
+          duration: duration,
         );
       }
 
@@ -180,6 +197,9 @@ class PlayerNotifier extends _$PlayerNotifier {
       // Update MPRIS playback status (Linux only)
       if (Platform.isLinux) {
         MprisManager.instance.updatePlaybackStatus(isPlaying: playing);
+      }
+        if (Platform.isWindows) {
+        SmtcManager.instance.updatePlaybackStatus(isPlaying: playing);
       }
 
       if (state.album != null) {
@@ -249,56 +269,26 @@ class PlayerNotifier extends _$PlayerNotifier {
       state = state.copyWith(broadcastName: '');
     }
 
-    final cacheManager = DefaultCacheManager();
-    final chosenReciter = ref.read(userReciterProvider);
+    final chosenReciter = ref.watch(userReciterProvider);
+    print('ChosenReciter: $chosenReciter');
 
-    final mixID = ref
+    // // Check if the surah is already in the current queue
+    // final existingIndex = state.queue.indexWhere(
+    //   (album) => album.surah.id == surahID,
+    // );
+    // if (existingIndex != -1) {
+    //   await player.jump(existingIndex);
+    //   return;
+    // }
+
+    final album = await ref
         .read(albumRepositoryProvider)
-        .createShortHash(surahID, recitationID, chosenReciter.id);
-
-    // final cachedFile = await cacheManager.getFileFromCache(mixID);
-    // final cachedAlbum = ref.read(playerCacheProvider(key: mixID));
-
-    // if (state.queue.contains(cachedAlbum)) {
-    //   final index = state.queue.indexWhere((value) => value == cachedAlbum);
-    //   await player.jump(index);
-    //   return;
-    // }
-
-    // debugPrint(cachedFile.toString());
-    // if (cachedFile != null) {
-    //   debugPrint('Loading from cache');
-
-    //   final album = Album(
-    //     surah: cachedAlbum!.surah,
-    //     reciter: cachedAlbum.reciter,
-    //     url: cachedFile.file.path,
-    //     recitationID: cachedAlbum.recitationID,
-    //   );
-    //   await _openAlbum(album);
-
-    //   return;
-    // }
-    final networkState = ref.watch(getConnectionProvider).value;
-    if (networkState == InternetConnectionStatus.connected) {
-      final album = await ref
-          .read(albumRepositoryProvider)
-          .fetchPlayerAlbum(
-            surahID: surahID,
-            reciterID: chosenReciter.id,
-            recitationID: recitationID,
-          );
-      await _openAlbum(album);
-
-      if (state.queue.contains(album)) {
-        final index = state.queue.indexWhere((value) => value == album);
-        await player.jump(index);
-        return;
-      }
-
-      await _openAlbum(album);
-      // await cacheManager.downloadFile(album.url, key: mixID);
-    }
+        .fetchPlayerAlbum(
+          surahID: surahID,
+          reciterID: chosenReciter.id,
+          recitationID: recitationID,
+        );
+    await _openAlbum(album);
   }
 
   Future<void> playYoutube({required String url, required String title}) async {
@@ -373,6 +363,10 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> addToQueue({required int surahID}) async {
+    if (QueueUtils.isAlbumInQueue(player.state.playlist.medias, surahID)) {
+      return;
+    }
+
     final album = await ref.read(
       fetchAlbumProvider(chapterNumber: surahID).future,
     );
@@ -405,6 +399,10 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> addItemNext(int surahID) async {
+    if (QueueUtils.isAlbumInQueue(player.state.playlist.medias, surahID)) {
+      return;
+    }
+
     final album = await ref.read(
       fetchAlbumProvider(chapterNumber: surahID).future,
     );
@@ -510,7 +508,6 @@ class PlayerNotifier extends _$PlayerNotifier {
   }) async {
     final remaining = medias.length - (currentIndex + 1);
     if (remaining < bufferSize) {
-      print('Medias: $medias');
       final lastSurahId = medias.last.extras?['surah']['id'] as int;
 
       if (lastSurahId < 114) {
@@ -535,8 +532,6 @@ class PlayerNotifier extends _$PlayerNotifier {
             ).future,
           ),
       ]);
-      print('NextMedias: $albums');
-
       for (final album in albums) {
         await _addAlbumToQueue(album);
       }
@@ -547,6 +542,13 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> _addAlbumToQueue(Album album) async {
+    if (QueueUtils.isAlbumInQueue(
+      player.state.playlist.medias,
+      album.surah.id,
+    )) {
+      return;
+    }
+
     await player.add(
       Media(
         album.url,

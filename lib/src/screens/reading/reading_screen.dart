@@ -19,7 +19,6 @@ class ReadingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print(surah.id);
     final scripts = ref.watch(fetchQuranProvider(surahID: surah.id));
     final isFullscreen = ref.watch(isFullScreenProvider);
     return Scaffold(

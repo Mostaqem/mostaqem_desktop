@@ -28,3 +28,11 @@ abstract class MoshafData with _$MoshafData {
   factory MoshafData.fromJson(Map<String, Object?> json) =>
       _$MoshafDataFromJson(json);
 }
+
+extension ReciterJsonExtension on Reciter {
+  Map<String, dynamic> toJsonDeep() {
+    final json = toJson();
+    json['moshaf'] = moshaf.map((m) => m.toJson()).toList();
+    return json;
+  }
+}

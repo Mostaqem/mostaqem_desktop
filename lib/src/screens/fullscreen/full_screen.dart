@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:mesh_gradient/mesh_gradient.dart';
 import 'package:mostaqem/src/core/theme/theme.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/providers/lyrics_notifier.dart';
@@ -55,98 +56,78 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
             },
             child: Stack(
               children: [
-                if (connection == InternetConnectionStatus.connected)
-                  SoftEdgeBlur(
-                    edges: showControls
-                        ? [
-                            EdgeBlur(
-                              type: EdgeType.bottomEdge,
-                              size: 200,
-                              sigma: 55,
-                              tintColor: theme.colorScheme.surface.withValues(
-                                alpha: 0.5,
+                SoftEdgeBlur(
+                  edges: showControls
+                      ? [
+                          EdgeBlur(
+                            type: EdgeType.bottomEdge,
+                            size: 200,
+                            sigma: 25,
+                            tintColor: Colors.black.withValues(alpha: 0.5),
+                            controlPoints: [
+                              ControlPoint(
+                                position: 0.5,
+                                type: ControlPointType.visible,
                               ),
-                              controlPoints: [
-                                ControlPoint(
-                                  position: 0.5,
-                                  type: ControlPointType.visible,
-                                ),
-                                ControlPoint(
-                                  position: 1,
-                                  type: ControlPointType.transparent,
-                                ),
-                              ],
-                            ),
-                          ]
-                        : [],
-                    child: AsyncWidget(
-                      value: randomImage,
-                      data: (data) {
-                        return SizedBox.expand(
-                          child: Image.network(
-                            data,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child;
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value:
-                                        loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                  .cumulativeBytesLoaded /
-                                              loadingProgress
-                                                  .expectedTotalBytes!
-                                        : null,
-                                  ),
-                                );
-                              }
-                            },
+                              ControlPoint(
+                                position: 1,
+                                type: ControlPointType.transparent,
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                    ),
-                  )
-                else
-                  SoftEdgeBlur(
-                    edges: showControls
-                        ? [
-                            EdgeBlur(
-                              type: EdgeType.bottomEdge,
-                              size: 200,
-                              sigma: 30,
-                              tintColor: theme.colorScheme.surface.withValues(
-                                alpha: 0.6,
-                              ),
-                              controlPoints: [
-                                ControlPoint(
-                                  position: 0.5,
-                                  type: ControlPointType.visible,
+                        ]
+                      : [],
+                  child: AsyncWidget(
+                    value: randomImage,
+                    data: (data) {
+                      return SizedBox.expand(
+                        child: Image.network(
+                          data,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value:
+                                      loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                      : null,
                                 ),
-                                ControlPoint(
-                                  position: 1,
-                                  type: ControlPointType.transparent,
-                                ),
-                              ],
-                            ),
-                          ]
-                        : [],
-                    child: SizedBox.expand(
-                      child: Image.asset(
-                        'assets/img/kaaba.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    },
                   ),
+                ),
+
                 Visibility(
                   visible: isLyricsVisible,
                   child: SoftEdgeBlur(
                     edges: [
                       EdgeBlur(
                         type: EdgeType.bottomEdge,
-                        size: 200,
+                        size: 600,
+                        sigma: 55,
+
+                        controlPoints: [
+                          ControlPoint(
+                            position: 0.5,
+                            type: ControlPointType.visible,
+                          ),
+                          ControlPoint(
+                            position: 1,
+                            type: ControlPointType.transparent,
+                          ),
+                        ],
+                      ),
+                      EdgeBlur(
+                        type: EdgeType.topEdge,
+                        size: 300,
                         sigma: 55,
 
                         controlPoints: [
@@ -161,16 +142,15 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                         ],
                       ),
                     ],
-                    child: Center(
-                      child: Container(
-                        height: MediaQuery.sizeOf(context).height,
-                        width: MediaQuery.sizeOf(context).width,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                        ),
-                        child: const ScrollableLyricsView(),
-                      ),
+                    child: AnimatedMeshGradient(
+                      options: AnimatedMeshGradientOptions(),
+                      colors: [
+                        Theme.of(context).colorScheme.primaryContainer,
+                        Theme.of(context).colorScheme.secondaryContainer,
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                        Theme.of(context).colorScheme.primary,
+                      ],
+                      child: const ScrollableLyricsView(),
                     ),
                   ),
                 ),
@@ -187,11 +167,13 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                       children: [
                         Text(
                           widget.player.surah.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 120,
                             fontFamily: AppTheme.thirdFontFamily,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: isLyricsVisible
+                                ? Theme.of(context).colorScheme.onSurface
+                                : Colors.white,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -199,7 +181,11 @@ class _FullScreenWidgetState extends ConsumerState<FullScreenWidget> {
                           widget.player.reciter.name,
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.white.withValues(alpha: 0.5),
+                            color: isLyricsVisible
+                                ? Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface.withValues(alpha: 0.5)
+                                : Colors.white.withValues(alpha: 0.5),
                           ),
                         ),
                         Visibility(

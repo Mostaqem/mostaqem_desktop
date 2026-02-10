@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mostaqem/src/screens/navigation/repository/lyrics_repository.dart';
+import 'package:mostaqem/src/screens/reading/reading_screen.dart';
 
 /// A scrollable lyrics widget that displays all lyrics with the current line highlighted
 class ScrollableLyricsView extends ConsumerStatefulWidget {
@@ -14,7 +15,7 @@ class ScrollableLyricsView extends ConsumerStatefulWidget {
 
 class _ScrollableLyricsViewState extends ConsumerState<ScrollableLyricsView> {
   final ScrollController _scrollController = ScrollController();
-  final Map<int, GlobalKey> _lyricKeys = {};
+  final Map<int, GlobalKey> _ayahKeys = {};
 
   @override
   void dispose() {
@@ -22,10 +23,10 @@ class _ScrollableLyricsViewState extends ConsumerState<ScrollableLyricsView> {
     super.dispose();
   }
 
-  void _scrollToCurrentLyric(int index) {
-    if (!_lyricKeys.containsKey(index)) return;
+  void _scrollToCurrentAyah(int index) {
+    if (!_ayahKeys.containsKey(index)) return;
 
-    final key = _lyricKeys[index];
+    final key = _ayahKeys[index];
     final context = key?.currentContext;
 
     if (context != null) {
@@ -33,7 +34,7 @@ class _ScrollableLyricsViewState extends ConsumerState<ScrollableLyricsView> {
         context,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        alignment: 0.4, // Position at 40% from top (slightly above center)
+        alignment: 0.4,
       );
     }
   }
@@ -41,12 +42,12 @@ class _ScrollableLyricsViewState extends ConsumerState<ScrollableLyricsView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final lyricsAsync = ref.watch(parsedLyricsProvider);
-    final currentIndex = ref.watch(currentLyricIndexProvider);
+    final scriptsAsync = ref.watch(surahScriptsProvider);
+    final currentIndex = ref.watch(currentAyahIndexProvider);
 
-    return lyricsAsync.when(
-      data: (lyrics) {
-        if (lyrics == null || lyrics.isEmpty) {
+    return scriptsAsync.when(
+      data: (scripts) {
+        if (scripts == null || scripts.isEmpty) {
           return Center(
             child: Text(
               'No lyrics available',
@@ -58,15 +59,16 @@ class _ScrollableLyricsViewState extends ConsumerState<ScrollableLyricsView> {
           );
         }
 
-        // Ensure keys exist for all lyrics
-        for (var i = 0; i < lyrics.length; i++) {
-          _lyricKeys.putIfAbsent(i, GlobalKey.new);
+        for (var i = 0; i < scripts.length; i++) {
+          _ayahKeys.putIfAbsent(i, GlobalKey.new);
         }
 
-        // Auto-scroll to current lyric
-        if (currentIndex >= 0 && currentIndex < lyrics.length) {
+        final activeScriptIndex = currentIndex >= 0
+            ? scripts.indexWhere((s) => s.verseNumber == currentIndex)
+            : -1;
+        if (activeScriptIndex >= 0) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            _scrollToCurrentLyric(currentIndex);
+            _scrollToCurrentAyah(activeScriptIndex);
           });
         }
 
@@ -74,28 +76,42 @@ class _ScrollableLyricsViewState extends ConsumerState<ScrollableLyricsView> {
           behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
           child: ListView.builder(
             controller: _scrollController,
-            padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 40),
-            itemCount: lyrics.length,
+            padding: EdgeInsets.symmetric(
+              vertical: MediaQuery.heightOf(context) / 2.5,
+              horizontal: 40,
+            ),
+            itemCount: scripts.length,
             itemBuilder: (context, index) {
-              final isActive = index == currentIndex;
-              final lyric = lyrics[index];
+              final script = scripts[index];
+              final isActive = script.verseNumber == currentIndex;
 
               return Padding(
-                key: _lyricKeys[index],
+                key: _ayahKeys[index],
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: AnimatedDefaultTextStyle(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
-                  style: TextStyle(fontFamily:'Uthmani',
-                                      fontWeight: isActive ? FontWeight.w900 : FontWeight.w600,
-                    fontSize: isActive ? 64 : 24,
+                  style: TextStyle(
+                    fontFamily: 'Uthmani',
+                    fontWeight: isActive ? FontWeight.w900 : FontWeight.w600,
+                    fontSize: isActive ? 54 : 24,
                     color: isActive
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.onPrimaryContainer.withOpacity(0.4),
+                        ? theme.colorScheme.surface
+                        : theme.colorScheme.surface.withOpacity(0.4),
                     height: 1.8,
-
                   ),
-                  child: Text(lyric.words, textAlign: TextAlign.center),
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: script.verse),
+                        const TextSpan(text: ' '),
+                        TextSpan(
+                          text: script.verseNumber.toString().toArabicNumbers,
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               );
             },

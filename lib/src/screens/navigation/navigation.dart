@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
@@ -13,6 +14,7 @@ import 'package:mostaqem/src/screens/occasions/domain/occasions_repository.dart'
 import 'package:mostaqem/src/screens/occasions/occasions.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
+import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
 final isExtendedProvider = StateProvider<bool>((ref) => false);
@@ -115,19 +117,14 @@ class RightSide extends ConsumerWidget {
             groupAlignment: 0,
             backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
 
-            // trailing: Expanded(
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(bottom: 100),
-            //     child: Align(
-            //       alignment: Alignment.bottomCenter,
-            //       child: ToolTipIconButton(
-            //         message: context.tr.settings,
-            //         onPressed: () => context.go('/settings'),
-            //         icon: const Icon(Icons.settings_outlined),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            trailing: Align(
+              alignment: Alignment.bottomCenter,
+              child: ToolTipIconButton(
+                message: context.tr.settings,
+                onPressed: () => context.go('/settings'),
+                icon: const Icon(Icons.settings_outlined),
+              ),
+            ),
             destinations: [
               ...children.map(
                 (child) => NavigationRailDestination(

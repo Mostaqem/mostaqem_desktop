@@ -8,10 +8,9 @@ import 'package:media_kit/media_kit.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:mostaqem/src/app.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
-import 'package:mostaqem/src/core/mpris/mpris_repository.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:mostaqem/src/shared/http_override/http_override.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:smtc_windows/smtc_windows.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -19,7 +18,7 @@ void main() async {
   await CacheHelper.init();
   await windowManager.ensureInitialized();
   const windowOptions = WindowOptions(
-    // minimumSize: Size(1024, 600),
+    minimumSize: Size(1024, 600),
     center: true,
     title: 'Mostaqem',
     backgroundColor: Colors.transparent,
@@ -39,6 +38,11 @@ void main() async {
 
     MediaKit.ensureInitialized();
     await MetadataGod.initialize();
+
+    // Initialize SMTC for Windows media controls
+    if (Platform.isWindows) {
+      await SMTCWindows.initialize();
+    }
 
     await windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
