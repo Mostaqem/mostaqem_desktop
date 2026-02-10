@@ -35,7 +35,7 @@ class MyApp extends ConsumerWidget {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
-          supportedLocales: I18nRepository.supportedLocales,
+          supportedLocales: AppLocalizations.supportedLocales,
           locale: currentLang,
           builder: (context, child) {
             return Material(
@@ -44,14 +44,24 @@ class MyApp extends ConsumerWidget {
                   OverlayEntry(
                     builder: (context) {
                       return AppShortcuts(
-                        child: Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            child!,
-                            const SizedBox(height: 100, child: PlayerWidget()),
-                            const DownloadManagerWidget(),
-                            const RecitationWidget(),
-                          ],
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            if (constraints.maxWidth < 620) {
+                              return child!;
+                            }
+                            return Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                child!,
+                                const SizedBox(
+                                  height: 100,
+                                  child: PlayerWidget(),
+                                ),
+                                const DownloadManagerWidget(),
+                                const RecitationWidget(),
+                              ],
+                            );
+                          },
                         ),
                       );
                     },

@@ -57,7 +57,7 @@ class DownloadAudio extends _$DownloadAudio {
       fetchAlbumProvider(
         chapterNumber: surahID,
         recitationID: recitationID,
-        reciterID: currentReciter.id,
+        reciter: currentReciter,
       ).future,
     );
     final mixIDs = recitationID + surahID;
@@ -112,7 +112,7 @@ class DownloadAudio extends _$DownloadAudio {
     if (album == null) {
       return;
     }
-    final downloadPath = ref.watch(downloadDestinationProvider).requireValue;
+    final downloadPath = await ref.watch(downloadDestinationProvider.future);
     final surahID = ref.watch(currentSurahProvider)?.id ?? 0;
     final mixIDs = album.recitationID + surahID;
     final savePath = '$downloadPath/$mixIDs.mp3';
@@ -157,8 +157,8 @@ class DownloadAudio extends _$DownloadAudio {
       metadata: Metadata(
         genre: 'Quran',
         discNumber: album.surah.id,
-        title: album.surah.arabicName,
-        artist: album.reciter.arabicName,
+        title: album.surah.name,
+        artist: album.reciter.name,
       ),
     );
   }

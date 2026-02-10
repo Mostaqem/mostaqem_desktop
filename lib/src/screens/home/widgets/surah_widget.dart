@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:context_menus/context_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,24 +62,19 @@ class SurahWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final surahID = ref.watch(currentSurahProvider)?.id ?? 0;
     final downlaodState = ref.watch(downloadAudioProvider)?.downloadState;
+    final surahs = ref.watch(fetchAllChaptersProvider);
+
     return SizedBox(
       height: MediaQuery.sizeOf(context).height,
-      child: GridView.builder(
-        cacheExtent: 100,
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 160,
-        ),
-        itemBuilder: (context, index) {
-          final page = index ~/ pageSize + 1;
-          final indexInPage = index % pageSize;
-
-          final surahs = ref.watch(fetchAllChaptersProvider(page: page));
-
-          return surahs.when(
-            data: (data) {
-              if (indexInPage >= data.length) {
-                return null;
-              }
+      child: surahs.when(
+        data: (data) {
+          return GridView.builder(
+            cacheExtent: 100,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 160,
+            ),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
               return ContextMenuRegion(
                 contextMenu: GenericContextMenu(
                   buttonConfigs: [
@@ -86,7 +83,7 @@ class SurahWidget extends ConsumerWidget {
                       onPressed: () async {
                         await ref
                             .read(playerProvider.notifier)
-                            .addItemNext(data[indexInPage].id);
+                            .addItemNext(data[index].id);
                       },
                     ),
                     ContextMenuButtonConfig(
@@ -94,7 +91,7 @@ class SurahWidget extends ConsumerWidget {
                       onPressed: () async {
                         await ref
                             .read(playerProvider.notifier)
-                            .addToQueue(surahID: data[indexInPage].id);
+                            .addToQueue(surahID: data[index].id);
                       },
                     ),
                   ],
@@ -107,206 +104,237 @@ class SurahWidget extends ConsumerWidget {
                         onTap: () async {
                           await ref
                               .read(playerProvider.notifier)
-                              .play(surahID: data[indexInPage].id);
+                              .play(surahID: data[index].id);
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn,
-                            decoration: BoxDecoration(
-                              color: getCardColor(
-                                context: context,
-                                downloadState: downlaodState,
-                                index: index,
-                                isHovered: isHovered,
-                                surahID: surahID,
-                              ),
-                            ),
-                            child: Stack(
-                              alignment: Alignment.centerLeft,
-                              children: [
-                                Positioned(
-                                  left: -70,
-                                  child: VectorGraphic(
-                                    loader: const AssetBytesLoader(
-                                      'assets/img/svg/shape.svg',
-                                    ),
-                                    width: 130,
-                                    colorFilter: ColorFilter.mode(
-                                      isHovered ||
-                                              isSurahPlaying(
-                                                index: index,
-                                                surahID: surahID,
-                                              )
-                                          ? Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary
-                                                .withValues(alpha: 0.1)
-                                          : Theme.of(context)
-                                                .colorScheme
-                                                .onPrimaryContainer
-                                                .withValues(alpha: 0.1),
-                                      BlendMode.srcIn,
-                                    ),
+                          child: Stack(
+                            children: [
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeIn,
+                                decoration: BoxDecoration(
+                                  color: getCardColor(
+                                    context: context,
+                                    downloadState: downlaodState,
+                                    index: index,
+                                    isHovered: isHovered,
+                                    surahID: surahID,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Flexible(
-                                        child: Align(
-                                          alignment: Alignment.topRight,
-                                          child: Text(
-                                            data[indexInPage].arabicName,
-                                            style: TextStyle(
-                                              color: getCardForeground(
-                                                isHovered: isHovered,
-                                                context: context,
-                                                surahID: surahID,
-                                                index: index,
-                                              ),
-                                              fontWeight:
-                                                  isHovered ||
-                                                      isSurahPlaying(
-                                                        surahID: surahID,
-                                                        index: index,
-                                                      )
-                                                  ? FontWeight.bold
-                                                  : null,
-                                            ),
-                                          ),
+                                child: Stack(
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    Positioned(
+                                      left: -70,
+                                      child: VectorGraphic(
+                                        loader: const AssetBytesLoader(
+                                          'assets/img/svg/shape.svg',
                                         ),
-                                      ),
-                                      Flexible(
-                                        child: Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                            data[indexInPage].simpleName,
-                                            style: TextStyle(
-                                              color: getCardForeground(
-                                                isHovered: isHovered,
-                                                context: context,
-                                                surahID: surahID,
-                                                index: index,
-                                              ),
-                                              fontWeight:
-                                                  isHovered ||
-                                                      isSurahPlaying(
-                                                        surahID: surahID,
-                                                        index: index,
-                                                      )
-                                                  ? FontWeight.bold
-                                                  : null,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 5,
-                                  left: 0,
-                                  child: PopupMenuButton(
-                                    iconColor:
-                                        isHovered ||
-                                            isSurahPlaying(
-                                              index: index,
-                                              surahID: surahID,
-                                            )
-                                        ? Theme.of(
-                                            context,
-                                          ).colorScheme.onPrimary
-                                        : null,
-
-                                    itemBuilder: (context) => [
-                                      PopupMenuItem<String>(
-                                        child: const Text('اضافة التالي'),
-                                        onTap: () {
-                                          ref
-                                              .read(playerProvider.notifier)
-                                              .addItemNext(
-                                                data[indexInPage].id,
-                                              );
-                                        },
-                                      ),
-                                      PopupMenuItem<String>(
-                                        child: const Text(
-                                          'اضافة في قائمة التشغيل',
-                                        ),
-                                        onTap: () {
-                                          ref
-                                              .read(playerProvider.notifier)
-                                              .addToQueue(
-                                                surahID: data[indexInPage].id,
-                                              );
-                                        },
-                                      ),
-                                      PopupMenuItem<String>(
-                                        child: const Text('تحميل السورة'),
-                                        onTap: () async {
-                                          final height = ref.read(
-                                            downloadHeightProvider,
-                                          );
-                                          final surah = data[indexInPage];
-                                          if (height == 100) {
-                                            ref
-                                                    .read(
-                                                      downloadHeightProvider
-                                                          .notifier,
-                                                    )
-                                                    .state =
-                                                0;
-                                          } else {
-                                            ref
-                                                    .read(
-                                                      downloadHeightProvider
-                                                          .notifier,
-                                                    )
-                                                    .state =
-                                                100;
-                                          }
-                                          ref
-                                                  .read(
-                                                    downloadSurahProvider
-                                                        .notifier,
+                                        width: 130,
+                                        colorFilter: ColorFilter.mode(
+                                          isHovered ||
+                                                  isSurahPlaying(
+                                                    index: index,
+                                                    surahID: surahID,
                                                   )
-                                                  .state =
-                                              surah;
-                                          final downloadState = ref
-                                              .read(downloadAudioProvider)
-                                              ?.downloadState;
-                                          if (downloadState !=
-                                              DownloadState.downloading) {
-                                            await ref
-                                                .read(
-                                                  downloadAudioProvider
-                                                      .notifier,
+                                              ? Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary
+                                                    .withValues(alpha: 0.1)
+                                              : Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimaryContainer
+                                                    .withValues(alpha: 0.1),
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Flexible(
+                                            child: Align(
+                                              alignment: Alignment.topRight,
+                                              child: Text(
+                                                data[index].name,
+                                                style: TextStyle(
+                                                  color: getCardForeground(
+                                                    isHovered: isHovered,
+                                                    context: context,
+                                                    surahID: surahID,
+                                                    index: index,
+                                                  ),
+                                                  fontWeight:
+                                                      isHovered ||
+                                                          isSurahPlaying(
+                                                            surahID: surahID,
+                                                            index: index,
+                                                          )
+                                                      ? FontWeight.bold
+                                                      : null,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                data[index].name,
+                                                style: TextStyle(
+                                                  color: getCardForeground(
+                                                    isHovered: isHovered,
+                                                    context: context,
+                                                    surahID: surahID,
+                                                    index: index,
+                                                  ),
+                                                  fontWeight:
+                                                      isHovered ||
+                                                          isSurahPlaying(
+                                                            surahID: surahID,
+                                                            index: index,
+                                                          )
+                                                      ? FontWeight.bold
+                                                      : null,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 5,
+                                      left: 0,
+                                      child: PopupMenuButton(
+                                        iconColor:
+                                            isHovered ||
+                                                isSurahPlaying(
+                                                  index: index,
+                                                  surahID: surahID,
                                                 )
-                                                .downloadSurah(
-                                                  surahID: surah.id,
-                                                );
-                                          }
-                                        },
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimary
+                                            : null,
+
+                                        itemBuilder: (context) => [
+                                          PopupMenuItem<String>(
+                                            child: const Text('اضافة التالي'),
+                                            onTap: () {
+                                              ref
+                                                  .read(playerProvider.notifier)
+                                                  .addItemNext(data[index].id);
+                                            },
+                                          ),
+                                          PopupMenuItem<String>(
+                                            child: const Text(
+                                              'اضافة في قائمة التشغيل',
+                                            ),
+                                            onTap: () {
+                                              ref
+                                                  .read(playerProvider.notifier)
+                                                  .addToQueue(
+                                                    surahID: data[index].id,
+                                                  );
+                                            },
+                                          ),
+                                          PopupMenuItem<String>(
+                                            child: const Text('تحميل السورة'),
+                                            onTap: () async {
+                                              final height = ref.read(
+                                                downloadHeightProvider,
+                                              );
+                                              final surah = data[index];
+                                              if (height == 100) {
+                                                ref
+                                                        .read(
+                                                          downloadHeightProvider
+                                                              .notifier,
+                                                        )
+                                                        .state =
+                                                    0;
+                                              } else {
+                                                ref
+                                                        .read(
+                                                          downloadHeightProvider
+                                                              .notifier,
+                                                        )
+                                                        .state =
+                                                    100;
+                                              }
+                                              ref
+                                                      .read(
+                                                        downloadSurahProvider
+                                                            .notifier,
+                                                      )
+                                                      .state =
+                                                  surah;
+                                              final downloadState = ref
+                                                  .read(downloadAudioProvider)
+                                                  ?.downloadState;
+                                              if (downloadState !=
+                                                  DownloadState.downloading) {
+                                                await ref
+                                                    .read(
+                                                      downloadAudioProvider
+                                                          .notifier,
+                                                    )
+                                                    .downloadSurah(
+                                                      surahID: surah.id,
+                                                    );
+                                              }
+                                            },
+                                          ),
+                                          PopupMenuItem<String>(
+                                            child: const Text('اقرأ السورة'),
+                                            onTap: () {
+                                              context.pushNamed(
+                                                'Reading',
+                                                extra: data[index],
+                                              );
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                      PopupMenuItem<String>(
-                                        child: const Text('اقرأ السورة'),
-                                        onTap: () {
-                                          context.pushNamed(
-                                            'Reading',
-                                            extra: data[indexInPage],
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              // Visibility(
+                              //   visible: isSurahPlaying(
+                              //     index: index,
+                              //     surahID: surahID,
+                              //   ),
+                              //   child: BackdropFilter(
+                              //     filter: ui.ImageFilter.blur(
+                              //       sigmaX: 10,
+                              //       sigmaY: 10,
+                              //     ),
+                              //     child: Container(
+                              //       decoration: BoxDecoration(
+                              //         gradient: LinearGradient(
+                              //           begin: Alignment.topLeft,
+                              //           end: Alignment.bottomRight,
+                              //           colors: [
+                              //             Theme.of(
+                              //               context,
+                              //             ).colorScheme.primaryContainer,
+                              //             Theme.of(context)
+                              //                 .colorScheme
+                              //                 .secondaryContainer
+                              //                 .withValues(alpha: 0.5),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
                           ),
                         ),
                       );
@@ -315,37 +343,49 @@ class SurahWidget extends ConsumerWidget {
                 ),
               );
             },
-            error: (e, __) {
-              debugPrint('Error: $e');
+          );
+        },
+        error: (e, __) {
+          debugPrint('Error: $e');
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withValues(alpha: 0.3),
+              ),
+              child: ToolTipIconButton(
+                message: 'اعادة المحاولة',
+                onPressed: () {
+                  ref.invalidate(fetchAllChaptersProvider);
+                },
+                icon: const Icon(Icons.refresh_outlined),
+              ),
+            ),
+          );
+        },
+        loading: () {
+          return GridView.builder(
+            cacheExtent: 100,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 160,
+            ),
+            itemCount: 100,
+            itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(8),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primaryContainer.withValues(alpha: 0.3),
-                  ),
-                  child: ToolTipIconButton(
-                    message: 'اعادة المحاولة',
-                    onPressed: () {
-                      ref.invalidate(fetchAllChaptersProvider);
-                    },
-                    icon: const Icon(Icons.refresh_outlined),
-                  ),
-                ),
-              );
-            },
-            loading: () {
-              return Padding(
-                padding: const EdgeInsets.all(8),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primaryContainer.withValues(alpha: 0.3),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primaryContainer.withValues(alpha: 0.3),
+                    ),
                   ),
                 ),
               );

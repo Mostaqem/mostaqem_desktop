@@ -54,7 +54,7 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
           if (isBroadcast)
             const PlayingBroadcast()
           else
-            PlayingSurah(isFullScreen: widget.isFullScreen, ref: ref),
+            PlayingSurah(isFullScreen: widget.isFullScreen),
           const PlayControls(),
           Row(
             children: [
@@ -84,7 +84,6 @@ class _NormalPlayerState extends ConsumerState<NormalPlayer> {
                     child: Text(context.tr.read),
                     onPressed: () {
                       final surah = ref.read(currentSurahProvider);
-
                       ref
                           .read(goRouterProvider)
                           .goNamed('Reading', extra: surah);

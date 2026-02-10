@@ -20,68 +20,90 @@ class SettingsScreen extends ConsumerWidget {
         alignment: Alignment.topCenter,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 100),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          context.tr.settings,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+            padding: const EdgeInsets.only(top: 80, bottom: 100),
+            child: Container(
+              height: double.infinity,
+              margin: const .all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+                borderRadius: .circular(12),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            context.tr.settings,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 52),
-                        const LanguageSetting(),
+                          const SizedBox(height: 52),
+                          const LanguageSetting(),
+                          const SizedBox(height: 15),
 
-                        const SizedBox(height: 30),
+                          const Divider(),
+                          const SizedBox(height: 15),
 
-                        const StartupOptions(),
-                        const SizedBox(height: 30),
-                        const DownloadOptions(),
-                        const SizedBox(height: 30),
-                        Text(
-                          context.tr.appearance,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Theme.of(context).colorScheme.secondary,
+                          const StartupOptions(),
+                          const SizedBox(height: 15),
+
+                          const Divider(),
+
+                          const SizedBox(height: 15),
+                          const DownloadOptions(),
+                          const SizedBox(height: 15),
+
+                          const Divider(),
+
+                          const SizedBox(height: 15),
+                          Text(
+                            context.tr.appearance,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        const ApperanceSettings(),
-                        const SizedBox(height: 30),
-                        Text(
-                          context.tr.temp_files,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
+                          const SizedBox(height: 8),
+                          const ApperanceSettings(),
+                          const SizedBox(height: 15),
 
-                        ElevatedButton(
-                          onPressed: () {
-                            CacheHelper.clear();
-                            DefaultCacheManager().emptyCache();
-                            appSnackBar(
-                              context,
-                              message: context.tr.delete_files_successfully,
-                            );
-                          },
-                          child: Text(context.tr.delete_files),
-                        ),
-                        const SizedBox(height: 8),
-                      ],
+                          const Divider(),
+
+                          const SizedBox(height: 15),
+                          Text(
+                            context.tr.temp_files,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              CacheHelper.clear();
+                              DefaultCacheManager().emptyCache();
+                              appSnackBar(
+                                context,
+                                message: context.tr.delete_files_successfully,
+                              );
+                            },
+                            child: Text(context.tr.delete_files),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 100),
-                ],
+                    const SizedBox(height: 100),
+                  ],
+                ),
               ),
             ),
           ),
@@ -116,9 +138,7 @@ class LanguageSetting extends StatelessWidget {
               value: language,
               items: Language.values.toItems(),
               onChanged: (String? language) {
-                ref
-                    .read(localeProvider.notifier)
-                    .setLocale(Locale(language!));
+                ref.read(localeProvider.notifier).setLocale(Locale(language!));
               },
             );
           },

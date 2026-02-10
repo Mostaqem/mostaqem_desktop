@@ -72,15 +72,10 @@ class OfflineRepository {
           recitationID: 0,
           surah: Surah(
             id: metadata.discNumber ?? 0,
-            simpleName: '',
-            arabicName: metadata.title ?? '',
-            revelationPlace: '',
+            name: metadata.title ?? '',
+            revelationPlace: 0,
           ),
-          reciter: Reciter(
-            id: 1,
-            englishName: '',
-            arabicName: metadata.artist ?? '',
-          ),
+          reciter: Reciter(id: 1, moshaf: [], name: metadata.artist ?? ''),
           url: audio.path,
           isLocal: true,
         );

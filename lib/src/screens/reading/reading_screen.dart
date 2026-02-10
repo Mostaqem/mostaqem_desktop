@@ -11,7 +11,6 @@ import 'package:mostaqem/src/screens/reading/data/script.dart';
 import 'package:mostaqem/src/screens/reading/providers/reading_providers.dart';
 import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 import 'package:mostaqem/src/shared/widgets/back_button.dart';
-import 'package:vector_graphics/vector_graphics.dart';
 
 class ReadingScreen extends ConsumerWidget {
   const ReadingScreen({required this.surah, super.key});
@@ -20,7 +19,6 @@ class ReadingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print(surah.id);
     final scripts = ref.watch(fetchQuranProvider(surahID: surah.id));
     final isFullscreen = ref.watch(isFullScreenProvider);
     return Scaffold(
@@ -29,52 +27,41 @@ class ReadingScreen extends ConsumerWidget {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 100),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      VectorGraphic(
-                        loader: const AssetBytesLoader(
-                          'assets/img/svg/border.svg',
-                        ),
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).colorScheme.primary,
-                          BlendMode.srcIn,
-                        ),
-                      ),
-                      Text(
-                        'سورة ${surah.arabicName}',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.amiri(fontSize: 40),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Image.asset(
-                    surah.id != 9
-                        ? 'assets/img/basmalah.png'
-                        : 'assets/img/a3ooz.png',
-                    width: 300,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(height: 20),
-                  AsyncWidget(
-                    value: scripts,
-                    error: (e, s) {
-                      if (kDebugMode) {
-                        return Text('Error: $e| ST: $s');
-                      }
-                      return const Center(child: Text('Error'));
-                    },
-                    data: (data) {
-                      return VerseSpan(surah: surah, data: data);
-                    },
-                  ),
-                  const SizedBox(height: 100),
-                ],
+            Container(
+              height: double.infinity,
+              margin: const .only(top: 70, left: 16, right: 16, bottom: 100),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+                borderRadius: .circular(12),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 100),
+
+                    Image.asset(
+                      surah.id != 9
+                          ? 'assets/img/basmalah.png'
+                          : 'assets/img/a3ooz.png',
+                      width: 300,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(height: 20),
+                    AsyncWidget(
+                      value: scripts,
+                      error: (e, s) {
+                        if (kDebugMode) {
+                          return Text('Error: $e| ST: $s');
+                        }
+                        return const Center(child: Text('Error'));
+                      },
+                      data: (data) {
+                        return VerseSpan(surah: surah, data: data);
+                      },
+                    ),
+                    const SizedBox(height: 100),
+                  ],
+                ),
               ),
             ),
             const Padding(padding: EdgeInsets.all(16), child: AppBackButton()),
@@ -122,9 +109,7 @@ class _VerseSpanState extends State<VerseSpan> {
                           .pushNamed(
                             'Share',
                             extra: selectedText.replaceAll('￼', ''),
-                            pathParameters: {
-                              'surahName': widget.surah.arabicName,
-                            },
+                            pathParameters: {'surahName': widget.surah.name},
                           );
                     }
                     editableTextState.hideToolbar();
@@ -151,9 +136,7 @@ class _VerseSpanState extends State<VerseSpan> {
                           context.pushNamed(
                             'Share',
                             extra: e.verse.replaceAll('￼', ''),
-                            pathParameters: {
-                              'surahName': widget.surah.arabicName,
-                            },
+                            pathParameters: {'surahName': widget.surah.name},
                           );
                         },
                       children: [

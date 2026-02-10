@@ -4,16 +4,35 @@ part 'reciters_data.freezed.dart';
 
 part 'reciters_data.g.dart';
 
-@freezed
+@Freezed(toJson: true)
 abstract class Reciter with _$Reciter {
   const factory Reciter({
     required int id,
-    @JsonKey(name: 'name_english') required String englishName,
-    @JsonKey(name: 'name_arabic') required String arabicName,
+    required String name,
+    required List<MoshafData> moshaf,
     @Default(false) bool isDefault,
-    String? image,
   }) = _Reciter;
 
   factory Reciter.fromJson(Map<String, Object?> json) =>
       _$ReciterFromJson(json);
+}
+
+@Freezed(toJson: true)
+abstract class MoshafData with _$MoshafData {
+  const factory MoshafData({
+    required int id,
+    required String name,
+    required String server,
+  }) = _MoshafData;
+
+  factory MoshafData.fromJson(Map<String, Object?> json) =>
+      _$MoshafDataFromJson(json);
+}
+
+extension ReciterJsonExtension on Reciter {
+  Map<String, dynamic> toJsonDeep() {
+    final json = toJson();
+    json['moshaf'] = moshaf.map((m) => m.toJson()).toList();
+    return json;
+  }
 }

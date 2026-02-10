@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
 import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/core/screens/screens.dart';
@@ -8,10 +9,12 @@ import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/fullscreen/full_screen.dart';
 import 'package:mostaqem/src/screens/navigation/repository/fullscreen_notifier.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
+import 'package:mostaqem/src/screens/navigation/widgets/portrait_player.dart';
 import 'package:mostaqem/src/screens/occasions/domain/occasions_repository.dart';
 import 'package:mostaqem/src/screens/occasions/occasions.dart';
 import 'package:mostaqem/src/shared/device/package_repository.dart';
 import 'package:mostaqem/src/shared/widgets/app_menu_bar.dart';
+import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 import 'package:mostaqem/src/shared/widgets/window_buttons.dart';
 
 final isExtendedProvider = StateProvider<bool>((ref) => false);
@@ -59,19 +62,37 @@ class _NavigationState extends ConsumerState<Navigation> {
       resizeToAvoidBottomInset: false,
       body: isFullScreen
           ? FullScreenWidget(player: player!)
-          : Column(
-              children: [
-                const WindowButtons(),
-                Expanded(
-                  child: Row(
+          : LayoutBuilder(
+              builder: (context, constraints) {
+                final wideScreen = constraints.maxWidth > 620;
+                if (wideScreen) {
+                  return Column(
                     children: [
-                      RightSide(children: children, screenIndex: screenIndex),
-                      LeftSide(children: children, screenIndex: screenIndex),
+                      const WindowButtons(),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            RightSide(
+                              children: children,
+                              screenIndex: screenIndex,
+                            ),
+                            LeftSide(
+                              children: children,
+                              screenIndex: screenIndex,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 100),
                     ],
-                  ),
-                ),
-                const SizedBox(height: 100, ),
-              ],
+                  );
+                }
+                return PortraitPlayer(
+                  album: player,
+                  width: constraints.maxWidth,
+                  height: constraints.maxHeight,
+                );
+              },
             ),
     );
   }
@@ -96,19 +117,14 @@ class RightSide extends ConsumerWidget {
             groupAlignment: 0,
             backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
 
-            // trailing: Expanded(
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(bottom: 100),
-            //     child: Align(
-            //       alignment: Alignment.bottomCenter,
-            //       child: ToolTipIconButton(
-            //         message: context.tr.settings,
-            //         onPressed: () => context.go('/settings'),
-            //         icon: const Icon(Icons.settings_outlined),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            trailing: Align(
+              alignment: Alignment.bottomCenter,
+              child: ToolTipIconButton(
+                message: context.tr.settings,
+                onPressed: () => context.go('/settings'),
+                icon: const Icon(Icons.settings_outlined),
+              ),
+            ),
             destinations: [
               ...children.map(
                 (child) => NavigationRailDestination(

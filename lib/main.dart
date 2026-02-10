@@ -10,21 +10,21 @@ import 'package:mostaqem/src/app.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/shared/cache/cache_helper.dart';
 import 'package:mostaqem/src/shared/http_override/http_override.dart';
+import 'package:smtc_windows/smtc_windows.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   await windowManager.ensureInitialized();
-  final windowOptions = WindowOptions(
-    minimumSize: const Size(1024, 600),
+  const windowOptions = WindowOptions(
+    minimumSize: Size(1024, 600),
     center: true,
     title: 'Mostaqem',
     backgroundColor: Colors.transparent,
-    titleBarStyle: Platform.isWindows
-        ? TitleBarStyle.hidden
-        : TitleBarStyle.normal,
+    titleBarStyle: .hidden,
   );
+
   if (await FlutterSingleInstance().isFirstInstance()) {
     // runApp(ProviderScope(child: InitialLoading()));
     HttpOverrides.global = MyHttpOverrides();
@@ -38,6 +38,11 @@ void main() async {
 
     MediaKit.ensureInitialized();
     await MetadataGod.initialize();
+
+    // Initialize SMTC for Windows media controls
+    if (Platform.isWindows) {
+      await SMTCWindows.initialize();
+    }
 
     await windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();

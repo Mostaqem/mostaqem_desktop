@@ -62,9 +62,7 @@ class RecitersScreen extends ConsumerWidget {
                   contentPadding: EdgeInsets.zero,
 
                   title: Text(
-                    locale == 'ar'
-                        ? defaultReciter.arabicName
-                        : defaultReciter.englishName,
+                    defaultReciter.name,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
@@ -198,11 +196,7 @@ class RecitersScreen extends ConsumerWidget {
                                   .read(playerProvider.notifier)
                                   .play(surahID: surah!.id);
                             },
-                            title: Text(
-                              locale == 'ar'
-                                  ? data[indexInPage].arabicName
-                                  : data[indexInPage].englishName,
-                            ),
+                            title: Text(data[indexInPage].name),
                             trailing: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
@@ -284,11 +278,7 @@ class RecitersScreen extends ConsumerWidget {
                                 .read(playerProvider.notifier)
                                 .play(surahID: surah!.id);
                           },
-                          title: Text(
-                            locale == 'ar'
-                                ? data[index].arabicName
-                                : data[index].englishName,
-                          ),
+                          title: Text(data[index].name),
                           trailing: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,

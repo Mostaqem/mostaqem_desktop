@@ -13,7 +13,9 @@ import 'package:mostaqem/src/shared/widgets/hover_builder.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
 class PlayControls extends ConsumerStatefulWidget {
-  const PlayControls({super.key});
+  const PlayControls({this.scale = 2, super.key});
+
+  final double scale;
 
   @override
   ConsumerState<PlayControls> createState() => _PlayControlsState();
@@ -49,6 +51,17 @@ class _PlayControlsState extends ConsumerState<PlayControls>
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  String displayRepeat(PlaylistMode mode) {
+    switch (mode) {
+      case PlaylistMode.none:
+        return 'تشغيل الإعادة';
+      case PlaylistMode.single:
+        return 'تشيل إعادة مرة واحدة';
+      case PlaylistMode.loop:
+        return 'ايقاف الإعادة';
+    }
   }
 
   @override
@@ -145,7 +158,7 @@ class _PlayControlsState extends ConsumerState<PlayControls>
                 iconSize: 25,
               ),
               ToolTipIconButton(
-                message: context.tr.repeat,
+                message: displayRepeat(player.loop),
                 onPressed: () async {
                   ref.read(playerProvider.notifier).loop();
                 },
@@ -167,7 +180,7 @@ class _PlayControlsState extends ConsumerState<PlayControls>
             Text(ref.watch(playerProvider.notifier).playerTime().currentTime),
             ConstrainedBox(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.sizeOf(context).width / 2.5,
+                maxWidth: MediaQuery.sizeOf(context).width / widget.scale,
                 maxHeight: 10,
               ),
               child: Consumer(
@@ -243,6 +256,7 @@ class NormalPlayerSlider extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Slider(
       value: max(0, min(position, duration)),
+
       max: duration,
       onChangeStart: (_) async {
         final isPlaying = ref.read(playerProvider).isPlaying;

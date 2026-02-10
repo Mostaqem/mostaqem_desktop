@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
@@ -84,43 +83,16 @@ class QueueScreen extends ConsumerWidget {
                             ),
                           ),
 
-                          Stack(
-                            children: [
-                              if (queue[index].surah.image != null)
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    image: DecorationImage(
-                                      image: CachedNetworkImageProvider(
-                                        queue[index].surah.image!,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              else
-                                const SizedBox.shrink(),
-                              CircleAvatar(
-                                radius: 13,
-                                child: Text(
-                                  (index + 1).toString().toArabicNumbers,
-                                ),
-                              ),
-                            ],
+                          CircleAvatar(
+                            radius: 13,
+                            child: Text(
+                              (index + 1).toString().toArabicNumbers,
+                            ),
                           ),
                         ],
                       ),
-                      title: Text(
-                        locale == 'ar'
-                            ? queue[index].surah.arabicName
-                            : queue[index].surah.simpleName,
-                      ),
-                      subtitle: Text(
-                        locale == 'ar'
-                            ? queue[index].reciter.arabicName
-                            : queue[index].reciter.englishName,
-                      ),
+                      title: Text(queue[index].surah.name),
+                      subtitle: Text(queue[index].reciter.name),
                       trailing: PopupMenuButton(
                         iconColor: isSurahPlaying
                             ? Theme.of(context).colorScheme.onSecondary

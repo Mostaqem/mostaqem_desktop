@@ -8,11 +8,8 @@ part 'surah.g.dart';
 abstract class Surah with _$Surah {
   const factory Surah({
     required int id,
-    @JsonKey(name: 'name_complex') required String simpleName,
-    @JsonKey(name: 'name_arabic') required String arabicName,
-    @JsonKey(name: 'revelation_place') required String revelationPlace,
-    @JsonKey(name: 'verses_count') int? versesCount,
-    String? image,
+    required String name,
+    @JsonKey(name: 'makkia') required int revelationPlace,
   }) = _Surah;
 
   factory Surah.fromJson(Map<String, dynamic> json) => _$SurahFromJson(json);

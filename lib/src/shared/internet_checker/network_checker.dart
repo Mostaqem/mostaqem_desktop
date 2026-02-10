@@ -2,10 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 final getConnectionProvider =
-    FutureProvider.autoDispose<InternetConnectionStatus>((ref) async {
-      final isConnected =
+    StreamProvider.autoDispose<InternetConnectionStatus>((ref) async* {
+      final hasConnection =
           await InternetConnectionChecker.instance.hasConnection;
-      return isConnected
+      yield hasConnection
           ? InternetConnectionStatus.connected
           : InternetConnectionStatus.disconnected;
+
+      yield* InternetConnectionChecker.instance.onStatusChange;
     });

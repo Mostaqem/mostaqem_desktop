@@ -5,9 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:mostaqem/src/core/translations/translations_repository.dart';
 import 'package:mostaqem/src/screens/navigation/repository/player_repository.dart';
-import 'package:mostaqem/src/screens/navigation/repository/recitation_repository.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
-import 'package:mostaqem/src/shared/widgets/async_widget.dart';
 
 final recitationProvider = Provider((ref) {
   return ref.watch(currentAlbumProvider)?.recitationID;
@@ -25,47 +23,40 @@ class RecitationWidget extends StatelessWidget {
       child: Consumer(
         builder: (context, ref, child) {
           final album = ref.watch(currentAlbumProvider);
-          final locale = ref.watch(localeProvider).languageCode;
-          final recitations = ref.watch(
-            fetchReciterRecitationProvider(reciterID: album?.reciter.id ?? 1),
-          );
-          return AsyncWidget(
-            value: recitations,
-            loading: SizedBox.shrink,
-            data: (data) {
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.all(8),
-                width: 400,
-                height: data.length * ref.watch(recitationHeight),
-                child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    return RadioListTile(
-                      title: Text(
-                        locale == 'ar'
-                            ? data[index].name
-                            : data[index].englishName!,
-                      ),
-                      value: ref.watch(recitationProvider),
-                      groupValue: data[index].id,
-                      onChanged: (v) {
-                        ref
-                            .read(playerProvider.notifier)
-                            .play(
-                              surahID: album?.surah.id ?? 1,
-                              recitationID: data[index].id,
-                            );
-                      },
-                    );
-                  },
-                ),
-              );
-            },
+          final recitations = album?.reciter.moshaf ?? [];
+          final height = recitations.length.toDouble() * ref.watch(recitationHeight);
+          return TapRegion(
+            onTapOutside: height > 0
+                ? (_) => ref.read(recitationHeight.notifier).state = 0
+                : null,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.all(8),
+              width: 400,
+              height: height,
+              child: ListView.builder(
+                itemCount: recitations.length,
+                itemBuilder: (context, index) {
+                  return RadioListTile(
+                    title: Text(recitations[index].name),
+                    value: ref.watch(recitationProvider),
+                    groupValue: recitations[index].id,
+                    onChanged: (v) {
+                      ref
+                          .read(playerProvider.notifier)
+                          .play(
+                            surahID: album?.surah.id ?? 1,
+                            recitationID: recitations[index].id,
+                          );
+                    },
+                  );
+                },
+              ),
+            ),
           );
         },
       ),

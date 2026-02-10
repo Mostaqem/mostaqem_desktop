@@ -8,21 +8,18 @@ import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provid
 import 'package:mostaqem/src/shared/widgets/scrolling_text.dart';
 import 'package:mostaqem/src/shared/widgets/tooltip_icon.dart';
 
-class PlayingSurah extends StatelessWidget {
+class PlayingSurah extends ConsumerWidget {
   const PlayingSurah({
     required this.isFullScreen,
-    required this.ref,
     super.key,
   });
 
   final bool isFullScreen;
-  final WidgetRef ref;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final surah = ref.watch(currentSurahProvider);
     final reciter = ref.watch(currentReciterProvider);
-    final locale = ref.watch(localeProvider).languageCode;
     return Visibility(
       visible: !isFullScreen,
       child: Row(
@@ -36,9 +33,7 @@ class PlayingSurah extends StatelessWidget {
               SizedBox(
                 width: 100,
                 child: Text(
-                  locale == 'ar'
-                      ? surah?.arabicName ?? ''
-                      : surah?.simpleName ?? '',
+                  surah?.name ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -72,9 +67,7 @@ class PlayingSurah extends StatelessWidget {
                       ? SystemMouseCursors.click
                       : SystemMouseCursors.basic,
                   child: ScrollingText(
-                    text: locale == 'ar'
-                        ? reciter?.arabicName ?? ''
-                        : reciter?.englishName ?? '',
+                    text: reciter?.name ?? '',
                     style: TextStyle(
                       color: Theme.of(
                         context,

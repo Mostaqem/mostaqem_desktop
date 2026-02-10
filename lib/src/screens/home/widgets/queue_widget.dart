@@ -12,7 +12,6 @@ class QueueWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final queue = ref.watch(playerProvider).queue;
     final playingSurah = ref.watch(playerProvider).queueIndex;
-    final locale = ref.watch(localeProvider);
     return Expanded(
       child: Container(
         width: double.infinity,
@@ -50,10 +49,8 @@ class QueueWidget extends ConsumerWidget {
 
                   itemBuilder: (context, index) {
                     final isSurahPlaying = index == playingSurah;
-
                     return ListTile(
                       key: ValueKey('$index-${queue[index].hashCode}'),
-
                       onTap: () {
                         ref.read(playerProvider.notifier).playItem(index);
                       },
@@ -76,7 +73,6 @@ class QueueWidget extends ConsumerWidget {
                               ),
                             ),
                           ),
-
                           Stack(
                             children: [
                               CircleAvatar(
@@ -92,16 +88,10 @@ class QueueWidget extends ConsumerWidget {
                       contentPadding: EdgeInsets.zero,
                       selected: isSurahPlaying,
                       title: Text(
-                        locale.languageCode == 'ar'
-                            ? queue[index].surah.arabicName
-                            : queue[index].surah.simpleName,
+                        queue[index].surah.name,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text(
-                        locale.languageCode == 'ar'
-                            ? queue[index].reciter.arabicName
-                            : queue[index].reciter.englishName,
-                      ),
+                      subtitle: Text(queue[index].reciter.name),
                       trailing: ToolTipIconButton(
                         message: context.tr.remove_from_queue,
                         onPressed: () {

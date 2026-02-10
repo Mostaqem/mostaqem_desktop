@@ -1,40 +1,58 @@
 // ignore_for_file: avoid_dynamic_calls, inference_failure_on_untyped_parameter
 
 import 'package:flutter/material.dart';
+import 'package:mostaqem/src/core/dio/apis.dart';
 import 'package:mostaqem/src/core/dio/dio_helper.dart';
+import 'package:mostaqem/src/core/utils/arabic_normalizer.dart';
+import 'package:mostaqem/src/core/env/env.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
+import 'package:mostaqem/src/screens/navigation/repository/lyrics.dart';
 import 'package:mostaqem/src/screens/navigation/widgets/providers/playing_provider.dart';
 import 'package:mostaqem/src/screens/offline/repository/offline_repository.dart';
 import 'package:mostaqem/src/screens/reciters/data/reciters_data.dart';
 import 'package:mostaqem/src/screens/reciters/providers/default_reciter.dart';
+import 'package:mostaqem/src/screens/reciters/providers/reciters_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_providers.g.dart';
 
 /// Fetches all the chapters
 @Riverpod(keepAlive: true)
-Future<List<Surah>> fetchAllChapters(
-  Ref ref, {
-  required int page,
-  int take = 30,
-  String? query,
-}) async {
-  final url = query == null
-      ? '/surah?page=$page&take=$take'
-      : '/surah?page=$page&take=$take&name=$query';
-  final response = await ref.read(dioHelperProvider).getHTTP(url);
+Future<List<Surah>> fetchAllChapters(Ref ref) async {
+  final response = await ref
+      .read(dioHelperProvider)
+      .getHTTP('/suwar', baseAPI: APIs.mp3QuranAPI);
 
-  return response.data['data']['surah']
+  final surahs = response.data['suwar']
       .map<Surah>((e) => Surah.fromJson(e as Map<String, Object?>))
       .toList();
+
+  return surahs;
+}
+
+@riverpod
+Future<List<Surah>> searchChapters(Ref ref, {String? query}) async {
+  final surahs = await ref.read(fetchAllChaptersProvider.future);
+  if (query == null || query.isEmpty) {
+    return surahs;
+  }
+  final normalizedQuery = normalizeArabic(query.toLowerCase());
+  final existingSurahs = surahs
+      .where((surah) =>
+          normalizeArabic(surah.name.toLowerCase()).contains(normalizedQuery))
+      .toList();
+
+  return existingSurahs;
 }
 
 /// Fetches chapter by [id]
 @riverpod
 Future<Surah> fetchChapterById(Ref ref, {required int id}) async {
-  final response = await ref.read(dioHelperProvider).getHTTP('/surah/$id');
-  return Surah.fromJson(response.data['data'] as Map<String, dynamic>);
+  final surahs = await ref.read(fetchAllChaptersProvider.future);
+  final existingSurah = surahs.where((surah) => surah.id == id).single;
+
+  return existingSurah;
 }
 
 /// Fetches audio for chapter by [chapterNumber] and [reciterID]
@@ -42,20 +60,29 @@ Future<Surah> fetchChapterById(Ref ref, {required int id}) async {
 Future<({String url, int recitationID})> fetchAudioForChapter(
   Ref ref, {
   required int chapterNumber,
+  Reciter? reciter,
   int? recitationID,
-  int? reciterID,
 }) async {
-  final defaultReciterID = ref.watch(defaultReciterProvider).id;
-  final playReciterId = reciterID ?? defaultReciterID;
-  final url = recitationID == null
-      ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
-      : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
-  final response = await ref.read(dioHelperProvider).getHTTP(url);
+  final defaultReciter = ref.watch(defaultReciterProvider);
+  var effectiveReciter = reciter ?? defaultReciter;
 
-  final audioURL = response.data['data']['url'] as String;
-  final audioRecitationID = response.data['data']['tilawa_id'] as int;
-  debugPrint('audioURL: $audioURL');
-  return (url: audioURL, recitationID: audioRecitationID);
+  // If moshaf is empty, fetch full reciter data from API
+  if (effectiveReciter.moshaf.isEmpty) {
+    effectiveReciter = await ref.read(
+      fetchReciterProvider(id: effectiveReciter.id).future,
+    );
+  }
+
+  final surahNumber = surahIdTo3Digits(chapterNumber);
+
+  final moshaf = effectiveReciter.moshaf.firstWhere(
+    (m) => m.id == recitationID,
+    orElse: () => effectiveReciter.moshaf.first,
+  );
+
+  final url = '${moshaf.server}$surahNumber.mp3';
+
+  return (url: url, recitationID: moshaf.id);
 }
 
 @Riverpod(keepAlive: true)
@@ -63,29 +90,27 @@ Future<Album> fetchAlbum(
   Ref ref, {
   required int chapterNumber,
   int? recitationID,
-  int? reciterID,
+  Reciter? reciter,
 }) async {
-  final defaultReciterID = ref.watch(defaultReciterProvider).id;
-  final playReciterId = reciterID ?? defaultReciterID;
-  final url = recitationID == null
-      ? '/audio/?reciter_id=$playReciterId&surah_id=$chapterNumber'
-      : '/audio/?tilawa_id=$recitationID&surah_id=$chapterNumber';
-  final response = await ref.read(dioHelperProvider).getHTTP(url);
-  final audioURL = response.data['data']['url'] as String;
-  final audioRecitationID = response.data['data']['tilawa_id'] as int;
-  final reciter = Reciter.fromJson(
-    response.data['data']['tilawa']['reciter'] as Map<String, dynamic>,
+  final effectiveReciter = reciter ?? ref.watch(defaultReciterProvider);
+
+  final audio = await ref.read(
+    fetchAudioForChapterProvider(
+      chapterNumber: chapterNumber,
+      reciter: effectiveReciter,
+      recitationID: recitationID,
+    ).future,
   );
-  final surah = Surah.fromJson(
-    Map<String, dynamic>.from(
-      response.data['data']['surah'] as Map<String, dynamic>,
-    ),
+
+  final surah = await ref.read(
+    fetchChapterByIdProvider(id: chapterNumber).future,
   );
+
   return Album(
     surah: surah,
-    reciter: reciter,
-    url: audioURL,
-    recitationID: audioRecitationID,
+    reciter: effectiveReciter!,
+    url: audio.url,
+    recitationID: audio.recitationID,
   );
 }
 
@@ -131,6 +156,32 @@ Future<String?> fetchSurahLyrics(
 }
 
 @riverpod
+Future<List<AyahTiming>> fetchAyahTiming(
+  Ref ref, {
+  required int surahID,
+  required int reciterID,
+}) async {
+  final request = await ref
+      .watch(dioHelperProvider)
+      .getHTTP(
+        '/ayat_timing?surah=$surahID&read=$reciterID',
+        baseAPI: APIs.mp3QuranAPI,
+      );
+  final data = request.data as List;
+
+  final timings = data
+      .map(
+        (e) => AyahTiming(
+          ayah: e['ayah'] as int,
+          startTime: e['start_time'] as int,
+          endTime: e['end_time'] as int,
+        ),
+      )
+      .toList();
+  return timings;
+}
+
+@riverpod
 Future<List<Surah>> fetchRandomSurahs(
   Ref ref, {
   required int limit,
@@ -165,4 +216,8 @@ class ShowControls extends _$ShowControls {
 
   void show() => state = true;
   void hide() => state = false;
+}
+
+String surahIdTo3Digits(int id) {
+  return id.toString().padLeft(3, '0');
 }
