@@ -27,11 +27,13 @@ class PlayerCache extends _$PlayerCache {
 
   Future<void> setAlbum(Album album, {String key = 'surah'}) async {
     await CacheHelper.setString(key, jsonEncode(album.toJson()));
+    if (!ref.mounted) return;
     state = album;
   }
 
   Future<void> removeAlbum() async {
     await CacheHelper.remove('surah');
+    if (!ref.mounted) return;
     state = null;
   }
 }

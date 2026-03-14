@@ -9,6 +9,7 @@ import 'package:media_kit/media_kit.dart';
 import 'package:mostaqem/src/core/SMTC/smtc_provider.dart';
 import 'package:mostaqem/src/core/discord/discord_provider.dart';
 import 'package:mostaqem/src/core/mpris/mpris_repository.dart';
+import 'package:mostaqem/src/core/now_playing/now_playing_manager.dart';
 import 'package:mostaqem/src/screens/home/data/surah.dart';
 import 'package:mostaqem/src/screens/home/providers/home_providers.dart';
 import 'package:mostaqem/src/screens/navigation/data/album.dart';
@@ -71,6 +72,9 @@ class PlayerNotifier extends _$PlayerNotifier {
     if (Platform.isWindows) {
       SmtcManager.instance.init(this);
     }
+    if (Platform.isMacOS) {
+      NowPlayingManager.instance.init(this);
+    }
 
 
     player.stream.playlist.listen((data) {
@@ -130,6 +134,15 @@ class PlayerNotifier extends _$PlayerNotifier {
           );
         }
       }
+
+      if (Platform.isMacOS && currentAlbum != null) {
+        NowPlayingManager.instance.updateMetadata(
+          title: currentAlbum.surah.name,
+          artist: currentAlbum.reciter.name,
+          duration: state.duration,
+        
+        );
+      }
     });
 
     player.stream.position.listen((position) {
@@ -153,6 +166,12 @@ class PlayerNotifier extends _$PlayerNotifier {
           duration: state.duration,
         );
       }
+      if (Platform.isMacOS && state.duration > Duration.zero) {
+        NowPlayingManager.instance.updatePosition(
+          position: position,
+          duration: state.duration,
+        );
+      }
     });
 
     player.stream.duration.listen((duration) async {
@@ -172,6 +191,13 @@ class PlayerNotifier extends _$PlayerNotifier {
           duration > Duration.zero) {
         SmtcManager.instance.updateTimeline(
           position: state.position,
+          duration: duration,
+        );
+      }
+      if (Platform.isMacOS && state.album != null && duration > Duration.zero) {
+        NowPlayingManager.instance.updateMetadata(
+          title: state.album!.surah.name,
+          artist: state.album!.reciter.name,
           duration: duration,
         );
       }
@@ -200,6 +226,9 @@ class PlayerNotifier extends _$PlayerNotifier {
       }
         if (Platform.isWindows) {
         SmtcManager.instance.updatePlaybackStatus(isPlaying: playing);
+      }
+      if (Platform.isMacOS) {
+        NowPlayingManager.instance.updatePlaybackState(isPlaying: playing);
       }
 
       if (state.album != null) {

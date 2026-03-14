@@ -4,7 +4,7 @@ publish_to: none
 version: "2.7.0+1"
 
 environment:
-  sdk: ^3.10.0
+  sdk: ^3.11.0
 
 dependencies:
   cached_network_image: ^3.4.1
@@ -28,7 +28,7 @@ dependencies:
   freezed_annotation: ^3.0.0
   github: ^9.25.0
   go_router: ^16.2.0
-  google_fonts: ^6.3.1
+  google_fonts: ^8.0.2
   hijri: ^3.0.0
   internet_connection_checker: ^3.0.1
   intl: any
@@ -36,7 +36,7 @@ dependencies:
   launch_at_startup: ^0.5.1
   lottie: ^3.3.1
   lrc: ^1.0.2
-  material_color_utilities: ^0.11.1
+  material_color_utilities: ^0.13.0
   media_kit: ^1.2.6
   media_kit_libs_audio: ^1.0.7
   metadata_god: ^1.1.0
